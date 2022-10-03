@@ -8,6 +8,16 @@ helpers.register(Handlebars);
 
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 
+
+Object.defineProperty(Array.prototype, 'flat', {
+    value: function(depth = 1) {
+        return this.reduce(function (flat, toFlatten) {
+            return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+        }, []);
+    }
+});
+
+
 app.get('/', (req, res) => {
     const id = req.cookies['podvorot'];
     const emailSession = ids[id];
