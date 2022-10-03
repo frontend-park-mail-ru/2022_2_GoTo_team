@@ -1,118 +1,72 @@
 `use strict`;
 
 const root = document.getElementById('root');
-const article = document.createElement('div');
-const feed = document.createElement('div');
-feed.classList.add('feed');
-root.appendChild(feed)
+const mainContentElement = document.createElement('div');
+mainContentElement.classList.add('feed');
+root.appendChild(mainContentElement);
+document.getElementById("navbar-popular")
+    .addEventListener('click', (e) => {
+        e.preventDefault();
+        goToPage(config.menu.feed)
+    });
+
+document.getElementById("auth-button")
+    .addEventListener('click', (e) => {
+        e.preventDefault();
+        goToPage(config.menu.login)
+    });
+
+
+/*
 const main = document.createElement('div');
 const template = Handlebars.templates["login_form.html"];
 article.innerHTML = template({});
 feed.appendChild(article)
-
-//import {safe} from './utils/safe.js';
-/*
-const root = document.getElementById('root');
-const menuElement = document.createElement('aside');
-menuElement.classList.add('menu');
-const mainContentElement = document.createElement('main');
-root.appendChild(menuElement);
-root.appendChild(mainContentElement);
+*/
 
 const config = {
     menu: {
-        main: {
-            href: '/main',
+        feed: {
+            href: '/feed',
             name: 'Лента',
-            render: renderMain,
+            render: render_feed,
         },
         login: {
             href: '/login',
             name: 'Авторизация',
-            render: renderLogin,
+            render: render_login,
         },
         signup: {
             href: '/signup',
             name: 'Регистрация',
-            render: renderSignup,
-        },
-        profile: {
-            href: '/profile',
-            name: safe('Профиль'),
-            render: renderProfile,
+            render: render_signup,
         },
     },
 };
 
-function createInput(type, text, name) {
-    const input = document.createElement('input');
-    input.type = type;
-    input.name = name;
-    input.placeholder = text;
-
-    return input;
+function goToPage(menuElement) {
+    mainContentElement.innerHTML = '';
+    mainContentElement.appendChild(menuElement.render());
 }
 
-function renderMain() {
-    const mainElement = document.createElement('div');
-
-    ajax.get({
-        url: '/feed',
-        callback: (status, responseString) => {
-            let isAuthorized = false;
-
-            if (status === 200) {
-                isAuthorized = true;
-            }
-
-            if (!isAuthorized) {
-                alert('АХТУНГ НЕТ АВТОРИЗАЦИИ');
-                goToPage(config.menu.login);
-                return;
-            }
-
-            const images = JSON.parse(responseString);
-
-            if (images && Array.isArray(images)) {
-                const div = document.createElement('div');
-                mainElement.appendChild(div);
-
-                images.forEach(({src, likes}) => {
-                    div.innerHTML += `<img width="400" src="${src}"/><div>${likes} лайков</div>`;
-                })
-            }
-        }
-    })
-
-    return mainElement;
-}
-
-function renderLogin() {
-    const form = document.createElement('form');
-
-    const emailInput = createInput('email', 'Емайл', 'email');
-    const passwordInput = createInput('password', 'Пароль', 'password');
-
-    const submitBtn = document.createElement('input');
-    submitBtn.type = 'submit';
-    submitBtn.value = 'Войти!';
-
-    form.appendChild(emailInput);
-    form.appendChild(passwordInput);
-    form.appendChild(submitBtn);
+function render_login() {
+    const login_form = document.createElement('div')
+    login_form.innerHTML = Handlebars.templates["login_form.html"]({});
+    mainContentElement.appendChild(login_form);
+    const form = document.getElementById("login-form")
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
+        const email = document.getElementById("email-login").value.trim();
+        const password = document.getElementById("password").value;
 
         ajax.post({
             url: '/login',
             body: {email, password},
             callback: (status => {
                 if (status === 200) {
-                    goToPage(config.menu.profile);
+                    //goToPage(config.menu.profile);
                     return;
                 }
 
@@ -121,90 +75,68 @@ function renderLogin() {
         });
     });
 
-    return form;
+    const reg_button = document.getElementById("signup-button");
+    reg_button.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToPage(config.menu.signup)
+    });
+
+    return login_form
 }
 
-function renderSignup() {
-    const form = document.createElement('form');
-
-    const emailInput = createInput('email', 'Емайл', 'email');
-    const passwordInput = createInput('password', 'Пароль', 'password');
-    const ageInput = createInput('number', 'Возраст', 'age');
-
-    const submitBtn = document.createElement('input');
-    submitBtn.type = 'submit';
-    submitBtn.value = 'Зарегестрироваться!';
-
-    form.appendChild(emailInput);
-    form.appendChild(passwordInput);
-    form.appendChild(ageInput);
-    form.appendChild(submitBtn);
-
-    return form;
-}
-
-function goToPage(menuElement) {
-    mainContentElement.innerHTML = '';
-    root.querySelector('.active').classList.remove('active');
-    root.querySelector(`[data-section=${menuElement.href.slice(1)}]`).classList.add('active');
-
-    mainContentElement.appendChild(menuElement.render());
-}
-
-function renderProfile() {
-    const profileElement = document.createElement('div');
+function render_feed() {
+    const mainElement = document.createElement('div');
 
     ajax.get({
-        url: '/me',
+        url: '/feed',
         callback: (status, responseString) => {
-            let isAuthorized = false;
 
-            if (status === 200) {
-                isAuthorized = true;
-            }
+            const articles = JSON.parse(responseString);
 
-            if (!isAuthorized) {
-                alert('АХТУНГ НЕТ АВТОРИЗАЦИИ');
-                goToPage(config.menu.login);
-                return;
-            }
-
-
-            const {age, images, email} = JSON.parse(responseString);
-
-            const span = document.createElement('span');
-            profileElement.appendChild(span);
-            span.textContent = `${email}, ${age} лет`;
-
-            if (images && Array.isArray(images)) {
-                const div = document.createElement('div');
-                profileElement.appendChild(div);
-
-                images.forEach(({src, likes}) => {
-                    div.innerHTML += `<img width="400" src="${src}"/><div>${likes} лайков</div>`;
+            if (articles && Array.isArray(articles)) {
+                mainContentElement.innerHTML = '';
+                articles.forEach(({title, description, tags, category, rating, comments, author}) => {
+                    mainContentElement.innerHTML += Handlebars.templates["article.html"]({
+                        Title: title,
+                        description: description, tags: tags, category: category, rating: rating,
+                        comments: comments, author: author
+                    })
                 })
             }
         }
     })
 
-    return profileElement;
+    return mainElement;
 }
 
-function renderMenu() {
-    const menu = new Menu(menuElement);
-    menu.items = config.menu;
-    menu.render(RENDER_TYPE.TEMPLATE);
-}
+function render_signup() {
+    const reg_form = document.createElement('div')
+    reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
+    mainContentElement.appendChild(reg_form);
+    const form = document.getElementById("reg-form")
 
-root.addEventListener('click', (e) => {
-    const {target} = e;
-
-    if (target instanceof HTMLAnchorElement) {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
-        goToPage(config.menu[target.dataset.section]);
-    }
-});
 
-renderMenu();
-renderMain();
-*/
+        const email = document.getElementById("email").value.trim();
+        const login = document.getElementById("login").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+
+        ajax.post({
+            url: '/signup',
+            body: {email, login, username, password},
+            callback: (status => {
+                if (status === 200) {
+                    goToPage(config.menu.feed);
+                    return;
+                }
+
+                alert('АХТУНГ! НЕВЕРНЫЙ ЕМЕЙЛ ИЛИ ПАРОЛЬ');
+            })
+        });
+    });
+    return reg_form
+}
+
+render_login()

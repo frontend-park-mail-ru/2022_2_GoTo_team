@@ -11,7 +11,7 @@
         <div class="logo-rect">ve.ru</div>
     </div>
     <div class="button-bar">
-        <div>Популярное</div>
+        <div id="navbar-popular">Популярное</div>
         <div>Свежее</div>
         <div>Подписки</div>
         <div>Новая статья</div>
@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="profile-block">
+    <div class="profile-block" id="auth-button">
         <div>Войти</div>
         <div>
             <svg
@@ -71,6 +71,7 @@
 </div>
 <div id="root"></div>
 <script src="./modules/handlebars.js"></script>
+<script src="./modules/ajax.js"></script>
 <script src="./components/article.tmpl.js"></script>
 <script src="./components/login_form.tmpl.js"></script>
 <script src="./components/registration_form.tmpl.js"></script>
