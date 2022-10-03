@@ -300,3 +300,96 @@ div#other div{
     font-size: 17px;
 
 }
+
+.login{
+    width: 400px;
+    height: fit-content;
+    margin: 100px auto 0 auto;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.enter-sign{
+    margin: 50px auto 10px auto;
+    width: fit-content;
+    height: fit-content;
+    font-size: 30px;
+    color: #000000;
+}
+
+.input-box{
+    margin: 0 auto 10px auto;
+    width: fit-content;
+    height: fit-content;
+    font-size: 40px;
+    color: #000000;
+}
+
+.log-label-wrapper{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-label{
+    font-family: 'Open Sans';
+    font-style: normal;
+    width: fit-content;
+    height: fit-content;
+    font-size: 15px;
+    padding: 5px 5px 0 0;
+    color: #000000;
+}
+
+.log-input{
+    background: #FFFFFF;
+    height: 25px;
+    border: 3px solid rgba(104, 11, 197, 0.25);
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.enter-button{
+    font-family: 'Signika Negative SC';
+    font-style: normal;
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    margin: 5px 0 5px 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.enter-button:hover{
+    color: #FFFFFF;
+    background: #680BC5;
+    border: 3px solid rgba(104, 11, 197, 0.5);
+    border-radius: 5px;
+}
+
+.log-registration{
+    line-height: 40px;
+}
+
+div.log-button-container{
+    margin: 20px 0 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.registration{
+    width: 400px;
+    height: fit-content;
+    font-size: 40px;
+    margin: 100px auto 0 auto;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}

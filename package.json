@@ -1,0 +1,25 @@
+{
+  "name": "ve.ru",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "PORT=3004 DEBUG=server node front/server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2022_2_GoTo_team.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2022_2_GoTo_team/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2022_2_GoTo_team#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "handlebars": "^4.7.7"
+  }
+}
