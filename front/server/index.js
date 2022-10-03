@@ -3,6 +3,8 @@ const Handlebars = require("handlebars");
 const express = require('express');
 const path = require('path');
 const app = express();
+const helpers = require('prettify');
+helpers.register(Handlebars);
 
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 

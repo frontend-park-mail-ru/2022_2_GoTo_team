@@ -1,13 +1,14 @@
+`use strict`;
+
 const root = document.getElementById('root');
-const menuElement = document.createElement('aside');
-console.log(Handlebars.templates["article.html"]);
-
-
-function renderMenu() {
-
-}
-
-renderMenu()
+const article = document.createElement('div');
+const feed = document.createElement('div');
+feed.classList.add('feed');
+root.appendChild(feed)
+const main = document.createElement('div');
+const template = Handlebars.templates["login_form.html"];
+article.innerHTML = template({});
+feed.appendChild(article)
 
 //import {safe} from './utils/safe.js';
 /*
