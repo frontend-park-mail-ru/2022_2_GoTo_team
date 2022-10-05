@@ -6,22 +6,20 @@ const REQUEST_TYPE = {
 };
 
 class Ajax {
-    get({url, callback}) {
+    get({url}) {
         return this._ajax({
             method: REQUEST_TYPE.GET,
             crossDomain: true,
-            url,
-            callback,
+            url
         })
     }
 
-    post({url, body, callback}) {
+    post({url, body}) {
         return this._ajax({
             method: REQUEST_TYPE.POST,
             url,
             crossDomain: true,
-            body,
-            callback
+            body
         })
     }
 
@@ -38,6 +36,9 @@ class Ajax {
         return fetch(url, fetchParams)
             .then((response) => {
                 status = response.status;
+                if (fetchParams.method === REQUEST_TYPE.POST) {
+                    return status;
+                }
                 return response.json();
             })
             .then((response) => {

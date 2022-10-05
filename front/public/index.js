@@ -55,24 +55,23 @@ function render_login() {
     mainContentElement.appendChild(login_form);
     const form = document.getElementById("login-form")
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = document.getElementById("email-login").value.trim();
         const password = document.getElementById("password").value;
-
-        ajax.post({
+        //TODO:Validation
+        const response = await ajax.post({
             url: config.menu.login.href,
-            body: {email, password},
-            callback: (status => {
-                if (status === 200) {
-                    //goToPage(config.menu.profile);
-                    return;
-                }
-
-                alert('АХТУНГ! НЕВЕРНЫЙ ЕМЕЙЛ ИЛИ ПАРОЛЬ');
-            })
+            body: {email, password}
         });
+        if (response.response === 200) {
+            goToPage(config.menu.feed);
+        } else {
+            //TODO:Show no authoriastion message in form
+            alert("No Authorisation");
+        }
+
     });
 
     const reg_button = document.getElementById("signup-button");
@@ -91,7 +90,6 @@ async function render_feed() {
         url: config.menu.feed.href,
     })
     const articles = response.response.articles;
-    console.log(articles && Array.isArray(articles))
     if (articles && Array.isArray(articles)) {
         mainContentElement.innerHTML = '';
         articles.forEach(({title, description, tags, category, rating, comments, authors}) => {
@@ -106,33 +104,33 @@ async function render_feed() {
     return mainElement;
 }
 
-function render_signup() {
+async function render_signup() {
     const reg_form = document.createElement('div')
     reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
     mainContentElement.appendChild(reg_form);
     const form = document.getElementById("reg-form")
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = document.getElementById("email").value.trim();
         const login = document.getElementById("login").value.trim();
         const username = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value;
-
-        ajax.post({
+        //TODO:Validation
+        const response = await ajax.post({
             url: config.menu.signup.href,
             body: {email, login, username, password},
-            callback: (status => {
-                if (status === 200) {
-                    goToPage(config.menu.feed);
-                    return;
-                }
-
-                alert('АХТУНГ! НЕВЕРНЫЙ ЕМЕЙЛ ИЛИ ПАРОЛЬ');
-            })
         });
+
+        if (response.response === 200) {
+            goToPage(config.menu.login);
+        } else {
+            //TODO:Show bad registration message in form
+            alert("Bad registration");
+        }
     });
+
     return reg_form
 }
 
