@@ -84,27 +84,24 @@ function render_login() {
     return login_form
 }
 
-function render_feed() {
+async function render_feed() {
     const mainElement = document.createElement('div');
 
-    ajax.get({
+    const response = await ajax.get({
         url: config.menu.feed.href,
-        callback: (status, responseString) => {
-            const articles = JSON.parse(responseString);
-            console.log(articles && Array.isArray(articles))
-            if (articles && Array.isArray(articles)) {
-                mainContentElement.innerHTML = '';
-                articles.forEach(({title, description, tags, category, rating, comments, author}) => {
-                    mainContentElement.innerHTML += Handlebars.templates["article.html"]({
-                        Title: title,
-                        description: description, tags: tags, category: category, rating: rating,
-                        comments: comments, author: author
-                    })
-                })
-            }
-        }
-
     })
+    const articles = response.response.articles;
+    console.log(articles && Array.isArray(articles))
+    if (articles && Array.isArray(articles)) {
+        mainContentElement.innerHTML = '';
+        articles.forEach(({title, description, tags, category, rating, comments, author}) => {
+            mainContentElement.innerHTML += Handlebars.templates["article.html"]({
+                Title: title,
+                description: description, tags: tags, category: category, rating: rating,
+                comments: comments, author: author
+            })
+        })
+    }
 
     return mainElement;
 }

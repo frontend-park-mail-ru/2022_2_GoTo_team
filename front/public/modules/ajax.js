@@ -7,7 +7,7 @@ const REQUEST_TYPE = {
 
 class Ajax {
     get({url, callback}) {
-        this._ajax({
+        return this._ajax({
             method: REQUEST_TYPE.GET,
             crossDomain: true,
             url,
@@ -16,7 +16,7 @@ class Ajax {
     }
 
     post({url, body, callback}) {
-        this._ajax({
+        return this._ajax({
             method: REQUEST_TYPE.POST,
             url,
             crossDomain: true,
@@ -33,7 +33,6 @@ class Ajax {
             credentials: 'include',
             method: requestParams.method,
         };
-
 
         let status = 0;
         return fetch(url, fetchParams)
