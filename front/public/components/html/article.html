@@ -1,19 +1,20 @@
 <div class="article">
     <div class="tagbox">
-        <div class="tag">{{tag}}</div>
-        <div class="tag">{{tag}}</div>
+        {{#each tags}}
+        <div class="tag">{{this}}</div>
+        {{/each}}
     </div>
     <div class="article-title">{{Title}}</div>
     <div class="article-description">{{description}}</div>
     <div class="article-cover">{{picture}}</div>
     <div class="article-bottom-bar">
         <div class="author-pfp"></div>
-        <div class="author-username">{{author}}</div>
+        <div class="author-username">{{#each authors}}{{this}} {{/each}}</div>
         <div class="article-posting-time">{{time}}</div>
         <div class="article-feedback-info">
-            <div class="article-comments-count">12
+            <div class="article-comments-count">{{comments}}
             </div>
-            <div class="article-rating-info">233</div>
+            <div class="article-rating-info">{{rating}}</div>
         </div>
     </div>
 </div>

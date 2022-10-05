@@ -94,11 +94,11 @@ async function render_feed() {
     console.log(articles && Array.isArray(articles))
     if (articles && Array.isArray(articles)) {
         mainContentElement.innerHTML = '';
-        articles.forEach(({title, description, tags, category, rating, comments, author}) => {
+        articles.forEach(({title, description, tags, category, rating, comments, authors}) => {
             mainContentElement.innerHTML += Handlebars.templates["article.html"]({
                 Title: title,
                 description: description, tags: tags, category: category, rating: rating,
-                comments: comments, author: author
+                comments: comments, authors: authors
             })
         })
     }
