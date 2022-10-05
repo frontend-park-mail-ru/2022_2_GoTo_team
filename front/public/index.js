@@ -32,12 +32,12 @@ const config = {
             render: render_feed,
         },
         login: {
-            href: '/login',
+            href: '/session/create',
             name: 'Авторизация',
             render: render_login,
         },
         signup: {
-            href: '/signup',
+            href: '/user/signup',
             name: 'Регистрация',
             render: render_signup,
         },
@@ -62,7 +62,7 @@ function render_login() {
         const password = document.getElementById("password").value;
 
         ajax.post({
-            url: '/login',
+            url: config.menu.login.href,
             body: {email, password},
             callback: (status => {
                 if (status === 200) {
@@ -88,9 +88,12 @@ function render_feed() {
     const mainElement = document.createElement('div');
 
     ajax.get({
-        url: '/feed',
+        url: config.menu.feed.href,
         callback: (status, responseString) => {
-
+            console.log(status)
+            console.log(responseString)
+        }
+/*
             const articles = JSON.parse(responseString);
 
             if (articles && Array.isArray(articles)) {
@@ -104,6 +107,8 @@ function render_feed() {
                 })
             }
         }
+
+ */
     })
 
     return mainElement;
@@ -124,7 +129,7 @@ function render_signup() {
         const password = document.getElementById("password").value;
 
         ajax.post({
-            url: '/signup',
+            url: config.menu.signup.href,
             body: {email, login, username, password},
             callback: (status => {
                 if (status === 200) {

@@ -1,39 +1,16 @@
 'use strict';
 const Handlebars = require("handlebars");
+const body = require('body-parser');
 const express = require('express');
+const cookie = require('cookie-parser');
+const morgan = require('morgan');
+const cors = require('cors');
 const path = require('path');
 const app = express();
-const helpers = require('prettify');
-helpers.register(Handlebars);
 
+app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
-
-
-Object.defineProperty(Array.prototype, 'flat', {
-    value: function(depth = 1) {
-        return this.reduce(function (flat, toFlatten) {
-            return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
-        }, []);
-    }
-});
-
-
-app.get('/', (req, res) => {
-    const id = req.cookies['podvorot'];
-    const emailSession = ids[id];
-    if (!emailSession || !users[emailSession]) {
-        return res.status(401).end();
-    }
-
-    const result = Object
-        .values(users)
-        .filter(({email}) => email !== emailSession)
-        .map(user => user.images)
-        .filter(Boolean)
-    ;
-
-    res.json(result.flat());
-});
+app.use(body.json());
 
 const port = process.env.PORT || 3000;
 
