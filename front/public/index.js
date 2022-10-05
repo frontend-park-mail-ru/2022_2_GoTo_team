@@ -138,19 +138,19 @@ async function render_signup() {
         if (!validateEmail(email)) {
             const wrong_sign = document.createElement('div');
             wrong_sign.innerHTML = "<div id=\"log-error\">Неверный email</div>";
-            const container = form.childNodes[7];
+            const container = form.childNodes[1];
             if (container.childNodes.length < 6) {
                 container.insertBefore(wrong_sign, container.childNodes[5]);
             }
-            return
         }
 
-        if (password != rePassword) {
+        if (password !== rePassword) {
             const wrong_sign = document.createElement('div');
             wrong_sign.innerHTML = "<div id=\"log-error\">Пароли не совпадают</div>";
-            const container = form.childNodes[1];
+            const container = form.childNodes[7];
+
             if (container.childNodes.length < 6) {
-                container.insertBefore(wrong_sign, container.childNodes[4]);
+                container.insertBefore(wrong_sign, container.childNodes[5]);
             }
             return
         }
