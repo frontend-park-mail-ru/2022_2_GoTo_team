@@ -1,5 +1,5 @@
-//const APIurl = "http://127.0.0.1:8080/api/v1";
-const APIurl = "http://95.163.213.142:8080/api/v1";
+const APIurl = "http://127.0.0.1:8080/api/v1";
+//const APIurl = "http://95.163.213.142:8080/api/v1";
 
 const REQUEST_TYPE = {
     GET: 'GET',

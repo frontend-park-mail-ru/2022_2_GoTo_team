@@ -55,12 +55,26 @@ function render_login() {
     mainContentElement.appendChild(login_form);
     const form = document.getElementById("login-form")
 
+    const make_wrong = () => {
+        const wrong_sign = document.createElement('div');
+        wrong_sign.innerHTML = "<div id=\"log-error\">Неверный логин или пароль</div>";
+        const container = form.childNodes[1];
+        console.log(container.childNodes.length);
+        if (container.childNodes.length < 14) {
+            container.insertBefore(wrong_sign, container.children[4]);
+        }
+    }
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = document.getElementById("email-login").value.trim();
         const password = document.getElementById("password").value;
-        //TODO:Validation
+        if (!validateEmail(email) && !validatePassword(password)){
+            make_wrong();
+            return
+        }
+
         const response = await ajax.post({
             url: config.menu.login.href,
             body: {email, password}
@@ -68,8 +82,7 @@ function render_login() {
         if (response.response === 200) {
             goToPage(config.menu.feed);
         } else {
-            //TODO:Show no authoriastion message in form
-            alert("No Authorisation");
+            make_wrong();
         }
 
     });
@@ -133,5 +146,17 @@ async function render_signup() {
 
     return reg_form
 }
+
+const validateEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+};
+
+const validatePassword = (password) => {
+    return password.length > 4
+};
 
 render_login()

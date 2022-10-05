@@ -393,3 +393,8 @@ div.log-button-container{
     display: flex;
     flex-direction: column;
 }
+
+#log-error{
+    color: red;
+    font-size: 12px;
+}
