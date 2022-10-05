@@ -10,11 +10,6 @@ document.getElementById("navbar-popular")
         goToPage(config.menu.feed)
     });
 
-document.getElementById("auth-button")
-    .addEventListener('click', (e) => {
-        e.preventDefault();
-        goToPage(config.menu.login)
-    });
 
 
 /*
@@ -42,6 +37,11 @@ const config = {
             render: render_signup,
         },
     },
+};
+
+const auth_render = (e) => {
+    e.preventDefault();
+    goToPage(config.menu.login)
 };
 
 function goToPage(menuElement) {
@@ -80,7 +80,10 @@ function render_login() {
             body: {email, password}
         });
         if (response.response === 200) {
-            goToPage(config.menu.feed);
+            const profileButton = document.getElementById("auth-button");
+            profileButton.innerHTML = "<div>" + email + "</div>";
+            profileButton.removeEventListener("onClock", auth_render);
+            goToPage(config.menu.feed)
         } else {
             make_wrong();
         }
@@ -121,7 +124,7 @@ async function render_signup() {
     const reg_form = document.createElement('div')
     reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
     mainContentElement.appendChild(reg_form);
-    const form = document.getElementById("reg-form")
+    const form = document.getElementById("reg-form");
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -130,6 +133,27 @@ async function render_signup() {
         const login = document.getElementById("login").value.trim();
         const username = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value;
+        const rePassword = document.getElementById("repeat-password").value;
+
+        if (!validateEmail(email)) {
+            const wrong_sign = document.createElement('div');
+            wrong_sign.innerHTML = "<div id=\"log-error\">Неверный email</div>";
+            const container = form.childNodes[7];
+            if (container.childNodes.length < 6) {
+                container.insertBefore(wrong_sign, container.childNodes[5]);
+            }
+            return
+        }
+
+        if (password != rePassword) {
+            const wrong_sign = document.createElement('div');
+            wrong_sign.innerHTML = "<div id=\"log-error\">Пароли не совпадают</div>";
+            const container = form.childNodes[1];
+            if (container.childNodes.length < 6) {
+                container.insertBefore(wrong_sign, container.childNodes[4]);
+            }
+            return
+        }
 
         const response = await ajax.post({
             url: config.menu.signup.href,
@@ -173,4 +197,5 @@ const validatePassword = (password) => {
     return password.length > 4
 };
 
+document.getElementById("auth-button").addEventListener('click', auth_render);
 render_login()
