@@ -20,7 +20,7 @@ func GetFeedStorage() *FeedStorage {
 }
 
 func (o *FeedStorage) PrintArticles() {
-	log.Printf("Articles in storage:")
+	log.Println("Articles in storage:")
 	for _, v := range o.articles {
 		log.Printf("%#v ", v)
 	}

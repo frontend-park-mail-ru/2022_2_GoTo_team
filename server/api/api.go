@@ -31,6 +31,7 @@ func (api *Api) SignupUserHandler(w http.ResponseWriter, r *http.Request) {
 	parsedInput := new(models.User)
 	err := json.NewDecoder(r.Body).Decode(parsedInput)
 	if err != nil {
+		log.Println("Error while decode JSON:", err)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
@@ -49,7 +50,8 @@ func (api *Api) SignupUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	api.usersStorage.PrintUsers()
-	w.WriteHeader(200)
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (api *Api) CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
@@ -58,6 +60,7 @@ func (api *Api) CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 	parsedInput := new(models.Session)
 	err := json.NewDecoder(r.Body).Decode(parsedInput)
 	if err != nil {
+		log.Println("Error while decode JSON:", err)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
@@ -68,13 +71,16 @@ func (api *Api) CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 
 	api.printSessions()
 
-	w.WriteHeader(200)
+	w.WriteHeader(http.StatusOK)
 }
 
 func (api *Api) FeedHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	articles, err := api.feedStorage.GetArticles()
 	if err != nil {
+		log.Println("Error while decode JSON:", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
@@ -96,11 +102,18 @@ func (api *Api) FeedHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(feed)
 
-	json.NewEncoder(w).Encode(&feed)
+	err = json.NewEncoder(w).Encode(&feed)
+	if err != nil {
+		log.Println("Error while encode JSON:", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (api *Api) printSessions() {
-	log.Printf("Sessions in storage:")
+	log.Println("Sessions in storage:")
 	for _, v := range api.sessions {
 		log.Printf("%#v ", v)
 	}
