@@ -77,12 +77,12 @@ function render_login() {
 
         const response = await ajax.post({
             url: config.menu.login.href,
-            body: {email, password}
+            body: {"user_data": {email, password}}
         });
         if (response.response === 200) {
             const profileButton = document.getElementById("auth-button");
             profileButton.innerHTML = "<div>" + email + "</div>";
-            profileButton.removeEventListener("onClock", auth_render);
+            profileButton.removeEventListener("click", auth_render);
             goToPage(config.menu.feed)
         } else {
             make_wrong();
