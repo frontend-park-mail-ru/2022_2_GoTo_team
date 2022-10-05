@@ -6,25 +6,17 @@ import (
 	"sync"
 )
 
-var users = []*models.User{
-	{
-		"asd",
-		"asd@asd.asd",
-		"asdLogin",
-		"asdPass",
-	},
-	{
-		"qwe",
-		"qwe@qwe.qwe",
-		"qweLogin",
-		"qwePass",
-	},
-}
-
 type UsersStorage struct {
 	users []*models.User
 	mu    sync.RWMutex
 	//nextID uint
+}
+
+func GetUsersStorage() *UsersStorage {
+	return &UsersStorage{
+		users: usersData,
+		mu:    sync.RWMutex{},
+	}
 }
 
 func (o *UsersStorage) PrintUsers() {
@@ -49,11 +41,4 @@ func (o *UsersStorage) AddUser(username string, email string, login string, pass
 	o.mu.Unlock()
 
 	return nil
-}
-
-func GetUsersStorage() *UsersStorage {
-	return &UsersStorage{
-		users: users,
-		mu:    sync.RWMutex{},
-	}
 }

@@ -10,14 +10,17 @@ import (
 
 type Api struct {
 	usersStorage *storage.UsersStorage
+	feedStorage  *storage.FeedStorage
 	sessions     []models.Session
 }
 
 func GetApi() *Api {
 	authApi := &Api{
 		usersStorage: storage.GetUsersStorage(),
+		feedStorage:  storage.GetFeedStorage(),
 	}
 	authApi.usersStorage.PrintUsers()
+	authApi.feedStorage.PrintArticles()
 
 	return authApi
 }
@@ -28,7 +31,7 @@ func (api *Api) SignupUserHandler(w http.ResponseWriter, r *http.Request) {
 	parsedInput := new(models.User)
 	err := json.NewDecoder(r.Body).Decode(parsedInput)
 	if err != nil {
-		http.Error(w, `{"error":"cant parse JSON"}`, 400)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
@@ -41,7 +44,7 @@ func (api *Api) SignupUserHandler(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if err != nil {
-		http.Error(w, `{"error":"storage error"}`, 500)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
@@ -55,7 +58,7 @@ func (api *Api) CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 	parsedInput := new(models.Session)
 	err := json.NewDecoder(r.Body).Decode(parsedInput)
 	if err != nil {
-		http.Error(w, `{"error":"cant parse JSON"}`, 400)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
@@ -66,6 +69,34 @@ func (api *Api) CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 	api.printSessions()
 
 	w.WriteHeader(200)
+}
+
+func (api *Api) FeedHandler(w http.ResponseWriter, r *http.Request) {
+
+	articles, err := api.feedStorage.GetArticles()
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	feed := models.Feed{}
+	for _, v := range articles {
+		article := models.Article{
+			Id:          v.Id,
+			Title:       v.Title,
+			Description: v.Description,
+			Tags:        v.Tags,
+			Category:    v.Category,
+			Rating:      v.Rating,
+			Authors:     v.Authors,
+			Content:     v.Content,
+		}
+		feed.Articles = append(feed.Articles, article)
+	}
+
+	log.Println(feed)
+
+	//json.NewEncoder(w).Encode(&Result{Body: body})
 }
 
 func (api *Api) printSessions() {
