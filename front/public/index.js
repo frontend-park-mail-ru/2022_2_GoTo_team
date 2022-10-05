@@ -90,12 +90,8 @@ function render_feed() {
     ajax.get({
         url: config.menu.feed.href,
         callback: (status, responseString) => {
-            console.log(status)
-            console.log(responseString)
-        }
-/*
             const articles = JSON.parse(responseString);
-
+            console.log(articles && Array.isArray(articles))
             if (articles && Array.isArray(articles)) {
                 mainContentElement.innerHTML = '';
                 articles.forEach(({title, description, tags, category, rating, comments, author}) => {
@@ -108,7 +104,6 @@ function render_feed() {
             }
         }
 
- */
     })
 
     return mainElement;

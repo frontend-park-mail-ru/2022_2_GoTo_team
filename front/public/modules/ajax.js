@@ -31,11 +31,6 @@ class Ajax {
             body: JSON.stringify(requestParams.body),
             mode: 'cors',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': 'true',
-            },
             method: requestParams.method,
         };
 
