@@ -96,7 +96,7 @@ func (api *Api) FeedHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(feed)
 
-	//json.NewEncoder(w).Encode(&Result{Body: body})
+	json.NewEncoder(w).Encode(&feed)
 }
 
 func (api *Api) printSessions() {
