@@ -57,7 +57,7 @@ function render_login() {
 
     const make_wrong = () => {
         const wrong_sign = document.createElement('div');
-        wrong_sign.innerHTML = "<div id=\"log-error\">Неверный логин или пароль</div>";
+        wrong_sign.innerHTML = "<div id=\"log-error\">Неверный email или пароль</div>";
         const container = form.childNodes[1];
         console.log(container.childNodes.length);
         if (container.childNodes.length < 14) {
@@ -70,7 +70,7 @@ function render_login() {
 
         const email = document.getElementById("email-login").value.trim();
         const password = document.getElementById("password").value;
-        if (!validateEmail(email) && !validatePassword(password)){
+        if (!validateEmail(email) || !validatePassword(password)) {
             make_wrong();
             return
         }
@@ -130,7 +130,7 @@ async function render_signup() {
         const login = document.getElementById("login").value.trim();
         const username = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value;
-        //TODO:Validation
+
         const response = await ajax.post({
             url: config.menu.signup.href,
             body: {email, login, username, password},
@@ -139,8 +139,22 @@ async function render_signup() {
         if (response.response === 200) {
             goToPage(config.menu.login);
         } else {
-            //TODO:Show bad registration message in form
-            alert("Bad registration");
+            if (response.response === 409) {
+                const wrong_sign = document.createElement('div');
+                wrong_sign.innerHTML = "<div id=\"log-error\">Email занят</div>";
+                const container = form.childNodes[1];
+                if (container.childNodes.length < 5) {
+                    container.insertBefore(wrong_sign, container.childNodes[4]);
+                }
+                return
+            }
+            const wrong_sign = document.createElement('div');
+            wrong_sign.innerHTML = "<div id=\"log-error\">Что-то пошло не так</div>";
+            const container = form.childNodes[3];
+            console.log(container.childNodes.length);
+            if (container.childNodes.length < 14) {
+                container.insertBefore(wrong_sign, container.childNodes[12]);
+            }
         }
     });
 
