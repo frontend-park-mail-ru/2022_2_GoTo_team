@@ -1,5 +1,7 @@
 `use strict`;
 
+import {Ajax} from "./modules/ajax.js"
+
 const root = document.getElementById('root');
 const mainContentElement = document.createElement('div');
 mainContentElement.classList.add('feed');
@@ -10,6 +12,7 @@ document.getElementById("navbar-popular")
         goToPage(config.menu.feed)
     });
 
+const ajax = new(Ajax);
 
 
 /*

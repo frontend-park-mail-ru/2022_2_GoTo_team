@@ -6,9 +6,9 @@ const REQUEST_TYPE = {
     POST: 'POST'
 };
 
-class Ajax {
+export class Ajax {
     get({url}) {
-        return this._ajax({
+        return this.#ajax({
             method: REQUEST_TYPE.GET,
             crossDomain: true,
             url
@@ -16,7 +16,7 @@ class Ajax {
     }
 
     post({url, body}) {
-        return this._ajax({
+        return this.#ajax({
             method: REQUEST_TYPE.POST,
             url,
             crossDomain: true,
@@ -24,7 +24,7 @@ class Ajax {
         })
     }
 
-    _ajax(requestParams) {
+    #ajax(requestParams) {
         const url = APIurl + (requestParams.url || '/');
         const fetchParams = {
             body: JSON.stringify(requestParams.body),
@@ -54,5 +54,4 @@ class Ajax {
     }
 }
 
-window.ajax = new Ajax();
 
