@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "PORT=3004 DEBUG=server node front/server",
+    "start": "PORT=8081 DEBUG=server node front/server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "genTemplates": "front/templating.sh",
+    "tmpl": "front/templating.sh",
     "deleteTemplates": "rm -rd \"front/public/components/tmpl\""
   },
   "repository": {
