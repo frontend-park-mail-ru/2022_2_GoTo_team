@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "PORT=8081 DEBUG=server node front/server",
+    "demonify": "front/demonify.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tmpl": "front/templating.sh",
     "deleteTemplates": "rm -rd \"front/public/components/tmpl\""
