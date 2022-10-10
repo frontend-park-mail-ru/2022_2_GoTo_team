@@ -54,7 +54,7 @@ function render_login() {
     const login_form = document.createElement('div')
     login_form.innerHTML = Handlebars.templates["login_form.html"]({});
     mainContentElement.appendChild(login_form);
-    const form = document.getElementById("login-form")
+    const form = document.getElementById("login_form")
 
     const make_wrong = () => {
         const wrong_sign = document.createElement('div');
