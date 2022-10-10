@@ -6,21 +6,8 @@ const root = document.getElementById('root');
 const mainContentElement = document.createElement('div');
 mainContentElement.classList.add('feed');
 root.appendChild(mainContentElement);
-document.getElementById("navbar-popular")
-    .addEventListener('click', (e) => {
-        e.preventDefault();
-        goToPage(config.menu.feed)
-    });
 
 const ajax = new(Ajax);
-
-
-/*
-const main = document.createElement('div');
-const template = Handlebars.templates["login_form.html"];
-article.innerHTML = template({});
-feed.appendChild(article)
-*/
 
 const config = {
     menu: {
@@ -50,6 +37,17 @@ const auth_render = (e) => {
 function goToPage(menuElement) {
     mainContentElement.innerHTML = '';
     mainContentElement.appendChild(menuElement.render());
+}
+
+function render_navbar() {
+    const navbar = document.getElementById('navbar');
+    navbar.innerHTML = Handlebars.templates['navbar.html']({});
+    document.getElementById("navbar-popular")
+        .addEventListener('click', (e) => {
+            e.preventDefault();
+            goToPage(config.menu.feed)
+        });
+    document.getElementById("auth-button").addEventListener('click', auth_render);
 }
 
 function render_login() {
@@ -200,5 +198,5 @@ const validatePassword = (password) => {
     return password.length > 4
 };
 
-document.getElementById("auth-button").addEventListener('click', auth_render);
+render_navbar()
 render_login()
