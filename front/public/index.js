@@ -42,12 +42,12 @@ function goToPage(menuElement) {
 function render_navbar() {
     const navbar = document.getElementById('navbar');
     navbar.innerHTML = Handlebars.templates['navbar.html']({});
-    document.getElementById("navbar-popular")
+    document.getElementById("navbar__popular")
         .addEventListener('click', (e) => {
             e.preventDefault();
             goToPage(config.menu.feed)
         });
-    document.getElementById("auth-button").addEventListener('click', auth_render);
+    document.getElementById("navbar__auth_button").addEventListener('click', auth_render);
 }
 
 function render_login() {
@@ -81,7 +81,7 @@ function render_login() {
             body: {"user_data": {email, password}}
         });
         if (response.response === 200) {
-            const profileButton = document.getElementById("auth-button");
+            const profileButton = document.getElementById("navbar__auth_button");
             profileButton.innerHTML = "<div>" + email + "</div>";
             profileButton.removeEventListener("click", auth_render);
             goToPage(config.menu.feed)
@@ -91,7 +91,7 @@ function render_login() {
 
     });
 
-    const reg_button = document.getElementById("signup-button");
+    const reg_button = document.getElementById("login_form__signup_button");
     reg_button.addEventListener('click', (e) => {
         e.preventDefault();
         goToPage(config.menu.signup)
@@ -125,7 +125,7 @@ async function render_signup() {
     const reg_form = document.createElement('div')
     reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
     mainContentElement.appendChild(reg_form);
-    const form = document.getElementById("reg-form");
+    const form = document.getElementById("reg_form");
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();

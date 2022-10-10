@@ -3,10 +3,15 @@
     top: 0;
     width: 100%;
 }
+
 body {
     margin: 0;
     font-size: 28px;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+div {
+    user-select: none;
 }
 
 .header {
@@ -22,46 +27,46 @@ body {
     display: flex;
 }
 
-#navbar a {
-    float: left;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
-
-.button-bar{
+.navbar__button_bar {
     margin-left: auto;
     margin-right: auto;
-    height: fit-content;
-    width: 50%;
-    position: relative;
+    height: available;
+    width: 45%;
     display: flex;
 }
 
-.button-bar div {
+.navbar__button {
     float: left;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 18px 10px;
-    text-decoration: none;
-    font-size: 17px;
     height: 100%;
-    width: fit-content;
     cursor: pointer;
+    font-size: 17px;
+    color: #FFFFFF;
+    padding: 0 10px;
+    line-height: 55px;
 }
 
-.button-bar div:hover {
-    background: #470D81;
-    color: white;
+.navbar__button:hover {
+    background: #5E09B2;
 }
 
-.button-bar div.active {
+.navbar__button:active {
     background: #470D81;
-    color: white;
+}
+
+.navbar__button_right {
+    padding: 0;
+}
+
+.navbar__button_right svg {
+    width: 24px;
+    height: 24px;
+    fill: #FFFFFF;
+    color: #FFFFFF;
+    margin: 18px;
+}
+
+.navbar__button_bar__right_block {
+    margin-left: auto;
 }
 
 .content {
@@ -72,112 +77,58 @@ body {
     padding-top: 60px;
 }
 
-#logo{
-    position: relative;
-    width: 112px;
-    height: 53px;
-    margin: auto 50px 0;
-}
-
-.logo-rect{
+.navbar__logo {
+    color: #680BC5;
+    width: 100px;
+    height: 45px;
     background: #FFFFFF;
     border-radius: 15px;
-
-    font-family: 'Outfit', serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 36px;
-    line-height: 45px;
+    margin: 7px 0 7px 50px;
     text-align: center;
-
-    color: #680BC5;
-}
-
-div#search{
-    height: 60px;
-    width: 60px;
-    padding: 0;
-    display: flex;
-    align-content: center;
-    margin-left: auto;
-}
-
-div#search div{
-    margin: auto;
-    height: fit-content;
-}
-
-div#other{
-    height: 60px;
-    width: 60px;
-    padding: 0;
+    line-height: 38px;
     cursor: pointer;
-    display: flex;
-    align-content: center;
-}
-
-div#other div{
-    margin: auto;
-    height: fit-content;
-}
-
-.gg-search {
+    border: 2px solid #FFFFFF;
     box-sizing: border-box;
-    position: relative;
-    display: block;
-    transform: scale(var(--ggs,1));
-    width: 16px;
-    height: 16px;
-    border: 2px solid;
-    border-radius: 100%;
-    margin: auto;
 }
 
-.gg-search::after {
-    content: "";
-    display: block;
-    box-sizing: border-box;
-    position: absolute;
-    border-radius: 3px;
-    width: 2px;
-    height: 8px;
-    background: currentColor;
-    transform: rotate(-45deg);
-    top: 10px;
-    left: 12px
+.navbar__logo:hover {
+    background: #E8E8E8;
+    border: 2px solid #E8E8E8;
+    border-radius: 15px;
+
 }
 
-.profile-block{
+.navbar__logo:active {
+    background: #680BC5;
+    color: #FFFFFF;
+    border: 2px solid #FFFFFF;
+    border-radius: 15px;
+
+}
+
+.navbar__profile_block{
     margin-right: 20px;
-    height: 100%;
-    width: fit-content;
     position: relative;
-    cursor: pointer;
+    padding: 0 0 0 10px;
 }
 
-.profile-block div{
+.navbar__profile_block div {
     float: left;
-    display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 18px 10px;
-    text-decoration: none;
     font-size: 17px;
-    height: fit-content;
-    width: fit-content;
+    height: 100%;
 }
 
-.profile-block:hover {
-    background: #470D81;
-    color: white;
+.navbar__profile_block div svg {
+    width: 24px;
+    height: 24px;
+    fill: #FFFFFF;
+    color: #FFFFFF;
+    margin: 18px;
 }
 
-.profile-block.active {
-    background: #470D81;
-    color: white;
-}
-
-.feed{
+.feed {
     width: 50%;
     margin-top: 60px;
     margin-left: auto;
@@ -186,7 +137,7 @@ div#other div{
     padding: 10px;
 }
 
-.article{
+.article {
     width: 100%;
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -194,7 +145,7 @@ div#other div{
     height: fit-content;
 }
 
-.tagbox{
+.tagbox {
     margin: 10px;
     height: 30px;
     width: 50%;
@@ -202,7 +153,7 @@ div#other div{
     align-content: flex-start;
 }
 
-.tag{
+.tag {
     height: fit-content;
     width: fit-content;
     margin: 5px 5px 3px 5px;
@@ -220,7 +171,7 @@ div#other div{
     border-radius: 11px;
 }
 
-.article-title{
+.article-title {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
@@ -229,7 +180,7 @@ div#other div{
     padding: 5px 20px 5px 20px;
 }
 
-.article-description{
+.article-description {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
@@ -238,20 +189,20 @@ div#other div{
     padding: 5px 20px 5px 20px;
 }
 
-.article-cover{
+.article-cover {
     width: 100%;
     height: 265px;
-    background-color:#680BC5
+    background-color: #680BC5
 }
 
-.article-bottom-bar{
+.article-bottom-bar {
     margin: 5px;
     display: flex;
     height: 40px;
     padding: 0 0 5px 0;
 }
 
-.author-pfp{
+.author-pfp {
     background: #470D81;
     border-radius: 5px;
     width: 34px;
@@ -259,7 +210,7 @@ div#other div{
     margin: auto 5px auto 5px;
 }
 
-.author-username{
+.author-username {
     font-family: 'Roboto';
     font-style: bold;
     font-size: 14px;
@@ -267,7 +218,7 @@ div#other div{
     line-height: 17px;
 }
 
-.article-posting-time{
+.article-posting-time {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
@@ -277,13 +228,13 @@ div#other div{
     color: rgba(0, 0, 0, 0.5);
 }
 
-.article-feedback-info{
+.article-feedback-info {
     margin-left: auto;
     display: flex;
     margin-right: 10px;
 }
 
-.article-comments-count{
+.article-comments-count {
     font-family: 'Roboto';
     font-style: normal;
     font-size: 14px;
@@ -292,7 +243,7 @@ div#other div{
     align-items: center;
 }
 
-.article-rating-info{
+.article-rating-info {
     font-family: 'Roboto';
     font-style: normal;
     font-size: 20px;
@@ -301,7 +252,7 @@ div#other div{
 
 }
 
-.login_form{
+.login_form {
     position: relative;
     width: 400px;
     height: fit-content;
@@ -312,7 +263,7 @@ div#other div{
     flex-direction: column;
 }
 
-.login_form__cross{
+.login_form__cross {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -322,7 +273,7 @@ div#other div{
     cursor: pointer;
 }
 
-.login_form__go_back{
+.login_form__go_back {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -332,7 +283,7 @@ div#other div{
     cursor: pointer;
 }
 
-.enter_sign{
+.enter_sign {
     margin: 50px auto 10px auto;
     width: fit-content;
     height: fit-content;
@@ -340,7 +291,7 @@ div#other div{
     color: #000000;
 }
 
-.input_box{
+.input_box {
     margin: 0 auto 10px auto;
     width: fit-content;
     height: fit-content;
@@ -348,7 +299,7 @@ div#other div{
     color: #000000;
 }
 
-.log_label_wrapper{
+.log_label_wrapper {
     width: 80%;
     height: fit-content;
     display: flex;
@@ -356,7 +307,7 @@ div#other div{
     margin: 10px auto 20px auto;
 }
 
-.login_form__log_input{
+.login_form__log_input {
     background: #FFFFFF;
     border: 3px solid rgba(0, 0, 0, 0.25);
     padding: 7px 5px;
@@ -365,17 +316,17 @@ div#other div{
     width: available;
 }
 
-.login_form__log_input:focus{
+.login_form__log_input:focus {
     background: #FFFFFF;
     border: 3px solid rgba(104, 11, 197, 0.5);
 }
 
-.login_form__log_input:invalid{
+.login_form__log_input:invalid {
     background: #FFFFFF;
     border: 3px solid rgba(255, 0, 0, 0.5);
 }
 
-.accent_button{
+.accent_button {
     background: #680BC5;
     color: #FFFFFF;
     border-radius: 10px;
@@ -387,12 +338,12 @@ div#other div{
     box-sizing: border-box;
 }
 
-.accent_button:hover{
+.accent_button:hover {
     background: #550E9C;
     border: 3px solid #550E9C;
 }
 
-.non_accent_button{
+.non_accent_button {
     background: #FFFFFF;
     border-radius: 10px;
     border: 3px solid rgba(104, 11, 197, 0.75);
@@ -404,7 +355,7 @@ div#other div{
     box-sizing: border-box;
 }
 
-.non_accent_button:hover{
+.non_accent_button:hover {
     background: #680BC5;
     color: #FFFFFF;
     border-radius: 7px;
@@ -416,13 +367,13 @@ div#other div{
     box-sizing: border-box;
 }
 
-div.log-button-container{
+div.log-button-container {
     margin: 20px 0 10px 0;
     display: flex;
     flex-direction: column;
 }
 
-.registration_form{
+.registration_form {
     width: 400px;
     height: fit-content;
     margin: 100px auto 0 auto;
@@ -432,7 +383,7 @@ div.log-button-container{
     flex-direction: column;
 }
 
-#log-error{
+#log-error {
     color: red;
     font-size: 12px;
 }
