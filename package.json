@@ -6,6 +6,7 @@
   "scripts": {
     "start": "PORT=8081 DEBUG=server node front/server",
     "demon": "front/demon.sh",
+    "lint": "npx eslint . --ext .js",
     "stop": "front/stop.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tmpl": "front/templating.sh",
