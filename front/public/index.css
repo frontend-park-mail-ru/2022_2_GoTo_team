@@ -129,7 +129,7 @@ div {
 }
 
 .feed {
-    width: 50%;
+    width: 60%;
     margin-top: 60px;
     margin-left: auto;
     margin-right: auto;
@@ -145,64 +145,17 @@ div {
     height: fit-content;
 }
 
-.tagbox {
-    margin: 10px;
-    height: 30px;
-    width: 50%;
-    display: flex;
-    align-content: flex-start;
+.article__wrapper{
+    margin: 5px 20px 5px 20px;
 }
 
-.tag {
-    height: fit-content;
-    width: fit-content;
-    margin: 5px 5px 3px 5px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 300;
-    font-size: 10px;
-    padding: 7px;
-
-    /* identical to box height, or 383% */
-    text-align: center;
-
-    color: #000000;
-    border: 1px solid rgba(255, 46, 0, 0.2);
-    border-radius: 11px;
-}
-
-.article-title {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 46px;
-    padding: 5px 20px 5px 20px;
-}
-
-.article-description {
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 30px;
-    padding: 5px 20px 5px 20px;
-}
-
-.article-cover {
-    width: 100%;
-    height: 265px;
-    background-color: #680BC5
-}
-
-.article-bottom-bar {
-    margin: 5px;
+.article__top_bar{
     display: flex;
     height: 40px;
-    padding: 0 0 5px 0;
+    padding: 10px 0 5px 0;
 }
 
-.author-pfp {
+.article__profile_picture {
     background: #470D81;
     border-radius: 5px;
     width: 34px;
@@ -210,7 +163,7 @@ div {
     margin: auto 5px auto 5px;
 }
 
-.author-username {
+.article__category{
     font-family: 'Roboto';
     font-style: bold;
     font-size: 14px;
@@ -218,7 +171,15 @@ div {
     line-height: 17px;
 }
 
-.article-posting-time {
+.article__author{
+    font-family: 'Roboto';
+    font-style: bold;
+    font-size: 14px;
+    padding: 11px 3px 8px 3px;
+    line-height: 17px;
+}
+
+.article__posting_time {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
@@ -228,28 +189,104 @@ div {
     color: rgba(0, 0, 0, 0.5);
 }
 
-.article-feedback-info {
-    margin-left: auto;
-    display: flex;
-    margin-right: 10px;
+.article__title {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 46px;
+    padding: 5px 20px 5px 20px;
 }
 
-.article-comments-count {
+.article__description {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 30px;
+    padding: 5px 20px 5px 20px;
+}
+
+.article__cover {
+    width: 100%;
+    height: 265px;
+    background-color: #680BC5;
+}
+
+.article__tagbox {
+    margin: 10px;
+    height: 30px;
+    width: 50%;
+    display: flex;
+    align-content: flex-start;
+}
+
+.article__tag {
+    height: fit-content;
+    width: fit-content;
+    margin: 5px 5px 3px 5px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 10px;
+    padding: 7px;
+    text-align: center;
+    color: #000000;
+    border: 1px solid rgba(255, 46, 0, 0.2);
+    border-radius: 11px;
+}
+
+.article__bottom_bar {
+    margin: 5px;
+    display: flex;
+    height: 40px;
+    padding: 0 0 5px 0;
+}
+
+.article__comments_count {
+    display: flex;
+    float: left;
     font-family: 'Roboto';
     font-style: normal;
     font-size: 14px;
     padding: 13px 3px 8px 3px;
     line-height: 17px;
     align-items: center;
+    cursor: pointer;
 }
 
-.article-rating-info {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-size: 20px;
-    padding: 13px 3px 8px 3px;
-    font-size: 17px;
+.article__comments_count:hover {
+    color: #680BC5;
+    fill: #680BC5;
+}
 
+.article__comments_count__count {
+    margin: 0 3px 0 3px;
+}
+
+.article__comments_count svg {
+    width: 20px;
+    height: 20px;
+}
+
+.article__rating {
+    display: flex;
+    float: right;
+    font-style: normal;
+    font-size: 17px;
+    margin: 0 0 0 auto;
+    height: 100%;
+}
+
+.article__rating svg{
+    width: 15px;
+    height: 15px;
+    margin: auto 3px auto 3px;
+    cursor: pointer;
+}
+
+.article__rating__count{
+    margin: auto 3px auto 3px;
 }
 
 .login_form {

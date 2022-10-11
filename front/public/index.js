@@ -111,9 +111,13 @@ async function render_feed() {
         mainContentElement.innerHTML = '';
         articles.forEach(({title, description, tags, category, rating, comments, authors}) => {
             mainContentElement.innerHTML += Handlebars.templates["article.html"]({
-                Title: title,
-                description: description, tags: tags, category: category, rating: rating,
-                comments: comments, authors: authors
+                title: title,
+                description: description,
+                tags: tags,
+                category: category,
+                rating: rating,
+                comments: comments,
+                author: authors[0]
             })
         })
     }
