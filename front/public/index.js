@@ -1,4 +1,5 @@
 `use strict`;
+/* global Handlebars */
 
 import {Ajax} from "./modules/ajax.js"
 

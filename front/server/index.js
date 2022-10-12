@@ -1,10 +1,8 @@
 'use strict';
-const Handlebars = require("handlebars");
+//const Handlebars = require("handlebars");
 const body = require('body-parser');
 const express = require('express');
-const cookie = require('cookie-parser');
 const morgan = require('morgan');
-const cors = require('cors');
 const path = require('path');
 const app = express();
 
