@@ -10,9 +10,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-div {
-    user-select: none;
-}
+
 
 .header {
     background-color: #f1f1f1;
@@ -89,6 +87,7 @@ div {
     cursor: pointer;
     border: 2px solid #FFFFFF;
     box-sizing: border-box;
+    user-select: none;
 }
 
 .navbar__logo:hover {
@@ -161,6 +160,12 @@ div {
     width: 34px;
     height: 34px;
     margin: auto 5px auto 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.article__profile_picture:hover{
+    border: 1px solid #680BC5;
 }
 
 .article__category{
@@ -169,6 +174,11 @@ div {
     font-size: 14px;
     padding: 11px 3px 8px 3px;
     line-height: 17px;
+    cursor: pointer;
+}
+
+.article__category:hover{
+    color: #680BC5
 }
 
 .article__author{
@@ -177,6 +187,11 @@ div {
     font-size: 14px;
     padding: 11px 3px 8px 3px;
     line-height: 17px;
+    cursor: pointer;
+}
+
+.article__author:hover{
+    color: #680BC5
 }
 
 .article__posting_time {
@@ -234,6 +249,11 @@ div {
     color: #000000;
     border: 1px solid rgba(255, 46, 0, 0.2);
     border-radius: 11px;
+    cursor: pointer;
+}
+
+.article__tag:hover{
+    background: #E8E8E8;
 }
 
 .article__bottom_bar {
@@ -282,7 +302,12 @@ div {
     width: 15px;
     height: 15px;
     margin: auto 3px auto 3px;
+    border-radius: 50%;
     cursor: pointer;
+}
+
+.article__rating svg:hover{
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .article__rating__count{
