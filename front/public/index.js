@@ -36,8 +36,9 @@ const auth_render = (e) => {
 };
 
 function goToPage(menuElement) {
-    mainContentElement.innerHTML = '';
-    mainContentElement.appendChild(menuElement.render());
+    // mainContentElement.innerHTML = '';
+    // mainContentElement.appendChild(menuElement.render());
+    menuElement.render()
 }
 
 function render_navbar() {
