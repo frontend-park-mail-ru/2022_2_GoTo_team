@@ -59,10 +59,10 @@ function render_overlay() {
 }
 
 function render_login() {
-    render_overlay()
     const login_form = document.createElement('div')
     login_form.innerHTML = Handlebars.templates["login_form.html"]({});
     mainContentElement.appendChild(login_form);
+    render_overlay()
     const form = document.getElementById("login_form")
 
     const make_wrong = () => {
