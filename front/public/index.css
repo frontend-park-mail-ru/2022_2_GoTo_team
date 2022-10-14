@@ -11,7 +11,6 @@ body {
 }
 
 
-
 .header {
     background-color: #f1f1f1;
     padding: 30px;
@@ -105,10 +104,19 @@ body {
 
 }
 
-.navbar__profile_block{
+.navbar__profile_block {
     margin-right: 20px;
     position: relative;
     padding: 0 0 0 10px;
+    max-width: 300px;
+}
+
+.navbar__profile_block__profile_picture {
+    width: 44px;
+    height: 44px;
+    background: #FFFFFF;
+    margin: 8px;
+    border-radius: 5px;
 }
 
 .navbar__profile_block div {
@@ -116,7 +124,6 @@ body {
     color: #f2f2f2;
     text-align: center;
     font-size: 17px;
-    height: 100%;
 }
 
 .navbar__profile_block div svg {
@@ -144,11 +151,11 @@ body {
     height: fit-content;
 }
 
-.article__wrapper{
+.article__wrapper {
     margin: 5px 20px 5px 20px;
 }
 
-.article__top_bar{
+.article__top_bar {
     display: flex;
     height: 40px;
     padding: 10px 0 5px 0;
@@ -164,11 +171,11 @@ body {
     cursor: pointer;
 }
 
-.article__profile_picture:hover{
+.article__profile_picture:hover {
     border: 1px solid #680BC5;
 }
 
-.article__category{
+.article__category {
     font-family: 'Roboto';
     font-style: bold;
     font-size: 14px;
@@ -177,11 +184,11 @@ body {
     cursor: pointer;
 }
 
-.article__category:hover{
+.article__category:hover {
     color: #680BC5
 }
 
-.article__author{
+.article__author {
     font-family: 'Roboto';
     font-style: bold;
     font-size: 14px;
@@ -190,7 +197,7 @@ body {
     cursor: pointer;
 }
 
-.article__author:hover{
+.article__author:hover {
     color: #680BC5
 }
 
@@ -252,7 +259,7 @@ body {
     cursor: pointer;
 }
 
-.article__tag:hover{
+.article__tag:hover {
     background: #E8E8E8;
 }
 
@@ -298,7 +305,7 @@ body {
     height: 100%;
 }
 
-.article__rating svg{
+.article__rating svg {
     width: 15px;
     height: 15px;
     margin: auto 3px auto 3px;
@@ -306,11 +313,11 @@ body {
     cursor: pointer;
 }
 
-.article__rating svg:hover{
+.article__rating svg:hover {
     background: rgba(0, 0, 0, 0.1);
 }
 
-.article__rating__count{
+.article__rating__count {
     margin: auto 3px auto 3px;
 }
 
