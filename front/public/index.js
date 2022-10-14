@@ -51,7 +51,15 @@ function render_navbar() {
     document.getElementById("navbar__auth_button").addEventListener('click', auth_render);
 }
 
+function render_overlay() {
+    const overlay = document.createElement('div')
+    overlay.classList.add("overlay")
+    mainContentElement.appendChild(overlay);
+    return overlay
+}
+
 function render_login() {
+    render_overlay()
     const login_form = document.createElement('div')
     login_form.innerHTML = Handlebars.templates["login_form.html"]({});
     mainContentElement.appendChild(login_form);
