@@ -59,10 +59,10 @@ function render_overlay() {
 }
 
 function render_login() {
+    render_overlay()
     const login_form = document.createElement('div')
     login_form.innerHTML = Handlebars.templates["login_form.html"]({});
     mainContentElement.appendChild(login_form);
-    render_overlay()
     const form = document.getElementById("login_form")
 
     const make_wrong = () => {
@@ -135,6 +135,7 @@ async function render_feed() {
 }
 
 async function render_signup() {
+    render_overlay()
     const reg_form = document.createElement('div')
     reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
     mainContentElement.appendChild(reg_form);
