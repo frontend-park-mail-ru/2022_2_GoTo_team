@@ -204,4 +204,4 @@ const validatePassword = (password) => {
 };
 
 render_navbar()
-render_login()
+render_feed()
