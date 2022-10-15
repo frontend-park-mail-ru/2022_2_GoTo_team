@@ -36,8 +36,9 @@ const auth_render = (e) => {
 };
 
 function goToPage(menuElement) {
-    mainContentElement.innerHTML = '';
-    mainContentElement.appendChild(menuElement.render());
+    // mainContentElement.innerHTML = '';
+    // mainContentElement.appendChild(menuElement.render());
+    menuElement.render()
 }
 
 function render_navbar() {
@@ -51,7 +52,15 @@ function render_navbar() {
     document.getElementById("navbar__auth_button").addEventListener('click', auth_render);
 }
 
+function render_overlay() {
+    const overlay = document.createElement('div')
+    overlay.classList.add("overlay")
+    mainContentElement.appendChild(overlay);
+    return overlay
+}
+
 function render_login() {
+    render_overlay()
     const login_form = document.createElement('div')
     login_form.innerHTML = Handlebars.templates["login_form.html"]({});
     mainContentElement.appendChild(login_form);
@@ -127,6 +136,7 @@ async function render_feed() {
 }
 
 async function render_signup() {
+    render_overlay()
     const reg_form = document.createElement('div')
     reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
     mainContentElement.appendChild(reg_form);
@@ -204,4 +214,4 @@ const validatePassword = (password) => {
 };
 
 render_navbar()
-render_login()
+render_feed()
