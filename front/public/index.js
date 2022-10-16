@@ -73,9 +73,7 @@ function render_navbar() {
 }
 
 function render_login() {
-    const login_form = document.createElement('div')
-    login_form.innerHTML = Handlebars.templates["login_form.html"]({});
-    overlay.appendChild(login_form);
+    overlay.innerHTML = Handlebars.templates["login_form.html"]({});
     const form = document.getElementById("login_form")
 
     const make_wrong = () => {
@@ -116,44 +114,15 @@ function render_login() {
     const reg_button = document.getElementById("login_form__signup_button");
     reg_button.addEventListener('click', (e) => {
         e.preventDefault();
-        goToPage(config.menu.signup)
+        change_overlay(config.menu.signup)
     });
 
     const close_button = document.getElementById("login_form__cross");
     close_button.addEventListener('click', close_overlay);
-
-    return login_form
-}
-
-async function render_feed() {
-    const mainElement = document.createElement('div');
-
-    const response = await ajax.get({
-        url: config.menu.feed.href,
-    })
-    const articles = response.response.articles;
-    if (articles && Array.isArray(articles)) {
-        mainContentElement.innerHTML = '';
-        articles.forEach(({title, description, tags, category, rating, comments, authors}) => {
-            mainContentElement.innerHTML += Handlebars.templates["article.html"]({
-                title: title,
-                description: description,
-                tags: tags,
-                category: category,
-                rating: rating,
-                comments: comments,
-                author: authors[0]
-            })
-        })
-    }
-
-    return mainElement;
 }
 
 async function render_signup() {
-    const reg_form = document.createElement('div')
-    reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
-    mainContentElement.appendChild(reg_form);
+    overlay.innerHTML = Handlebars.templates["registration_form.html"]({});
     const form = document.getElementById("reg_form");
 
     form.addEventListener('submit', async (e) => {
@@ -212,7 +181,39 @@ async function render_signup() {
         }
     });
 
-    return reg_form
+    const back_button = document.getElementById("login_form__go_back");
+    back_button.addEventListener('click', (e) => {
+        e.preventDefault();
+        change_overlay(config.menu.login)
+    });
+
+    const close_button = document.getElementById("login_form__cross");
+    close_button.addEventListener('click', close_overlay);
+}
+
+async function render_feed() {
+    const mainElement = document.createElement('div');
+
+    const response = await ajax.get({
+        url: config.menu.feed.href,
+    })
+    const articles = response.response.articles;
+    if (articles && Array.isArray(articles)) {
+        mainContentElement.innerHTML = '';
+        articles.forEach(({title, description, tags, category, rating, comments, authors}) => {
+            mainContentElement.innerHTML += Handlebars.templates["article.html"]({
+                title: title,
+                description: description,
+                tags: tags,
+                category: category,
+                rating: rating,
+                comments: comments,
+                author: authors[0]
+            })
+        })
+    }
+
+    return mainElement;
 }
 
 const validate_email = (email) => {
