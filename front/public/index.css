@@ -39,6 +39,10 @@ body {
     display: flex;
 }
 
+.button:active{
+    transform: translateY(2px);
+}
+
 .navbar__button {
     float: left;
     height: 100%;
