@@ -7,6 +7,8 @@ const root = document.getElementById('root');
 const mainContentElement = document.createElement('div');
 mainContentElement.classList.add('feed');
 root.appendChild(mainContentElement);
+const overlay = document.createElement('div')
+overlay.classList.add("overlay")
 
 const ajax = new(Ajax);
 
@@ -32,13 +34,31 @@ const config = {
 
 const auth_render = (e) => {
     e.preventDefault();
-    goToPage(config.menu.login)
+    change_overlay(config.menu.login)
 };
 
 function goToPage(menuElement) {
-    // mainContentElement.innerHTML = '';
-    // mainContentElement.appendChild(menuElement.render());
+    mainContentElement.innerHTML = '';
+    mainContentElement.appendChild(menuElement.render());
     menuElement.render()
+}
+
+function render_overlay() {
+    if(!root.contains(overlay)) {
+        root.appendChild(overlay);
+    }
+    return overlay
+}
+
+function change_overlay(menuElement) {
+    render_overlay()
+    overlay.innerHTML = '';
+    menuElement.render();
+}
+
+function close_overlay(){
+    overlay.innerHTML = '';
+    root.removeChild(overlay)
 }
 
 function render_navbar() {
@@ -52,18 +72,10 @@ function render_navbar() {
     document.getElementById("navbar__auth_button").addEventListener('click', auth_render);
 }
 
-function render_overlay() {
-    const overlay = document.createElement('div')
-    overlay.classList.add("overlay")
-    mainContentElement.appendChild(overlay);
-    return overlay
-}
-
 function render_login() {
-    render_overlay()
     const login_form = document.createElement('div')
     login_form.innerHTML = Handlebars.templates["login_form.html"]({});
-    mainContentElement.appendChild(login_form);
+    overlay.appendChild(login_form);
     const form = document.getElementById("login_form")
 
     const make_wrong = () => {
@@ -79,9 +91,9 @@ function render_login() {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById("email-login").value.trim();
-        const password = document.getElementById("password").value;
-        if (!validateEmail(email) || !validatePassword(password)) {
+        const email = document.getElementById("login_form__email_login").value.trim();
+        const password = document.getElementById("login_form__password").value;
+        if (!validate_email(email) || !validate_password(password)) {
             make_wrong();
             return
         }
@@ -106,6 +118,9 @@ function render_login() {
         e.preventDefault();
         goToPage(config.menu.signup)
     });
+
+    const close_button = document.getElementById("login_form__cross");
+    close_button.addEventListener('click', close_overlay);
 
     return login_form
 }
@@ -136,7 +151,6 @@ async function render_feed() {
 }
 
 async function render_signup() {
-    render_overlay()
     const reg_form = document.createElement('div')
     reg_form.innerHTML = Handlebars.templates["registration_form.html"]({});
     mainContentElement.appendChild(reg_form);
@@ -151,7 +165,7 @@ async function render_signup() {
         const password = document.getElementById("password").value;
         const rePassword = document.getElementById("repeat-password").value;
 
-        if (!validateEmail(email)) {
+        if (!validate_email(email)) {
             const wrong_sign = document.createElement('div');
             wrong_sign.innerHTML = "<div id=\"log-error\">Неверный email</div>";
             const container = form.childNodes[1];
@@ -201,7 +215,7 @@ async function render_signup() {
     return reg_form
 }
 
-const validateEmail = (email) => {
+const validate_email = (email) => {
     return String(email)
         .toLowerCase()
         .match(
@@ -209,7 +223,7 @@ const validateEmail = (email) => {
         );
 };
 
-const validatePassword = (password) => {
+const validate_password = (password) => {
     return password.length > 4
 };
 
