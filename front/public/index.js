@@ -61,7 +61,7 @@ function close_overlay() {
     root.removeChild(overlay)
 }
 
-function make_wrong(element, message) {
+function make_invalid(element, message) {
     const error_class = "error-message"
     const siblings = element.parentNode.childNodes;
     const wrong_sign = document.createElement('div');
@@ -74,7 +74,7 @@ function make_wrong(element, message) {
                 element.after(wrong_sign);
                 break;
             }
-            if (!(siblings[i + 1].innerHTML === wrong_sign.innerHTML)) {
+            if (!(siblings[i + 1].innerHTML.startsWith(`<div class=\"${error_class}\">`))) {
                 element.after(wrong_sign);
             }
             break;
@@ -82,20 +82,17 @@ function make_wrong(element, message) {
     }
 }
 
-function make_right(element, message) {
-    console.log(13);
+function make_valid(element) {
     element.setCustomValidity('');
     const error_class = "error-message";
     const siblings = element.parentNode.childNodes;
-    const wrong_sign = document.createElement('div');
-    wrong_sign.innerHTML = `<div class=\"${error_class}\">${message}</div>`;
 
     for (let i = 0; i < siblings.length; i++) {
         if (siblings[i] === element) {
             if (siblings[i + 1].nodeName === "#text") {
                 break;
             }
-            if (siblings[i + 1].innerHTML === wrong_sign.innerHTML) {
+            if (siblings[i + 1].innerHTML.startsWith(`<div class=\"${error_class}\">`)) {
                 element.parentNode.removeChild(siblings[i + 1]);
             }
             break;
@@ -116,7 +113,6 @@ function render_navbar() {
 
 function render_login() {
     overlay.innerHTML = Handlebars.templates["login_form.html"]({});
-    const form = document.getElementById("login_form");
     const submit_button = document.getElementById("login_form__submit_button");
 
     submit_button.addEventListener('click', async (e) => {
@@ -125,16 +121,16 @@ function render_login() {
         const email = document.getElementById("login_form__email_login");
         const password = document.getElementById("login_form__password");
         if (!validate_email(email.value.trim())) {
-            make_wrong(email, "Wrong Email");
+            make_invalid(email, "Неверный формат email");
             return
         }
-        make_right(email, "Wrong Email");
+        make_valid(email);
 
         if (!validate_password(password.value)) {
-            make_wrong(password, "Wrong password");
+            make_invalid(password, "Неправильный формат пароля");
             return
         }
-        make_right(password, "Wrong password");
+        make_valid(password);
 
         const response = await ajax.post({
             url: config.menu.login.href,
@@ -146,7 +142,7 @@ function render_login() {
             profileButton.removeEventListener("click", auth_render);
             goToPage(config.menu.feed)
         } else {
-            make_wrong(document.getElementById("login_form__email_login"), "Wrong Email");
+            make_invalid(document.getElementById("login_form__email_login"), "Неверный email или пароль");
         }
 
     });
@@ -163,36 +159,34 @@ function render_login() {
 
 async function render_signup() {
     overlay.innerHTML = Handlebars.templates["registration_form.html"]({});
-    const form = document.getElementById("reg_form");
+    const submit_button = document.getElementById("registration_form__submit_button");
 
-    form.addEventListener('submit', async (e) => {
+    submit_button.addEventListener('click', async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
-        const login = document.getElementById("login").value.trim();
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value;
-        const rePassword = document.getElementById("repeat-password").value;
+        const email = document.getElementById("registration_form__email");
+        const login = document.getElementById("registration_form__login");
+        const username = document.getElementById("registration_form__username");
+        const password = document.getElementById("registration_form__password");
+        const rePassword = document.getElementById("registration_form__repeat-password");
 
-        if (!validate_email(email)) {
-            const wrong_sign = document.createElement('div');
-            wrong_sign.innerHTML = "<div id=\"log-error\">Неверный email</div>";
-            const container = form.childNodes[1];
-            if (container.childNodes.length < 6) {
-                container.insertBefore(wrong_sign, container.childNodes[5]);
-            }
+        if (!validate_email(email.value.trim())) {
+            make_invalid(email, "Неверный формат email");
+            return;
         }
+        make_valid(email);
 
-        if (password !== rePassword) {
-            const wrong_sign = document.createElement('div');
-            wrong_sign.innerHTML = "<div id=\"log-error\">Пароли не совпадают</div>";
-            const container = form.childNodes[7];
-
-            if (container.childNodes.length < 6) {
-                container.insertBefore(wrong_sign, container.childNodes[5]);
-            }
-            return
+        if (!validate_password(password.value)) {
+            make_invalid(password, "Неверный формат пароля");
+            return;
         }
+        make_valid(password);
+
+        if (password.value !== rePassword.value) {
+            make_invalid(rePassword, "Пароли не совпадают");
+            return;
+        }
+        make_valid(rePassword);
 
         const response = await ajax.post({
             url: config.menu.signup.href,
@@ -203,21 +197,11 @@ async function render_signup() {
             goToPage(config.menu.login);
         } else {
             if (response.response === 409) {
-                const wrong_sign = document.createElement('div');
-                wrong_sign.innerHTML = "<div id=\"log-error\">Email занят</div>";
-                const container = form.childNodes[1];
-                if (container.childNodes.length < 5) {
-                    container.insertBefore(wrong_sign, container.childNodes[4]);
-                }
+                make_invalid(email, "Email занят")
                 return
             }
-            const wrong_sign = document.createElement('div');
-            wrong_sign.innerHTML = "<div id=\"log-error\">Что-то пошло не так</div>";
-            const container = form.childNodes[3];
-            console.log(container.childNodes.length);
-            if (container.childNodes.length < 14) {
-                container.insertBefore(wrong_sign, container.childNodes[12]);
-            }
+            const form = document.getElementById("reg_form");
+            make_invalid(form, "Что-то пошло не так");
         }
     });
 
