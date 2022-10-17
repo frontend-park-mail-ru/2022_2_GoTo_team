@@ -10,7 +10,7 @@ root.appendChild(mainContentElement);
 const overlay = document.createElement('div')
 overlay.classList.add("overlay")
 
-const ajax = new(Ajax);
+const ajax = new (Ajax);
 
 const config = {
     menu: {
@@ -44,7 +44,7 @@ function goToPage(menuElement) {
 }
 
 function render_overlay() {
-    if(!root.contains(overlay)) {
+    if (!root.contains(overlay)) {
         root.appendChild(overlay);
     }
     return overlay
@@ -56,29 +56,47 @@ function change_overlay(menuElement) {
     menuElement.render();
 }
 
-function close_overlay(){
+function close_overlay() {
     overlay.innerHTML = '';
     root.removeChild(overlay)
 }
 
-function hasClass(element, className) {
-    return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
-}
-
-function make_wrong(element, message){
+function make_wrong(element, message) {
     const error_class = "error-message"
     const siblings = element.parentNode.childNodes;
     const wrong_sign = document.createElement('div');
     wrong_sign.innerHTML = `<div class=\"${error_class}\">${message}</div>`;
+    element.setCustomValidity(message);
 
-    for (let i = 0; i < siblings.length; i++){
-        if (siblings[i] === element){
-            if (siblings[i+1].nodeName === "#text"){
+    for (let i = 0; i < siblings.length; i++) {
+        if (siblings[i] === element) {
+            if (siblings[i + 1].nodeName === "#text") {
                 element.after(wrong_sign);
                 break;
             }
-            if (!(siblings[i+1].innerHTML === wrong_sign.innerHTML)){
+            if (!(siblings[i + 1].innerHTML === wrong_sign.innerHTML)) {
                 element.after(wrong_sign);
+            }
+            break;
+        }
+    }
+}
+
+function make_right(element, message) {
+    console.log(13);
+    element.setCustomValidity('');
+    const error_class = "error-message";
+    const siblings = element.parentNode.childNodes;
+    const wrong_sign = document.createElement('div');
+    wrong_sign.innerHTML = `<div class=\"${error_class}\">${message}</div>`;
+
+    for (let i = 0; i < siblings.length; i++) {
+        if (siblings[i] === element) {
+            if (siblings[i + 1].nodeName === "#text") {
+                break;
+            }
+            if (siblings[i + 1].innerHTML === wrong_sign.innerHTML) {
+                element.parentNode.removeChild(siblings[i + 1]);
             }
             break;
         }
@@ -98,31 +116,25 @@ function render_navbar() {
 
 function render_login() {
     overlay.innerHTML = Handlebars.templates["login_form.html"]({});
-    const form = document.getElementById("login_form")
+    const form = document.getElementById("login_form");
+    const submit_button = document.getElementById("login_form__submit_button");
 
-    /*const make_wrong = () => {
-        const wrong_sign = document.createElement('div');
-        wrong_sign.innerHTML = "<div id=\"log-error\">Неверный email или пароль</div>";
-        const container = form.childNodes[1];
-        console.log(container.childNodes.length);
-        if (container.childNodes.length < 14) {
-            container.insertBefore(wrong_sign, container.children[4]);
-        }
-    }*/
-
-    form.addEventListener('submit', async (e) => {
+    submit_button.addEventListener('click', async (e) => {
         e.preventDefault();
 
         const email = document.getElementById("login_form__email_login");
         const password = document.getElementById("login_form__password");
         if (!validate_email(email.value.trim())) {
-            make_wrong(document.getElementById("login_form__email_login"), "Wrong Email");
+            make_wrong(email, "Wrong Email");
             return
         }
+        make_right(email, "Wrong Email");
+
         if (!validate_password(password.value)) {
             make_wrong(password, "Wrong password");
             return
         }
+        make_right(password, "Wrong password");
 
         const response = await ajax.post({
             url: config.menu.login.href,
@@ -245,11 +257,7 @@ async function render_feed() {
 }
 
 const validate_email = (email) => {
-    return String(email)
-        .toLowerCase()
-        .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
+    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 };
 
 const validate_password = (password) => {
