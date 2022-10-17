@@ -134,7 +134,7 @@ function render_login() {
 
         const response = await ajax.post({
             url: config.menu.login.href,
-            body: {"user_data": {email, password}}
+            body: {"user_data": {"email": email.value, "password":password.value}}
         });
         if (response.response === 200) {
             const profileButton = document.getElementById("navbar__auth_button");
@@ -190,7 +190,7 @@ async function render_signup() {
 
         const response = await ajax.post({
             url: config.menu.signup.href,
-            body: {email, login, username, password},
+            body: {"new_user_data": {"email": email.value, "login": login.value, "username": username.value, "password":password.value}}
         });
 
         if (response.response === 200) {
