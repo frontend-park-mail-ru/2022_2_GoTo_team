@@ -486,7 +486,8 @@ div.log-button-container {
     background-color: rgba(0,0,0,0.5); /* Black background with opacity */
 }
 
-#log-error {
+.error-message {
     color: red;
     font-size: 12px;
+    margin: 0 15px;
 }

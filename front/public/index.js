@@ -61,6 +61,30 @@ function close_overlay(){
     root.removeChild(overlay)
 }
 
+function hasClass(element, className) {
+    return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
+}
+
+function make_wrong(element, message){
+    const error_class = "error-message"
+    const siblings = element.parentNode.childNodes;
+    const wrong_sign = document.createElement('div');
+    wrong_sign.innerHTML = `<div class=\"${error_class}\">${message}</div>`;
+
+    for (let i = 0; i < siblings.length; i++){
+        if (siblings[i] === element){
+            if (siblings[i+1].nodeName === "#text"){
+                element.after(wrong_sign);
+                break;
+            }
+            if (!(siblings[i+1].innerHTML === wrong_sign.innerHTML)){
+                element.after(wrong_sign);
+            }
+            break;
+        }
+    }
+}
+
 function render_navbar() {
     const navbar = document.getElementById('navbar');
     navbar.innerHTML = Handlebars.templates['navbar.html']({});
@@ -76,7 +100,7 @@ function render_login() {
     overlay.innerHTML = Handlebars.templates["login_form.html"]({});
     const form = document.getElementById("login_form")
 
-    const make_wrong = () => {
+    /*const make_wrong = () => {
         const wrong_sign = document.createElement('div');
         wrong_sign.innerHTML = "<div id=\"log-error\">Неверный email или пароль</div>";
         const container = form.childNodes[1];
@@ -84,15 +108,19 @@ function render_login() {
         if (container.childNodes.length < 14) {
             container.insertBefore(wrong_sign, container.children[4]);
         }
-    }
+    }*/
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById("login_form__email_login").value.trim();
-        const password = document.getElementById("login_form__password").value;
-        if (!validate_email(email) || !validate_password(password)) {
-            make_wrong();
+        const email = document.getElementById("login_form__email_login");
+        const password = document.getElementById("login_form__password");
+        if (!validate_email(email.value.trim())) {
+            make_wrong(document.getElementById("login_form__email_login"), "Wrong Email");
+            return
+        }
+        if (!validate_password(password.value)) {
+            make_wrong(password, "Wrong password");
             return
         }
 
@@ -106,7 +134,7 @@ function render_login() {
             profileButton.removeEventListener("click", auth_render);
             goToPage(config.menu.feed)
         } else {
-            make_wrong();
+            make_wrong(document.getElementById("login_form__email_login"), "Wrong Email");
         }
 
     });
@@ -225,7 +253,7 @@ const validate_email = (email) => {
 };
 
 const validate_password = (password) => {
-    return password.length > 4
+    return password.length > 3;
 };
 
 render_navbar()
