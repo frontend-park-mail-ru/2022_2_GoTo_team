@@ -117,7 +117,7 @@ function render_navbar() {
 async function check_auth() {
     if (user.email === "") {
         const response = await ajax.get({
-            url: "/api/v1/session/info",
+            url: "/session/info",
         })
         if (response.response === 200) {
             user.email = response.email
