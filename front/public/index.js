@@ -105,6 +105,14 @@ function make_valid(element) {
 
 function render_navbar() {
     const navbar = document.getElementById('navbar');
+    if (user.email === "") {
+        const response = ajax.get({
+            url: "/api/v1/session/info",
+        })
+        if (response.response === 200) {
+            user.email = response.email
+        }
+    }
     navbar.innerHTML = Handlebars.templates['navbar.html']({});
     document.getElementById("navbar__popular")
         .addEventListener('click', (e) => {
