@@ -105,14 +105,6 @@ function make_valid(element) {
 
 function render_navbar() {
     const navbar = document.getElementById('navbar');
-    if (user.email === "") {
-        const response = ajax.get({
-            url: "/api/v1/session/info",
-        })
-        if (response.response === 200) {
-            user.email = response.email
-        }
-    }
     navbar.innerHTML = Handlebars.templates['navbar.html']({});
     document.getElementById("navbar__popular")
         .addEventListener('click', (e) => {
@@ -120,6 +112,17 @@ function render_navbar() {
             goToPage(config.menu.feed)
         });
     document.getElementById("navbar__auth_button").addEventListener('click', auth_render);
+}
+
+async function check_auth() {
+    if (user.email === "") {
+        const response = await ajax.get({
+            url: "/api/v1/session/info",
+        })
+        if (response.response === 200) {
+            user.email = response.email
+        }
+    }
 }
 
 function render_login() {
@@ -167,7 +170,9 @@ function render_login() {
     close_button.addEventListener('click', close_overlay);
 }
 
+
 async function render_signup() {
+    await check_auth()
     overlay.innerHTML = Handlebars.templates["registration_form.html"]({});
     const submit_button = document.getElementById("registration_form__submit_button");
 
@@ -229,6 +234,7 @@ async function render_signup() {
 }
 
 async function render_feed() {
+    await check_auth()
     const profileButton = document.getElementById("navbar__auth_button");
     const email = user.email
     if (!(email === "")) {
