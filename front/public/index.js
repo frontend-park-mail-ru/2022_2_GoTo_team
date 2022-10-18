@@ -9,6 +9,10 @@ mainContentElement.classList.add('feed');
 root.appendChild(mainContentElement);
 const overlay = document.createElement('div')
 overlay.classList.add("overlay")
+const user = {
+    "email" : "",
+    "login" : "",
+}
 
 const ajax = new (Ajax);
 
@@ -39,7 +43,6 @@ const auth_render = (e) => {
 
 function goToPage(menuElement) {
     mainContentElement.innerHTML = '';
-    mainContentElement.appendChild(menuElement.render());
     menuElement.render()
 }
 
@@ -137,9 +140,8 @@ function render_login() {
             body: {"user_data": {"email": email.value, "password":password.value}}
         });
         if (response.response === 200) {
-            const profileButton = document.getElementById("navbar__auth_button");
-            profileButton.innerHTML = "<div>" + email + "</div>";
-            profileButton.removeEventListener("click", auth_render);
+            user.email = email.value
+            user.password = password.value
             goToPage(config.menu.feed)
         } else {
             make_invalid(document.getElementById("login_form__email_login"), "Неверный email или пароль");
@@ -193,7 +195,10 @@ async function render_signup() {
             body: {"new_user_data": {"email": email.value, "login": login.value, "username": username.value, "password":password.value}}
         });
 
+        console.log(response)
         if (response.response === 200) {
+            user.email = email.value
+            user.login = login.value
             goToPage(config.menu.login);
         } else {
             if (response.response === 409) {
@@ -216,11 +221,19 @@ async function render_signup() {
 }
 
 async function render_feed() {
+    const profileButton = document.getElementById("navbar__auth_button");
+    const email = user.email
+    if (!(email === "")) {
+        profileButton.innerHTML = "<div>" + email + "</div>";
+        profileButton.removeEventListener("click", auth_render);
+    }
+
     const mainElement = document.createElement('div');
 
     const response = await ajax.get({
         url: config.menu.feed.href,
     })
+
     const articles = response.response.articles;
     if (articles && Array.isArray(articles)) {
         mainContentElement.innerHTML = '';
