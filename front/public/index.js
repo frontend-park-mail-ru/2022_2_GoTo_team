@@ -63,7 +63,7 @@ function update_auth() {
         }).then((response) => {
             if (response.status === 200) {
                 const profileButton = document.getElementById("navbar__auth_button");
-                profileButton.innerHTML = "<div>" + response.response.username + "</div>";
+                profileButton.innerHTML = "<div class=\"navbar__profile_block__nickname\">" + response.response.username + "</div>";
                 profileButton.removeEventListener("click", auth_render);
             }
         });
@@ -222,12 +222,13 @@ async function render_signup() {
 
         const response = await ajax.post({
             url: config.menu.signup.href,
-            body: {email, login, username, password},
+            body: {"new_user_data": {"email": email.value, "login": login.value, "username": username.value, "password": password.value}},
         });
 
         if (response.response === 200) {
             close_overlay();
             goToPage(config.menu.feed);
+            update_auth();
         } else {
             if (response.response === 409) {
                 make_invalid(email, "Email занят")

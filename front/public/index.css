@@ -118,7 +118,7 @@ body {
 .navbar__profile_block {
     margin-right: 20px;
     position: relative;
-    padding: 0 0 0 10px;
+    padding: 0 10px 0 10px;
     max-width: 300px;
 }
 
@@ -142,7 +142,11 @@ body {
     height: 24px;
     fill: var(--light);
     color: var(--light);
-    margin: 18px;
+    margin: 18px 8px 18px 18px;
+}
+
+.navbar__profile_block__nickname{
+    margin-right: 5px;
 }
 
 .feed {
