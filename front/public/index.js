@@ -29,6 +29,9 @@ const config = {
             name: 'Регистрация',
             render: render_signup,
         },
+        session_info: {
+            href: '/session/info',
+        }
     },
 };
 
@@ -36,6 +39,36 @@ const auth_render = (e) => {
     e.preventDefault();
     change_overlay(config.menu.login)
 };
+
+function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+    for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+        if (name === cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    return null;
+}
+
+function hasSession() {
+    let session = getCookie("session_id");
+    return !(session === "" || session === null);
+}
+
+function update_auth() {
+    if (hasSession()) {
+        ajax.get({
+            url: config.menu.session_info.href,
+        }).then((response) => {
+            if (response.status === 200) {
+                const profileButton = document.getElementById("navbar__auth_button");
+                profileButton.innerHTML = "<div>" + response.response.username + "</div>";
+                profileButton.removeEventListener("click", auth_render);
+            }
+        });
+    }
+}
 
 function goToPage(menuElement) {
     mainContentElement.innerHTML = '';
@@ -109,6 +142,7 @@ function render_navbar() {
             goToPage(config.menu.feed)
         });
     document.getElementById("navbar__auth_button").addEventListener('click', auth_render);
+    update_auth();
 }
 
 function render_login() {
@@ -137,15 +171,12 @@ function render_login() {
             body: {"user_data": {"email": email.value, "password": password.value}}
         });
         if (response.response === 200) {
-            const profileButton = document.getElementById("navbar__auth_button");
-            profileButton.innerHTML = "<div>" + email + "</div>";
-            profileButton.removeEventListener("click", auth_render);
-            goToPage(config.menu.feed);
+            update_auth();
             close_overlay();
+            goToPage(config.menu.feed);
         } else {
             make_invalid(document.getElementById("login_form__email_login"), "Неверный email или пароль");
         }
-
     });
 
     const reg_button = document.getElementById("login_form__signup_button");
@@ -195,8 +226,8 @@ async function render_signup() {
         });
 
         if (response.response === 200) {
-            goToPage(config.menu.feed);
             close_overlay();
+            goToPage(config.menu.feed);
         } else {
             if (response.response === 409) {
                 make_invalid(email, "Email занят")
@@ -217,28 +248,28 @@ async function render_signup() {
     close_button.addEventListener('click', close_overlay);
 }
 
-async function render_feed() {
+function render_feed() {
     const mainElement = document.createElement('div');
 
-    const response = await ajax.get({
+    ajax.get({
         url: config.menu.feed.href,
-    })
-    const articles = response.response.articles;
-    if (articles && Array.isArray(articles)) {
-        mainContentElement.innerHTML = '';
-        articles.forEach(({title, description, tags, category, rating, comments, authors}) => {
-            mainContentElement.innerHTML += Handlebars.templates["article.html"]({
-                title: title,
-                description: description,
-                tags: tags,
-                category: category,
-                rating: rating,
-                comments: comments,
-                author: authors[0]
+    }).then((response) => {
+        const articles = response.response.articles;
+        if (articles && Array.isArray(articles)) {
+            mainContentElement.innerHTML = '';
+            articles.forEach(({title, description, tags, category, rating, comments, authors}) => {
+                mainContentElement.innerHTML += Handlebars.templates["article.html"]({
+                    title: title,
+                    description: description,
+                    tags: tags,
+                    category: category,
+                    rating: rating,
+                    comments: comments,
+                    author: authors[0]
+                })
             })
-        })
-    }
-
+        }
+    });
     return mainElement;
 }
 
