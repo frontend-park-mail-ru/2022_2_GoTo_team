@@ -134,7 +134,7 @@ function render_login() {
 
         const response = await ajax.post({
             url: config.menu.login.href,
-            body: {"user_data": {email, password}}
+            body: {"user_data": {"email": email.value, "password": password.value}}
         });
         if (response.response === 200) {
             const profileButton = document.getElementById("navbar__auth_button");
