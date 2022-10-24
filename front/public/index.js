@@ -140,7 +140,8 @@ function render_login() {
             const profileButton = document.getElementById("navbar__auth_button");
             profileButton.innerHTML = "<div>" + email + "</div>";
             profileButton.removeEventListener("click", auth_render);
-            goToPage(config.menu.feed)
+            goToPage(config.menu.feed);
+            close_overlay();
         } else {
             make_invalid(document.getElementById("login_form__email_login"), "Неверный email или пароль");
         }
@@ -194,7 +195,8 @@ async function render_signup() {
         });
 
         if (response.response === 200) {
-            goToPage(config.menu.login);
+            goToPage(config.menu.feed);
+            close_overlay();
         } else {
             if (response.response === 409) {
                 make_invalid(email, "Email занят")
