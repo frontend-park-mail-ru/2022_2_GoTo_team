@@ -57,17 +57,21 @@ function hasSession() {
 }
 
 function update_auth() {
+    const profileButton = document.getElementById("navbar__auth_button");
     if (hasSession()) {
         ajax.get({
             url: config.menu.session_info.href,
         }).then((response) => {
             if (response.status === 200) {
-                const profileButton = document.getElementById("navbar__auth_button");
-                profileButton.innerHTML = "<div class=\"navbar__profile_block__nickname\">" + response.response.username + "</div>";
+                profileButton.innerHTML = Handlebars.templates["authorized_user.html"]({
+                    nickname: response.response.username
+                });
                 profileButton.removeEventListener("click", auth_render);
             }
         });
     }
+    profileButton.innerHTML = Handlebars.templates["unauthorized_user.html"]();
+    profileButton.addEventListener('click', auth_render);
 }
 
 function goToPage(menuElement) {
@@ -222,7 +226,14 @@ async function render_signup() {
 
         const response = await ajax.post({
             url: config.menu.signup.href,
-            body: {"new_user_data": {"email": email.value, "login": login.value, "username": username.value, "password": password.value}},
+            body: {
+                "new_user_data": {
+                    "email": email.value,
+                    "login": login.value,
+                    "username": username.value,
+                    "password": password.value
+                }
+            },
         });
 
         if (response.response === 200) {
