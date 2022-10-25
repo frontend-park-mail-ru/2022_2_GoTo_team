@@ -31,14 +31,25 @@ const config = {
         },
         session_info: {
             href: '/session/info',
-        }
+        },
+        session_remove: {
+            href: '/session/remove',
+        },
     },
 };
 
-const auth_render = (e) => {
+function unauthorize() {
+    ajax.post({
+        url: config.menu.session_remove.href,
+    }).then(() => {
+        update_auth();
+    })
+}
+
+function auth_render(e) {
     e.preventDefault();
     change_overlay(config.menu.login)
-};
+}
 
 function getCookie(name) {
     let cookieArr = document.cookie.split(";");
@@ -67,11 +78,16 @@ function update_auth() {
                     nickname: response.response.username
                 });
                 profileButton.removeEventListener("click", auth_render);
+                profileButton.addEventListener('click', open_profile_menu);
+            } else {
+                profileButton.innerHTML = Handlebars.templates["unauthorized_user.html"]();
+                profileButton.addEventListener('click', auth_render);
             }
         });
+    } else {
+        profileButton.innerHTML = Handlebars.templates["unauthorized_user.html"]();
+        profileButton.addEventListener('click', auth_render);
     }
-    profileButton.innerHTML = Handlebars.templates["unauthorized_user.html"]();
-    profileButton.addEventListener('click', auth_render);
 }
 
 function goToPage(menuElement) {
@@ -96,6 +112,31 @@ function change_overlay(menuElement) {
 function close_overlay() {
     overlay.innerHTML = '';
     root.removeChild(overlay)
+}
+
+function open_profile_menu() {
+    const profile_menu = document.getElementById('profile_menu');
+    if (profile_menu === null) {
+        root.innerHTML += Handlebars.templates["profile_menu.html"]();
+        document.getElementById('profile_menu__unauthorize_button').addEventListener("click", () => {
+            close_profile_menu();
+            profileButton.removeEventListener('click', open_profile_menu);
+            unauthorize();
+        });
+    }
+    const profileButton = document.getElementById("navbar__auth_button");
+    profileButton.removeEventListener('click', open_profile_menu);
+    profileButton.addEventListener('click', close_profile_menu);
+}
+
+function close_profile_menu() {
+    const profile_menu = document.getElementById('profile_menu');
+    if (profile_menu) {
+        root.removeChild(profile_menu);
+    }
+    const profileButton = document.getElementById("navbar__auth_button");
+    profileButton.removeEventListener('click', close_profile_menu);
+    profileButton.addEventListener('click', open_profile_menu);
 }
 
 function make_invalid(element, message) {
