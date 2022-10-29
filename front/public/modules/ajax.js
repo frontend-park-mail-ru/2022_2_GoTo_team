@@ -24,7 +24,7 @@ export default class Ajax {
         })
     }
 
-    #ajax(requestParams) {
+    async #ajax(requestParams) {
         const url = APIurl + (requestParams.url || '/');
         const fetchParams = {
             method: requestParams.method,
@@ -36,7 +36,7 @@ export default class Ajax {
             credentials: 'include',
         };
         let status = 0;
-        return fetch(url, fetchParams)
+        const response = await fetch(url, fetchParams)
             .then((response) => {
                 status = response.status;
                 if (fetchParams.method === REQUEST_TYPE.POST) {
@@ -53,6 +53,7 @@ export default class Ajax {
             .catch((error) => {
                 console.warn(error);
             });
+        return response
     }
 }
 
