@@ -6,7 +6,7 @@ const REQUEST_TYPE = {
     POST: 'POST'
 };
 
-export class Ajax {
+class Ajax {
     get({url}) {
         return this.#ajax({
             method: REQUEST_TYPE.GET,
@@ -56,4 +56,5 @@ export class Ajax {
     }
 }
 
+export default Ajax
 
