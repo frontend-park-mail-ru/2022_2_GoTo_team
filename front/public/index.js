@@ -10,7 +10,7 @@ root.appendChild(mainContentElement);
 const overlay = document.createElement('div')
 overlay.classList.add("overlay")
 
-const ajax = Ajax;
+const ajax = new (Ajax)
 
 const config = {
     menu: {

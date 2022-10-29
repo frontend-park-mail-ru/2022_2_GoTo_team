@@ -15,7 +15,7 @@ export default class Ajax {
         })
     }
 
-    post({url, body}) {
+   post({url, body}) {
         return this.#ajax({
             method: REQUEST_TYPE.POST,
             url,
@@ -24,7 +24,7 @@ export default class Ajax {
         })
     }
 
-    async #ajax(requestParams) {
+     async #ajax(requestParams) {
         const url = APIurl + (requestParams.url || '/');
         const fetchParams = {
             method: requestParams.method,
@@ -35,15 +35,19 @@ export default class Ajax {
             mode: 'cors',
             credentials: 'include',
         };
+
         let status = 0;
         const response = await fetch(url, fetchParams)
-            .then((response) => {
-                status = response.status;
-                if (fetchParams.method === REQUEST_TYPE.POST) {
-                    return status;
-                }
-                return response.json();
-            })
+
+        const unMarshal = async (response) => {
+            status = response.status;
+            if (fetchParams.method === REQUEST_TYPE.POST) {
+                return status;
+            }
+            return response.json();
+        }
+
+        return await unMarshal(response)
             .then((response) => {
                 return {
                     status,
@@ -53,8 +57,7 @@ export default class Ajax {
             .catch((error) => {
                 console.warn(error);
             });
-        return response
     }
-}
 
+}
 
