@@ -1,7 +1,7 @@
 `use strict`;
 /* global Handlebars */
 
-import {Ajax} from "./modules/ajax.js"
+import Ajax from "./modules/ajax.js"
 
 const root = document.getElementById('root');
 const mainContentElement = document.createElement('div');
@@ -10,7 +10,7 @@ root.appendChild(mainContentElement);
 const overlay = document.createElement('div')
 overlay.classList.add("overlay")
 
-const ajax = new (Ajax);
+const ajax = Ajax;
 
 const config = {
     menu: {
