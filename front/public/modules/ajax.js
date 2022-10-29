@@ -27,12 +27,14 @@ export class Ajax {
     #ajax(requestParams) {
         const url = APIurl + (requestParams.url || '/');
         const fetchParams = {
+            method: requestParams.method,
             body: JSON.stringify(requestParams.body),
+            headers: {
+                'Content-Type': 'application/json'
+            },
             mode: 'cors',
             credentials: 'include',
-            method: requestParams.method,
         };
-
         let status = 0;
         return fetch(url, fetchParams)
             .then((response) => {
