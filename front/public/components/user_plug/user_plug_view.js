@@ -1,5 +1,6 @@
-import Basic_component_view from "../_basic_component/basic_component_view";
-
+import Basic_component_view from "../_basic_component/basic_component_view.js";
+import "../tmpl/unauthorized_user.tmpl.js"
+import "../tmpl/authorized_user.tmpl.js";
 /**
  * @class User_plug_view
  */
@@ -20,6 +21,6 @@ export default class User_plug_view extends Basic_component_view {
             wrapper.innerHTML = Handlebars.templates["unauthorized_user.html"]({});
         }
 
-        return wrapper.firstChild;
+        return wrapper;
     }
 }

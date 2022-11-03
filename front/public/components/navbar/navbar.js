@@ -1,5 +1,5 @@
 import Navbar_view from "./navbar_view.js";
-import Basic_component from "../_basic_component/basic_component";
+import Basic_component from "../_basic_component/basic_component.js";
 
 /**
  * View_model-компонент соответсвующего View

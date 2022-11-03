@@ -2,8 +2,14 @@
 /* global Handlebars */
 
 import {Ajax} from "./modules/ajax.js"
+import Feed from "./pages/feed/feed.js";
 
-const root = document.getElementById('root');
+const root = document.getElementsByTagName('body')[0];
+const page = new Feed(root);
+page.render();
+page.subscribe();
+/*
+
 const mainContentElement = document.createElement('div');
 mainContentElement.classList.add('feed');
 root.appendChild(mainContentElement);
@@ -336,3 +342,4 @@ const validate_password = (password) => {
 
 render_navbar()
 render_feed()
+*/

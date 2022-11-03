@@ -1,11 +1,11 @@
-import Basic_component from "../_basic_component/basic_component";
-import User_plug_menu_view from "./user_plug_menu_view";
+import Basic_component from "../_basic_component/basic_component.js";
+import User_plug_menu_view from "./user_plug_menu_view.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class User_plug
+ * @class User_plug_menu
  */
-export default class User_plug extends Basic_component {
+export default class User_plug_menu extends Basic_component {
     /**
      * Универсальный компонент заголовка
      */

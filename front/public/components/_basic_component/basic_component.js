@@ -1,4 +1,4 @@
-import BaseComponentView from './basic_component_view';
+import BaseComponentView from './basic_component_view.js';
 
 /**
  * [Интерфейс] View_model для View
@@ -11,9 +11,8 @@ export default class Basic_component {
     constructor() {
         this.root = document.createElement('div');
         this.view = new BaseComponentView();
-        this.unsubscribes = [];
+        this.event_removers = [];
     }
-
 
     /**
      * Перерисовка подконтрольного элемента
@@ -22,13 +21,11 @@ export default class Basic_component {
     render() {
         return document.createElement('div');
     }
+
     /**
      * Подписка на связанные события
-     * param {object} event_bus
-     * @return {boolean} Успешность выполнения(наличие всех нужных событий)
      */
-    subscribe(event_bus) {
-        return true
+    subscribe() {
     }
 
     /**
@@ -36,9 +33,9 @@ export default class Basic_component {
      */
     destroy() {
         this.view = null;
-        this.unsubscribes.forEach((unsubscribe) => {
-            if (typeof unsubscribe === 'function') {
-                unsubscribe();
+        this.event_removers.forEach((event_remover) => {
+            if (typeof event_remover === 'function') {
+                event_remover();
             }
         });
     }

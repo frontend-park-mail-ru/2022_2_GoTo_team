@@ -1,5 +1,5 @@
-import User_plug_view from "./user_plug_view";
-import Basic_component from "../_basic_component/basic_component";
+import User_plug_view from "./user_plug_view.js";
+import Basic_component from "../_basic_component/basic_component.js";
 
 /**
  * View_model-компонент соответсвующего View

@@ -1,4 +1,5 @@
-import Basic_component_view from "../_basic_component/basic_component_view";
+import Basic_component_view from "../_basic_component/basic_component_view.js";
+import "../tmpl/navbar.tmpl.js";
 
 /**
  * @class Navbar_view

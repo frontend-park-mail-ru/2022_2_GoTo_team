@@ -1,4 +1,5 @@
 import Basic_component_view from "../_basic_component/basic_component_view";
+import "../tmpl/registration_form.tmpl";
 
 /**
  * @class Registration_form_view

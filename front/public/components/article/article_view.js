@@ -1,5 +1,5 @@
 import Basic_component_view from "../_basic_component/basic_component_view";
-
+import "../tmpl/article.tmpl";
 /**
  * @class Article_view
  */

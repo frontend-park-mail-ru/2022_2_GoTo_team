@@ -31,6 +31,5 @@ export default class Article extends Basic_component {
         this.root = this.view.render(article);
         return this.root;
     }
-    //TODO:subscribe()
     //TODO:destroy()
 };
