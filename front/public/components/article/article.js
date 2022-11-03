@@ -1,5 +1,5 @@
-import Article_view from "./article_view";
-import Basic_component from "../_basic_component/basic_component";
+import Article_view from "./article_view.js";
+import Basic_component from "../_basic_component/basic_component.js";
 
 /**
  * View_model-компонент соответсвующего View
