@@ -33,7 +33,7 @@ export default class User_plug extends Basic_component {
     subscribe() {
         super.subscribe();
         if (this.view.authed){
-
+            this.root.addEventListener('click', Events.show_user_plug_menu_listener)
         }else{
             this.root.addEventListener('click', Events.make_login_overlay_listener);
         }

@@ -5,6 +5,7 @@ import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import Feed from "../pages/feed/feed.js";
 import User_plug from "../components/user_plug/user_plug.js";
+import User_plug_menu from "../components/user_plug_menu/user_plug_menu.js";
 
 export class Events {
     /**
@@ -205,5 +206,50 @@ export class Events {
         user_plug.subscribe();
         profileButton.innerHTML = '';
         profileButton.appendChild(user_plug.root);
+    }
+
+    /**
+     * Открывает меню пользователя под кнопкой пользователя
+     */
+    static show_user_plug_menu() {
+        const profile_menu = document.getElementById('profile_menu');
+        if (profile_menu === null) {
+            const user_plug_menu = new User_plug_menu();
+            user_plug_menu.render();
+            const root = document.getElementById('root');
+            root.appendChild(user_plug_menu.root);
+            user_plug_menu.subscribe();
+        }
+    }
+
+    /**
+     * Листенер открытия меню пользователя кнопки на навбаре
+     */
+    static show_user_plug_menu_listener() {
+        Events.show_user_plug_menu()
+        const profileButton = document.getElementById("navbar__auth_button").lastChild;
+        profileButton.removeEventListener('click', Events.show_user_plug_menu_listener);
+        profileButton.addEventListener('click', Events.close_user_plug_menu_listener);
+    }
+
+    /**
+     * Закрывает меню пользователя под кнопкой пользователя
+     */
+    static close_user_plug_menu() {
+        const profile_menu = document.getElementById('profile_menu');
+        if (profile_menu) {
+            const root = document.getElementById('root');
+            root.removeChild(profile_menu);
+        }
+    }
+
+    /**
+     * Листенер закрытия меню пользователя кнопки на навбаре
+     */
+    static close_user_plug_menu_listener() {
+        Events.close_user_plug_menu()
+        const profileButton = document.getElementById("navbar__auth_button").lastChild;
+        profileButton.removeEventListener('click', Events.close_user_plug_menu_listener);
+        profileButton.addEventListener('click', Events.show_user_plug_menu_listener);
     }
 }

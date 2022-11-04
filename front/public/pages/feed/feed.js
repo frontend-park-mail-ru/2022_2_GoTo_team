@@ -22,7 +22,6 @@ export default class Feed {
     render() {
         this.view.render();
         Requests.get_articles().then((articles) => {
-            console.log(articles);
             if (articles && Array.isArray(articles)) {
                 this.view.main_content_element.innerHTML = '';
                 articles.forEach((article) => {
