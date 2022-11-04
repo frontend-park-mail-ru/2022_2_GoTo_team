@@ -211,7 +211,7 @@ export class Events {
     /**
      * Открывает меню пользователя под кнопкой пользователя
      */
-    static show_user_plug_menu() {
+    static show_profile_menu() {
         const profile_menu = document.getElementById('profile_menu');
         if (profile_menu === null) {
             const user_plug_menu = new User_plug_menu();
@@ -225,17 +225,17 @@ export class Events {
     /**
      * Листенер открытия меню пользователя кнопки на навбаре
      */
-    static show_user_plug_menu_listener() {
-        Events.show_user_plug_menu()
+    static show_profile_menu_listener() {
+        Events.show_profile_menu()
         const profileButton = document.getElementById("navbar__auth_button").lastChild;
-        profileButton.removeEventListener('click', Events.show_user_plug_menu_listener);
-        profileButton.addEventListener('click', Events.close_user_plug_menu_listener);
+        profileButton.removeEventListener('click', Events.show_profile_menu_listener);
+        profileButton.addEventListener('click', Events.close_profile_menu_listener);
     }
 
     /**
      * Закрывает меню пользователя под кнопкой пользователя
      */
-    static close_user_plug_menu() {
+    static close_profile_menu() {
         const profile_menu = document.getElementById('profile_menu');
         if (profile_menu) {
             const root = document.getElementById('root');
@@ -246,10 +246,26 @@ export class Events {
     /**
      * Листенер закрытия меню пользователя кнопки на навбаре
      */
-    static close_user_plug_menu_listener() {
-        Events.close_user_plug_menu()
+    static close_profile_menu_listener() {
+        Events.close_profile_menu()
         const profileButton = document.getElementById("navbar__auth_button").lastChild;
-        profileButton.removeEventListener('click', Events.close_user_plug_menu_listener);
-        profileButton.addEventListener('click', Events.show_user_plug_menu_listener);
+        profileButton.removeEventListener('click', Events.close_profilemenu_listener);
+        profileButton.addEventListener('click', Events.show_profile_menu_listener);
+    }
+
+    /**
+     * Деавторизация
+     */
+    static unauthorize() {
+        Requests.remove_session();
+    }
+
+    /**
+     * Деавторизация
+     */
+    static profile_menu_unauthorize_listener() {
+        Events.unauthorize();
+        Events.close_profile_menu();
+        Events.update_auth();
     }
 }

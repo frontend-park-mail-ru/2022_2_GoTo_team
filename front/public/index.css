@@ -15,7 +15,9 @@
     height: 60px;
     overflow: hidden;
     background-color: var(--main);
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr 220px;
+    gap: 10px;
 }
 
 body {
@@ -32,10 +34,8 @@ body {
 }
 
 .navbar__button_bar {
-    margin-left: auto;
-    margin-right: auto;
     height: available;
-    width: 45%;
+    width: 100%;
     display: flex;
 }
 
@@ -154,9 +154,11 @@ body {
 
 .navbar__profile_block {
     margin-right: 20px;
+    margin-left: auto;
     position: relative;
     padding: 0 0 0 10px;
-    max-width: 300px;
+    max-width: 220px;
+    width: fit-content;
 }
 
 .navbar__profile_block__profile_picture {
