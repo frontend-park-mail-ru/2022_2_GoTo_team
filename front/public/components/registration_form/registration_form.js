@@ -34,7 +34,25 @@ export default class Registration_form extends Basic_component {
 
         const close_button = document.getElementById("login_form__cross");
         close_button.addEventListener('click', Events.close_overlay_listener);
+
+        const submit_button = document.getElementById("registration_form__submit_button");
+        submit_button.addEventListener('click', Events.submit_registration);
+
+        const email_form = document.getElementById("registration_form__email");
+        email_form.addEventListener('focusout', Events.email_validate_listener_registration);
+
+        const login_form = document.getElementById("registration_form__login");
+        login_form.addEventListener('focusout', Events.login_validate_listener_registration);
+
+        const username_form = document.getElementById("registration_form__username");
+        username_form.addEventListener('focusout', Events.username_validate_listener_registration);
+
+        const password_form = document.getElementById("registration_form__password");
+        password_form.addEventListener('focusout', Events.password_validate_listener_registration);
+        password_form.addEventListener('focusout', Events.password_repeat_validate_listener_registration);
+
+        const repeat_password_form = document.getElementById("registration_form__repeat-password");
+        repeat_password_form.addEventListener('focusout', Events.password_repeat_validate_listener_registration);
     }
-    //TODO:subscribe()
     //TODO:destroy()
 };

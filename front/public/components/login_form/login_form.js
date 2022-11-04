@@ -37,7 +37,12 @@ export default class Login_form extends Basic_component {
 
         const close_button = document.getElementById("login_form__cross");
         close_button.addEventListener('click', Events.close_overlay_listener);
+
+        const email_form = document.getElementById("login_form__email_login");
+        email_form.addEventListener('focusout', Events.email_validate_listener_login);
+
+        const password_form = document.getElementById("login_form__password");
+        password_form.addEventListener('focusout', Events.password_validate_listener_login);
     }
-    //TODO:subscribe()
     //TODO:destroy()
 };

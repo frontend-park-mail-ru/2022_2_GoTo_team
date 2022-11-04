@@ -42,6 +42,31 @@ export class Requests {
     }
 
     /**
+     * Регистрация
+     * @param {Object} user_data
+     * @property {string} email
+     * @property {string} login
+     * @property {string} username
+     * @property {string} password
+     * @return {Promise} Promise со статусом запроса
+     */
+    static signup(user_data) {
+        return ajax.post({
+            url: config.hrefs.signup,
+            body: {
+                "new_user_data": {
+                    "email": user_data.email,
+                    "login": user_data.login,
+                    "username": user_data.username,
+                    "password": user_data.password
+                }
+            },
+        }).then((response) => {
+            return response.status;
+        });
+    }
+
+    /**
      * Получение информации пользователя по куке
      * @return {Promise} Promise со статусом и никнеймом
      */

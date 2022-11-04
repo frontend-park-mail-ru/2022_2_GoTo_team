@@ -82,22 +82,14 @@ export class Events {
         const email_form = document.getElementById("login_form__email_login");
         const password_form = document.getElementById("login_form__password");
         const user_data = {
-            email: email_form.value.trim(), password: password_form.value.trim(),
+            email: email_form.value.trim(),
+            password: password_form.value.trim(),
         }
-        if (!Validators.validate_email(user_data.email)) {
-            Events.#make_invalid(email_form, "Неверный формат email");
-            return
-        }
-        Events.#make_valid(email_form);
 
-        if (!Validators.validate_password(user_data.password)) {
-            Events.#make_invalid(password_form, "Неправильный формат пароля");
-            return
-        }
-        Events.#make_valid(password_form);
+        //Валидация происходит автоматически при анфокусе форм
+
         Requests.login(user_data).then((response) => {
             if (response === 200) {
-                //update_auth();
                 Events.#close_overlay();
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
@@ -107,6 +99,42 @@ export class Events {
                 Events.#make_invalid(document.getElementById("login-form_inputs-wrapper"), "Что-то пошло не так");
             }
         });
+    }
+
+    /**
+     * Подтверждение формы регистрации
+     */
+    static submit_registration() {
+        const email_form = document.getElementById("registration_form__email");
+        const login_form = document.getElementById("registration_form__login");
+        const username_form = document.getElementById("registration_form__username");
+        const password_form = document.getElementById("registration_form__password");
+
+        const user_data = {
+            email: email_form.value.trim(),
+            login: login_form.value.trim(),
+            username: username_form.value.trim(),
+            password: password_form.value.trim()
+        }
+
+        //Валидация происходит автоматически при анфокусе форм
+
+        Requests.signup(user_data).then((response) => {
+            if (response === 200) {
+                Events.#close_overlay();
+                const root = document.getElementsByTagName('body')[0];
+                const page = new Feed(root);
+                page.render();
+                page.subscribe();
+            } else {
+                if (response.response === 409) {
+                    Events.#make_invalid(email_form, "Email занят")
+                    return;
+                }
+                const form = document.getElementById("login-form_inputs-wrapper");
+                Events.#make_invalid(form, "Что-то пошло не так");
+            }
+        })
     }
 
     /**
@@ -159,6 +187,120 @@ export class Events {
                 break;
             }
         }
+    }
+
+    /**
+     * Проверяет валидность значения в поле почты в плашке логина
+     */
+    static email_validate_listener_login(){
+        const email_form = document.getElementById('login_form__email_login');
+        const email = email_form.value.trim();
+        if (email === ''){
+            return;
+        }
+        if (!Validators.validate_email(email)) {
+            Events.#make_invalid(email_form, "Неверный формат email");
+            return;
+        }
+        Events.#make_valid(email_form);
+    }
+
+    /**
+     * Проверяет валидность значения в поле пароля в плашке логина
+     */
+    static password_validate_listener_login(){
+        const password_form = document.getElementById("login_form__password");
+        const password = password_form.value.trim();
+        if (password === ''){
+            return;
+        }
+        if (!Validators.validate_password(password)) {
+            Events.#make_invalid(password_form, "Неправильный формат пароля");
+            return
+        }
+        Events.#make_valid(password_form);
+    }
+
+    /**
+     * Проверяет валидность значения в поле почты в плашке регистрации
+     */
+    static email_validate_listener_registration(){
+        const email_form = document.getElementById('registration_form__email');
+        const email = email_form.value.trim();
+        if (email === ''){
+            return;
+        }
+        if (!Validators.validate_email(email)) {
+            Events.#make_invalid(email_form, "Неверный формат email");
+            return;
+        }
+        Events.#make_valid(email_form);
+    }
+
+    /**
+     * Проверяет валидность значения в поле логина в плашке регистрации
+     */
+    static login_validate_listener_registration(){
+        const login_form = document.getElementById("registration_form__login");
+        const login = login_form.value.trim();
+        if (login === ''){
+            return;
+        }
+        if (!Validators.validate_login(login)) {
+            Events.#make_invalid(login_form, "Неправильный формат логина");
+            return
+        }
+        Events.#make_valid(login_form);
+    }
+
+    /**
+     * Проверяет валидность значения в поле ника в плашке регистрации
+     */
+    static username_validate_listener_registration(){
+        const username_form = document.getElementById("registration_form__username");
+        const username = username_form.value.trim();
+        if (username === ''){
+            return;
+        }
+        if (!Validators.validate_username(username)) {
+            Events.#make_invalid(username_form, "Неправильный формат ника");
+            return
+        }
+        Events.#make_valid(username_form);
+    }
+
+    /**
+     * Проверяет валидность значения в поле пароля в плашке регистрации
+     */
+    static password_validate_listener_registration(){
+        const password_form = document.getElementById("registration_form__password");
+        const password = password_form.value.trim();
+        if (password === ''){
+            return;
+        }
+        if (!Validators.validate_password(password)) {
+            Events.#make_invalid(password_form, "Неправильный формат пароля");
+            return
+        }
+        Events.#make_valid(password_form);
+    }
+
+    /**
+     * Проверяет совпаденик значений в полях пароля и повторения пароля в плашке регистрации
+     */
+    static password_repeat_validate_listener_registration(){
+        const password_form = document.getElementById("registration_form__password");
+        const repeat_password_form = document.getElementById("registration_form__repeat-password");
+        const password = password_form.value.trim();
+        const repeat_password = repeat_password_form.value.trim();
+        if (password === '' || repeat_password === ''){
+            return;
+        }
+        if (password !== repeat_password) {
+            Events.#make_invalid(repeat_password_form, "Пароли не совпадают");
+            return
+        }
+        Events.#make_valid(repeat_password_form);
     }
 
     /**
