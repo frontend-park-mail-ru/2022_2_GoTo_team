@@ -4,10 +4,12 @@
     </svg>
     <div class="enter_sign">Войти</div>
     <form method="post" id="login_form" class="log_label_wrapper">
-        <input id="login_form__email_login" type="text" class="login_form__log_input"
-               placeholder="Введите email">
-        <input id="login_form__password" type="password" class="login_form__log_input"
-               placeholder="Введите пароль">
+        <div id="login-form_inputs-wrapper">
+            <input id="login_form__email_login" type="text" class="login_form__log_input"
+                   placeholder="Введите email">
+            <input id="login_form__password" type="password" class="login_form__log_input"
+                   placeholder="Введите пароль">
+        </div>
         <input class="accent_button button" type="button" value="Войти" id="login_form__submit_button">
         <input class="non_accent_button button" type="button" value="Регистрация" id="login_form__signup_button">
     </form>

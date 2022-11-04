@@ -14,22 +14,47 @@ const config = {
 export class Requests {
     /**
      * Запрашивает статьи
-     * @param {Object[]} articles
+     * @return {Promise} Promise с массивом статей
      */
-    static async get_articles() {
-        const articles = await ajax.get({
+    static get_articles() {
+        const promise = ajax.get({
             url: config.hrefs.articles,
         }).then((response) => {
-            console.log(response);
             return response.response.articles
         });
-        return articles
+        return promise;
+    }
+
+    /**
+     * Авторизация
+     * @param {Object} user_data
+     * @property {string} email
+     * @property {string} password
+     * @return {Promise} Promise со статусом запроса
+     */
+    static login(user_data) {
+        return ajax.post({
+            url: config.hrefs.login,
+            body: {"user_data": {"email": user_data.email, "password": user_data.password}}
+        }).then((response) => {
+            return response.status;
+        });
+    }
+
+    /**
+     * Получение информации пользователя по куке
+     * @return {Promise} Promise со статусом и никнеймом
+     */
+    static get_session_info() {
+        return ajax.get({
+            url: config.hrefs.session_info,
+        });
     }
 
     /**
      * Деавторизация
      */
-    remove_session() {
+    static remove_session() {
         return ajax.post({
             url: config.hrefs.session_remove,
         });

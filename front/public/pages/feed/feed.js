@@ -1,6 +1,8 @@
 import Feed_view from "./feed_view.js";
 import {Requests} from "../../modules/requests.js"
 import Article from "../../components/article/article.js";
+import User_plug from "../../components/user_plug/user_plug.js";
+import {Events} from "../../modules/events.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Feed
@@ -30,12 +32,13 @@ export default class Feed {
                 })
             }
         });
-
+        Events.update_auth();
     }
 
     /**
      * Подписка на связанные события
      */
     subscribe() {
+        this.view.children.get('navbar').subscribe();
     }
 }

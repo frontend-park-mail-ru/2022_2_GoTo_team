@@ -14,11 +14,13 @@ export default class User_plug_view extends Basic_component_view {
     render(user) {
         const wrapper = document.createElement('div');
         if (user){
-            wrapper.innerHTML = Handlebars.templates['authorized_user.html"']({
-                nickname:user.nickname
+            wrapper.innerHTML = Handlebars.templates["authorized_user.html"]({
+                nickname: user.nickname
             });
+            this.authed = true;
         }else{
             wrapper.innerHTML = Handlebars.templates["unauthorized_user.html"]({});
+            this.authed = false;
         }
 
         return wrapper;

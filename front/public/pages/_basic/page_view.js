@@ -8,6 +8,7 @@ export default class Page_view {
      */
     constructor(root) {
         this.root = root;
+        this.children = new Map();
     }
 
     /**

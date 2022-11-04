@@ -1,5 +1,5 @@
-import Basic_component_view from "../_basic_component/basic_component_view";
-import "../tmpl/login_form.tmpl";
+import Basic_component_view from "../_basic_component/basic_component_view.js";
+import "../tmpl/login_form.tmpl.js";
 
 /**
  * @class Login_form_view

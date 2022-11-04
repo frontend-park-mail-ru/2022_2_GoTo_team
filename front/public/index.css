@@ -446,6 +446,7 @@ body {
     padding: 7px 5px;
     margin: 10px 10px;
     border-radius: 10px;
+    width: -moz-available;
     width: available;
 }
 
