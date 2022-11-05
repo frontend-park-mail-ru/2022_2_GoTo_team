@@ -1,20 +1,22 @@
 import Feed_view from "./feed_view.js";
 import {Requests} from "../../modules/requests.js"
 import Article from "../../components/article/article.js";
-import User_plug from "../../components/user_plug/user_plug.js";
 import {Events} from "../../modules/events.js";
+import Page from "../_basic/page.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Feed
  */
-export default class Feed {
+export default class Feed extends Page{
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
     constructor(root) {
+        super(root);
         this.view = new Feed_view(root);
     }
+
     /**
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.

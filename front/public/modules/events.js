@@ -7,7 +7,27 @@ import Feed from "../pages/feed/feed.js";
 import User_plug from "../components/user_plug/user_plug.js";
 import User_plug_menu from "../components/user_plug_menu/user_plug_menu.js";
 
+
+
 export class Events {
+    static #overlay_login_event_bus = {
+        submit: Events.submit_login,
+        go_to_registration: Events.redraw_registration_overlay,
+        email_validation: Events.email_validate_listener_login,
+        password_validation: Events.password_validate_listener_login,
+        close_form: Events.close_overlay_listener,
+    }
+
+    static #overlay_registration_event_bus = {
+        submit: Events.submit_registration,
+        go_to_login: Events.redraw_login_overlay,
+        email_validation: Events.email_validate_listener_registration,
+        login_validation: Events.login_validate_listener_registration,
+        username_validation: Events.username_validate_listener_registration,
+        password_validation: Events.password_validate_listener_registration,
+        repeat_password_validation: Events.password_repeat_validate_listener_registration,
+        close_form: Events.close_overlay_listener,
+    }
     /**
      * Отрисовывает оверлей
      */
@@ -16,6 +36,7 @@ export class Events {
         overlay.render();
         const root = document.getElementById('root');
         root.appendChild(overlay.root);
+        overlay.subscribe();
     }
 
     /**
@@ -30,12 +51,12 @@ export class Events {
      * Перерисовывает плашку оверлея на view
      * @param {Basic_component} controller
      */
-    static #change_overlay(controller) {
-        const overlay = document.getElementById('overlay');
-        overlay.innerHTML = '';
+    static #change_overlay(controller, event_bus) {
+        const overlay_center = document.getElementById('overlay__center');
+        overlay_center.innerHTML = '';
         controller.render();
-        overlay.appendChild(controller.root);
-        controller.subscribe();
+        overlay_center.appendChild(controller.root);
+        controller.subscribe(event_bus);
     }
 
     /**
@@ -43,7 +64,7 @@ export class Events {
      */
     static make_login_overlay_listener() {
         Events.open_overlay();
-        Events.#change_overlay(new Login_form());
+        Events.#change_overlay(new Login_form(), Events.#overlay_login_event_bus);
 
         const auth_button = document.getElementById('navbar__auth_button').lastChild;
         auth_button.removeEventListener('click', Events.make_login_overlay_listener);
@@ -65,14 +86,14 @@ export class Events {
      * Перерисовывает плашку оверлея на логин
      */
     static redraw_registration_overlay() {
-        Events.#change_overlay(new Registration_form());
+        Events.#change_overlay(new Registration_form(), Events.#overlay_registration_event_bus);
     }
 
     /**
      * Перерисовывает плашку оверлея на регистрацию
      */
     static redraw_login_overlay() {
-        Events.#change_overlay(new Login_form());
+        Events.#change_overlay(new Login_form(), Events.#overlay_login_event_bus);
     }
 
     /**
@@ -90,7 +111,6 @@ export class Events {
 
         Requests.login(user_data).then((response) => {
             if (response === 200) {
-                Events.#close_overlay();
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
                 page.render();
@@ -121,7 +141,6 @@ export class Events {
 
         Requests.signup(user_data).then((response) => {
             if (response === 200) {
-                Events.#close_overlay();
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
                 page.render();
@@ -391,7 +410,7 @@ export class Events {
     static close_profile_menu_listener() {
         Events.close_profile_menu()
         const profileButton = document.getElementById("navbar__auth_button").lastChild;
-        profileButton.removeEventListener('click', Events.close_profilemenu_listener);
+        profileButton.removeEventListener('click', Events.close_profile_menu_listener);
         profileButton.addEventListener('click', Events.show_profile_menu_listener);
     }
 

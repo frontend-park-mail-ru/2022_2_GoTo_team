@@ -26,23 +26,34 @@ export default class Login_form extends Basic_component {
 
     /**
      * Подписка на связанные события
+     * @param {Object} event_bus
+     * @property {function} submit
+     * @property {function} go_to_registration
+     * @property {function} email_validation
+     * @property {function} password_validation
+     * @property {function?} close_form
      */
-    subscribe() {
+    subscribe(event_bus) {
         super.subscribe()
-        const reg_button = document.getElementById("login_form__signup_button");
-        reg_button.addEventListener('click', Events.redraw_registration_overlay);
-
         const submit_button = document.getElementById("login_form__submit_button");
-        submit_button.addEventListener('click', Events.submit_login);
+        submit_button.addEventListener('click', event_bus.submit);
 
-        const close_button = document.getElementById("login_form__cross");
-        close_button.addEventListener('click', Events.close_overlay_listener);
+        const reg_button = document.getElementById("login_form__signup_button");
+        reg_button.addEventListener('click', event_bus.go_to_registration);
 
         const email_form = document.getElementById("login_form__email_login");
-        email_form.addEventListener('focusout', Events.email_validate_listener_login);
+        email_form.addEventListener('focusout', event_bus.email_validation);
 
         const password_form = document.getElementById("login_form__password");
-        password_form.addEventListener('focusout', Events.password_validate_listener_login);
+        password_form.addEventListener('focusout', event_bus.password_validation);
+
+
+        const close_button = document.getElementById("login_form__cross");
+        if (typeof event_bus.close_form !== 'undefined'){
+            close_button.addEventListener('click', event_bus.close_form);
+        }else{
+            this.root.removeChild(close_button);
+        }
     }
     //TODO:destroy()
 };

@@ -1,4 +1,4 @@
-import Page_view from "./page_view";
+import Page_view from "./page_view.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Page

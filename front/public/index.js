@@ -1,13 +1,11 @@
 `use strict`;
 /* global Handlebars */
 
-import {Ajax} from "./modules/ajax.js"
 import Feed from "./pages/feed/feed.js";
+import Login_page from "./pages/login/login_page.js";
+import {Page_loaders} from "./modules/page_loaders.js";
 
-const root = document.getElementsByTagName('body')[0];
-const page = new Feed(root);
-page.render();
-page.subscribe();
+Page_loaders.login_page();
 /*
 
 const mainContentElement = document.createElement('div');
