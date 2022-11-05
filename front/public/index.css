@@ -1,10 +1,12 @@
 :root {
     --main: #680BC5;
+    --light-main: #a180c9;
     --slight-darken-main: #5E09B2;
     --darken-main: #470D81;
     --light: #FFFFFF;
     --slight-dark: #E8E8E8;
     --slight-darker-dark: #c7c7c7;
+    --negative: #FF1D89;
 }
 
 .navbar {
@@ -19,6 +21,8 @@
     grid-template-columns: 2fr 3fr 1fr 220px;
     gap: 10px;
 }
+
+
 
 body {
     margin: 0;
@@ -37,6 +41,13 @@ body {
     height: available;
     width: 100%;
     display: flex;
+}
+
+.button{
+    display: block;
+    margin: 5px 5px 5px 5px;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 
 .button:active {
@@ -465,16 +476,23 @@ body {
     border: 3px solid rgba(255, 0, 0, 0.5);
 }
 
+.horizontal_center_div{
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+.vertical_center_div{
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+
 .accent_button {
     background: var(--main);
     color: var(--light);
     border-radius: 10px;
     width: 200px;
-    margin: 5px auto 5px auto;
     padding: 10px 0 10px 0;
     border: 3px solid var(--main);
-    cursor: pointer;
-    box-sizing: border-box;
 }
 
 .accent_button:hover {
@@ -487,23 +505,14 @@ body {
     border-radius: 10px;
     border: 3px solid rgba(104, 11, 197, 0.75);
     width: 200px;
-    margin: 5px auto 5px auto;
     padding: 10px 0 10px 0;
-    cursor: pointer;
     text-align: center;
-    box-sizing: border-box;
 }
 
 .non_accent_button:hover {
     background: var(--main);
     color: var(--light);
-    border-radius: 7px;
-    width: 200px;
-    margin: 5px auto 5px auto;
-    padding: 10px 0 10px 0;
     border: 3px solid var(--main);
-    cursor: pointer;
-    box-sizing: border-box;
 }
 
 div.log-button-container {
@@ -559,11 +568,101 @@ div.log-button-container {
 
 .center_with_sidebar{
     display: grid;
-    grid-auto-columns: 1fr 150px;
+    grid-template-columns: 1fr 150px;
+    gap: 10px;
 }
 
-.settings__avatar{
-    width: 200px;
-    height: 200px;
+.profile_box{
+    width: 100%;
+    margin: 5px;
+}
+
+.inputs_wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    background: var(--slight-dark);
+    border: 3px solid rgba(0, 0, 0, 0.25);
+    padding: 7px 5px;
+    margin: 10px 10px;
+    border-radius: 10px;
+    width: 250px;
+}
+
+.form:focus {
+    background: var(--light);
+    border: 3px solid rgba(104, 11, 197, 0.5);
+}
+
+.form:invalid {
+    background: var(--light);
+    border: 3px solid rgba(255, 0, 0, 0.5);
+}
+
+.form_label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    padding: 10px 10px 0 10px;
+}
+
+.settings__avatar_row{
+    display: flex;
+    flex-direction: row;
+}
+
+.settings__avatar_row_avatar{
+    width: 125px;
+    height: 125px;
     background: var(--main);
+}
+
+.settings__avatar_row_input{
+    display: none;
+}
+
+.link{
+    color: var(--main);
+    cursor: pointer;
+}
+
+.link:hover{
+    color: var(--negative);
+}
+
+.settings__avatar_link{
+    font-size:20px;
+}
+
+.sidebar_title{
+    font-size: 18px;
+    padding: 10px;
+}
+
+.right_side_bar{
+    width: 100%;
+    margin: 5px;
+    border-radius: 14px;
+
+}
+
+.right_side_bar__element {
+    width: auto;
+    height: fit-content;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.right_side_bar__element:hover {
+    background: var(--slight-dark);
+}
+
+.right_side_bar__element:active {
+    background: var(--slight-darker-dark);
+}
+
+.right_side_bar__element__last {
+    border-radius: 0 0 14px 14px;
 }
