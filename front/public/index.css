@@ -556,3 +556,14 @@ div.log-button-container {
     font-size: 12px;
     margin: 0 15px;
 }
+
+.center_with_sidebar{
+    display: grid;
+    grid-auto-columns: 1fr 150px;
+}
+
+.settings__avatar{
+    width: 200px;
+    height: 200px;
+    background: var(--main);
+}
