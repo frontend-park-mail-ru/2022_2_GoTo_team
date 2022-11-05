@@ -25,15 +25,21 @@ export default class Registration_page_view extends Page_view {
         this.root.appendChild(navbar.root);
 
         const root_el = document.createElement('div');
-        root_el.id = "root";
+        root_el.id = 'root';
+        root_el.classList.add('root');
         this.root.appendChild(root_el);
         this.root = root_el;
+
+        this.root.appendChild(document.createElement('div'));
 
         const main_content_element = document.createElement('div');
         main_content_element.classList.add('feed');
         this.main_content_element = main_content_element;
         this.root.appendChild(this.main_content_element);
-        const registration_form = new Registration_form()
+
+        this.root.appendChild(document.createElement('div'));
+
+        const registration_form = new Registration_form();
         registration_form.render();
         this.main_content_element.appendChild(registration_form.root);
         this.children.set('form', registration_form);
