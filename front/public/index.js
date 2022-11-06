@@ -2,8 +2,12 @@
 /* global Handlebars */
 
 import Ajax from "./modules/ajax.js"
+import Feed from "./pages/feed/feed.js";
+import Login_page from "./pages/login/login_page.js";
+import {Page_loaders} from "./modules/page_loaders.js";
 
-const root = document.getElementById('root');
+Page_loaders.login_page();
+
 const mainContentElement = document.createElement('div');
 mainContentElement.classList.add('feed');
 root.appendChild(mainContentElement);
