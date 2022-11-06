@@ -9,7 +9,6 @@ import {Page_loaders} from "./modules/page_loaders.js";
 Page_loaders.login_page();
 
 
-Page_loaders.login_page();
 /*
 const mainContentElement = document.createElement('div');
 mainContentElement.classList.add('feed');
