@@ -32,7 +32,7 @@ export default class Ajax {
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
+            mode: 'no-cors',
             credentials: 'include',
         };
 
