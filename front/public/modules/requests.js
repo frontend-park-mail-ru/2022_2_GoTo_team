@@ -1,4 +1,4 @@
-import {Ajax} from "./ajax.js";
+import Ajax from "./ajax.js"
 
 const ajax = new (Ajax);
 const config = {
