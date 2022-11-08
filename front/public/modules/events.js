@@ -137,7 +137,11 @@ export class Events {
             password: password_form.value.trim()
         }
 
-        //Валидация происходит автоматически при анфокусе форм
+        Events.email_validate_listener_registration();
+        Events.login_validate_listener_registration();
+        Events.username_validate_listener_registration();
+        Events.password_validate_listener_registration();
+        Events.password_repeat_validate_listener_registration();
 
         Requests.signup(user_data).then((response) => {
             if (response === 200) {

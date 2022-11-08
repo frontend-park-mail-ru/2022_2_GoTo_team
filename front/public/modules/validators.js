@@ -12,7 +12,7 @@ export class Validators {
      * @param {string} username
      */
     static validate_username(username) {
-        return /^[a-zA-Z0-9]+$/.test(username);
+        return true
     }
 
     /**
