@@ -33,6 +33,7 @@ export default class Article_view extends Basic_component_view {
             comments: article.comments,
             publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login
         });
+        this.publisher = article.publisher.login;
         return wrapper.firstChild;
     }
 }

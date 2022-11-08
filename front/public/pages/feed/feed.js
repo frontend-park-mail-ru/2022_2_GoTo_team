@@ -29,6 +29,7 @@ export default class Feed extends Page{
                 articles.forEach((article) => {
                     const article_view = new Article();
                     article_view.render(article);
+                    article_view.subscribe();
                     this.view.main_content_element.appendChild(article_view.root);
                 })
             }

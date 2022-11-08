@@ -6,6 +6,7 @@ import {Requests} from "./requests.js";
 import Feed from "../pages/feed/feed.js";
 import User_plug from "../components/user_plug/user_plug.js";
 import User_plug_menu from "../components/user_plug_menu/user_plug_menu.js";
+import {Page_loaders} from "./page_loaders.js";
 
 
 
@@ -432,5 +433,12 @@ export class Events {
         Events.unauthorize();
         Events.close_profile_menu();
         Events.update_auth();
+    }
+
+    /**
+     * Отрисовка страницы автора
+     */
+    static go_to_author_feed(login) {
+        Page_loaders.user_feed_page(login);
     }
 }

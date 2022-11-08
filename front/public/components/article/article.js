@@ -1,5 +1,6 @@
 import Article_view from "./article_view.js";
 import Basic_component from "../_basic_component/basic_component.js";
+import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
@@ -37,5 +38,12 @@ export default class Article extends Basic_component {
         this.root = this.view.render(article);
         return this.root;
     }
-    //TODO:destroy()
+
+    subscribe() {
+        super.subscribe();
+        const author_link = this.root.getElementsByClassName('article__author')[0];
+        author_link.addEventListener('click', () => {
+            Events.go_to_author_feed(this.view.publisher);
+        })
+    }
 };

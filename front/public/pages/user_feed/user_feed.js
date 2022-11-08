@@ -1,7 +1,6 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import User_feed_view from "./user_feed_view.js";
-import {Page_loaders} from "../../modules/page_loaders.js";
 import User_feed_header from "../../components/user_feed_header/user_feed_header.js";
 import {Requests} from "../../modules/requests.js";
 import Article from "../../components/article/article.js";
@@ -39,6 +38,7 @@ export default class User_feed extends Page {
                 articles.forEach((article) => {
                     const article_view = new Article();
                     article_view.render(article);
+                    article_view.subscribe();
                     this.view.main_content_element.appendChild(article_view.root);
                 })
             }
