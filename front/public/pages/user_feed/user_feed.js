@@ -4,6 +4,7 @@ import User_feed_view from "./user_feed_view.js";
 import {Page_loaders} from "../../modules/page_loaders.js";
 import User_feed_header from "../../components/user_feed_header/user_feed_header.js";
 import {Requests} from "../../modules/requests.js";
+import Article from "../../components/article/article.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -31,7 +32,18 @@ export default class User_feed extends Page {
             header.subscribe();
             this.view.center.insertBefore(header.root, this.view.center.children[0]);
         });
-        
+
+        Requests.get_user_articles(login).then((articles) => {
+            if (articles && Array.isArray(articles)) {
+                this.view.main_content_element.innerHTML = '';
+                articles.forEach((article) => {
+                    const article_view = new Article();
+                    article_view.render(article);
+                    this.view.main_content_element.appendChild(article_view.root);
+                })
+            }
+        });
+
         Events.update_auth();
     }
 

@@ -114,7 +114,7 @@ export class Requests {
      */
     static get_user_articles(login) {
         const promise = ajax.get({
-            url: config.hrefs.articles,
+            url: config.hrefs.user_feed,
             data: {
                 login: login,
             }
