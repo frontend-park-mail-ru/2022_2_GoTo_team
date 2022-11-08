@@ -1,18 +1,22 @@
 <div class="login_form">
-    <svg class="login_form__go_back" id="login_form__go_back">
-        <use xlink:href="icons.svg#arrow_left"/>
-    </svg>
     <svg class="login_form__cross" id="login_form__cross">
         <use xlink:href="icons.svg#cross"/>
     </svg>
+    <svg class="login_form__go_back" id="login_form__go_back">
+        <use xlink:href="icons.svg#arrow_left"/>
+    </svg>
     <div class="enter_sign">Зарегестрироваться</div>
     <form class="log_label_wrapper" id="reg_form">
-        <input class="login_form__log_input" id="registration_form__email" type="email" placeholder="Введите email">
-        <input class="login_form__log_input" id="registration_form__login" type="text" placeholder="Введите логин">
-        <input class="login_form__log_input" id="registration_form__username" type="text" placeholder="Введите ник">
-        <input class="login_form__log_input" id="registration_form__password" type="password" placeholder="Введите пароль">
-        <input class="login_form__log_input" id="registration_form__repeat-password" type="password"
-               placeholder="Повторите пароль">
-        <input class="accent_button button" type="button" id="registration_form__submit_button"value="Зарегестрироваться">
+        <div id="login-form_inputs-wrapper">
+            <input class="login_form__log_input" id="registration_form__email" type="email" placeholder="Введите email">
+            <input class="login_form__log_input" id="registration_form__login" type="text" placeholder="Введите логин">
+            <input class="login_form__log_input" id="registration_form__username" type="text" placeholder="Введите ник">
+            <input class="login_form__log_input" id="registration_form__password" type="password"
+                   placeholder="Введите пароль">
+            <input class="login_form__log_input" id="registration_form__repeat-password" type="password"
+                   placeholder="Повторите пароль">
+        </div>
+        <input class="accent_button button horizontal_center_div" type="button" id="registration_form__submit_button"
+               value="Зарегестрироваться">
     </form>
 </div>
