@@ -33,12 +33,7 @@ export default class Login_page extends Page{
     subscribe() {
        const login_event_bus = {
             submit: Events.submit_login,
-            go_to_registration: () => {
-                const root = document.getElementsByTagName('body')[0];
-                const page = new Registration_page(root);
-                page.render();
-                page.subscribe();
-            },
+            go_to_registration: Page_loaders.registration_page,
             email_validation: Events.email_validate_listener_login,
             password_validation: Events.password_validate_listener_login,
        }

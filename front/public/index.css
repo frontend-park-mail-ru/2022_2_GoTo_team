@@ -99,8 +99,10 @@ body {
     background: var(--light);
     border-radius: 14px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 100%;
+    width: available;
+    width: -moz-available;
     height: fit-content;
+    max-width: 100%;
 }
 
 .profile_menu {
@@ -676,6 +678,7 @@ div.log-button-container {
 
 .feed_page__header {
     padding: 20px;
+    margin-bottom: 10px;
 }
 
 .feed_page__header__avatar {
@@ -726,4 +729,28 @@ div.log-button-container {
 
 .rating_negative {
     color: var(--negative);
+}
+
+.subscribers_avatars_wrapper{
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    margin: 3px 10px 10px 10px;
+}
+
+.subscriber_avatar{
+    width: calc(100%/5 - 5px);
+    height: 20px;
+    margin: 2.5px;
+    background: var(--slight-dark);
+}
+
+.right_side_bar__content{
+    font-family: 'Arial', serif;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.right_side_bar__rules {
+    max-height: 75%;
 }
