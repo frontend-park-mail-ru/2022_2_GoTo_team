@@ -8,6 +8,8 @@ const config = {
         signup: '/user/signup',
         session_info: '/session/info',
         session_remove: '/session/remove',
+        user_info: '/user/info',
+        user_feed: '/feed/user'
     }
 }
 
@@ -83,5 +85,42 @@ export class Requests {
         return ajax.post({
             url: config.hrefs.session_remove,
         });
+    }
+
+
+    /**
+     * Информация в шапку страницы автора
+     */
+    static user_header_info(login) {
+        return ajax.get({
+            url: config.hrefs.user_info,
+            data: {
+                login: login,
+            }
+        }).then((response) => {
+            const user_data = {
+                username: response.response.username,
+                rating: response.response.rating,
+                subscribers: response.response.subscribers_count,
+                registration_date: response.response.registration_date,
+            }
+            return user_data;
+        });
+    }
+
+    /**
+     * Запрашивает статьи автора
+     * @return {Promise} Promise с массивом статей
+     */
+    static get_user_articles(login) {
+        const promise = ajax.get({
+            url: config.hrefs.articles,
+            data: {
+                login: login,
+            }
+        }).then((response) => {
+            return response.response.articles
+        });
+        return promise;
     }
 }

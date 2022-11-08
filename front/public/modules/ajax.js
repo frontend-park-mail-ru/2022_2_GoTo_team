@@ -7,11 +7,12 @@ const REQUEST_TYPE = {
 };
 
 export class Ajax {
-    get({url}) {
+    get({url, data}) {
         return this.#ajax({
             method: REQUEST_TYPE.GET,
             crossDomain: true,
-            url
+            url,
+            data
         })
     }
 
@@ -25,7 +26,9 @@ export class Ajax {
     }
 
     #ajax(requestParams) {
-        const url = APIurl + (requestParams.url || '/');
+        const url = new URL(APIurl + (requestParams.url || '/'));
+        url.search = new URLSearchParams(requestParams.data).toString();
+
         const fetchParams = {
             method: requestParams.method,
             body: JSON.stringify(requestParams.body),

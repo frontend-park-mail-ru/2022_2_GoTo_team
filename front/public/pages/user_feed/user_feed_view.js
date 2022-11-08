@@ -1,6 +1,5 @@
 import Page_view from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
-import Registration_form from "../../components/registration_form/registration_form.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
@@ -32,16 +31,20 @@ export default class User_feed_view extends Page_view {
 
         this.root.appendChild(document.createElement('div'));
 
+        const center = document.createElement('div');
+        center.classList.add('column');
+        this.center = center;
+        this.root.appendChild(center);
+
+        const content = document.createElement('div');
+        content.classList.add('center_with_sidebar');
+        center.appendChild(content);
+
         const main_content_element = document.createElement('div');
         main_content_element.classList.add('feed');
         this.main_content_element = main_content_element;
-        this.root.appendChild(this.main_content_element);
+        content.appendChild(this.main_content_element);
 
         this.root.appendChild(document.createElement('div'));
-
-        const registration_form = new Registration_form();
-        registration_form.render();
-        this.main_content_element.appendChild(registration_form.root);
-        this.children.set('form', registration_form);
     }
 }
