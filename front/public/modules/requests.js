@@ -14,7 +14,7 @@ const config = {
         category_feed: '/feed/category',
         article: '/article',
         profile: '/profile',
-        save_profile: '/profile/save',
+        save_profile: '/profile/update',
         article_remove: '/article/remove',
         article_create: '/article/create',
         article_update: '/article/update',
@@ -209,6 +209,30 @@ export class Requests {
                 login: user_data.login,
                 username: user_data.username,
                 avatar_img_path: user_data.avatar_link,
+            }
+        }).then((result) => {
+            if (result.status === 200){
+                return {
+                    status: result.status,
+                    body: "",
+                }
+            }
+            const errors = {
+                login: "login conflict",
+                email: "email conflict"
+            }
+            if (result.response === "login exists"){
+                return {
+                    status: result.status,
+                    body: errors.login,
+                }
+            }
+
+            if (result.response === "email exists"){
+                return {
+                    status: result.status,
+                    body: errors.email,
+                }
             }
         });
     }

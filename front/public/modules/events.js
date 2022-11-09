@@ -110,8 +110,8 @@ export class Events {
 
         //Валидация происходит автоматически при анфокусе форм
 
-        Requests.login(user_data).then((response) => {
-            if (response === 200) {
+        Requests.login(user_data).then((result) => {
+            if (result === 200) {
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
                 page.render();
@@ -144,14 +144,14 @@ export class Events {
         Events.password_validate_listener_registration();
         Events.password_repeat_validate_listener_registration();
 
-        Requests.signup(user_data).then((response) => {
-            if (response === 200) {
+        Requests.signup(user_data).then((result) => {
+            if (result === 200) {
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
                 page.render();
                 page.subscribe();
             } else {
-                if (response.response === 409) {
+                if (result.response === 409) {
                     Events.#make_invalid(email_form, "Email занят")
                     return;
                 }
@@ -512,12 +512,20 @@ export class Events {
         //TODO:Загрузка картинки
 
         Requests.save_profile(user_data).then((response) => {
-            if (response === 200) {
-                //TODO:Обозначение удачного обновления
+            if (response.status === 200) {
+                Page_loaders.settings_page();
             } else {
-                if (response.response === 409) {
-                    Events.#make_invalid(email_form, "Email занят")
-                    return;
+                if (response.status === 409) {
+                    if (response.body === "login conflict"){
+                        Events.#make_invalid(login_form, "Логин занят");
+                    }else{
+                        Events.#make_valid(login_form);
+                    }
+                    if (response.body === "email conflict"){
+                        Events.#make_invalid(email_form, "Email занят");
+                    }else{
+                        Events.#make_valid(email_form);
+                    }
                 }
                 const form = document.getElementsByClassName("inputs_wrapper")[0];
                 Events.#make_invalid(form, "Что-то пошло не так");

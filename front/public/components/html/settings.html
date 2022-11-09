@@ -3,18 +3,13 @@
     <div class="inputs_wrapper">
       <label for="settings__login" class="form_label">Логин</label>
       <input id="settings__login" type="text" class="form"
-             placeholder="{{login}}">
+             placeholder="Введите логин" value="{{login}}">
       <label for="settings__email" class="form_label">Email</label>
       <input id="settings__email" type="text" class="form"
-             placeholder="{{email}}">
+             placeholder="Введите email" value="{{email}}">
       <label for="settings__nickname" class="form_label">Никнейм</label>
-      {{#if username}}
       <input id="settings__nickname" type="text" class="form"
-             placeholder="{{username}}">
-      {{else}}
-      <input id="settings__nickname" type="text" class="form"
-             placeholder="Введите ник">
-      {{/if}}
+             placeholder="Введите ник" value="{{username}}">
       <div class="settings__avatar_row">
         <label for="avatar_upload" class="box settings__avatar_row_avatar button">
           <div class="box settings__avatar_row_avatar">

@@ -42,12 +42,12 @@ export class Ajax {
         return fetch(url, fetchParams)
             .then((response) => {
                 status = response.status;
-                if (fetchParams.method === REQUEST_TYPE.POST) {
-                    return status;
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1){
+                    return response.json();
                 }
-                return response.json();
-            })
-            .then((response) => {
+                return status;
+            }).then((response) => {
                 return {
                     status,
                     response,
