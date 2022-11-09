@@ -28,6 +28,8 @@ export default class User_plug_menu extends Basic_component {
      */
     subscribe() {
         super.subscribe();
+        const profile_button = document.getElementById('profile_menu__profile_button');
+        profile_button.addEventListener('click', Events.go_to_settings_page);
         const exit_button = document.getElementById('profile_menu__unauthorize_button');
         exit_button.addEventListener('click', Events.profile_menu_unauthorize_listener);
     }

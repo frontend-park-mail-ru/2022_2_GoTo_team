@@ -28,6 +28,7 @@ export default class Registration_page extends Page{
      * Подписка на связанные события
      */
     subscribe() {
+        this.view.children.get('navbar').subscribe();
         const registration_event_bus = {
             submit: Events.submit_registration,
             email_validation: Events.email_validate_listener_registration,

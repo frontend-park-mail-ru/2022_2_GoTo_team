@@ -436,6 +436,13 @@ export class Events {
     }
 
     /**
+     * Отрисовка страницы популярного
+     */
+    static go_to_feed_page() {
+        Page_loaders.feed_page();
+    }
+
+    /**
      * Отрисовка страницы автора
      */
     static go_to_author_feed(login) {
@@ -447,5 +454,12 @@ export class Events {
      */
     static go_to_category_feed(category) {
         Page_loaders.category_feed_page(category);
+    }
+
+    /**
+     * Отрисовка страницы профиля
+     */
+    static go_to_settings_page() {
+        Page_loaders.settings_page();
     }
 }

@@ -1,5 +1,6 @@
 import Navbar_view from "./navbar_view.js";
 import Basic_component from "../_basic_component/basic_component.js";
+import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
@@ -27,8 +28,17 @@ export default class Navbar extends Basic_component {
      * Подписка на связанные события
      */
     subscribe() {
+        const logo = this.root.getElementsByClassName('navbar__logo')[0];
+        logo.addEventListener('click', Events.go_to_feed_page);
 
+        const popular = this.root.getElementsByClassName('navbar__button')[0];
+        const new_feed = this.root.getElementsByClassName('navbar__button')[1];
+        const subscribe_feed = this.root.getElementsByClassName('navbar__button')[2];
+        popular.addEventListener('click', Events.go_to_feed_page);
+        new_feed.addEventListener('click', Events.go_to_feed_page);
+        subscribe_feed.addEventListener('click', Events.go_to_feed_page);
+
+        const exit_button = document.getElementById('profile_menu__unauthorize_button');
+        exit_button.addEventListener('click', Events.profile_menu_unauthorize_listener);
     }
-    //TODO:subscribe()
-    //TODO:destroy()
 };

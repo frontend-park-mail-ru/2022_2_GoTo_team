@@ -51,5 +51,6 @@ export default class Category_feed extends Page {
      * Подписка на связанные события
      */
     subscribe() {
+        this.view.children.get('navbar').subscribe();
     }
 }

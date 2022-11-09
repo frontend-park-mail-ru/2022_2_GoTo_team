@@ -37,6 +37,6 @@ export default class Settings_page extends Page{
      * Подписка на связанные события
      */
     subscribe() {
-
+        this.view.children.get('navbar').subscribe();
     }
 }

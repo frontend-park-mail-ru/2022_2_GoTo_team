@@ -31,6 +31,7 @@ export default class Login_page extends Page{
      * Подписка на связанные события
      */
     subscribe() {
+       this.view.children.get('navbar').subscribe();
        const login_event_bus = {
             submit: Events.submit_login,
             go_to_registration: Page_loaders.registration_page,
@@ -38,6 +39,7 @@ export default class Login_page extends Page{
             password_validation: Events.password_validate_listener_login,
        }
        this.view.children.get('form').subscribe(login_event_bus);
+
        const profile_button = document.getElementById('navbar__auth_button').lastChild;
        profile_button.removeEventListener('click', Events.make_login_overlay_listener);
        profile_button.addEventListener('click', Page_loaders.login_page);

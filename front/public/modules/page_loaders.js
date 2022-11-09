@@ -66,7 +66,7 @@ export class Page_loaders {
     /**
      * Отрисовывает страницу профиля
      */
-    static settings_page(article_id) {
+    static settings_page() {
         const page = new Settings_page(root);
         page.render();
         page.subscribe();
