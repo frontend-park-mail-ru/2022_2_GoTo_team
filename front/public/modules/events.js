@@ -13,20 +13,20 @@ export class Events {
     static #overlayLoginEventBus = {
         submit: Events.submitLogin,
         go_to_registration: Events.redrawRegistrationOverlay,
-        email_validation: Events.email_validate_listener_login,
-        password_validation: Events.password_validate_listener_login,
-        close_form: Events.close_overlay_listener,
+        email_validation: Events.emailValidateListenerLogin,
+        password_validation: Events.passwordValidateListenerLogin,
+        close_form: Events.closeOverlayListener,
     }
 
     static #overlayRegistrationEventBus = {
-        submit: Events.submit_registration,
-        go_to_login: Events.redraw_login_overlay,
-        email_validation: Events.email_validate_listener_registration,
-        login_validation: Events.login_validate_listener_registration,
-        username_validation: Events.username_validate_listener_registration,
-        password_validation: Events.password_validate_listener_registration,
-        repeat_password_validation: Events.password_repeat_validate_listener_registration,
-        close_form: Events.close_overlay_listener,
+        submit: Events.submitRegistration,
+        go_to_login: Events.redrawLoginOverlay,
+        email_validation: Events.emailValidateListenerLogin,
+        login_validation: Events.loginValidateListenerRegistration,
+        username_validation: Events.usernameValidateListenerRegistration,
+        password_validation: Events.passwordValidateListenerRegistration,
+        repeat_password_validation: Events.passwordRepeatValidateListenerRegistration,
+        close_form: Events.closeOverlayListener,
     }
 
     /**
@@ -222,7 +222,7 @@ export class Events {
         if (email === '') {
             return;
         }
-        if (!Validators.validate_email(email)) {
+        if (!Validators.validateEmail(email)) {
             Events.#makeInvalid(emailForm, "Неверный формат email");
             return;
         }
@@ -238,7 +238,7 @@ export class Events {
         if (password === '') {
             return;
         }
-        if (!Validators.validate_password(password)) {
+        if (!Validators.validatePassword(password)) {
             Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
             return
         }

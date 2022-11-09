@@ -43,7 +43,6 @@ export default class RegistrationForm extends BasicComponent {
 
         const backButton = document.getElementById("login_form__go_back");
         if (typeof eventBus.goToLogin !== 'undefined') {
-
             backButton.addEventListener('click', eventBus.goToLogin);
         }else{
             this.root.removeChild(backButton);
