@@ -11,7 +11,6 @@ export default class User_feed_header_view extends Basic_component_view {
      */
     render(user_data) {
         const wrapper = document.createElement('div');
-        console.log(user_data);
         wrapper.innerHTML = Handlebars.templates['user_page_header.html']({
             username: user_data.username,
             rating: user_data.rating,

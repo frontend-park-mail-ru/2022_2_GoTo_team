@@ -754,3 +754,9 @@ div.log-button-container {
 .right_side_bar__rules {
     max-height: 75%;
 }
+
+.article__content{
+    font-size: 16px;
+    padding: 10px 0;
+    width: 75%;
+}

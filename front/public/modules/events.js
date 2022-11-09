@@ -441,4 +441,11 @@ export class Events {
     static go_to_author_feed(login) {
         Page_loaders.user_feed_page(login);
     }
+
+    /**
+     * Отрисовка страницы автора
+     */
+    static go_to_category_feed(category) {
+        Page_loaders.category_feed_page(category);
+    }
 }

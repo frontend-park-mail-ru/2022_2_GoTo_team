@@ -1,18 +1,18 @@
-import Article_view from "./article_view.js";
+import Opened_article_view from "./opened_article_view.js";
 import Basic_component from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class Article
+ * @class Opened_article
  */
-export default class Article extends Basic_component {
+export default class Opened_article extends Basic_component {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Article_view();
+        this.view = new Opened_article_view();
     }
 
     /**

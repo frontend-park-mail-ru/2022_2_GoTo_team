@@ -9,7 +9,10 @@ const config = {
         session_info: '/session/info',
         session_remove: '/session/remove',
         user_info: '/user/info',
-        user_feed: '/feed/user'
+        user_feed: '/feed/user',
+        category_info: '/category/info',
+        category_feed: '/feed/category',
+        article: '/article'
     }
 }
 
@@ -122,5 +125,54 @@ export class Requests {
             return response.response.articles
         });
         return promise;
+    }
+
+    /**
+     * Информация в шапку страницы категории
+     */
+    static category_header_info(category) {
+        return ajax.get({
+            url: config.hrefs.category_info,
+            data: {
+                category: category,
+            }
+        }).then((response) => {
+            const category_data = {
+                name: response.response.category_name,
+                description: response.rdescription,
+                subscribers: response.response.subscribers_count,
+            }
+            return category_data;
+        });
+    }
+
+    /**
+     * Запрашивает статьи автора
+     * @return {Promise} Promise с массивом статей
+     */
+    static get_category_articles(category) {
+        const promise = ajax.get({
+            url: config.hrefs.category_feed,
+            data: {
+                category: category,
+            }
+        }).then((response) => {
+            return response.response.articles;
+        });
+        return promise;
+    }
+
+    /**
+     * Запрашивает статью по id
+     */
+    static get_article(article_id) {
+        return ajax.get({
+            url: config.hrefs.article,
+            data: {
+                article: article_id,
+            }
+        }).then((response) => {
+            return response.response;
+        });
     }
 }

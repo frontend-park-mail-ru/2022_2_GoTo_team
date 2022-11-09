@@ -1,9 +1,9 @@
 import Basic_component_view from "../_basic_component/basic_component_view.js";
-import "../tmpl/article.tmpl.js";
+import "../tmpl/opened_article.tmpl.js";
 /**
- * @class Article_view
+ * @class Opened_article_view
  */
-export default class Article_view extends Basic_component_view {
+export default class Opened_article_view extends Basic_component_view {
     /**
      * Перерисовка подконтрольного элемента
      * @param {Object} article
@@ -20,18 +20,20 @@ export default class Article_view extends Basic_component_view {
      * @property {Object} article.co_author
      * @property {string} article.co_author.username
      * @property {string} article.co_author.login
+     * @property {string} article.content
      * @return {HTMLElement}
      */
     render(article) {
         const wrapper = document.createElement('div');
-        wrapper.innerHTML = Handlebars.templates['article.html']({
+        wrapper.innerHTML = Handlebars.templates['opened_article.html']({
             title: article.title,
             description: article.description,
             tags: article.tags,
             category: article.category,
             rating: article.rating,
             comments: article.comments,
-            publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login
+            publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
+            content: article.content,
         });
         this.publisher = article.publisher.login;
         this.category = article.category;
