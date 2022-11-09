@@ -1,30 +1,30 @@
-import Article_page_view from "./article_page_view.js";
+import ArticlePageView from "./article_page_view.js";
 import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
- * @class Article_page
+ * @class ArticlePage
  */
-export default class Article_page extends Page{
+export default class ArticlePage extends Page{
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
     constructor(root) {
         super(root);
-        this.view = new Article_page_view(root);
+        this.view = new ArticlePageView(root);
     }
 
     /**
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(article_id) {
+    async render(articleId) {
 
-        const article = await Requests.get_article(article_id);
+        const article = await Requests.getArticle(articleId);
         this.view.render(article);
-        Events.update_auth();
+        Events.updateAuth();
     }
 
     /**

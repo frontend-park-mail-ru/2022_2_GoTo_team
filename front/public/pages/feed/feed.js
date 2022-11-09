@@ -1,4 +1,4 @@
-import Feed_view from "./feed_view.js";
+import FeedView from "./feed_view.js";
 import {Requests} from "../../modules/requests.js"
 import Article from "../../components/article/article.js";
 import {Events} from "../../modules/events.js";
@@ -14,7 +14,7 @@ export default class Feed extends Page{
      */
     constructor(root) {
         super(root);
-        this.view = new Feed_view(root);
+        this.view = new FeedView(root);
     }
 
     /**
@@ -23,18 +23,18 @@ export default class Feed extends Page{
      */
     render() {
         this.view.render();
-        Requests.get_articles().then((articles) => {
+        Requests.getArticles().then((articles) => {
             if (articles && Array.isArray(articles)) {
-                this.view.main_content_element.innerHTML = '';
+                this.view.mainContentElement.innerHTML = '';
                 articles.forEach((article) => {
-                    const article_view = new Article();
-                    article_view.render(article);
-                    article_view.subscribe();
-                    this.view.main_content_element.appendChild(article_view.root);
+                    const articleView = new Article();
+                    articleView.render(article);
+                    articleView.subscribe();
+                    this.view.mainContentElement.appendChild(articleView.root);
                 })
             }
         });
-        Events.update_auth();
+        Events.updateAuth();
     }
 
     /**

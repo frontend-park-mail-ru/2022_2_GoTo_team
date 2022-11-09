@@ -1,24 +1,24 @@
 import Overlay from "../components/overlay/overlay.js";
-import Login_form from "../components/login_form/login_form.js";
-import Registration_form from "../components/registration_form/registration_form.js";
+import LoginForm from "../components/login_form/login_form.js";
+import RegistrationForm from "../components/registration_form/registration_form.js";
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import Feed from "../pages/feed/feed.js";
-import User_plug from "../components/user_plug/user_plug.js";
-import User_plug_menu from "../components/user_plug_menu/user_plug_menu.js";
-import {Page_loaders} from "./page_loaders.js";
+import UserPlug from "../components/user_plug/user_plug.js";
+import UserPlugMenu from "../components/user_plug_menu/user_plug_menu.js";
+import {PageLoaders} from "./page_loaders.js";
 
 
 export class Events {
-    static #overlay_login_event_bus = {
-        submit: Events.submit_login,
-        go_to_registration: Events.redraw_registration_overlay,
+    static #overlayLoginEventBus = {
+        submit: Events.submitLogin,
+        go_to_registration: Events.redrawRegistrationOverlay,
         email_validation: Events.email_validate_listener_login,
         password_validation: Events.password_validate_listener_login,
         close_form: Events.close_overlay_listener,
     }
 
-    static #overlay_registration_event_bus = {
+    static #overlayRegistrationEventBus = {
         submit: Events.submit_registration,
         go_to_login: Events.redraw_login_overlay,
         email_validation: Events.email_validate_listener_registration,
@@ -32,7 +32,7 @@ export class Events {
     /**
      * Отрисовывает оверлей
      */
-    static open_overlay() {
+    static openOverlay() {
         const overlay = new Overlay();
         overlay.render();
         const root = document.getElementById('root');
@@ -43,81 +43,81 @@ export class Events {
     /**
      * Удаляет оверлей
      */
-    static #close_overlay() {
+    static #closeOverlay() {
         const overlay = document.getElementById('overlay');
         overlay.parentNode.removeChild(overlay);
     }
 
     /**
      * Перерисовывает плашку оверлея на view
-     * @param {Basic_component} controller
+     * @param {BasicComponent} controller
      */
-    static #change_overlay(controller, event_bus) {
-        const overlay_center = document.getElementById('overlay__center');
-        overlay_center.innerHTML = '';
+    static #changeOverlay(controller, eventBus) {
+        const overlayCenter = document.getElementById('overlay__center');
+        overlayCenter.innerHTML = '';
         controller.render();
-        overlay_center.appendChild(controller.root);
-        controller.subscribe(event_bus);
+        overlayCenter.appendChild(controller.root);
+        controller.subscribe(eventBus);
     }
 
     /**
      * Создаёт оверлей с формой логина
      */
-    static make_login_overlay_listener() {
-        Events.open_overlay();
-        Events.#change_overlay(new Login_form(), Events.#overlay_login_event_bus);
+    static makeLoginOverlayListener() {
+        Events.openOverlay();
+        Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
 
         const auth_button = document.getElementById('navbar__auth_button').lastChild;
-        auth_button.removeEventListener('click', Events.make_login_overlay_listener);
-        auth_button.addEventListener('click', Events.close_overlay_listener);
+        auth_button.removeEventListener('click', Events.makeLoginOverlayListener);
+        auth_button.addEventListener('click', Events.closeOverlayListener);
     }
 
     /**
      * Удаляет оверлей
      */
-    static close_overlay_listener() {
-        Events.#close_overlay()
+    static closeOverlayListener() {
+        Events.#closeOverlay()
 
-        const auth_button = document.getElementById('navbar__auth_button').lastChild;
-        auth_button.removeEventListener('click', Events.close_overlay_listener);
-        auth_button.addEventListener('click', Events.make_login_overlay_listener);
+        const authButton = document.getElementById('navbar__auth_button').lastChild;
+        authButton.removeEventListener('click', Events.closeOverlayListener);
+        authButton.addEventListener('click', Events.makeLoginOverlayListener);
     }
 
     /**
      * Перерисовывает плашку оверлея на логин
      */
-    static redraw_registration_overlay() {
-        Events.#change_overlay(new Registration_form(), Events.#overlay_registration_event_bus);
+    static redrawRegistrationOverlay() {
+        Events.#changeOverlay(new RegistrationForm(), Events.#overlayRegistrationEventBus);
     }
 
     /**
      * Перерисовывает плашку оверлея на регистрацию
      */
-    static redraw_login_overlay() {
-        Events.#change_overlay(new Login_form(), Events.#overlay_login_event_bus);
+    static redrawLoginOverlay() {
+        Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
     }
 
     /**
      * Подтверждение формы логина
      */
-    static submit_login() {
-        const email_form = document.getElementById("login_form__email_login");
-        const password_form = document.getElementById("login_form__password");
-        const user_data = {
-            email: email_form.value.trim(),
-            password: password_form.value.trim(),
+    static submitLogin() {
+        const emailForm = document.getElementById("login_form__email_login");
+        const passwordForm = document.getElementById("login_form__password");
+        const userData = {
+            email: emailForm.value.trim(),
+            password: passwordForm.value.trim(),
         }
 
         //Валидация происходит автоматически при анфокусе форм
 
-        Requests.login(user_data).then((result) => {
+        Requests.login(userData).then((result) => {
             if (result === 200) {
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
                 page.render();
                 page.subscribe();
             } else {
-                Events.#make_invalid(document.getElementById("login-form_inputs-wrapper"), "Что-то пошло не так");
+                Events.#makeInvalid(document.getElementById("login-form_inputs-wrapper"), "Что-то пошло не так");
             }
         });
     }
@@ -125,26 +125,26 @@ export class Events {
     /**
      * Подтверждение формы регистрации
      */
-    static submit_registration() {
-        const email_form = document.getElementById("registration_form__email");
-        const login_form = document.getElementById("registration_form__login");
-        const username_form = document.getElementById("registration_form__username");
-        const password_form = document.getElementById("registration_form__password");
+    static submitRegistration() {
+        const emailForm = document.getElementById("registration_form__email");
+        const loginForm = document.getElementById("registration_form__login");
+        const usernameForm = document.getElementById("registration_form__username");
+        const passwordForm = document.getElementById("registration_form__password");
 
-        const user_data = {
-            email: email_form.value.trim(),
-            login: login_form.value.trim(),
-            username: username_form.value.trim(),
-            password: password_form.value.trim()
+        const userData = {
+            email: emailForm.value.trim(),
+            login: loginForm.value.trim(),
+            username: usernameForm.value.trim(),
+            password: passwordForm.value.trim()
         }
 
-        Events.email_validate_listener_registration();
-        Events.login_validate_listener_registration();
-        Events.username_validate_listener_registration();
-        Events.password_validate_listener_registration();
-        Events.password_repeat_validate_listener_registration();
+        Events.emailValidateListenerRegistration();
+        Events.loginValidateListenerRegistration();
+        Events.usernameValidateListenerRegistration();
+        Events.passwordValidateListenerRegistration();
+        Events.passwordRepeatValidateListenerRegistration();
 
-        Requests.signup(user_data).then((result) => {
+        Requests.signup(userData).then((result) => {
             if (result === 200) {
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
@@ -152,11 +152,11 @@ export class Events {
                 page.subscribe();
             } else {
                 if (result.response === 409) {
-                    Events.#make_invalid(email_form, "Email занят")
+                    Events.#makeInvalid(emailForm, "Email занят")
                     return;
                 }
                 const form = document.getElementById("login-form_inputs-wrapper");
-                Events.#make_invalid(form, "Что-то пошло не так");
+                Events.#makeInvalid(form, "Что-то пошло не так");
             }
         });
     }
@@ -166,11 +166,11 @@ export class Events {
      * @param {HTMLSelectElement} element
      * @param {string} message
      */
-    static #make_invalid(element, message) {
-        const error_class = "error-message"
+    static #makeInvalid(element, message) {
+        const errorClass = "error-message"
         const siblings = element.parentNode.childNodes;
-        const wrong_sign = document.createElement('div');
-        wrong_sign.innerHTML = `<div class=\"${error_class}\">${message}</div>`;
+        const wrongSign = document.createElement('div');
+        wrongSign.innerHTML = `<div class=\"${errorClass}\">${message}</div>`;
         if (typeof element.setCustomValidity !== 'undefined') {
             element.setCustomValidity(message);
         }
@@ -178,11 +178,11 @@ export class Events {
         for (let i = 0; i < siblings.length; i++) {
             if (siblings[i] === element) {
                 if (siblings[i + 1].nodeName === "#text") {
-                    element.after(wrong_sign);
+                    element.after(wrongSign);
                     break;
                 }
-                if (!(siblings[i + 1].innerHTML.startsWith(`<div class=\"${error_class}\">`))) {
-                    element.after(wrong_sign);
+                if (!(siblings[i + 1].innerHTML.startsWith(`<div class=\"${errorClass}\">`))) {
+                    element.after(wrongSign);
                 }
                 break;
             }
@@ -193,11 +193,11 @@ export class Events {
      * Убирает невалидность формы element
      * @param {HTMLSelectElement} element
      */
-    static #make_valid(element) {
+    static #makeValid(element) {
         if (typeof element.setCustomValidity !== 'undefined') {
             element.setCustomValidity('');
         }
-        const error_class = "error-message";
+        const errorClass = "error-message";
         const siblings = element.parentNode.childNodes;
 
         for (let i = 0; i < siblings.length; i++) {
@@ -205,7 +205,7 @@ export class Events {
                 if (siblings[i + 1].nodeName === "#text") {
                     break;
                 }
-                if (siblings[i + 1].innerHTML.startsWith(`<div class=\"${error_class}\">`)) {
+                if (siblings[i + 1].innerHTML.startsWith(`<div class=\"${errorClass}\">`)) {
                     element.parentNode.removeChild(siblings[i + 1]);
                 }
                 break;
@@ -216,115 +216,115 @@ export class Events {
     /**
      * Проверяет валидность значения в поле почты в плашке логина
      */
-    static email_validate_listener_login() {
-        const email_form = document.getElementById('login_form__email_login');
-        const email = email_form.value.trim();
+    static emailValidateListenerLogin() {
+        const emailForm = document.getElementById('login_form__email_login');
+        const email = emailForm.value.trim();
         if (email === '') {
             return;
         }
         if (!Validators.validate_email(email)) {
-            Events.#make_invalid(email_form, "Неверный формат email");
+            Events.#makeInvalid(emailForm, "Неверный формат email");
             return;
         }
-        Events.#make_valid(email_form);
+        Events.#makeValid(emailForm);
     }
 
     /**
      * Проверяет валидность значения в поле пароля в плашке логина
      */
-    static password_validate_listener_login() {
-        const password_form = document.getElementById("login_form__password");
-        const password = password_form.value.trim();
+    static passwordValidateListenerLogin() {
+        const passwordForm = document.getElementById("login_form__password");
+        const password = passwordForm.value.trim();
         if (password === '') {
             return;
         }
         if (!Validators.validate_password(password)) {
-            Events.#make_invalid(password_form, "Неправильный формат пароля");
+            Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
             return
         }
-        Events.#make_valid(password_form);
+        Events.#makeValid(passwordForm);
     }
 
     /**
      * Проверяет валидность значения в поле почты в плашке регистрации
      */
-    static email_validate_listener_registration() {
-        const email_form = document.getElementById('registration_form__email');
-        const email = email_form.value.trim();
+    static emailValidateListenerRegistration() {
+        const emailForm = document.getElementById('registration_form__email');
+        const email = emailForm.value.trim();
         if (email === '') {
             return;
         }
-        if (!Validators.validate_email(email)) {
-            Events.#make_invalid(email_form, "Неверный формат email");
+        if (!Validators.validateEmail(email)) {
+            Events.#makeInvalid(emailForm, "Неверный формат email");
             return;
         }
-        Events.#make_valid(email_form);
+        Events.#makeValid(emailForm);
     }
 
     /**
      * Проверяет валидность значения в поле логина в плашке регистрации
      */
-    static login_validate_listener_registration() {
-        const login_form = document.getElementById("registration_form__login");
-        const login = login_form.value.trim();
+    static loginValidateListenerRegistration() {
+        const loginForm = document.getElementById("registration_form__login");
+        const login = loginForm.value.trim();
         if (login === '') {
             return;
         }
-        if (!Validators.validate_login(login)) {
-            Events.#make_invalid(login_form, "Неправильный формат логина");
+        if (!Validators.validateLogin(login)) {
+            Events.#makeInvalid(loginForm, "Неправильный формат логина");
             return
         }
-        Events.#make_valid(login_form);
+        Events.#makeValid(loginForm);
     }
 
     /**
      * Проверяет валидность значения в поле ника в плашке регистрации
      */
-    static username_validate_listener_registration() {
-        const username_form = document.getElementById("registration_form__username");
-        const username = username_form.value.trim();
+    static usernameValidateListenerRegistration() {
+        const usernameForm = document.getElementById("registration_form__username");
+        const username = usernameForm.value.trim();
         if (username === '') {
             return;
         }
-        if (!Validators.validate_username(username)) {
-            Events.#make_invalid(username_form, "Неправильный формат ника");
+        if (!Validators.validateUsername(username)) {
+            Events.#makeInvalid(usernameForm, "Неправильный формат ника");
             return
         }
-        Events.#make_valid(username_form);
+        Events.#makeValid(usernameForm);
     }
 
     /**
      * Проверяет валидность значения в поле пароля в плашке регистрации
      */
-    static password_validate_listener_registration() {
-        const password_form = document.getElementById("registration_form__password");
-        const password = password_form.value.trim();
+    static passwordValidateListenerRegistration() {
+        const passwordForm = document.getElementById("registration_form__password");
+        const password = passwordForm.value.trim();
         if (password === '') {
             return;
         }
-        if (!Validators.validate_password(password)) {
-            Events.#make_invalid(password_form, "Неправильный формат пароля");
+        if (!Validators.validatePassword(password)) {
+            Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
             return
         }
-        Events.#make_valid(password_form);
+        Events.#makeValid(passwordForm);
     }
 
     /**
      * Проверяет совпаденик значений в полях пароля и повторения пароля в плашке регистрации
      */
-    static password_repeat_validate_listener_registration() {
-        const password_form = document.getElementById("registration_form__password");
-        const repeat_password_form = document.getElementById("registration_form__repeat-password");
-        const password = password_form.value.trim();
-        const repeat_password = repeat_password_form.value.trim();
-        if (password === '' || repeat_password === '') {
+    static passwordRepeatValidateListenerRegistration() {
+        const passwordForm = document.getElementById("registration_form__password");
+        const repeatPasswordForm = document.getElementById("registration_form__repeat-password");
+        const password = passwordForm.value.trim();
+        const repeatPassword = repeatPasswordForm.value.trim();
+        if (password === '' || repeatPassword === '') {
             return;
         }
-        if (password !== repeat_password) {
-            Events.#make_invalid(repeat_password_form, "Пароли не совпадают");
+        if (password !== repeatPassword) {
+            Events.#makeInvalid(repeatPasswordForm, "Пароли не совпадают");
             return
         }
-        Events.#make_valid(repeat_password_form);
+        Events.#makeValid(repeatPasswordForm);
     }
 
     /**
@@ -353,182 +353,182 @@ export class Events {
     /**
      * Обновляет вид кнопки пользователя на навбаре
      */
-    static update_auth() {
+    static updateAuth() {
         const profileButton = document.getElementById("navbar__auth_button");
-        const user_plug = new User_plug();
+        const userPlug = new UserPlug();
         if (Events.#hasSession()) {
-            Requests.get_session_info().then((response) => {
+            Requests.getSessionInfo().then((response) => {
                 if (response.status === 200) {
-                    user_plug.render({nickname: response.response.username});
+                    userPlug.render({nickname: response.response.username});
                 } else {
-                    user_plug.render();
+                    userPlug.render();
                 }
-                user_plug.subscribe();
+                userPlug.subscribe();
                 profileButton.innerHTML = '';
-                profileButton.appendChild(user_plug.root);
+                profileButton.appendChild(userPlug.root);
             });
         }
-        user_plug.render();
-        user_plug.subscribe();
+        userPlug.render();
+        userPlug.subscribe();
         profileButton.innerHTML = '';
-        profileButton.appendChild(user_plug.root);
+        profileButton.appendChild(userPlug.root);
     }
 
     /**
      * Открывает меню пользователя под кнопкой пользователя
      */
-    static show_profile_menu() {
-        const profile_menu = document.getElementById('profile_menu');
-        if (profile_menu === null) {
-            const user_plug_menu = new User_plug_menu();
-            user_plug_menu.render();
+    static showProfileMenu() {
+        const profileMenu = document.getElementById('profile_menu');
+        if (profileMenu === null) {
+            const userPlugMenu = new UserPlugMenu();
+            userPlugMenu.render();
             const root = document.getElementById('root');
-            root.appendChild(user_plug_menu.root);
-            user_plug_menu.subscribe();
+            root.appendChild(userPlugMenu.root);
+            userPlugMenu.subscribe();
         }
     }
 
     /**
      * Листенер открытия меню пользователя кнопки на навбаре
      */
-    static show_profile_menu_listener() {
-        Events.show_profile_menu()
+    static showProfileMenuListener() {
+        Events.showProfileMenu()
         const profileButton = document.getElementById("navbar__auth_button").lastChild;
-        profileButton.removeEventListener('click', Events.show_profile_menu_listener);
-        profileButton.addEventListener('click', Events.close_profile_menu_listener);
+        profileButton.removeEventListener('click', Events.showProfileMenuListener);
+        profileButton.addEventListener('click', Events.closeProfileMenuListener);
     }
 
     /**
      * Закрывает меню пользователя под кнопкой пользователя
      */
-    static close_profile_menu() {
-        const profile_menu = document.getElementById('profile_menu');
-        if (profile_menu) {
+    static closeProfileMenu() {
+        const profileMenu = document.getElementById('profile_menu');
+        if (profileMenu) {
             const root = document.getElementById('root');
-            root.removeChild(profile_menu);
+            root.removeChild(profileMenu);
         }
     }
 
     /**
      * Листенер закрытия меню пользователя кнопки на навбаре
      */
-    static close_profile_menu_listener() {
-        Events.close_profile_menu()
+    static closeProfileMenuListener() {
+        Events.closeProfileMenu()
         const profileButton = document.getElementById("navbar__auth_button").lastChild;
-        profileButton.removeEventListener('click', Events.close_profile_menu_listener);
-        profileButton.addEventListener('click', Events.show_profile_menu_listener);
+        profileButton.removeEventListener('click', Events.closeProfileMenuListener);
+        profileButton.addEventListener('click', Events.showProfileMenuListener);
     }
 
     /**
      * Деавторизация
      */
     static unauthorize() {
-        Requests.remove_session();
+        Requests.removeSession();
     }
 
     /**
      * Деавторизация
      */
-    static profile_menu_unauthorize_listener() {
+    static profileMenuUnauthorizeListener() {
         Events.unauthorize();
-        Events.close_profile_menu();
-        Events.update_auth();
+        Events.closeProfileMenu();
+        Events.updateAuth();
     }
 
     /**
      * Отрисовка страницы популярного
      */
-    static go_to_feed_page() {
-        Page_loaders.feed_page();
+    static goToFeedPage() {
+        PageLoaders.feedPage();
     }
 
     /**
      * Отрисовка страницы автора
      */
-    static go_to_author_feed(login) {
-        Page_loaders.user_feed_page(login);
+    static goToAuthorFeed(login) {
+        PageLoaders.userFeedPage(login);
     }
 
     /**
      * Отрисовка страницы автора
      */
-    static go_to_category_feed(category) {
-        Page_loaders.category_feed_page(category);
+    static goToCategoryFeed(category) {
+        PageLoaders.categoryFeedPage(category);
     }
 
     /**
      * Отрисовка страницы просмотра статьи
      */
-    static open_article(article_id) {
-        Page_loaders.article_page(article_id);
+    static openArticle(articleId) {
+        PageLoaders.articlePage(articleId);
     }
 
     /**
      * Отрисовка страницы профиля
      */
-    static go_to_settings_page() {
-        Page_loaders.settings_page();
+    static goToSettingsPage() {
+        PageLoaders.settingsPage();
     }
 
     /**
      * Отправление изменений профиля
      */
-    static save_profile_event(user_data) {
-        Requests.save_profile()
+    static saveProfileEvent(userData) {
+        Requests.saveProfile(userData);
     }
 
     /**
      * Отправление изменений профиля
      */
-    static save_profile_listener() {
-        const email_form = document.getElementById("settings__email");
-        const login_form = document.getElementById("settings__login");
-        const username_form = document.getElementById("settings__nickname");
+    static saveProfileListener() {
+        const emailForm = document.getElementById("settings__email");
+        const loginForm = document.getElementById("settings__login");
+        const usernameForm = document.getElementById("settings__nickname");
 
-        const user_data = {
-            email: email_form.value.trim(),
-            login: login_form.value.trim(),
-            username: username_form.value.trim(),
+        const userData = {
+            email: emailForm.value.trim(),
+            login: loginForm.value.trim(),
+            username: usernameForm.value.trim(),
         }
 
-        if (!Validators.validate_login(user_data.login)) {
-            Events.#make_invalid(login_form, "Неправильный формат логина");
+        if (!Validators.validateLogin(userData.login)) {
+            Events.#makeInvalid(loginForm, "Неправильный формат логина");
             return
         }
-        Events.#make_valid(login_form);
+        Events.#makeValid(loginForm);
 
-        if (!Validators.validate_email(user_data.email)) {
-            Events.#make_invalid(email_form, "Неправильный формат почты");
+        if (!Validators.validateEmail(userData.email)) {
+            Events.#makeInvalid(emailForm, "Неправильный формат почты");
             return
         }
-        Events.#make_valid(email_form);
+        Events.#makeValid(emailForm);
 
-        if (!Validators.validate_username(user_data.username)) {
-            Events.#make_invalid(username_form, "Неправильный формат ника");
+        if (!Validators.validateUsername(userData.username)) {
+            Events.#makeInvalid(usernameForm, "Неправильный формат ника");
             return
         }
-        Events.#make_valid(username_form);
+        Events.#makeValid(usernameForm);
 
         //TODO:Загрузка картинки
 
-        Requests.save_profile(user_data).then((response) => {
+        Requests.saveProfile(userData).then((response) => {
             if (response.status === 200) {
-                Page_loaders.settings_page();
+                PageLoaders.settingsPage();
             } else {
                 if (response.status === 409) {
                     if (response.body === "login conflict"){
-                        Events.#make_invalid(login_form, "Логин занят");
+                        Events.#makeInvalid(loginForm, "Логин занят");
                     }else{
-                        Events.#make_valid(login_form);
+                        Events.#makeValid(loginForm);
                     }
                     if (response.body === "email conflict"){
-                        Events.#make_invalid(email_form, "Email занят");
+                        Events.#makeInvalid(emailForm, "Email занят");
                     }else{
-                        Events.#make_valid(email_form);
+                        Events.#makeValid(emailForm);
                     }
                 }
                 const form = document.getElementsByClassName("inputs_wrapper")[0];
-                Events.#make_invalid(form, "Что-то пошло не так");
+                Events.#makeInvalid(form, "Что-то пошло не так");
             }
         })
     }
@@ -536,61 +536,61 @@ export class Events {
     /**
      * Обработчик создания статьи
      */
-    static article_create_listener() {
-        const title_form = document.getElementsByClassName('article_edit__title')[0];
-        const category_form = document.getElementsByClassName('select_menu')[0];
-        const description_form = document.getElementsByClassName('article_edit__description')[0];
-        const content_form = document.getElementsByClassName('article_edit__content')[0];
-        const article_data = {
-            title: title_form.textContent,
-            category: category_form.value,
-            description: description_form.textContent,
+    static articleCreateListener() {
+        const titleForm = document.getElementsByClassName('article_edit__title')[0];
+        const categoryForm = document.getElementsByClassName('select_menu')[0];
+        const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
+        const contentForm = document.getElementsByClassName('article_edit__content')[0];
+        const articleData = {
+            title: titleForm.textContent,
+            category: categoryForm.value,
+            description: descriptionForm.textContent,
             tags: [''],
             co_author: '',
-            content: content_form.textContent,
+            content: contentForm.textContent,
         }
 
-        Events.article_create(article_data);
+        Events.articleCreate(articleData);
     }
 
     /**
      * Обработчик изменения статьи
      */
-    static article_update_listener(article_id) {
-        const title_form = document.getElementsByClassName('article_edit__title')[0];
-        const category_form = document.getElementsByClassName('select_menu')[0];
-        const description_form =document.getElementsByClassName('article_edit__description')[0];
-        const content_form = document.getElementsByClassName('article_edit__content')[0];
-        const article_data = {
-            id: article_id,
-            title: title_form.textContent,
-            category: category_form.value,
-            description: description_form.textContent,
+    static articleUpdateListener(articleId) {
+        const titleForm = document.getElementsByClassName('article_edit__title')[0];
+        const categoryForm = document.getElementsByClassName('select_menu')[0];
+        const descriptionForm =document.getElementsByClassName('article_edit__description')[0];
+        const contentForm = document.getElementsByClassName('article_edit__content')[0];
+        const articleData = {
+            id: articleId,
+            title: titleForm.textContent,
+            category: categoryForm.value,
+            description: descriptionForm.textContent,
             tags: [""],
-            content: content_form.textContent,
+            content: contentForm.textContent,
         }
 
-        Events.article_update(article_data);
+        Events.article_update(articleData);
     }
 
     /**
      * Удаление статьи по id
      */
-    static article_remove(article_id) {
-        Requests.article_remove(article_id);
+    static articleRemove(articleId) {
+        Requests.articleRemove(articleId);
     }
 
     /**
      * Создание статьи
      */
-    static article_create(article_data) {
-        Requests.article_create(article_data);
+    static articleCreate(articleData) {
+        Requests.articleCreate(articleData);
     }
 
     /**
      * Обновление статьи
      */
-    static article_update(article_data) {
-        Requests.article_update(article_data);
+    static articleUpdate(articleData) {
+        Requests.articleUpdate(articleData);
     }
 }

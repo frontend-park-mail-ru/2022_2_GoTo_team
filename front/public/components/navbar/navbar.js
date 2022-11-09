@@ -1,18 +1,18 @@
-import Navbar_view from "./navbar_view.js";
-import Basic_component from "../_basic_component/basic_component.js";
+import NavbarView from "./navbar_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
  * @class Navbar
  */
-export default class Navbar extends Basic_component {
+export default class Navbar extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Navbar_view();
+        this.view = new NavbarView();
     }
     /**
      * Перерисовка подконтрольного элемента
@@ -29,13 +29,13 @@ export default class Navbar extends Basic_component {
      */
     subscribe() {
         const logo = this.root.getElementsByClassName('navbar__logo')[0];
-        logo.addEventListener('click', Events.go_to_feed_page);
+        logo.addEventListener('click', Events.goToFeedPage);
 
         const popular = this.root.getElementsByClassName('navbar__button')[0];
-        const new_feed = this.root.getElementsByClassName('navbar__button')[1];
-        const subscribe_feed = this.root.getElementsByClassName('navbar__button')[2];
-        popular.addEventListener('click', Events.go_to_feed_page);
-        new_feed.addEventListener('click', Events.go_to_feed_page);
-        subscribe_feed.addEventListener('click', Events.go_to_feed_page);
+        const newFeed = this.root.getElementsByClassName('navbar__button')[1];
+        const subscribeFeed = this.root.getElementsByClassName('navbar__button')[2];
+        popular.addEventListener('click', Events.goToFeedPage);
+        newFeed.addEventListener('click', Events.goToFeedPage);
+        subscribeFeed.addEventListener('click', Events.goToFeedPage);
     }
 };

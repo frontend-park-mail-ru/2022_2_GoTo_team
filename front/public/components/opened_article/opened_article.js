@@ -1,18 +1,18 @@
-import Opened_article_view from "./opened_article_view.js";
-import Basic_component from "../_basic_component/basic_component.js";
+import OpenedArticleView from "./opened_article_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class Opened_article
+ * @class OpenedArticle
  */
-export default class Opened_article extends Basic_component {
+export default class OpenedArticle extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Opened_article_view();
+        this.view = new OpenedArticleView();
     }
 
     /**
@@ -28,9 +28,9 @@ export default class Opened_article extends Basic_component {
      * @property {Object} article.publisher
      * @property {string} article.publisher.username
      * @property {string} article.publisher.login
-     * @property {Object} article.co_author
-     * @property {string} article.co_author.username
-     * @property {string} article.co_author.login
+     * @property {Object} article.coАuthor
+     * @property {string} article.coАuthor.username
+     * @property {string} article.coАuthor.login
      * @return {HTMLElement}
      */
     render(article) {
@@ -41,15 +41,15 @@ export default class Opened_article extends Basic_component {
 
     subscribe() {
         super.subscribe();
-        const author_link = this.root.getElementsByClassName('article__author')[0];
-        author_link.addEventListener('click', () => {
-            Events.go_to_author_feed(this.view.publisher);
+        const authorLink = this.root.getElementsByClassName('article__author')[0];
+        authorLink.addEventListener('click', () => {
+            Events.goToAuthorFeed(this.view.publisher);
         })
 
         if (this.view.category !== ""){
-            const category_link = this.root.getElementsByClassName('article__category')[0];
-            category_link.addEventListener('click', () => {
-                Events.go_to_category_feed(this.view.category);
+            const categoryLink = this.root.getElementsByClassName('article__category')[0];
+            categoryLink.addEventListener('click', () => {
+                Events.goToCategoryFeed(this.view.category);
             })
         }
     }

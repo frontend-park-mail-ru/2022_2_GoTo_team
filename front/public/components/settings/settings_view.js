@@ -1,21 +1,21 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/settings.tmpl.js";
 
 /**
- * @class Settings_view
+ * @class SettingsView
  */
-export default class Settings_view extends Basic_component_view {
+export default class SettingsView extends BasicComponentView {
     /**
-     * @param {Object} user_data
+     * @param {Object} userData
      * @return {HTMLElement}
      */
-    render(user_data) {
+    render(userData) {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = Handlebars.templates['settings.html']({
-            email: user_data.email,
-            login: user_data.login,
-            username: user_data.username,
-            avatar_link: user_data.avatar_link,
+            email: userData.email,
+            login: userData.login,
+            username: userData.username,
+            avatar_link: userData.avatar_link,
         });
         return wrapper.firstChild;
     }

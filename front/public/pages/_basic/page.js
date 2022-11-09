@@ -1,4 +1,4 @@
-import Page_view from "./page_view.js";
+import PageView from "./page_view.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Page
@@ -9,7 +9,7 @@ export default class Page {
      * @param {HTMLElement} root
      */
     constructor(root) {
-        this.view = new Page_view(root);
+        this.view = new PageView(root);
     }
 
     /**

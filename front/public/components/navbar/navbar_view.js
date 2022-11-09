@@ -1,10 +1,10 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/navbar.tmpl.js";
 
 /**
- * @class Navbar_view
+ * @class NavbarView
  */
-export default class Navbar_view extends Basic_component_view {
+export default class NavbarView extends BasicComponentView {
     /**
      * @return {HTMLElement}
      */

@@ -1,9 +1,9 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 
 /**
- * @class Overlay_view
+ * @class OverlayView
  */
-export default class Overlay_view extends Basic_component_view {
+export default class OverlayView extends BasicComponentView {
     /**
      * @return {HTMLElement}
      */
@@ -14,10 +14,10 @@ export default class Overlay_view extends Basic_component_view {
 
         overlay.appendChild(document.createElement('div'));
 
-        const center_div = document.createElement('div');
-        center_div.classList.add('overlay__center');
-        center_div.id = 'overlay__center';
-        overlay.appendChild(center_div);
+        const centerDiv = document.createElement('div');
+        centerDiv.classList.add('overlay__center');
+        centerDiv.id = 'overlay__center';
+        overlay.appendChild(centerDiv);
 
         overlay.appendChild(document.createElement('div'));
 

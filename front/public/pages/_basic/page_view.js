@@ -1,8 +1,8 @@
 /**
  * View для соответсвующих страниц
- * @class Page_view
+ * @class PageView
  */
-export default class Page_view {
+export default class PageView {
     /**
      * @param {HTMLElement} root
      */

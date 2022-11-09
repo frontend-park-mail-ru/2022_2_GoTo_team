@@ -1,10 +1,10 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/article_edit.tmpl.js";
 
 /**
- * @class Article_edit_view
+ * @class ArticleEditView
  */
-export default class Article_edit_view extends Basic_component_view {
+export default class ArticleEditView extends BasicComponentView {
     /**
      * Перерисовка подконтрольного элемента
      * @param {Object?} article
@@ -15,13 +15,13 @@ export default class Article_edit_view extends Basic_component_view {
      * @property {string} article.category
      * @property {int} article.rating
      * @property {int} article.comments
-     * @property {string} article.cover_img_path
+     * @property {string} article.coverImgPath
      * @property {Object} article.publisher
      * @property {string} article.publisher.username
      * @property {string} article.publisher.login
-     * @property {Object} article.co_author
-     * @property {string} article.co_author.username
-     * @property {string} article.co_author.login
+     * @property {Object} article.coAuthor
+     * @property {string} article.coAuthor.username
+     * @property {string} article.coAuthor.login
      * @property {string} article.content
      * @param {string[]} categories
      * @return {HTMLElement}

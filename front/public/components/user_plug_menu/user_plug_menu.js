@@ -1,18 +1,18 @@
-import Basic_component from "../_basic_component/basic_component.js";
-import User_plug_menu_view from "./user_plug_menu_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
+import UserPlugMenuView from "./user_plug_menu_view.js";
 import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class User_plug_menu
+ * @class UserPlugMenu
  */
-export default class User_plug_menu extends Basic_component {
+export default class UserPlugMenu extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new User_plug_menu_view();
+        this.view = new UserPlugMenuView();
     }
     /**
      * @return {HTMLElement}
@@ -28,9 +28,9 @@ export default class User_plug_menu extends Basic_component {
      */
     subscribe() {
         super.subscribe();
-        const profile_button = document.getElementById('profile_menu__profile_button');
-        profile_button.addEventListener('click', Events.go_to_settings_page);
-        const exit_button = document.getElementById('profile_menu__unauthorize_button');
-        exit_button.addEventListener('click', Events.profile_menu_unauthorize_listener);
+        const profileButton = document.getElementById('profile_menu__profile_button');
+        profileButton.addEventListener('click', Events.goToSettingsPage);
+        const exitButton = document.getElementById('profile_menu__unauthorize_button');
+        exitButton.addEventListener('click', Events.profileMenuUnauthorizeListener);
     }
 };

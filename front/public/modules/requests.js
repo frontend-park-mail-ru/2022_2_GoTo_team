@@ -6,19 +6,19 @@ const config = {
         articles: '/feed',
         login: '/session/create',
         signup: '/user/signup',
-        session_info: '/session/info',
-        session_remove: '/session/remove',
-        user_info: '/user/info',
-        user_feed: '/feed/user',
-        category_info: '/category/info',
-        category_feed: '/feed/category',
+        sessionInfo: '/session/info',
+        sessionRemove: '/session/remove',
+        userInfo: '/user/info',
+        userFeed: '/feed/user',
+        categoryInfo: '/category/info',
+        categoryFeed: '/feed/category',
         article: '/article',
         profile: '/profile',
-        save_profile: '/profile/update',
-        article_remove: '/article/remove',
-        article_create: '/article/create',
-        article_update: '/article/update',
-        category_list: '/category/list',
+        saveProfile: '/profile/update',
+        articleRemove: '/article/remove',
+        articleCreate: '/article/create',
+        articleUpdate: '/article/update',
+        categoryList: '/category/list',
     }
 }
 
@@ -27,7 +27,7 @@ export class Requests {
      * Запрашивает статьи
      * @return {Promise} Promise с массивом статей
      */
-    static get_articles() {
+    static getArticles() {
         const promise = ajax.get({
             url: config.hrefs.articles,
         }).then((response) => {
@@ -43,10 +43,10 @@ export class Requests {
      * @property {string} password
      * @return {Promise} Promise со статусом запроса
      */
-    static login(user_data) {
+    static login(userData) {
         return ajax.post({
             url: config.hrefs.login,
-            body: {"user_data": {"email": user_data.email, "password": user_data.password}}
+            body: {"user_data": {"email": userData.email, "password": userData.password}}
         }).then((response) => {
             return response.status;
         });
@@ -61,15 +61,15 @@ export class Requests {
      * @property {string} password
      * @return {Promise} Promise со статусом запроса
      */
-    static signup(user_data) {
+    static signup(userData) {
         return ajax.post({
             url: config.hrefs.signup,
             body: {
                 "new_user_data": {
-                    "email": user_data.email,
-                    "login": user_data.login,
-                    "username": user_data.username,
-                    "password": user_data.password
+                    "email": userData.email,
+                    "login": userData.login,
+                    "username": userData.username,
+                    "password": userData.password
                 }
             },
         }).then((response) => {
@@ -81,18 +81,18 @@ export class Requests {
      * Получение информации пользователя по куке
      * @return {Promise} Promise со статусом и никнеймом
      */
-    static get_session_info() {
+    static getSessionInfo() {
         return ajax.get({
-            url: config.hrefs.session_info,
+            url: config.hrefs.sessionInfo,
         });
     }
 
     /**
      * Деавторизация
      */
-    static remove_session() {
+    static removeSession() {
         return ajax.post({
-            url: config.hrefs.session_remove,
+            url: config.hrefs.sessionRemove,
         });
     }
 
@@ -100,20 +100,20 @@ export class Requests {
     /**
      * Информация в шапку страницы автора
      */
-    static user_header_info(login) {
+    static userHeaderInfo(login) {
         return ajax.get({
-            url: config.hrefs.user_info,
+            url: config.hrefs.userInfo,
             data: {
                 login: login,
             }
         }).then((response) => {
-            const user_data = {
+            const userData = {
                 username: response.response.username,
                 rating: response.response.rating,
-                subscribers: response.response.subscribers_count,
+                subscribers: response.response.subscribersCount,
                 registration_date: response.response.registration_date,
             }
-            return user_data;
+            return userData;
         });
     }
 
@@ -121,9 +121,9 @@ export class Requests {
      * Запрашивает статьи автора
      * @return {Promise} Promise с массивом статей
      */
-    static get_user_articles(login) {
+    static getUserArticles(login) {
         const promise = ajax.get({
-            url: config.hrefs.user_feed,
+            url: config.hrefs.userFeed,
             data: {
                 login: login,
             }
@@ -136,19 +136,19 @@ export class Requests {
     /**
      * Информация в шапку страницы категории
      */
-    static category_header_info(category) {
+    static categoryHeaderInfo(category) {
         return ajax.get({
-            url: config.hrefs.category_info,
+            url: config.hrefs.categoryInfo,
             data: {
                 category: category,
             }
         }).then((response) => {
-            const category_data = {
+            const categoryData = {
                 name: response.response.category_name,
                 description: response.response.description,
                 subscribers: response.response.subscribers_count,
             }
-            return category_data;
+            return categoryData;
         });
     }
 
@@ -156,9 +156,9 @@ export class Requests {
      * Запрашивает статьи автора
      * @return {Promise} Promise с массивом статей
      */
-    static get_category_articles(category) {
+    static getCategoryArticles(category) {
         const promise = ajax.get({
-            url: config.hrefs.category_feed,
+            url: config.hrefs.categoryFeed,
             data: {
                 category: category,
             }
@@ -171,11 +171,11 @@ export class Requests {
     /**
      * Запрашивает статью по id
      */
-    static get_article(article_id) {
+    static getArticle(articleId) {
         return ajax.get({
             url: config.hrefs.article,
             data: {
-                id: article_id,
+                id: articleId,
             }
         }).then((response) => {
             return response.response;
@@ -185,7 +185,7 @@ export class Requests {
     /**
      * Запрашивает данные профиля
      */
-    static get_profile() {
+    static getProfile() {
         return ajax.get({
             url: config.hrefs.profile,
         }).then((response) => {
@@ -193,7 +193,7 @@ export class Requests {
                 email: response.response.email,
                 login: response.response.login,
                 username: response.response.username,
-                avatar_link: response.response.avatar_img_path,
+                avatarLink: response.response.avatar_img_path,
             };
         });
     }
@@ -201,14 +201,14 @@ export class Requests {
     /**
      * Сохраняет настройки профиля
      */
-    static save_profile(user_data) {
+    static saveProfile(userData) {
         return ajax.post({
-            url: config.hrefs.save_profile,
+            url: config.hrefs.saveProfile,
             body: {
-                email: user_data.email,
-                login: user_data.login,
-                username: user_data.username,
-                avatar_img_path: user_data.avatar_link,
+                email: userData.email,
+                login: userData.login,
+                username: userData.username,
+                avatarImgPath: userData.avatar_link,
             }
         }).then((result) => {
             if (result.status === 200){
@@ -240,11 +240,11 @@ export class Requests {
     /**
      * Удаляет статью по id
      */
-    static article_remove(article_id) {
+    static articleRemove(articleId) {
         return ajax.post({
-            url: config.hrefs.article_remove,
+            url: config.hrefs.articleRemove,
             body: {
-                id: article_id
+                id: articleId
             }
         });
     }
@@ -252,16 +252,16 @@ export class Requests {
     /**
      * Создаёт статью
      */
-    static article_create(article_data) {
+    static articleCreate(articleData) {
         return ajax.post({
-            url: config.hrefs.article_create,
+            url: config.hrefs.articleCreate,
             body: {
-                title: article_data.title,
-                description: article_data.description,
-                tags: article_data.tags,
-                category: article_data.category,
-                co_author: article_data.co_author,
-                content: article_data.content,
+                title: articleData.title,
+                description: articleData.description,
+                tags: articleData.tags,
+                category: articleData.category,
+                co_author: articleData.coAuthor,
+                content: articleData.content,
             }
         });
     }
@@ -269,16 +269,16 @@ export class Requests {
     /**
      * Обновляет статью
      */
-    static article_update(article_data) {
+    static articleUpdate(articleData) {
         return ajax.post({
-            url: config.hrefs.article_update,
+            url: config.hrefs.articleUpdate,
             body: {
-                id: article_data.id,
-                title: article_data.title,
-                description: article_data.description,
-                tags: article_data.tags,
-                category: article_data.category,
-                content: article_data.content,
+                id: articleData.id,
+                title: articleData.title,
+                description: articleData.description,
+                tags: articleData.tags,
+                category: articleData.category,
+                content: articleData.content,
             }
         });
     }
@@ -286,9 +286,9 @@ export class Requests {
     /**
      * Обновляет статью
      */
-    static get_categories() {
+    static getCategories() {
         return ajax.get({
-            url: config.hrefs.category_list,
+            url: config.hrefs.categoryList,
         }).response;
     }
 }

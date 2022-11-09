@@ -1,21 +1,21 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/user_page_header.tmpl.js";
 
 /**
- * @class User_feed_header_view
+ * @class UserFeedHeaderView
  */
-export default class User_feed_header_view extends Basic_component_view {
+export default class UserFeedHeaderView extends BasicComponentView {
     /**
-     * @param {Object} user_data
+     * @param {Object} userData
      * @return {HTMLElement}
      */
-    render(user_data) {
+    render(userData) {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = Handlebars.templates['user_page_header.html']({
-            username: user_data.username,
-            rating: user_data.rating,
-            subscribers: user_data.subscribers,
-            registration_date: user_data.registration_date,
+            username: userData.username,
+            rating: userData.rating,
+            subscribers: userData.subscribers,
+            registration_date: userData.registration_date,
         });
         return wrapper.firstChild;
     }

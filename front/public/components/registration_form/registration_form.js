@@ -1,18 +1,17 @@
-import Basic_component from "../_basic_component/basic_component.js";
-import Registration_form_view from "./registration_form_view.js";
-import {Events} from "../../modules/events.js";
+import BasicComponent from "../_basic_component/basic_component.js";
+import RegistrationFormView from "./registration_form_view.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class Registration_form
+ * @class RegistrationForm
  */
-export default class Registration_form extends Basic_component {
+export default class RegistrationForm extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Registration_form_view();
+        this.view = new RegistrationFormView();
     }
 
     /**
@@ -27,52 +26,50 @@ export default class Registration_form extends Basic_component {
 
     /**
      * Подписка на связанные события
-     * @param {Object} event_bus
+     * @param {Object} eventBus
      * @property {function} submit
-     * @property {function?} go_to_login
-     * @property {function} email_validation
-     * @property {function} login_validation
-     * @property {function} username_validation
-     * @property {function} password_validation
-     * @property {function} repeat_password_validation
-     * @property {function?} close_form
+     * @property {function?} goToLogin
+     * @property {function} emailValidation
+     * @property {function} loginValidation
+     * @property {function} usernameValidation
+     * @property {function} passwordValidation
+     * @property {function} repeatPasswordValidation
+     * @property {function?} closeForm
      */
-    subscribe(event_bus) {
+    subscribe(eventBus) {
         super.subscribe()
-        const submit_button = document.getElementById("registration_form__submit_button");
-        submit_button.addEventListener('click', event_bus.submit);
+        const submitButton = document.getElementById("registration_form__submit_button");
+        submitButton.addEventListener('click', eventBus.submit);
 
-        const back_button = document.getElementById("login_form__go_back");
-        if (typeof event_bus.go_to_login !== 'undefined') {
+        const backButton = document.getElementById("login_form__go_back");
+        if (typeof eventBus.goToLogin !== 'undefined') {
 
-            back_button.addEventListener('click', event_bus.go_to_login);
+            backButton.addEventListener('click', eventBus.goToLogin);
         }else{
-            this.root.removeChild(back_button);
+            this.root.removeChild(backButton);
         }
 
-        const close_button = document.getElementById("login_form__cross");
-        if (typeof event_bus.close_form !== 'undefined') {
-            close_button.addEventListener('click', event_bus.close_form);
+        const closeButton = document.getElementById("login_form__cross");
+        if (typeof eventBus.close_form !== 'undefined') {
+            closeButton.addEventListener('click', eventBus.close_form);
         }else{
-            this.root.removeChild(close_button);
+            this.root.removeChild(closeButton);
         }
 
-        const email_form = document.getElementById("registration_form__email");
-        email_form.addEventListener('focusout', event_bus.email_validation);
+        const emailForm = document.getElementById("registration_form__email");
+        emailForm.addEventListener('focusout', eventBus.emailValidation);
 
-        const login_form = document.getElementById("registration_form__login");
-        login_form.addEventListener('focusout', event_bus.login_validation);
+        const loginForm = document.getElementById("registration_form__login");
+        loginForm.addEventListener('focusout', eventBus.loginValidation);
 
-        const username_form = document.getElementById("registration_form__username");
-        username_form.addEventListener('focusout', event_bus.username_validation);
+        const usernameForm = document.getElementById("registration_form__username");
+        usernameForm.addEventListener('focusout', eventBus.usernameValidation);
 
-        const password_form = document.getElementById("registration_form__password");
-        password_form.addEventListener('focusout', event_bus.password_validation);
-        password_form.addEventListener('focusout', event_bus.repeat_password_validation);
+        const passwordForm = document.getElementById("registration_form__password");
+        passwordForm.addEventListener('focusout', eventBus.passwordValidation);
+        passwordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
 
-        const repeat_password_form = document.getElementById("registration_form__repeat-password");
-        repeat_password_form.addEventListener('focusout', event_bus.repeat_password_validation);
+        const repeatPasswordForm = document.getElementById("registration_form__repeat-password");
+        repeatPasswordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
     }
-
-    //TODO:destroy()
 };

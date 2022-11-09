@@ -1,19 +1,19 @@
-import Login_page from "../pages/login/login_page.js";
+import LoginPage from "../pages/login/login_page.js";
 import Feed from "../pages/feed/feed.js";
-import Registration_page from "../pages/registration/registration_page.js";
-import User_feed from "../pages/user_feed/user_feed.js";
-import Category_feed from "../pages/category_feed/category_feed.js";
-import Article_page from "../pages/article/article_page.js";
-import Settings_page from "../pages/settings_page/settings_page.js";
-import Article_edit_page from "../pages/article_edit/article_edit_page.js";
+import RegistrationPage from "../pages/registration/registration_page.js";
+import UserFeed from "../pages/user_feed/user_feed.js";
+import CategoryFeed from "../pages/category_feed/category_feed.js";
+import ArticlePage from "../pages/article/article_page.js";
+import SettingsPage from "../pages/settings_page/settings_page.js";
+import ArticleEditPage from "../pages/article_edit/article_edit_page.js";
 
 const root = document.getElementsByTagName('body')[0];
 
-export class Page_loaders {
+export class PageLoaders {
     /**
      * Отрисовывает страницу популярных страниц
      */
-    static feed_page() {
+    static feedPage() {
         const page = new Feed(root);
         page.render();
         page.subscribe();
@@ -22,8 +22,8 @@ export class Page_loaders {
     /**
      * Отрисовывает страницу логина
      */
-    static login_page() {
-        const page = new Login_page(root);
+    static loginPage() {
+        const page = new LoginPage(root);
         page.render();
         page.subscribe();
     }
@@ -31,8 +31,8 @@ export class Page_loaders {
     /**
      * Отрисовывает страницу регистрации
      */
-    static registration_page() {
-        const page = new Registration_page(root);
+    static registrationPage() {
+        const page = new RegistrationPage(root);
         page.render();
         page.subscribe();
     }
@@ -40,8 +40,8 @@ export class Page_loaders {
     /**
      * Отрисовывает страницу автора
      */
-    static user_feed_page(login) {
-        const page = new User_feed(root);
+    static userFeedPage(login) {
+        const page = new UserFeed(root);
         page.render(login);
         page.subscribe();
     }
@@ -49,8 +49,8 @@ export class Page_loaders {
     /**
      * Отрисовывает страницу автора
      */
-    static category_feed_page(category) {
-        const page = new Category_feed(root);
+    static categoryFeedPage(category) {
+        const page = new CategoryFeed(root);
         page.render(category);
         page.subscribe();
     }
@@ -58,17 +58,17 @@ export class Page_loaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static async article_page(article_id) {
-        const page = new Article_page(root);
-        await page.render(article_id);
+    static async articlePage(articleId) {
+        const page = new ArticlePage(root);
+        await page.render(articleId);
         page.subscribe();
     }
 
     /**
      * Отрисовывает страницу профиля
      */
-    static async settings_page() {
-        const page = new Settings_page(root);
+    static async settingsPage() {
+        const page = new SettingsPage(root);
         await page.render();
         page.subscribe();
     }
@@ -76,9 +76,9 @@ export class Page_loaders {
     /**
      * Отрисовывает редактирования/создания статьи
      */
-    static async edit_article(article_id) {
-        const page = new Article_edit_page(root)
-        await page.render(article_id);
+    static async editArticle(articleId) {
+        const page = new ArticleEditPage(root)
+        await page.render(articleId);
         page.subscribe();
     }
 }

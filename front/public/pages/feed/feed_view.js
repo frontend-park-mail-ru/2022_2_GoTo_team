@@ -1,11 +1,11 @@
-import Page_view from "../_basic/page_view.js";
+import PageView from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
- * @class Feed_view
+ * @class FeedView
  */
-export default class Feed_view extends Page_view {
+export default class FeedView extends PageView {
     /**
      * @param {HTMLElement} root
      */
@@ -23,18 +23,18 @@ export default class Feed_view extends Page_view {
         this.children.set('navbar', navbar);
         this.root.appendChild(navbar.root);
 
-        const root_el = document.createElement('div');
-        root_el.id = 'root';
-        root_el.classList.add('root');
-        this.root.appendChild(root_el);
-        this.root = root_el;
+        const rootEl = document.createElement('div');
+        rootEl.id = 'root';
+        rootEl.classList.add('root');
+        this.root.appendChild(rootEl);
+        this.root = rootEl;
 
         this.root.appendChild(document.createElement('div'));
 
-        const main_content_element = document.createElement('div');
-        main_content_element.classList.add('feed');
-        this.main_content_element = main_content_element;
-        this.root.appendChild(this.main_content_element);
+        const mainContentElement = document.createElement('div');
+        mainContentElement.classList.add('feed');
+        this.mainContentElement = mainContentElement;
+        this.root.appendChild(this.mainContentElement);
 
         this.root.appendChild(document.createElement('div'));
     }

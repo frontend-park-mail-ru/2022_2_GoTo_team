@@ -1,10 +1,10 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/profile_menu.tmpl.js";
 
 /**
- * @class User_plug_menu_view
+ * @class UserPlugMenuView
  */
-export default class User_plug_menu_view extends Basic_component_view {
+export default class UserPlugMenuView extends BasicComponentView {
     /**
      * @return {HTMLElement}
      */

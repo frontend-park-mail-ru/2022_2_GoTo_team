@@ -1,19 +1,19 @@
-import Article_edit_view from "./article_edit_view.js";
-import Basic_component from "../_basic_component/basic_component.js";
+import ArticleEditView from "./article_edit_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 import {Requests} from "../../modules/requests.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class Article_edit
+ * @class ArticleEdit
  */
-export default class Article_edit extends Basic_component {
+export default class ArticleEdit extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Article_edit_view();
+        this.view = new ArticleEditView();
     }
 
     /**
@@ -25,37 +25,37 @@ export default class Article_edit extends Basic_component {
      * @property {string} article.category
      * @property {int} article.rating
      * @property {int} article.comments
-     * @property {string} article.cover_img_path
+     * @property {string} article.coverImgPath
      * @property {Object} article.publisher
      * @property {string} article.publisher.username
      * @property {string} article.publisher.login
-     * @property {Object} article.co_author
-     * @property {string} article.co_author.username
-     * @property {string} article.co_author.login
+     * @property {Object} article.coAuthor
+     * @property {string} article.coAuthor.username
+     * @property {string} article.coAuthor.login
      * @return {HTMLElement}
      */
     async render(article) {
         super.render();
-        const categories = await Requests.get_categories();
+        const categories = await Requests.getCategories();
         this.root = this.view.render(article, categories);
         return this.root;
     }
 
     subscribe() {
         super.subscribe();
-        const submit_button = this.root.getElementsByClassName('article_edit__save_button')[0];
+        const submitButton = this.root.getElementsByClassName('article_edit__save_button')[0];
 
         if (this.view.update) {
-            submit_button.addEventListener('click', () => {
-                Events.article_update_listener(this.view.id);
+            submitButton.addEventListener('click', () => {
+                Events.articleUpdateListener(this.view.id);
             });
 
-            const delete_button = this.root.getElementsByClassName('article_edit__delete_button')[0];
-            delete_button.addEventListener('click', () => {
-                Events.article_remove(this.view.id);
+            const deleteButton = this.root.getElementsByClassName('article_edit__delete_button')[0];
+            deleteButton.addEventListener('click', () => {
+                Events.articleRemove(this.view.id);
             });
         } else {
-            submit_button.addEventListener('click', Events.article_create_listener);
+            submitButton.addEventListener('click', Events.articleCreateListener);
         }
     }
 };

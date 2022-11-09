@@ -1,17 +1,17 @@
-import Basic_component from "../_basic_component/basic_component.js";
-import Overlay_view from "./overlay_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
+import OverlayView from "./overlay_view.js";
 
 /**
  * View_model-компонент соответсвующего View
  * @class Overlay
  */
-export default class Overlay extends Basic_component {
+export default class Overlay extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Overlay_view();
+        this.view = new OverlayView();
     }
     /**
      * Перерисовка подконтрольного элемента

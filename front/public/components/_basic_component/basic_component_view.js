@@ -1,7 +1,7 @@
 /**
- * @class Basic_component_view
+ * @class BasicComponentView
  */
-export default class Basic_component_view {
+export default class BasicComponentView {
     /**
      * @return {HTMLElement}
      */

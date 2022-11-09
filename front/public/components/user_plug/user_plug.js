@@ -1,18 +1,18 @@
-import User_plug_view from "./user_plug_view.js";
-import Basic_component from "../_basic_component/basic_component.js";
+import UserPlugView from "./user_plug_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class User_plug
+ * @class UserPlug
  */
-export default class User_plug extends Basic_component {
+export default class UserPlug extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new User_plug_view();
+        this.view = new UserPlugView();
     }
 
     /**
@@ -33,9 +33,9 @@ export default class User_plug extends Basic_component {
     subscribe() {
         super.subscribe();
         if (this.view.authed){
-            this.root.addEventListener('click', Events.show_profile_menu_listener)
+            this.root.addEventListener('click', Events.showProfileMenuListener)
         }else{
-            this.root.addEventListener('click', Events.make_login_overlay_listener);
+            this.root.addEventListener('click', Events.makeLoginOverlayListener);
         }
     }
     //TODO:destroy()

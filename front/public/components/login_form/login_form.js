@@ -1,18 +1,17 @@
-import Login_form_view from "./login_form_view.js";
-import Basic_component from "../_basic_component/basic_component.js";
-import {Events} from "../../modules/events.js";
+import LoginFormView from "./login_form_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class Login_form
+ * @class LoginForm
  */
-export default class Login_form extends Basic_component {
+export default class LoginForm extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Login_form_view();
+        this.view = new LoginFormView();
     }
     /**
      * Перерисовка подконтрольного элемента
@@ -28,10 +27,10 @@ export default class Login_form extends Basic_component {
      * Подписка на связанные события
      * @param {Object} event_bus
      * @property {function} submit
-     * @property {function} go_to_registration
-     * @property {function} email_validation
-     * @property {function} password_validation
-     * @property {function?} close_form
+     * @property {function} goToRegistration
+     * @property {function} emailValidation
+     * @property {function} passwordValidation
+     * @property {function?} closeForm
      */
     subscribe(event_bus) {
         super.subscribe()

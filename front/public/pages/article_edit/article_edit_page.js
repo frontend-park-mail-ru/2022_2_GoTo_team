@@ -1,33 +1,33 @@
-import Article_edit_page_view from "./article_edit_page_view.js";
+import ArticleEditPageView from "./article_edit_page_view.js";
 import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
- * @class Article_edit_page
+ * @class ArticleEditPage
  */
-export default class Article_edit_page extends Page{
+export default class ArticleEditPage extends Page {
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
     constructor(root) {
         super(root);
-        this.view = new Article_edit_page_view(root);
+        this.view = new ArticleEditPageView(root);
     }
 
     /**
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(article_id) {
-        if (typeof article_id !== 'undefined'){
-            const article = await Requests.get_article(article_id);
+    async render(articleId) {
+        if (typeof articleId !== 'undefined'){
+            const article = await Requests.getArticle(articleId);
             await this.view.render(article);
         }else{
             await this.view.render();
         }
-        Events.update_auth();
+        Events.updateAuth();
     }
 
     /**

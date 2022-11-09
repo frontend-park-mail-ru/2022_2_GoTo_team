@@ -1,9 +1,9 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/opened_article.tmpl.js";
 /**
- * @class Opened_article_view
+ * @class OpenedArticleView
  */
-export default class Opened_article_view extends Basic_component_view {
+export default class OpenedArticleView extends BasicComponentView {
     /**
      * Перерисовка подконтрольного элемента
      * @param {Object} article

@@ -1,10 +1,10 @@
-import Basic_component_view from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/registration_form.tmpl.js";
 
 /**
- * @class Registration_form_view
+ * @class RegistrationFormView
  */
-export default class Registration_form_view extends Basic_component_view {
+export default class RegistrationFormView extends BasicComponentView {
     /**
      * @return {HTMLElement}
      */

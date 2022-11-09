@@ -1,21 +1,21 @@
 import {Events} from "../../modules/events.js";
-import Login_page_view from "./login_page_view.js";
+import LoginPageView from "./login_page_view.js";
 import Page from "../_basic/page.js";
-import Registration_page from "../registration/registration_page.js";
-import {Page_loaders} from "../../modules/page_loaders.js";
+import RegistrationPage from "../registration/registration_page.js";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
- * @class  Login_page
+ * @class  LoginPage
  */
-export default class Login_page extends Page{
+export default class LoginPage extends Page{
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
     constructor(root) {
         super(root);
-        this.view = new Login_page_view(root);
+        this.view = new LoginPageView(root);
     }
     /**
      * Отобразить подконтрольную страницу.
@@ -24,7 +24,7 @@ export default class Login_page extends Page{
     render() {
         this.view.render();
 
-        Events.update_auth();
+        Events.updateAuth();
     }
 
     /**
@@ -32,16 +32,16 @@ export default class Login_page extends Page{
      */
     subscribe() {
        this.view.children.get('navbar').subscribe();
-       const login_event_bus = {
-            submit: Events.submit_login,
-            go_to_registration: Page_loaders.registration_page,
-            email_validation: Events.email_validate_listener_login,
-            password_validation: Events.password_validate_listener_login,
+       const loginEventBus = {
+            submit: Events.submitLogin,
+            go_to_registration: PageLoaders.registrationPage,
+            email_validation: Events.emailValidateListenerLogin,
+            password_validation: Events.passwordValidateListenerLogin
        }
-       this.view.children.get('form').subscribe(login_event_bus);
+       this.view.children.get('form').subscribe(loginEventBus);
 
        const profile_button = document.getElementById('navbar__auth_button').lastChild;
-       profile_button.removeEventListener('click', Events.make_login_overlay_listener);
-       profile_button.addEventListener('click', Page_loaders.login_page);
+       profile_button.removeEventListener('click', Events.makeLoginOverlayListener);
+       profile_button.addEventListener('click', PageLoaders.loginPage);
     }
 }

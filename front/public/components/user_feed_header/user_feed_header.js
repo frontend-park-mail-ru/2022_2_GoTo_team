@@ -1,25 +1,25 @@
-import User_feed_header_view from "./user_feed_header_view.js";
-import Basic_component from "../_basic_component/basic_component.js";
+import UserFeedHeaderView from "./user_feed_header_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
 
 /**
  * View_model-компонент соответсвующего View
- * @class User_feed_header
+ * @class UserFeedHeader
  */
-export default class User_feed_header extends Basic_component {
+export default class UserFeedHeader extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new User_feed_header_view();
+        this.view = new UserFeedHeaderView();
     }
     /**
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render(user_data) {
+    render(userData) {
         super.render();
-        this.root = this.view.render(user_data);
+        this.root = this.view.render(userData);
         return this.root;
     }
 

@@ -1,18 +1,18 @@
-import Article_view from "./article_view.js";
-import Basic_component from "../_basic_component/basic_component.js";
+import ArticleView from "./article_view.js";
+import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
  * @class Article
  */
-export default class Article extends Basic_component {
+export default class Article extends BasicComponent {
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new Article_view();
+        this.view = new ArticleView();
     }
 
     /**
@@ -43,19 +43,19 @@ export default class Article extends Basic_component {
         super.subscribe();
         const author_link = this.root.getElementsByClassName('article__author')[0];
         author_link.addEventListener('click', () => {
-            Events.go_to_author_feed(this.view.publisher);
+            Events.goToAuthorFeed(this.view.publisher);
         })
 
         if (this.view.category !== ""){
-            const category_link = this.root.getElementsByClassName('article__category')[0];
-            category_link.addEventListener('click', () => {
-                Events.go_to_category_feed(this.view.category);
+            const categoryLink = this.root.getElementsByClassName('article__category')[0];
+            categoryLink.addEventListener('click', () => {
+                Events.goToCategoryFeed(this.view.category);
             })
         }
 
-        const title_link = this.root.getElementsByClassName('article__title')[0];
-        title_link.addEventListener('click', () => {
-            Events.open_article(this.view.id);
+        const titleLink = this.root.getElementsByClassName('article__title')[0];
+        titleLink.addEventListener('click', () => {
+            Events.openArticle(this.view.id);
         });
 
     }
