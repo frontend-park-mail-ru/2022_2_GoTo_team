@@ -1,6 +1,7 @@
 import Article_edit_view from "./article_edit_view.js";
 import Basic_component from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
+import {Requests} from "../../modules/requests.js";
 
 /**
  * View_model-компонент соответсвующего View
@@ -33,9 +34,10 @@ export default class Article_edit extends Basic_component {
      * @property {string} article.co_author.login
      * @return {HTMLElement}
      */
-    render(article) {
+    async render(article) {
         super.render();
-        this.root = this.view.render(article);
+        const categories = await Requests.get_categories();
+        this.root = this.view.render(article, categories);
         return this.root;
     }
 

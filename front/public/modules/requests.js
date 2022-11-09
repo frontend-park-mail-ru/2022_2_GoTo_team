@@ -18,6 +18,7 @@ const config = {
         article_remove: '/article/remove',
         article_create: '/article/create',
         article_update: '/article/update',
+        category_list: '/category/list',
     }
 }
 
@@ -256,5 +257,14 @@ export class Requests {
                 content: article_data.content,
             }
         });
+    }
+
+    /**
+     * Обновляет статью
+     */
+    static get_categories() {
+        return ajax.get({
+            url: config.hrefs.category_list,
+        }).response;
     }
 }

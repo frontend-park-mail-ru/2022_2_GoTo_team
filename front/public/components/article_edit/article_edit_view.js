@@ -23,9 +23,10 @@ export default class Article_edit_view extends Basic_component_view {
      * @property {string} article.co_author.username
      * @property {string} article.co_author.login
      * @property {string} article.content
+     * @param {string[]} categories
      * @return {HTMLElement}
      */
-    render(article) {
+    render(article, categories) {
         const wrapper = document.createElement('div');
         if (typeof article !== 'undefined') {
             wrapper.innerHTML = Handlebars.templates['article_edit.html']({
@@ -36,12 +37,14 @@ export default class Article_edit_view extends Basic_component_view {
                 // publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
                 content: article.content,
                 update: true,
+                categories: categories,
             });
             this.id = article.id;
             this.update = true;
         }else{
             wrapper.innerHTML = Handlebars.templates['article_edit.html']({
                 update: false,
+                categories: categories,
             });
             this.update = false;
         }

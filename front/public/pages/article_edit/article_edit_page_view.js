@@ -17,7 +17,7 @@ export default class Article_edit_page_view extends Page_view {
     /**
      * Перерисовать главную страницу
      */
-    render(article_data) {
+    async render(article_data) {
         super.render();
         const navbar = new Navbar();
         navbar.render();
@@ -38,7 +38,7 @@ export default class Article_edit_page_view extends Page_view {
         this.root.appendChild(this.main_content_element);
 
         const edit_view = new Article_edit();
-        edit_view.render(article_data);
+        await edit_view.render(article_data);
         this.children.set('edit', edit_view);
         main_content_element.appendChild(edit_view.root);
 

@@ -23,9 +23,9 @@ export default class Article_edit_page extends Page{
     async render(article_id) {
         if (typeof article_id !== 'undefined'){
             const article = await Requests.get_article(article_id);
-            this.view.render(article);
+            await this.view.render(article);
         }else{
-            this.view.render();
+            await this.view.render();
         }
         Events.update_auth();
     }
