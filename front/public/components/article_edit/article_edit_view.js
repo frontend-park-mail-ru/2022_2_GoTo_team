@@ -27,7 +27,7 @@ export default class Article_edit_view extends Basic_component_view {
      */
     render(article) {
         const wrapper = document.createElement('div');
-        if (typeof article !== undefined) {
+        if (typeof article !== 'undefined') {
             wrapper.innerHTML = Handlebars.templates['article_edit.html']({
                 title: article.title,
                 description: article.description,

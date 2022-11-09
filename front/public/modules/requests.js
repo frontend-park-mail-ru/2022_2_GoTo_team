@@ -229,7 +229,7 @@ export class Requests {
      */
     static article_create(article_data) {
         return ajax.post({
-            url: config.hrefs.article_remove,
+            url: config.hrefs.article_create,
             body: {
                 title: article_data.title,
                 description: article_data.description,
@@ -246,7 +246,7 @@ export class Requests {
      */
     static article_update(article_data) {
         return ajax.post({
-            url: config.hrefs.article_remove,
+            url: config.hrefs.article_update,
             body: {
                 id: article_data.id,
                 title: article_data.title,

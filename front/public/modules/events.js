@@ -526,6 +526,46 @@ export class Events {
     }
 
     /**
+     * Обработчик создания статьи
+     */
+    static article_create_listener() {
+        const title_form = document.getElementsByClassName('article_edit__title')[0];
+        const category_form = document.getElementsByClassName('select_menu')[0];
+        const description_form = document.getElementsByClassName('article_edit__description')[0];
+        const content_form = document.getElementsByClassName('article_edit__content')[0];
+        const article_data = {
+            title: title_form.textContent,
+            category: category_form.value,
+            description: description_form.textContent,
+            tags: [''],
+            co_author: '',
+            content: content_form.textContent,
+        }
+
+        Events.article_create(article_data);
+    }
+
+    /**
+     * Обработчик изменения статьи
+     */
+    static article_update_listener(article_id) {
+        const title_form = document.getElementsByClassName('article_edit__title')[0];
+        const category_form = document.getElementsByClassName('select_menu')[0];
+        const description_form =document.getElementsByClassName('article_edit__description')[0];
+        const content_form = document.getElementsByClassName('article_edit__content')[0];
+        const article_data = {
+            id: article_id,
+            title: title_form.textContent,
+            category: category_form.value,
+            description: description_form.textContent,
+            tags: [""],
+            content: content_form.textContent,
+        }
+
+        Events.article_update(article_data);
+    }
+
+    /**
      * Удаление статьи по id
      */
     static article_remove(article_id) {

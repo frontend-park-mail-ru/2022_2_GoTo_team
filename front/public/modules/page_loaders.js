@@ -5,6 +5,7 @@ import User_feed from "../pages/user_feed/user_feed.js";
 import Category_feed from "../pages/category_feed/category_feed.js";
 import Article_page from "../pages/article/article_page.js";
 import Settings_page from "../pages/settings_page/settings_page.js";
+import Article_edit_page from "../pages/article_edit/article_edit_page.js";
 
 const root = document.getElementsByTagName('body')[0];
 
@@ -69,6 +70,15 @@ export class Page_loaders {
     static async settings_page() {
         const page = new Settings_page(root);
         await page.render();
+        page.subscribe();
+    }
+
+    /**
+     * Отрисовывает редактирования/создания статьи
+     */
+    static async edit_article(article_id) {
+        const page = new Article_edit_page(root)
+        await page.render(article_id);
         page.subscribe();
     }
 }

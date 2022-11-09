@@ -42,45 +42,18 @@ export default class Article_edit extends Basic_component {
     subscribe() {
         super.subscribe();
         const submit_button = this.root.getElementsByClassName('article_edit__save_button')[0];
-        const title_form =  this.root.getElementsByClassName('article_edit__title')[0];
-        const category_form = this.root.getElementsByClassName('select_menu')[0];
-        const description_form =  this.root.getElementsByClassName('article_edit__description')[0];
-        const content_form =  this.root.getElementsByClassName('article_edit__content')[0];
 
-        if (this.view.update){
-            const article_data = {
-                id: this.view.id,
-                title: title_form.innerHTML,
-                category: category_form.value,
-                description: description_form.innerHTML,
-                tags: [""],
-                content: content_form.innerHTML,
-            }
-
+        if (this.view.update) {
             submit_button.addEventListener('click', () => {
-                Events.article_update(article_data);
+                Events.article_update_listener(this.view.id);
             });
 
             const delete_button = this.root.getElementsByClassName('article_edit__delete_button')[0];
             delete_button.addEventListener('click', () => {
                 Events.article_remove(this.view.id);
             });
-        }else{
-            const article_data = {
-                title: title_form.innerHTML,
-                category: category_form.value,
-                description: description_form.innerHTML,
-                tags: [''],
-                co_author: '',
-                content: content_form.innerHTML,
-            }
-
-            submit_button.addEventListener('click', () => {
-                Events.article_create(article_data);
-            });
+        } else {
+            submit_button.addEventListener('click', Events.article_create_listener);
         }
-        submit_button.addEventListener('click', () => {
-            Events.go_to_author_feed(this.view.publisher);
-        })
     }
 };
