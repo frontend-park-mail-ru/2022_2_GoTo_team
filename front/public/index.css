@@ -7,6 +7,7 @@
     --slight-dark: #E8E8E8;
     --slight-darker-dark: #c7c7c7;
     --negative: #FF1D89;
+    --dark-negative: #ba1563;
 }
 
 body {
@@ -530,6 +531,39 @@ body {
     border: 3px solid var(--main);
 }
 
+.negative_accent_button {
+    background: var(--negative);
+    color: var(--light);
+    fill: var(--light);
+    border-radius: 10px;
+    width: 200px;
+    padding: 10px 0 10px 0;
+    border: 3px solid var(--negative);
+}
+
+.negative_accent_button:hover {
+    background: var(--dark-negative);
+    border: 3px solid var(--dark-negative);
+}
+
+.negative_non_accent_button {
+    color: var(--negative);
+    fill: var(--negative);
+    background: var(--light);
+    border-radius: 10px;
+    border: 3px solid var(--negative);
+    width: 200px;
+    padding: 10px 0 10px 0;
+    text-align: center;
+}
+
+.negative_non_accent_button:hover {
+    background: var(--negative);
+    color: var(--light);
+    fill: var(--light);
+    border: 3px solid var(--negative);
+}
+
 div.log-button-container {
     margin: 20px 0 10px 0;
     display: flex;
@@ -766,4 +800,56 @@ div.log-button-container {
     font-size: 16px;
     padding: 10px 0;
     width: 75%;
+}
+
+.div_textarea{
+    width: 100%;
+    border: var(--slight-dark) 1px solid;
+    outline: none;
+    resize: none;
+    font-size: 16px;
+    margin: 6px;
+    padding: 5px;
+}
+
+.article_edit__content{
+    min-height: 200px;
+    margin-bottom: 55px;
+}
+
+.article_edit__footer{
+
+    position: fixed;
+    bottom: 0;
+    left: 20%;
+    right: 18%;
+    height: 55px;
+}
+
+.article_edit__save_button{
+    height: fit-content;
+    font-size: 16px;
+    text-align: center;
+    width: fit-content;
+    padding: 8px;
+}
+
+.article_edit__delete_button{
+    height: 40px;
+    width: 40px;
+    font-size: 16px;
+    text-align: center;
+    padding: 7px;
+    float: left;
+    margin-left: auto;
+}
+
+.article_edit__delete_button svg{
+    width: 20px;
+    height: 20px;
+}
+
+.article_edit__label{
+    font-size: 20px;
+    margin-left: 10px;
 }

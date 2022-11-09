@@ -29,6 +29,7 @@ export default class Settings_page extends Page{
         settings_form.render(user_data);
         this.view.main_content_element.appendChild(settings_form.root);
         this.view.children.set('form', settings_form);
+        console.log(this.view.children);
 
         Events.update_auth();
     }

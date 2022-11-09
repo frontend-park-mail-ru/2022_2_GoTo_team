@@ -524,4 +524,25 @@ export class Events {
             }
         })
     }
+
+    /**
+     * Удаление статьи по id
+     */
+    static article_remove(article_id) {
+        Requests.article_remove(article_id);
+    }
+
+    /**
+     * Создание статьи
+     */
+    static article_create(article_data) {
+        Requests.article_create(article_data);
+    }
+
+    /**
+     * Обновление статьи
+     */
+    static article_update(article_data) {
+        Requests.article_update(article_data);
+    }
 }

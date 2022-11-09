@@ -15,6 +15,9 @@ const config = {
         article: '/article',
         profile: '/profile',
         save_profile: '/profile/save',
+        article_remove: '/article/remove',
+        article_create: '/article/create',
+        article_update: '/article/update',
     }
 }
 
@@ -179,7 +182,7 @@ export class Requests {
     }
 
     /**
-     * Запрашивает статью по id
+     * Запрашивает данные профиля
      */
     static get_profile() {
         return ajax.get({
@@ -195,7 +198,7 @@ export class Requests {
     }
 
     /**
-     * Запрашивает статью по id
+     * Сохраняет настройки профиля
      */
     static save_profile(user_data) {
         return ajax.post({
@@ -205,6 +208,52 @@ export class Requests {
                 login: user_data.login,
                 username: user_data.username,
                 avatar_img_path: user_data.avatar_link,
+            }
+        });
+    }
+
+    /**
+     * Удаляет статью по id
+     */
+    static article_remove(article_id) {
+        return ajax.post({
+            url: config.hrefs.article_remove,
+            body: {
+                id: article_id
+            }
+        });
+    }
+
+    /**
+     * Создаёт статью
+     */
+    static article_create(article_data) {
+        return ajax.post({
+            url: config.hrefs.article_remove,
+            body: {
+                title: article_data.title,
+                description: article_data.description,
+                tags: article_data.tags,
+                category: article_data.category,
+                co_author: article_data.co_author,
+                content: article_data.content,
+            }
+        });
+    }
+
+    /**
+     * Обновляет статью
+     */
+    static article_update(article_data) {
+        return ajax.post({
+            url: config.hrefs.article_remove,
+            body: {
+                id: article_data.id,
+                title: article_data.title,
+                description: article_data.description,
+                tags: article_data.tags,
+                category: article_data.category,
+                content: article_data.content,
             }
         });
     }
