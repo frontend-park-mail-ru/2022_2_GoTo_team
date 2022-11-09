@@ -296,6 +296,11 @@ body {
     font-size: 24px;
     line-height: 46px;
     padding: 5px 20px 5px 20px;
+    cursor: pointer;
+}
+
+.article__title:hover{
+    color: var(--main);
 }
 
 .article__description {

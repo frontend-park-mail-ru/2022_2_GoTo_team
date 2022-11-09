@@ -21,14 +21,14 @@ export default class Settings_page extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    render() {
+    async render() {
         this.view.render();
-        Requests.get_profile().then((user_data) => {
-            const settings_form = new Settings();
-            settings_form.render(user_data);
-            this.view.main_content_element.appendChild(settings_form.root);
-            settings_form.subscribe();
-        });
+
+        const user_data = await Requests.get_profile();
+        const settings_form = new Settings();
+        settings_form.render(user_data);
+        this.view.main_content_element.appendChild(settings_form.root);
+        this.view.children.set('form', settings_form);
 
         Events.update_auth();
     }
@@ -38,6 +38,6 @@ export default class Settings_page extends Page{
      */
     subscribe() {
         this.view.children.get('navbar').subscribe();
-
+        this.view.children.get('form').subscribe();
     }
 }

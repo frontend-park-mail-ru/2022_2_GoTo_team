@@ -457,6 +457,13 @@ export class Events {
     }
 
     /**
+     * Отрисовка страницы просмотра статьи
+     */
+    static open_article(article_id) {
+        Page_loaders.article_page(article_id);
+    }
+
+    /**
      * Отрисовка страницы профиля
      */
     static go_to_settings_page() {

@@ -171,7 +171,7 @@ export class Requests {
         return ajax.get({
             url: config.hrefs.article,
             data: {
-                article: article_id,
+                id: article_id,
             }
         }).then((response) => {
             return response.response;

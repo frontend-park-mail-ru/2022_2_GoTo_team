@@ -57,9 +57,9 @@ export class Page_loaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static article_page(article_id) {
+    static async article_page(article_id) {
         const page = new Article_page(root);
-        page.render(article_id);
+        await page.render(article_id);
         page.subscribe();
     }
 

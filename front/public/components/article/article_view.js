@@ -7,6 +7,7 @@ export default class Article_view extends Basic_component_view {
     /**
      * Перерисовка подконтрольного элемента
      * @param {Object} article
+     * @property {int} article.id
      * @property {string} article.title
      * @property {string} article.description
      * @property {string[]} article.tags
@@ -35,6 +36,7 @@ export default class Article_view extends Basic_component_view {
         });
         this.publisher = article.publisher.login;
         this.category = article.category;
+        this.id = article.id;
         return wrapper.firstChild;
     }
 }

@@ -52,5 +52,11 @@ export default class Article extends Basic_component {
                 Events.go_to_category_feed(this.view.category);
             })
         }
+
+        const title_link = this.root.getElementsByClassName('article__title')[0];
+        title_link.addEventListener('click', () => {
+            Events.open_article(this.view.id);
+        });
+
     }
 };

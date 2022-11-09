@@ -20,12 +20,11 @@ export default class Article_page extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    render(article_id) {
+    async render(article_id) {
 
-        Requests.get_article(article_id).then((article) => {
-            this.view.render(article);
-            Events.update_auth();
-        });
+        const article = await Requests.get_article(article_id);
+        this.view.render(article);
+        Events.update_auth();
     }
 
     /**
