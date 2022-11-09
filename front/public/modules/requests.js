@@ -12,7 +12,8 @@ const config = {
         user_feed: '/feed/user',
         category_info: '/category/info',
         category_feed: '/feed/category',
-        article: '/article'
+        article: '/article',
+        profile: '/profile',
     }
 }
 
@@ -173,6 +174,22 @@ export class Requests {
             }
         }).then((response) => {
             return response.response;
+        });
+    }
+
+    /**
+     * Запрашивает статью по id
+     */
+    static get_profile() {
+        return ajax.get({
+            url: config.hrefs.profile,
+        }).then((response) => {
+            return {
+                email: response.response.email,
+                login: response.response.login,
+                username: response.response.username,
+                avatar_link: response.response.avatar_img_path,
+            };
         });
     }
 }

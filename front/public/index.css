@@ -547,7 +547,7 @@ div.log-button-container {
 }
 
 .overlay {
-    position: fixed; /* Sit on top of the page content */
+    position: fixed; /* Sit on top of the settings_page content */
     top: 0;
     left: 0;
     right: 0;
@@ -584,6 +584,7 @@ div.log-button-container {
 .profile_box {
     width: 100%;
     margin: 5px;
+    padding: 10px 0;
 }
 
 .inputs_wrapper {
