@@ -230,7 +230,8 @@ body {
 }
 
 .article__wrapper {
-    margin: 5px 20px 5px 20px;
+    margin: 5px auto 5px;
+    width: 85%;
 }
 
 .article__top_bar {
