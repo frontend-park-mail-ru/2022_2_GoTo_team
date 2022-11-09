@@ -27,7 +27,7 @@ export default class Settings_page extends Page{
             const settings_form = new Settings();
             settings_form.render(user_data);
             this.view.main_content_element.appendChild(settings_form.root);
-            this.view.children.set('form', settings_form);
+            settings_form.subscribe();
         });
 
         Events.update_auth();
@@ -38,5 +38,6 @@ export default class Settings_page extends Page{
      */
     subscribe() {
         this.view.children.get('navbar').subscribe();
+
     }
 }

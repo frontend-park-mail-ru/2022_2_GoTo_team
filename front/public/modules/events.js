@@ -9,7 +9,6 @@ import User_plug_menu from "../components/user_plug_menu/user_plug_menu.js";
 import {Page_loaders} from "./page_loaders.js";
 
 
-
 export class Events {
     static #overlay_login_event_bus = {
         submit: Events.submit_login,
@@ -29,6 +28,7 @@ export class Events {
         repeat_password_validation: Events.password_repeat_validate_listener_registration,
         close_form: Events.close_overlay_listener,
     }
+
     /**
      * Отрисовывает оверлей
      */
@@ -158,7 +158,7 @@ export class Events {
                 const form = document.getElementById("login-form_inputs-wrapper");
                 Events.#make_invalid(form, "Что-то пошло не так");
             }
-        })
+        });
     }
 
     /**
@@ -216,10 +216,10 @@ export class Events {
     /**
      * Проверяет валидность значения в поле почты в плашке логина
      */
-    static email_validate_listener_login(){
+    static email_validate_listener_login() {
         const email_form = document.getElementById('login_form__email_login');
         const email = email_form.value.trim();
-        if (email === ''){
+        if (email === '') {
             return;
         }
         if (!Validators.validate_email(email)) {
@@ -232,10 +232,10 @@ export class Events {
     /**
      * Проверяет валидность значения в поле пароля в плашке логина
      */
-    static password_validate_listener_login(){
+    static password_validate_listener_login() {
         const password_form = document.getElementById("login_form__password");
         const password = password_form.value.trim();
-        if (password === ''){
+        if (password === '') {
             return;
         }
         if (!Validators.validate_password(password)) {
@@ -248,10 +248,10 @@ export class Events {
     /**
      * Проверяет валидность значения в поле почты в плашке регистрации
      */
-    static email_validate_listener_registration(){
+    static email_validate_listener_registration() {
         const email_form = document.getElementById('registration_form__email');
         const email = email_form.value.trim();
-        if (email === ''){
+        if (email === '') {
             return;
         }
         if (!Validators.validate_email(email)) {
@@ -264,10 +264,10 @@ export class Events {
     /**
      * Проверяет валидность значения в поле логина в плашке регистрации
      */
-    static login_validate_listener_registration(){
+    static login_validate_listener_registration() {
         const login_form = document.getElementById("registration_form__login");
         const login = login_form.value.trim();
-        if (login === ''){
+        if (login === '') {
             return;
         }
         if (!Validators.validate_login(login)) {
@@ -280,10 +280,10 @@ export class Events {
     /**
      * Проверяет валидность значения в поле ника в плашке регистрации
      */
-    static username_validate_listener_registration(){
+    static username_validate_listener_registration() {
         const username_form = document.getElementById("registration_form__username");
         const username = username_form.value.trim();
-        if (username === ''){
+        if (username === '') {
             return;
         }
         if (!Validators.validate_username(username)) {
@@ -296,10 +296,10 @@ export class Events {
     /**
      * Проверяет валидность значения в поле пароля в плашке регистрации
      */
-    static password_validate_listener_registration(){
+    static password_validate_listener_registration() {
         const password_form = document.getElementById("registration_form__password");
         const password = password_form.value.trim();
-        if (password === ''){
+        if (password === '') {
             return;
         }
         if (!Validators.validate_password(password)) {
@@ -312,12 +312,12 @@ export class Events {
     /**
      * Проверяет совпаденик значений в полях пароля и повторения пароля в плашке регистрации
      */
-    static password_repeat_validate_listener_registration(){
+    static password_repeat_validate_listener_registration() {
         const password_form = document.getElementById("registration_form__password");
         const repeat_password_form = document.getElementById("registration_form__repeat-password");
         const password = password_form.value.trim();
         const repeat_password = repeat_password_form.value.trim();
-        if (password === '' || repeat_password === ''){
+        if (password === '' || repeat_password === '') {
             return;
         }
         if (password !== repeat_password) {
@@ -461,5 +461,60 @@ export class Events {
      */
     static go_to_settings_page() {
         Page_loaders.settings_page();
+    }
+
+    /**
+     * Отправление изменений профиля
+     */
+    static save_profile_event(user_data) {
+        Requests.save_profile()
+    }
+
+    /**
+     * Отправление изменений профиля
+     */
+    static save_profile_listener() {
+        const email_form = document.getElementById("settings__email");
+        const login_form = document.getElementById("settings__login");
+        const username_form = document.getElementById("settings__nickname");
+
+        const user_data = {
+            email: email_form.value.trim(),
+            login: login_form.value.trim(),
+            username: username_form.value.trim(),
+        }
+
+        if (!Validators.validate_login(user_data.login)) {
+            Events.#make_invalid(login_form, "Неправильный формат логина");
+            return
+        }
+        Events.#make_valid(login_form);
+
+        if (!Validators.validate_email(user_data.email)) {
+            Events.#make_invalid(email_form, "Неправильный формат почты");
+            return
+        }
+        Events.#make_valid(email_form);
+
+        if (!Validators.validate_username(user_data.username)) {
+            Events.#make_invalid(username_form, "Неправильный формат ника");
+            return
+        }
+        Events.#make_valid(username_form);
+
+        //TODO:Загрузка картинки
+
+        Requests.save_profile(user_data).then((response) => {
+            if (response === 200) {
+                //TODO:Обозначение удачного обновления
+            } else {
+                if (response.response === 409) {
+                    Events.#make_invalid(email_form, "Email занят")
+                    return;
+                }
+                const form = document.getElementsByClassName("inputs_wrapper")[0];
+                Events.#make_invalid(form, "Что-то пошло не так");
+            }
+        })
     }
 }

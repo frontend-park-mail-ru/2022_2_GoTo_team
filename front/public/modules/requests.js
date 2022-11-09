@@ -14,6 +14,7 @@ const config = {
         category_feed: '/feed/category',
         article: '/article',
         profile: '/profile',
+        save_profile: '/profile/save',
     }
 }
 
@@ -140,7 +141,7 @@ export class Requests {
         }).then((response) => {
             const category_data = {
                 name: response.response.category_name,
-                description: response.rdescription,
+                description: response.response.description,
                 subscribers: response.response.subscribers_count,
             }
             return category_data;
@@ -190,6 +191,21 @@ export class Requests {
                 username: response.response.username,
                 avatar_link: response.response.avatar_img_path,
             };
+        });
+    }
+
+    /**
+     * Запрашивает статью по id
+     */
+    static save_profile(user_data) {
+        return ajax.post({
+            url: config.hrefs.save_profile,
+            body: {
+                email: user_data.email,
+                login: user_data.login,
+                username: user_data.username,
+                avatar_img_path: user_data.avatar_link,
+            }
         });
     }
 }

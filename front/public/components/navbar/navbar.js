@@ -37,8 +37,5 @@ export default class Navbar extends Basic_component {
         popular.addEventListener('click', Events.go_to_feed_page);
         new_feed.addEventListener('click', Events.go_to_feed_page);
         subscribe_feed.addEventListener('click', Events.go_to_feed_page);
-
-        const exit_button = document.getElementById('profile_menu__unauthorize_button');
-        exit_button.addEventListener('click', Events.profile_menu_unauthorize_listener);
     }
 };

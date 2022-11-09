@@ -1,5 +1,6 @@
 import Settings_view from "./settings_view.js";
 import Basic_component from "../_basic_component/basic_component.js";
+import {Events} from "../../modules/events.js";
 
 /**
  * View_model-компонент соответсвующего View
@@ -27,7 +28,8 @@ export default class Settings extends Basic_component {
      * Подписка на связанные события
      */
     subscribe() {
-
+        const save_button = document.getElementById('save');
+        save_button.addEventListener('click', Events.save_profile_listener);
     }
     //TODO:subscribe()
 };
