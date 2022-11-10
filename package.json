@@ -1,0 +1,36 @@
+{
+  "name": "ve.ru",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "PORT=8081 DEBUG=server node front/server",
+    "demon": "front/demon.sh",
+    "lint": "npx eslint . --ext .js",
+    "stop": "front/stop.sh",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tmpl": "front/templating.sh",
+    "deleteTemplates": "rm -rd \"front/public/components/tmpl\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2022_2_GoTo_team.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2022_2_GoTo_team/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2022_2_GoTo_team#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "forever": "^4.0.3",
+    "handlebars": "^4.7.7",
+    "morgan": "^1.10.0",
+    "prettify": "^0.1.7"
+  }
+}
