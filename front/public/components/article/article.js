@@ -1,6 +1,7 @@
 import ArticleView from "./article_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * View_model-компонент соответсвующего View
@@ -57,6 +58,12 @@ export default class Article extends BasicComponent {
         titleLink.addEventListener('click', () => {
             Events.openArticle(this.view.id);
         });
-
+        /*
+        const deleteArticle = this.root.getElementsByClassName('login_form__cross')[0];
+        deleteArticle.addEventListener('click', () => {
+            Events.articleRemove(this.view.id);
+            PageLoaders.feedPage();
+        });
+         */
     }
 };

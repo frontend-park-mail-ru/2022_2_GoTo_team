@@ -108,16 +108,32 @@ export class Events {
             password: passwordForm.value.trim(),
         }
 
-        //Валидация происходит автоматически при анфокусе форм
+        Events.emailValidateListenerLogin();
+        Events.passwordValidateListenerLogin();
 
         Requests.login(userData).then((result) => {
-            if (result === 200) {
-                const root = document.getElementsByTagName('body')[0];
-                const page = new Feed(root);
-                page.render();
-                page.subscribe();
+            if (result.status === 200) {
+                Events.updateAuth();
+                Events.#closeOverlay();
             } else {
-                Events.#makeInvalid(document.getElementById("login-form_inputs-wrapper"), "Что-то пошло не так");
+                const form = document.getElementById("login-form_inputs-wrapper");
+                switch (result.status){
+                    case 400:
+                        switch (result.body){
+                            case "invalid email":
+                                Events.#makeInvalid(emailForm, "Неверный формат email");
+                                break;
+                            case "invalid password":
+                                Events.#makeInvalid(passwordForm, "Неверный формат пароля");
+                                break;
+                            case "wrong email or password":
+                                Events.#makeInvalid(form, "Неверный email или пароль");
+                                break;
+                        }
+                        break;
+                    default:
+                        Events.#makeInvalid(form, "Что-то пошло не так");
+                }
             }
         });
     }
@@ -145,18 +161,40 @@ export class Events {
         Events.passwordRepeatValidateListenerRegistration();
 
         Requests.signup(userData).then((result) => {
-            if (result === 200) {
+            if (result.status === 200) {
                 const root = document.getElementsByTagName('body')[0];
                 const page = new Feed(root);
                 page.render();
                 page.subscribe();
             } else {
-                if (result.response === 409) {
-                    Events.#makeInvalid(emailForm, "Email занят")
-                    return;
+                switch (result.status){
+                    case 409:
+                        switch (result.body){
+                            case "email exists":
+                                Events.#makeInvalid(emailForm, "Email занят");
+                                break;
+                            case "login exists":
+                                Events.#makeInvalid(loginForm, "Логин занят");
+                                break;
+                        }
+                        break;
+                    case 400:
+                        switch (result.body){
+                            case "invalid email":
+                                Events.#makeInvalid(emailForm, "Неверный формат email");
+                                break;
+                            case "invalid login":
+                                Events.#makeInvalid(loginForm, "Неверный формат логина");
+                                break;
+                            case "invalid password":
+                                Events.#makeInvalid(passwordForm, "Неверный формат пароля");
+                                break;
+                        }
+                        break;
+                    default:
+                        const form = document.getElementById("login-form_inputs-wrapper");
+                        Events.#makeInvalid(form, "Что-то пошло не так");
                 }
-                const form = document.getElementById("login-form_inputs-wrapper");
-                Events.#makeInvalid(form, "Что-то пошло не так");
             }
         });
     }
@@ -431,8 +469,7 @@ export class Events {
      */
     static profileMenuUnauthorizeListener() {
         Events.unauthorize();
-        Events.closeProfileMenu();
-        Events.updateAuth();
+        PageLoaders.feedPage();
     }
 
     /**
@@ -484,11 +521,14 @@ export class Events {
         const emailForm = document.getElementById("settings__email");
         const loginForm = document.getElementById("settings__login");
         const usernameForm = document.getElementById("settings__nickname");
+        const passwordForm = document.getElementById("settings__password");
+        const repeatPasswordForm = document.getElementById("settings__repeat_password");
 
         const userData = {
             email: emailForm.value.trim(),
             login: loginForm.value.trim(),
             username: usernameForm.value.trim(),
+            password: passwordForm.value.trim(),
         }
 
         if (!Validators.validateLogin(userData.login)) {
@@ -509,28 +549,57 @@ export class Events {
         }
         Events.#makeValid(usernameForm);
 
+        if (!Validators.validatePassword(userData.password) && userData.password !== "") {
+            Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
+            return
+        }
+        Events.#makeValid(passwordForm);
+
+        if (userData.password !== repeatPasswordForm.value.trim()) {
+            Events.#makeInvalid(repeatPasswordForm, "Пароли не совпадают");
+            return
+        }
+        Events.#makeValid(repeatPasswordForm);
+
         //TODO:Загрузка картинки
 
         Requests.saveProfile(userData).then((response) => {
             if (response.status === 200) {
                 PageLoaders.settingsPage();
             } else {
-                if (response.status === 409) {
-                    if (response.body === "login conflict"){
-                        Events.#makeInvalid(loginForm, "Логин занят");
-                    }else{
-                        Events.#makeValid(loginForm);
-                    }
-                    if (response.body === "email conflict"){
-                        Events.#makeInvalid(emailForm, "Email занят");
-                    }else{
-                        Events.#makeValid(emailForm);
-                    }
+                const form = document.getElementById("login-form_inputs-wrapper");
+                switch (response.status){
+                    case 400:
+                        switch (response.body){
+                        case "invalid email":
+                            Events.#makeInvalid(emailForm, "Неверный формат email");
+                            return;
+                        case "invalid login":
+                            Events.#makeInvalid(loginForm, "Неверный формат логина");
+                            return;
+                        case "invalid password":
+                            Events.#makeInvalid(passwordForm, "Неверный формат пароля");
+                            return;
+                        }
+                        break;
+                    case 409:
+                        switch (response.body){
+                            case "login conflict":
+                                Events.#makeInvalid(loginForm, "Логин занят");
+                                return;
+                            case "email conflict":
+                                Events.#makeInvalid(emailForm, "Email занят");
+                                return;
+                        }
+                        break;
+                    default:
+                        Events.#makeInvalid(form, "Что-то пошло не так");
                 }
-                const form = document.getElementsByClassName("inputs_wrapper")[0];
-                Events.#makeInvalid(form, "Что-то пошло не так");
+                Events.#makeValid(loginForm);
+                Events.#makeValid(emailForm);
             }
         })
+
     }
 
     /**

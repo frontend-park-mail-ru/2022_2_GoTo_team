@@ -38,7 +38,7 @@ export class Requests {
 
     /**
      * Авторизация
-     * @param {Object} user_data
+     * @param {Object} userData
      * @property {string} email
      * @property {string} password
      * @return {Promise} Promise со статусом запроса
@@ -48,13 +48,45 @@ export class Requests {
             url: config.hrefs.login,
             body: {"user_data": {"email": userData.email, "password": userData.password}}
         }).then((response) => {
-            return response.status;
+            if (response.status === 200){
+                return {
+                    status: response.status,
+                    body: "",
+                }
+            }
+            const errors = {
+                email_invalid: "invalid email",
+                password_invalid: "invalid password",
+                wrong_auth: "wrong email or password",
+            }
+            switch (response.response){
+                case "email is not valid":
+                    return {
+                        status: response.status,
+                        body: errors.email_invalid,
+                    }
+                case "password is not valid":
+                    return {
+                        status: response.status,
+                        body: errors.password_invalid,
+                    }
+                case "incorrect email or password":
+                    return {
+                        status: response.status,
+                        body: errors.wrong_auth,
+                    }
+                default:
+                    return {
+                        status: response.status,
+                        body: response.response,
+                    }
+            }
         });
     }
 
     /**
      * Регистрация
-     * @param {Object} user_data
+     * @param {Object} userData
      * @property {string} email
      * @property {string} login
      * @property {string} username
@@ -73,8 +105,53 @@ export class Requests {
                 }
             },
         }).then((response) => {
-            return response.status;
+            if (response.status === 200){
+                return {
+                    status: response.status,
+                    body: "",
+                }
+            }
+            const errors = {
+                email_invalid: "invalid email",
+                login_invalid: "invalid login",
+                password_invalid: "invalid password",
+                email_conflict: "email exists",
+                login_conflict: "login exists",
+            }
+            switch (response.response){
+                case "email is not valid":
+                    return {
+                        status: response.status,
+                        body: errors.email_invalid,
+                    }
+                case "login is not valid":
+                    return {
+                        status: response.status,
+                        body: errors.login_invalid,
+                    }
+                case "password is not valid":
+                    return {
+                        status: response.status,
+                        body: errors.password_invalid,
+                    }
+                case "email exists":
+                    return {
+                        status: response.status,
+                        body: errors.email_conflict,
+                    }
+                case "login exists":
+                    return {
+                        status: response.status,
+                        body: errors.login_conflict,
+                    }
+                default:
+                    return {
+                        status: response.status,
+                        body: response.response,
+                    }
+            }
         });
+
     }
 
     /**
@@ -208,6 +285,7 @@ export class Requests {
                 email: userData.email,
                 login: userData.login,
                 username: userData.username,
+                password: userData.password,
                 avatarImgPath: userData.avatar_link,
             }
         }).then((result) => {
@@ -218,21 +296,43 @@ export class Requests {
                 }
             }
             const errors = {
-                login: "login conflict",
-                email: "email conflict"
+                login_conflict: "login conflict",
+                email_conflict: "email conflict",
+                email_invalid: "invalid email",
+                login_invalid: "invalid login",
+                password_invalid: "invalid password",
             }
-            if (result.response === "login exists"){
-                return {
-                    status: result.status,
-                    body: errors.login,
-                }
-            }
-
-            if (result.response === "email exists"){
-                return {
-                    status: result.status,
-                    body: errors.email,
-                }
+            switch (result.response){
+                case "login exists":
+                    return {
+                        status: result.status,
+                        body: errors.login_conflict,
+                    }
+                case "email exists":
+                    return {
+                        status: result.status,
+                        body: errors.email_conflict,
+                    }
+                case "email is not valid":
+                    return {
+                        status: result.status,
+                        body: errors.email_invalid,
+                    }
+                case "login is not valid":
+                    return {
+                        status: result.status,
+                        body: errors.login_invalid,
+                    }
+                case "password is not valid":
+                    return {
+                        status: result.status,
+                        body: errors.password_invalid,
+                    }
+                default:
+                    return {
+                        status: result.status,
+                        body: result.response,
+                    }
             }
         });
     }
