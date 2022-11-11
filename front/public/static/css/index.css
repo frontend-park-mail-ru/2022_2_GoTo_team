@@ -242,7 +242,7 @@ body {
 }
 
 .article__profile_picture {
-    background: var(--darken-main);
+    border: 1px solid var(--light);
     border-radius: 5px;
     width: 34px;
     height: 34px;
@@ -479,7 +479,8 @@ body {
     margin: 10px 10px;
     border-radius: 10px;
     width: -moz-available;
-    width: available;
+    width: -webkit-fill-available;
+    outline: none;
 }
 
 .login_form__log_input:focus {
@@ -665,7 +666,6 @@ div.log-button-container {
 .settings__avatar_row_avatar {
     width: 125px;
     height: 125px;
-    background: var(--main);
 }
 
 .settings__avatar_row_input {
@@ -719,7 +719,7 @@ div.log-button-container {
 
 .feed_page__header {
     padding: 20px;
-    margin-bottom: 10px;
+    margin: 0 10px 10px 10px;
 }
 
 .feed_page__header__avatar {

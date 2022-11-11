@@ -42,17 +42,29 @@ export default class Article extends BasicComponent {
 
     subscribe() {
         super.subscribe();
+
+
+        const avatar = this.root.querySelector('.article__profile_picture');
+
+        if (this.view.category !== ""){
+            const categoryLink = this.root.querySelector('.article__category');
+
+            categoryLink.addEventListener('click', () => {
+                Events.goToCategoryFeed(this.view.category);
+            });
+            avatar.addEventListener('click', () => {
+                Events.goToCategoryFeed(this.view.category);
+            });
+        }else{
+            avatar.addEventListener('click', () => {
+                Events.goToAuthorFeed(this.view.publisher);
+            });
+        }
+
         const author_link = this.root.getElementsByClassName('article__author')[0];
         author_link.addEventListener('click', () => {
             Events.goToAuthorFeed(this.view.publisher);
-        })
-
-        if (this.view.category !== ""){
-            const categoryLink = this.root.getElementsByClassName('article__category')[0];
-            categoryLink.addEventListener('click', () => {
-                Events.goToCategoryFeed(this.view.category);
-            })
-        }
+        });
 
         const titleLink = this.root.getElementsByClassName('article__title')[0];
         titleLink.addEventListener('click', () => {

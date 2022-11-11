@@ -15,7 +15,8 @@ export default class UserPlugView extends BasicComponentView {
         const wrapper = document.createElement('div');
         if (user){
             wrapper.innerHTML = Handlebars.templates["authorized_user.html"]({
-                nickname: user.nickname
+                nickname: user.nickname,
+                picture: user.avatarUrl !== '' && typeof user.avatarUrl !== 'undefined' ? user.avatarUrl : "static/img/user_icon.jpg",
             });
             this.authed = true;
         }else{
