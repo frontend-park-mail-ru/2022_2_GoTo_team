@@ -256,7 +256,7 @@ body {
 }
 
 .article__category {
-    font-family: 'Roboto';
+    font-family: 'Roboto', serif;
     font-style: bold;
     font-size: 14px;
     padding: 11px 3px 8px 3px;
@@ -269,7 +269,7 @@ body {
 }
 
 .article__author {
-    font-family: 'Roboto';
+    font-family: 'Roboto', serif;
     font-style: bold;
     font-size: 14px;
     padding: 11px 3px 8px 3px;
@@ -282,7 +282,7 @@ body {
 }
 
 .article__posting_time {
-    font-family: 'Roboto';
+    font-family: 'Roboto', serif;
     font-style: normal;
     font-weight: 500;
     font-size: 9px;
@@ -292,7 +292,7 @@ body {
 }
 
 .article__title {
-    font-family: 'Roboto';
+    font-family: 'Roboto', serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -307,7 +307,7 @@ body {
 }
 
 .article__description {
-    font-family: 'Open Sans';
+    font-family: 'Roboto', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -334,7 +334,7 @@ body {
     height: fit-content;
     width: fit-content;
     margin: 5px 5px 3px 5px;
-    font-family: 'Roboto';
+    font-family: 'Roboto', serif;
     font-style: normal;
     font-weight: 300;
     font-size: 10px;
@@ -360,7 +360,7 @@ body {
 .article__comments_count {
     display: flex;
     float: left;
-    font-family: 'Roboto';
+    font-family: 'Roboto', serif;
     font-style: normal;
     font-size: 14px;
     padding: 13px 3px 8px 3px;
