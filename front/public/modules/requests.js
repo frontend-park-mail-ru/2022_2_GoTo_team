@@ -187,7 +187,7 @@ export class Requests {
             const userData = {
                 username: response.response.username,
                 rating: response.response.rating,
-                subscribers: response.response.subscribersCount,
+                subscribers: response.response.subscribers_count,
                 registration_date: response.response.registration_date,
             }
             return userData;
