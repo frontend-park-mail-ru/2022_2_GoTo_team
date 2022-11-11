@@ -1,6 +1,7 @@
 import NavbarView from "./navbar_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * View_model-компонент соответсвующего View
@@ -37,5 +38,10 @@ export default class Navbar extends BasicComponent {
         popular.addEventListener('click', Events.goToFeedPage);
         newFeed.addEventListener('click', Events.goToFeedPage);
         subscribeFeed.addEventListener('click', Events.goToFeedPage);
+
+        const newArticle = this.root.getElementsByClassName('navbar__button')[3];
+        newArticle.addEventListener('click', () =>{
+            PageLoaders.editArticle();
+        });
     }
 };

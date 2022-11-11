@@ -645,6 +645,7 @@ export class Events {
         }
 
         Events.articleCreate(articleData);
+        PageLoaders.feedPage();
     }
 
     /**
@@ -664,7 +665,7 @@ export class Events {
             content: contentForm.textContent,
         }
 
-        Events.article_update(articleData);
+        Events.articleUpdate(articleData);
     }
 
     /**
