@@ -37,7 +37,7 @@ export default class RegistrationForm extends BasicComponent {
      * @property {function?} closeForm
      */
     subscribe(eventBus) {
-        super.subscribe()
+        super.subscribe();
         const submitButton = document.getElementById("registration_form__submit_button");
         submitButton.addEventListener('click', eventBus.submit);
 
@@ -49,8 +49,8 @@ export default class RegistrationForm extends BasicComponent {
         }
 
         const closeButton = document.getElementById("login_form__cross");
-        if (typeof eventBus.close_form !== 'undefined') {
-            closeButton.addEventListener('click', eventBus.close_form);
+        if (typeof eventBus.closeForm !== 'undefined') {
+            closeButton.addEventListener('click', eventBus.closeForm);
         }else{
             this.root.removeChild(closeButton);
         }

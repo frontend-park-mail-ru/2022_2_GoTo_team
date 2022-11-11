@@ -12,21 +12,21 @@ import {PageLoaders} from "./page_loaders.js";
 export class Events {
     static #overlayLoginEventBus = {
         submit: Events.submitLogin,
-        go_to_registration: Events.redrawRegistrationOverlay,
-        email_validation: Events.emailValidateListenerLogin,
-        password_validation: Events.passwordValidateListenerLogin,
-        close_form: Events.closeOverlayListener,
+        goToRegistration: Events.redrawRegistrationOverlay,
+        emailValidation: Events.emailValidateListenerLogin,
+        passwordValidation: Events.passwordValidateListenerLogin,
+        closeForm: Events.closeOverlayListener,
     }
 
     static #overlayRegistrationEventBus = {
         submit: Events.submitRegistration,
-        go_to_login: Events.redrawLoginOverlay,
-        email_validation: Events.emailValidateListenerLogin,
-        login_validation: Events.loginValidateListenerRegistration,
-        username_validation: Events.usernameValidateListenerRegistration,
-        password_validation: Events.passwordValidateListenerRegistration,
-        repeat_password_validation: Events.passwordRepeatValidateListenerRegistration,
-        close_form: Events.closeOverlayListener,
+        goToLogin: Events.redrawLoginOverlay,
+        emailValidation: Events.emailValidateListenerRegistration,
+        loginValidation: Events.loginValidateListenerRegistration,
+        usernameValidation: Events.usernameValidateListenerRegistration,
+        passwordValidation: Events.passwordValidateListenerRegistration,
+        repeatPasswordValidation: Events.passwordRepeatValidateListenerRegistration,
+        closeForm: Events.closeOverlayListener,
     }
 
     /**
@@ -108,8 +108,12 @@ export class Events {
             password: passwordForm.value.trim(),
         }
 
-        Events.emailValidateListenerLogin();
-        Events.passwordValidateListenerLogin();
+        const emailValidation = Events.emailValidateListenerLogin();
+        const passwordValidation = Events.passwordValidateListenerLogin();
+
+        if (!(emailValidation && passwordValidation)) {
+            return;
+        }
 
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
@@ -117,9 +121,9 @@ export class Events {
                 Events.#closeOverlay();
             } else {
                 const form = document.getElementById("login-form_inputs-wrapper");
-                switch (result.status){
+                switch (result.status) {
                     case 400:
-                        switch (result.body){
+                        switch (result.body) {
                             case "invalid email":
                                 Events.#makeInvalid(emailForm, "Неверный формат email");
                                 break;
@@ -154,11 +158,15 @@ export class Events {
             password: passwordForm.value.trim()
         }
 
-        Events.emailValidateListenerRegistration();
-        Events.loginValidateListenerRegistration();
-        Events.usernameValidateListenerRegistration();
-        Events.passwordValidateListenerRegistration();
-        Events.passwordRepeatValidateListenerRegistration();
+        const emailValidation = Events.emailValidateListenerRegistration();
+        const loginValidation = Events.loginValidateListenerRegistration();
+        const usernameValidation = Events.usernameValidateListenerRegistration();
+        const passwordValidation = Events.passwordValidateListenerRegistration();
+        const repeatPasswordValidation = Events.passwordRepeatValidateListenerRegistration();
+
+        if (!(emailValidation && loginValidation && usernameValidation && passwordValidation && passwordValidation && repeatPasswordValidation)) {
+            return;
+        }
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
@@ -167,9 +175,9 @@ export class Events {
                 page.render();
                 page.subscribe();
             } else {
-                switch (result.status){
+                switch (result.status) {
                     case 409:
-                        switch (result.body){
+                        switch (result.body) {
                             case "email exists":
                                 Events.#makeInvalid(emailForm, "Email занят");
                                 break;
@@ -179,7 +187,7 @@ export class Events {
                         }
                         break;
                     case 400:
-                        switch (result.body){
+                        switch (result.body) {
                             case "invalid email":
                                 Events.#makeInvalid(emailForm, "Неверный формат email");
                                 break;
@@ -232,9 +240,7 @@ export class Events {
      * @param {HTMLSelectElement} element
      */
     static #makeValid(element) {
-        if (typeof element.setCustomValidity !== 'undefined') {
-            element.setCustomValidity('');
-        }
+        element.setCustomValidity('');
         const errorClass = "error-message";
         const siblings = element.parentNode.childNodes;
 
@@ -258,13 +264,15 @@ export class Events {
         const emailForm = document.getElementById('login_form__email_login');
         const email = emailForm.value.trim();
         if (email === '') {
-            return;
+            Events.#makeValid(emailForm);
+            return true;
         }
         if (!Validators.validateEmail(email)) {
             Events.#makeInvalid(emailForm, "Неверный формат email");
-            return;
+            return false;
         }
         Events.#makeValid(emailForm);
+        return true;
     }
 
     /**
@@ -274,13 +282,15 @@ export class Events {
         const passwordForm = document.getElementById("login_form__password");
         const password = passwordForm.value.trim();
         if (password === '') {
-            return;
+            Events.#makeValid(passwordForm);
+            return true;
         }
         if (!Validators.validatePassword(password)) {
             Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
-            return
+            return false;
         }
         Events.#makeValid(passwordForm);
+        return true;
     }
 
     /**
@@ -289,14 +299,17 @@ export class Events {
     static emailValidateListenerRegistration() {
         const emailForm = document.getElementById('registration_form__email');
         const email = emailForm.value.trim();
+
         if (email === '') {
-            return;
+            Events.#makeValid(emailForm);
+            return true;
         }
         if (!Validators.validateEmail(email)) {
             Events.#makeInvalid(emailForm, "Неверный формат email");
-            return;
+            return false;
         }
         Events.#makeValid(emailForm);
+        return true;
     }
 
     /**
@@ -305,14 +318,17 @@ export class Events {
     static loginValidateListenerRegistration() {
         const loginForm = document.getElementById("registration_form__login");
         const login = loginForm.value.trim();
+
         if (login === '') {
-            return;
+            Events.#makeValid(loginForm);
+            return true;
         }
         if (!Validators.validateLogin(login)) {
             Events.#makeInvalid(loginForm, "Неправильный формат логина");
-            return
+            return false;
         }
         Events.#makeValid(loginForm);
+        return true;
     }
 
     /**
@@ -321,14 +337,17 @@ export class Events {
     static usernameValidateListenerRegistration() {
         const usernameForm = document.getElementById("registration_form__username");
         const username = usernameForm.value.trim();
+
         if (username === '') {
-            return;
+            Events.#makeValid(usernameForm);
+            return true;
         }
         if (!Validators.validateUsername(username)) {
             Events.#makeInvalid(usernameForm, "Неправильный формат ника");
-            return
+            return false;
         }
         Events.#makeValid(usernameForm);
+        return true;
     }
 
     /**
@@ -337,14 +356,17 @@ export class Events {
     static passwordValidateListenerRegistration() {
         const passwordForm = document.getElementById("registration_form__password");
         const password = passwordForm.value.trim();
+
         if (password === '') {
-            return;
+            Events.#makeValid(passwordForm);
+            return true;
         }
         if (!Validators.validatePassword(password)) {
             Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
-            return
+            return false;
         }
         Events.#makeValid(passwordForm);
+        return true;
     }
 
     /**
@@ -355,14 +377,17 @@ export class Events {
         const repeatPasswordForm = document.getElementById("registration_form__repeat-password");
         const password = passwordForm.value.trim();
         const repeatPassword = repeatPasswordForm.value.trim();
+
         if (password === '' || repeatPassword === '') {
-            return;
+            Events.#makeValid(repeatPasswordForm);
+            return true;
         }
         if (password !== repeatPassword) {
             Events.#makeInvalid(repeatPasswordForm, "Пароли не совпадают");
-            return
+            return false;
         }
         Events.#makeValid(repeatPasswordForm);
+        return true;
     }
 
     /**
@@ -568,22 +593,22 @@ export class Events {
                 PageLoaders.settingsPage();
             } else {
                 const form = document.getElementById("login-form_inputs-wrapper");
-                switch (response.status){
+                switch (response.status) {
                     case 400:
-                        switch (response.body){
-                        case "invalid email":
-                            Events.#makeInvalid(emailForm, "Неверный формат email");
-                            return;
-                        case "invalid login":
-                            Events.#makeInvalid(loginForm, "Неверный формат логина");
-                            return;
-                        case "invalid password":
-                            Events.#makeInvalid(passwordForm, "Неверный формат пароля");
-                            return;
+                        switch (response.body) {
+                            case "invalid email":
+                                Events.#makeInvalid(emailForm, "Неверный формат email");
+                                return;
+                            case "invalid login":
+                                Events.#makeInvalid(loginForm, "Неверный формат логина");
+                                return;
+                            case "invalid password":
+                                Events.#makeInvalid(passwordForm, "Неверный формат пароля");
+                                return;
                         }
                         break;
                     case 409:
-                        switch (response.body){
+                        switch (response.body) {
                             case "login conflict":
                                 Events.#makeInvalid(loginForm, "Логин занят");
                                 return;
@@ -628,7 +653,7 @@ export class Events {
     static articleUpdateListener(articleId) {
         const titleForm = document.getElementsByClassName('article_edit__title')[0];
         const categoryForm = document.getElementsByClassName('select_menu')[0];
-        const descriptionForm =document.getElementsByClassName('article_edit__description')[0];
+        const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
         const contentForm = document.getElementsByClassName('article_edit__content')[0];
         const articleData = {
             id: articleId,
