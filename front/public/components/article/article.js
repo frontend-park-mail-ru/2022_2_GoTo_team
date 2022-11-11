@@ -42,8 +42,6 @@ export default class Article extends BasicComponent {
 
     subscribe() {
         super.subscribe();
-
-
         const avatar = this.root.querySelector('.article__profile_picture');
 
         if (this.view.category !== ""){
@@ -61,12 +59,12 @@ export default class Article extends BasicComponent {
             });
         }
 
-        const author_link = this.root.getElementsByClassName('article__author')[0];
+        const author_link = this.root.querySelector('.article__author');
         author_link.addEventListener('click', () => {
             Events.goToAuthorFeed(this.view.publisher);
         });
 
-        const titleLink = this.root.getElementsByClassName('article__title')[0];
+        const titleLink = this.root.querySelector('.article__title');
         titleLink.addEventListener('click', () => {
             Events.openArticle(this.view.id);
         });

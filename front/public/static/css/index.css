@@ -303,6 +303,7 @@ body {
 
 .article__title:hover{
     color: var(--main);
+    word-wrap: anywhere;
 }
 
 .article__description {
@@ -312,6 +313,7 @@ body {
     font-size: 16px;
     line-height: 30px;
     padding: 5px 20px 5px 20px;
+    word-wrap: anywhere;
 }
 
 .article__cover {
@@ -800,6 +802,7 @@ div.log-button-container {
     font-size: 16px;
     padding: 10px 0;
     width: 75%;
+    word-wrap: anywhere;
 }
 
 .div_textarea{

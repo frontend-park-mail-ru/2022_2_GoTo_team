@@ -41,16 +41,26 @@ export default class OpenedArticle extends BasicComponent {
 
     subscribe() {
         super.subscribe();
-        const authorLink = this.root.getElementsByClassName('article__author')[0];
+        const avatar = this.root.querySelector('.article__profile_picture');
+
+        if (this.view.category !== ""){
+            const categoryLink = this.root.querySelector('.article__category');
+
+            categoryLink.addEventListener('click', () => {
+                Events.goToCategoryFeed(this.view.category);
+            });
+            avatar.addEventListener('click', () => {
+                Events.goToCategoryFeed(this.view.category);
+            });
+        }else{
+            avatar.addEventListener('click', () => {
+                Events.goToCategoryFeed(this.view.category);
+            });
+        }
+
+        const authorLink = this.root.querySelector('.article__author');
         authorLink.addEventListener('click', () => {
             Events.goToAuthorFeed(this.view.publisher);
         })
-
-        if (this.view.category !== ""){
-            const categoryLink = this.root.getElementsByClassName('article__category')[0];
-            categoryLink.addEventListener('click', () => {
-                Events.goToCategoryFeed(this.view.category);
-            })
-        }
     }
 };
