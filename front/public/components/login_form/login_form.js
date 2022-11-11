@@ -25,31 +25,31 @@ export default class LoginForm extends BasicComponent {
 
     /**
      * Подписка на связанные события
-     * @param {Object} event_bus
+     * @param {Object} eventBus
      * @property {function} submit
      * @property {function} goToRegistration
      * @property {function} emailValidation
      * @property {function} passwordValidation
      * @property {function?} closeForm
      */
-    subscribe(event_bus) {
+    subscribe(eventBus) {
         super.subscribe()
         const submit_button = document.getElementById("login_form__submit_button");
-        submit_button.addEventListener('click', event_bus.submit);
+        submit_button.addEventListener('click', eventBus.submit);
 
         const reg_button = document.getElementById("login_form__signup_button");
-        reg_button.addEventListener('click', event_bus.go_to_registration);
+        reg_button.addEventListener('click', eventBus.goToRegistration);
 
         const email_form = document.getElementById("login_form__email_login");
-        email_form.addEventListener('focusout', event_bus.email_validation);
+        email_form.addEventListener('focusout', eventBus.emailValidation);
 
         const password_form = document.getElementById("login_form__password");
-        password_form.addEventListener('focusout', event_bus.password_validation);
+        password_form.addEventListener('focusout', eventBus.passwordValidation);
 
 
         const close_button = document.getElementById("login_form__cross");
-        if (typeof event_bus.close_form !== 'undefined'){
-            close_button.addEventListener('click', event_bus.close_form);
+        if (typeof eventBus.closeForm !== 'undefined'){
+            close_button.addEventListener('click', eventBus.closeForm);
         }else{
             this.root.removeChild(close_button);
         }
