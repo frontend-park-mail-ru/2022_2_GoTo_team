@@ -1,6 +1,6 @@
-import {Ajax} from "./ajax.js";
+import Ajax from "./ajax.js";
+import {requestParams} from "./ajax"
 
-const ajax = new (Ajax);
 const config = {
     hrefs: {
         articles: '/feed',
@@ -28,7 +28,7 @@ export class Requests {
      * @return {Promise} Promise с массивом статей
      */
     static getArticles() {
-        const promise = ajax.get({
+        const promise = Ajax.get({
             url: config.hrefs.articles,
         }).then((response) => {
             return (response as any).response.articles;
@@ -44,42 +44,43 @@ export class Requests {
      * @return {Promise} Promise со статусом запроса
      */
     static login(userData: any) {
-        return ajax.post({
+        const params: requestParams = {
             url: config.hrefs.login,
-            body: {"user_data": {"email": userData.email, "password": userData.password}}
-        }).then((response) => {
-            if ((response as any).status === 200){
+            data: {"user_data": {"email": userData.email, "password": userData.password}},
+        }
+        return Ajax.post(params).then((response) => {
+            if ((response as any).status === 200) {
                 return {
-    status: (response as any).status,
-    body: "",
-};
+                    status: (response as any).status,
+                    body: "",
+                };
             }
             const errors = {
                 email_invalid: "invalid email",
                 password_invalid: "invalid password",
                 wrong_auth: "wrong email or password",
             }
-            switch ((response as any).response){
+            switch ((response as any).response) {
                 case "email is not valid":
                     return {
-    status: (response as any).status,
-    body: errors.email_invalid,
-};
+                        status: (response as any).status,
+                        body: errors.email_invalid,
+                    };
                 case "password is not valid":
                     return {
-    status: (response as any).status,
-    body: errors.password_invalid,
-};
+                        status: (response as any).status,
+                        body: errors.password_invalid,
+                    };
                 case "incorrect email or password":
                     return {
-    status: (response as any).status,
-    body: errors.wrong_auth,
-};
+                        status: (response as any).status,
+                        body: errors.wrong_auth,
+                    };
                 default:
                     return {
-    status: (response as any).status,
-    body: (response as any).response,
-};
+                        status: (response as any).status,
+                        body: (response as any).response,
+                    };
             }
         });
     }
@@ -94,9 +95,9 @@ export class Requests {
      * @return {Promise} Promise со статусом запроса
      */
     static signup(userData: any) {
-        return ajax.post({
+        const params: requestParams = {
             url: config.hrefs.signup,
-            body: {
+            data: {
                 "new_user_data": {
                     "email": userData.email,
                     "login": userData.login,
@@ -104,12 +105,13 @@ export class Requests {
                     "password": userData.password
                 }
             },
-        }).then((response) => {
-            if ((response as any).status === 200){
+        }
+        return Ajax.post(params).then((response) => {
+            if ((response as any).status === 200) {
                 return {
-    status: (response as any).status,
-    body: "",
-};
+                    status: (response as any).status,
+                    body: "",
+                };
             }
             const errors = {
                 email_invalid: "invalid email",
@@ -118,37 +120,37 @@ export class Requests {
                 email_conflict: "email exists",
                 login_conflict: "login exists",
             }
-            switch ((response as any).response){
+            switch ((response as any).response) {
                 case "email is not valid":
                     return {
-    status: (response as any).status,
-    body: errors.email_invalid,
-};
+                        status: (response as any).status,
+                        body: errors.email_invalid,
+                    };
                 case "login is not valid":
                     return {
-    status: (response as any).status,
-    body: errors.login_invalid,
-};
+                        status: (response as any).status,
+                        body: errors.login_invalid,
+                    };
                 case "password is not valid":
                     return {
-    status: (response as any).status,
-    body: errors.password_invalid,
-};
+                        status: (response as any).status,
+                        body: errors.password_invalid,
+                    };
                 case "email exists":
                     return {
-    status: (response as any).status,
-    body: errors.email_conflict,
-};
+                        status: (response as any).status,
+                        body: errors.email_conflict,
+                    };
                 case "login exists":
                     return {
-    status: (response as any).status,
-    body: errors.login_conflict,
-};
+                        status: (response as any).status,
+                        body: errors.login_conflict,
+                    };
                 default:
                     return {
-    status: (response as any).status,
-    body: (response as any).response,
-};
+                        status: (response as any).status,
+                        body: (response as any).response,
+                    };
             }
         });
 
@@ -159,7 +161,7 @@ export class Requests {
      * @return {Promise} Promise со статусом и никнеймом
      */
     static getSessionInfo() {
-        return ajax.get({
+        return Ajax.get({
             url: config.hrefs.sessionInfo,
         });
     }
@@ -168,7 +170,7 @@ export class Requests {
      * Деавторизация
      */
     static removeSession() {
-        return ajax.post({
+        return Ajax.post({
             url: config.hrefs.sessionRemove,
         });
     }
@@ -178,18 +180,18 @@ export class Requests {
      * Информация в шапку страницы автора
      */
     static userHeaderInfo(login: any) {
-        return ajax.get({
+        return Ajax.get({
             url: config.hrefs.userInfo,
             data: {
                 login: login,
             }
         }).then((response) => {
             const userData = {
-    username: (response as any).response.username,
-    rating: (response as any).response.rating,
-    subscribers: (response as any).response.subscribers_count,
-    registration_date: (response as any).response.registration_date,
-};
+                username: (response as any).response.username,
+                rating: (response as any).response.rating,
+                subscribers: (response as any).response.subscribers_count,
+                registration_date: (response as any).response.registration_date,
+            };
             return userData;
         });
     }
@@ -199,7 +201,7 @@ export class Requests {
      * @return {Promise} Promise с массивом статей
      */
     static getUserArticles(login: any) {
-        const promise = ajax.get({
+        const promise = Ajax.get({
             url: config.hrefs.userFeed,
             data: {
                 login: login,
@@ -214,17 +216,17 @@ export class Requests {
      * Информация в шапку страницы категории
      */
     static categoryHeaderInfo(category: any) {
-        return ajax.get({
+        return Ajax.get({
             url: config.hrefs.categoryInfo,
             data: {
                 category: category,
             }
         }).then((response) => {
             const categoryData = {
-    name: (response as any).response.category_name,
-    description: (response as any).response.description,
-    subscribers: (response as any).response.subscribers_count,
-};
+                name: (response as any).response.category_name,
+                description: (response as any).response.description,
+                subscribers: (response as any).response.subscribers_count,
+            };
             return categoryData;
         });
     }
@@ -234,7 +236,7 @@ export class Requests {
      * @return {Promise} Promise с массивом статей
      */
     static getCategoryArticles(category: any) {
-        const promise = ajax.get({
+        const promise = Ajax.get({
             url: config.hrefs.categoryFeed,
             data: {
                 category: category,
@@ -249,7 +251,7 @@ export class Requests {
      * Запрашивает статью по id
      */
     static getArticle(articleId: any) {
-        return ajax.get({
+        return Ajax.get({
             url: config.hrefs.article,
             data: {
                 id: articleId,
@@ -263,15 +265,15 @@ export class Requests {
      * Запрашивает данные профиля
      */
     static getProfile() {
-        return ajax.get({
+        return Ajax.get({
             url: config.hrefs.profile,
         }).then((response) => {
             return {
-    email: (response as any).response.email,
-    login: (response as any).response.login,
-    username: (response as any).response.username,
-    avatarLink: (response as any).response.avatar_img_path,
-};
+                email: (response as any).response.email,
+                login: (response as any).response.login,
+                username: (response as any).response.username,
+                avatarLink: (response as any).response.avatar_img_path,
+            };
         });
     }
 
@@ -279,21 +281,22 @@ export class Requests {
      * Сохраняет настройки профиля
      */
     static saveProfile(userData: any) {
-        return ajax.post({
+        const params: requestParams = {
             url: config.hrefs.saveProfile,
-            body: {
+            data: {
                 email: userData.email,
                 login: userData.login,
                 username: userData.username,
                 password: userData.password,
                 avatarImgPath: userData.avatar_link,
-            }
-        }).then((result) => {
-            if ((result as any).status === 200){
+            },
+        }
+        return Ajax.post(params).then((result) => {
+            if ((result as any).status === 200) {
                 return {
-    status: (result as any).status,
-    body: "",
-};
+                    status: (result as any).status,
+                    body: "",
+                };
             }
             const errors = {
                 login_conflict: "login conflict",
@@ -302,37 +305,37 @@ export class Requests {
                 login_invalid: "invalid login",
                 password_invalid: "invalid password",
             }
-            switch ((result as any).response){
+            switch ((result as any).response) {
                 case "login exists":
                     return {
-    status: (result as any).status,
-    body: errors.login_conflict,
-};
+                        status: (result as any).status,
+                        body: errors.login_conflict,
+                    };
                 case "email exists":
                     return {
-    status: (result as any).status,
-    body: errors.email_conflict,
-};
+                        status: (result as any).status,
+                        body: errors.email_conflict,
+                    };
                 case "email is not valid":
                     return {
-    status: (result as any).status,
-    body: errors.email_invalid,
-};
+                        status: (result as any).status,
+                        body: errors.email_invalid,
+                    };
                 case "login is not valid":
                     return {
-    status: (result as any).status,
-    body: errors.login_invalid,
-};
+                        status: (result as any).status,
+                        body: errors.login_invalid,
+                    };
                 case "password is not valid":
                     return {
-    status: (result as any).status,
-    body: errors.password_invalid,
-};
+                        status: (result as any).status,
+                        body: errors.password_invalid,
+                    };
                 default:
                     return {
-    status: (result as any).status,
-    body: (result as any).response,
-};
+                        status: (result as any).status,
+                        body: (result as any).response,
+                    };
             }
         });
     }
@@ -341,54 +344,58 @@ export class Requests {
      * Удаляет статью по id
      */
     static articleRemove(articleId: any) {
-        return ajax.post({
+        const params: requestParams = {
             url: config.hrefs.articleRemove,
-            body: {
+            data: {
                 id: articleId
-            }
-        });
+            },
+        }
+        return Ajax.post(params);
     }
 
     /**
      * Создаёт статью
      */
     static articleCreate(articleData: any) {
-        return ajax.post({
+        const params: requestParams = {
             url: config.hrefs.articleCreate,
-            body: {
+            data: {
                 title: articleData.title,
                 description: articleData.description,
                 tags: articleData.tags,
                 category: articleData.category,
                 co_author: articleData.coAuthor,
                 content: articleData.content,
-            }
-        });
+            },
+        }
+        return Ajax.post(params);
     }
 
     /**
      * Обновляет статью
      */
     static articleUpdate(articleData: any) {
-        return ajax.post({
+        const params: requestParams = {
             url: config.hrefs.articleUpdate,
-            body: {
+            data: {
                 id: articleData.id,
                 title: articleData.title,
                 description: articleData.description,
                 tags: articleData.tags,
                 category: articleData.category,
                 content: articleData.content,
-            }
-        });
+            },
+        }
+        return Ajax.post(params);
     }
 
     /**
      * Обновляет статью
      */
     static getCategories() {
-        return (ajax.get({
-    url: config.hrefs.categoryList,
-}) as any).response;
+        const params: requestParams = {
+            url: config.hrefs.categoryList,
+        }
+        return (Ajax.get(params) as any).response;
     }
 }

@@ -6,38 +6,34 @@ const REQUEST_TYPE = {
     POST: 'POST'
 };
 
-export class Ajax {
-    get({
-        url,
-        data
-    }: any) {
-        return this.#ajax({
-            method: REQUEST_TYPE.GET,
-            crossDomain: true,
-            url,
-            data
-        })
+export type requestParams = {
+    url: string;
+    body?: string;
+    data?: object;
+    method?: string;
+};
+
+export default class Ajax {
+    static get(params: requestParams) {
+        const parameters: requestParams = params;
+        parameters.method = REQUEST_TYPE.GET;
+        return Ajax.#ajax(params);
     }
 
-    post({
-        url,
-        body
-    }: any) {
-        return this.#ajax({
-            method: REQUEST_TYPE.POST,
-            url,
-            crossDomain: true,
-            body
-        })
+    static post(params: requestParams) {
+        const parameters: requestParams = params;
+        parameters.method = REQUEST_TYPE.POST;
+        console.log(parameters);
+        return Ajax.#ajax(parameters);
     }
 
-    #ajax(requestParams: any) {
-        const url = new URL(APIurl + (requestParams.url || '/'));
-        url.search = new URLSearchParams(requestParams.data).toString();
+    static #ajax(params: requestParams) {
+        const url = new URL(APIurl + (params.url || '/'));
+        url.search = new URLSearchParams(JSON.stringify(params.body)).toString();
 
-        const fetchParams = {
-            method: requestParams.method,
-            body: JSON.stringify(requestParams.body),
+        const fetchParams: object = {
+            method: params.method,
+            body: JSON.stringify(params.data),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -45,7 +41,7 @@ export class Ajax {
             credentials: 'include',
         };
         let status = 0;
-        // @ts-expect-error TS(2345): Argument of type '{ method: any; body: string; hea... Remove this comment to see the full error message
+
         return fetch(url, fetchParams)
             .then((response) => {
                 status = response.status;

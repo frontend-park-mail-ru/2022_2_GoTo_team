@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "PORT=8081 DEBUG=server node front/server",
+    "build": "tsc --build",
     "demon": "front/demon.sh",
     "lint": "npx eslint . --ext .js",
     "stop": "front/stop.sh",
