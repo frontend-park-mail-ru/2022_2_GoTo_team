@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "PORT=8081 DEBUG=server node front/server",
+    "start": "npm run preProcess && PORT=8081 DEBUG=server node front/server",
+    "preProcess": "npm run build && npm run tmpl",
     "build": "tsc --build",
-    "demon": "front/demon.sh",
-    "lint": "npx eslint . --ext .js",
-    "stop": "front/stop.sh",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "tmpl": "front/templating.sh",
+    "demon": "npm run preProcess && forever start front/server/index.js",
+    "lint": "npx eslint . --ext .js",
+    "stop": "forever stop front/server/index.js ",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "deleteTemplates": "rm -rd \"front/public/components/tmpl\""
   },
   "repository": {
