@@ -22,4 +22,4 @@ export default class Overlay extends BasicComponent {
         this.root = this.view.render();
         return this.root;
     }
-};
+}

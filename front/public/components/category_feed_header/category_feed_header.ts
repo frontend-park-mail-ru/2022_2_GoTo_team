@@ -17,7 +17,8 @@ export default class CategoryFeedHeader extends BasicComponent {
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render(categoryData) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'CategoryFeedHeader' is ... Remove this comment to see the full error message
+    render(categoryData: any) {
         super.render();
         this.root = this.view.render(categoryData);
         return this.root;

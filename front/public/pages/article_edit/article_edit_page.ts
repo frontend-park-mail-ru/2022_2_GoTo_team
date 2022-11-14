@@ -11,7 +11,7 @@ export default class ArticleEditPage extends Page {
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root) {
+    constructor(root: any) {
         super(root);
         this.view = new ArticleEditPageView(root);
     }
@@ -20,7 +20,8 @@ export default class ArticleEditPage extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(articleId) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'ArticleEditPage' is not... Remove this comment to see the full error message
+    async render(articleId: any) {
         if (typeof articleId !== 'undefined'){
             const article = await Requests.getArticle(articleId);
             await this.view.render(article);

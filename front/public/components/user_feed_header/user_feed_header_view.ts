@@ -9,8 +9,10 @@ export default class UserFeedHeaderView extends BasicComponentView {
      * @param {Object} userData
      * @return {HTMLElement}
      */
-    render(userData) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'UserFeedHeaderView' is ... Remove this comment to see the full error message
+    render(userData: any) {
         const wrapper = document.createElement('div');
+        // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['user_page_header.html']({
             username: userData.username,
             rating: userData.rating,

@@ -41,7 +41,8 @@ export default class Navbar extends BasicComponent {
 
         const newArticle = this.root.getElementsByClassName('navbar__button')[3];
         newArticle.addEventListener('click', () =>{
+            // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
             PageLoaders.editArticle();
         });
     }
-};
+}

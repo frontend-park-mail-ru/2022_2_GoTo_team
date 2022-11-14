@@ -11,7 +11,7 @@ export default class RegistrationPage extends Page{
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root) {
+    constructor(root: any) {
         super(root);
         this.view = new RegistrationPageView(root);
     }
@@ -38,8 +38,11 @@ export default class RegistrationPage extends Page{
             repeat_password_validation: Events.passwordRepeatValidateListenerRegistration,
         }
         this.view.children.get('form').subscribe(registrationEventBus);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         const profileButton = document.getElementById('navbar__auth_button').lastChild;
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.removeEventListener('click', Events.makeLoginOverlayListener);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', PageLoaders.loginPage);
     }
 }

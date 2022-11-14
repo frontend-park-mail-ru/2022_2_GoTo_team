@@ -34,7 +34,8 @@ export default class ArticleEdit extends BasicComponent {
      * @property {string} article.coAuthor.login
      * @return {HTMLElement}
      */
-    async render(article) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'ArticleEdit' is not ass... Remove this comment to see the full error message
+    async render(article: any) {
         super.render();
         const categories = await Requests.getCategories();
         this.root = this.view.render(article, categories);

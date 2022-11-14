@@ -4,24 +4,25 @@ import PageView from "./page_view.js";
  * @class Page
  */
 export default class Page {
-    /**
-     * Страница содержит главный компонент - .
-     * @param {HTMLElement} root
-     */
-    constructor(root) {
-        this.view = new PageView(root);
-    }
+ view: any;
+ /**
+  * Страница содержит главный компонент - .
+  * @param {HTMLElement} root
+  */
+ constructor(root: any) {
+     this.view = new PageView(root);
+ }
 
-    /**
-     * Отобразить подконтрольную страницу.
-     */
-    render() {
-        this.view.render();
-    }
+ /**
+  * Отобразить подконтрольную страницу.
+  */
+ render() {
+     this.view.render();
+ }
 
-    /**
-     * Подписка на связанные события
-     */
-    subscribe() {
-    }
+ /**
+  * Подписка на связанные события
+  */
+ subscribe() {
+ }
 }

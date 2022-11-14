@@ -5,25 +5,27 @@ import BaseComponentView from './basic_component_view.js';
  * @class BasicComponent
  */
 export default class BasicComponent {
-    /**
-     * Конструктор
-     */
-    constructor() {
-        this.root = document.createElement('div');
-        this.view = new BaseComponentView();
-    }
+ root: any;
+ view: any;
+ /**
+  * Конструктор
+  */
+ constructor() {
+     this.root = document.createElement('div');
+     this.view = new BaseComponentView();
+ }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @return {HTMLElement}
-     */
-    render() {
-        return document.createElement('div');
-    }
+ /**
+  * Перерисовка подконтрольного элемента
+  * @return {HTMLElement}
+  */
+ render() {
+     return document.createElement('div');
+ }
 
-    /**
-     * Подписка на связанные события
-     */
-    subscribe() {
-    }
+ /**
+  * Подписка на связанные события
+  */
+ subscribe() {
+ }
 }

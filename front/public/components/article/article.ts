@@ -34,7 +34,8 @@ export default class Article extends BasicComponent {
      * @property {string} article.co_author.login
      * @return {HTMLElement}
      */
-    render(article) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'Article' is not assigna... Remove this comment to see the full error message
+    render(article: any) {
         super.render();
         this.root = this.view.render(article);
         return this.root;

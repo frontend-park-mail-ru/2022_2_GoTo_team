@@ -13,7 +13,7 @@ export default class LoginPage extends Page{
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root) {
+    constructor(root: any) {
         super(root);
         this.view = new LoginPageView(root);
     }
@@ -40,8 +40,11 @@ export default class LoginPage extends Page{
        }
        this.view.children.get('form').subscribe(loginEventBus);
 
+       // @ts-expect-error TS(2531): Object is possibly 'null'.
        const profile_button = document.getElementById('navbar__auth_button').lastChild;
+       // @ts-expect-error TS(2531): Object is possibly 'null'.
        profile_button.removeEventListener('click', Events.makeLoginOverlayListener);
+       // @ts-expect-error TS(2531): Object is possibly 'null'.
        profile_button.addEventListener('click', PageLoaders.loginPage);
     }
 }

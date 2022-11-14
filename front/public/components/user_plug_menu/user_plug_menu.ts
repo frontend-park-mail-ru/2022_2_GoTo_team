@@ -29,8 +29,10 @@ export default class UserPlugMenu extends BasicComponent {
     subscribe() {
         super.subscribe();
         const profileButton = document.getElementById('profile_menu__profile_button');
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', Events.goToSettingsPage);
         const exitButton = document.getElementById('profile_menu__unauthorize_button');
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         exitButton.addEventListener('click', Events.profileMenuUnauthorizeListener);
     }
-};
+}

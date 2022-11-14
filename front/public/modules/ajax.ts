@@ -7,7 +7,10 @@ const REQUEST_TYPE = {
 };
 
 export class Ajax {
-    get({url, data}) {
+    get({
+        url,
+        data
+    }: any) {
         return this.#ajax({
             method: REQUEST_TYPE.GET,
             crossDomain: true,
@@ -16,7 +19,10 @@ export class Ajax {
         })
     }
 
-    post({url, body}) {
+    post({
+        url,
+        body
+    }: any) {
         return this.#ajax({
             method: REQUEST_TYPE.POST,
             url,
@@ -25,7 +31,7 @@ export class Ajax {
         })
     }
 
-    #ajax(requestParams) {
+    #ajax(requestParams: any) {
         const url = new URL(APIurl + (requestParams.url || '/'));
         url.search = new URLSearchParams(requestParams.data).toString();
 
@@ -39,6 +45,7 @@ export class Ajax {
             credentials: 'include',
         };
         let status = 0;
+        // @ts-expect-error TS(2345): Argument of type '{ method: any; body: string; hea... Remove this comment to see the full error message
         return fetch(url, fetchParams)
             .then((response) => {
                 status = response.status;

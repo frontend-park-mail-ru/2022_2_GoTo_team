@@ -12,7 +12,7 @@ export default class Feed extends Page{
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root) {
+    constructor(root: any) {
         super(root);
         this.view = new FeedView(root);
     }

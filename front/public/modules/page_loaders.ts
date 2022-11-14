@@ -40,7 +40,7 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу автора
      */
-    static userFeedPage(login) {
+    static userFeedPage(login: any) {
         const page = new UserFeed(root);
         page.render(login);
         page.subscribe();
@@ -49,7 +49,7 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу автора
      */
-    static categoryFeedPage(category) {
+    static categoryFeedPage(category: any) {
         const page = new CategoryFeed(root);
         page.render(category);
         page.subscribe();
@@ -58,7 +58,7 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static async articlePage(articleId) {
+    static async articlePage(articleId: any) {
         const page = new ArticlePage(root);
         await page.render(articleId);
         page.subscribe();
@@ -76,7 +76,7 @@ export class PageLoaders {
     /**
      * Отрисовывает редактирования/создания статьи
      */
-    static async editArticle(articleId) {
+    static async editArticle(articleId: any) {
         const page = new ArticleEditPage(root)
         await page.render(articleId);
         page.subscribe();

@@ -17,7 +17,8 @@ export default class UserFeedHeader extends BasicComponent {
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render(userData) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'UserFeedHeader' is not ... Remove this comment to see the full error message
+    render(userData: any) {
         super.render();
         this.root = this.view.render(userData);
         return this.root;

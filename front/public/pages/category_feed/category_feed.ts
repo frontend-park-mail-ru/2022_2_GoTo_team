@@ -14,7 +14,7 @@ export default class CategoryFeed extends Page {
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root) {
+    constructor(root: any) {
         super(root);
         this.view = new CategoryFeedView(root);
     }
@@ -23,7 +23,8 @@ export default class CategoryFeed extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    render(category) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'CategoryFeed' is not as... Remove this comment to see the full error message
+    render(category: any) {
         this.view.render();
         Requests.categoryHeaderInfo(category).then((categoryData) => {
             const header = new CategoryFeedHeader()

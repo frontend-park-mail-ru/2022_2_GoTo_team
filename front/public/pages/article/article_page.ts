@@ -11,7 +11,7 @@ export default class ArticlePage extends Page{
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root) {
+    constructor(root: any) {
         super(root);
         this.view = new ArticlePageView(root);
     }
@@ -20,7 +20,8 @@ export default class ArticlePage extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(articleId) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'ArticlePage' is not ass... Remove this comment to see the full error message
+    async render(articleId: any) {
 
         const article = await Requests.getArticle(articleId);
         this.view.render(article);

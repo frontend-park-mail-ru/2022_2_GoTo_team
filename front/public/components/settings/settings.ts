@@ -18,7 +18,8 @@ export default class Settings extends BasicComponent {
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render(userData) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'Settings' is not assign... Remove this comment to see the full error message
+    render(userData: any) {
         super.render();
         this.root = this.view.render(userData);
         return this.root;
@@ -29,6 +30,7 @@ export default class Settings extends BasicComponent {
      */
     subscribe() {
         const saveButton = document.getElementById('save');
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         saveButton.addEventListener('click', Events.saveProfileListener);
     }
 };

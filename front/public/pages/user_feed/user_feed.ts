@@ -14,7 +14,7 @@ export default class UserFeed extends Page {
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root) {
+    constructor(root: any) {
         super(root);
         this.view = new UserFeedView(root);
     }
@@ -23,7 +23,8 @@ export default class UserFeed extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    render(login) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'UserFeed' is not assign... Remove this comment to see the full error message
+    render(login: any) {
         this.view.render();
         Requests.userHeaderInfo(login).then((userData) => {
             const header = new UserFeedHeader();

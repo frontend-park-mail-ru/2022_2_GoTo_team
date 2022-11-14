@@ -21,7 +21,8 @@ export default class UserPlug extends BasicComponent {
      * @property {string?} avatarUrl
      * @return {HTMLElement}
      */
-    render(user) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'UserPlug' is not assign... Remove this comment to see the full error message
+    render(user: any) {
         super.render();
         this.root = this.view.render(user);
         return this.root;

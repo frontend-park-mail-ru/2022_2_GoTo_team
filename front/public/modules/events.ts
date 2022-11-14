@@ -36,6 +36,7 @@ export class Events {
         const overlay = new Overlay();
         overlay.render();
         const root = document.getElementById('root');
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         root.appendChild(overlay.root);
         overlay.subscribe();
     }
@@ -45,6 +46,7 @@ export class Events {
      */
     static #closeOverlay() {
         const overlay = document.getElementById('overlay');
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         overlay.parentNode.removeChild(overlay);
     }
 
@@ -52,10 +54,12 @@ export class Events {
      * Перерисовывает плашку оверлея на view
      * @param {BasicComponent} controller
      */
-    static #changeOverlay(controller, eventBus) {
+    static #changeOverlay(controller: any, eventBus: any) {
         const overlayCenter = document.getElementById('overlay__center');
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         overlayCenter.innerHTML = '';
         controller.render();
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         overlayCenter.appendChild(controller.root);
         controller.subscribe(eventBus);
     }
@@ -67,8 +71,11 @@ export class Events {
         Events.openOverlay();
         Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
 
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         const auth_button = document.getElementById('navbar__auth_button').lastChild;
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         auth_button.removeEventListener('click', Events.makeLoginOverlayListener);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         auth_button.addEventListener('click', Events.closeOverlayListener);
     }
 
@@ -78,8 +85,11 @@ export class Events {
     static closeOverlayListener() {
         Events.#closeOverlay()
 
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         const authButton = document.getElementById('navbar__auth_button').lastChild;
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         authButton.removeEventListener('click', Events.closeOverlayListener);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         authButton.addEventListener('click', Events.makeLoginOverlayListener);
     }
 
@@ -104,9 +114,9 @@ export class Events {
         const emailForm = document.getElementById("login_form__email_login");
         const passwordForm = document.getElementById("login_form__password");
         const userData = {
-            email: emailForm.value.trim(),
-            password: passwordForm.value.trim(),
-        }
+    email: (emailForm as any).value.trim(),
+    password: (passwordForm as any).value.trim(),
+};
 
         const emailValidation = Events.emailValidateListenerLogin();
         const passwordValidation = Events.passwordValidateListenerLogin();
@@ -152,11 +162,11 @@ export class Events {
         const passwordForm = document.getElementById("registration_form__password");
 
         const userData = {
-            email: emailForm.value.trim(),
-            login: loginForm.value.trim(),
-            username: usernameForm.value.trim(),
-            password: passwordForm.value.trim()
-        }
+    email: (emailForm as any).value.trim(),
+    login: (loginForm as any).value.trim(),
+    username: (usernameForm as any).value.trim(),
+    password: (passwordForm as any).value.trim()
+};
 
         const emailValidation = Events.emailValidateListenerRegistration();
         const loginValidation = Events.loginValidateListenerRegistration();
@@ -212,7 +222,7 @@ export class Events {
      * @param {HTMLSelectElement} element
      * @param {string} message
      */
-    static #makeInvalid(element, message) {
+    static #makeInvalid(element: any, message: any) {
         const errorClass = "error-message"
         const siblings = element.parentNode.childNodes;
         const wrongSign = document.createElement('div');
@@ -239,7 +249,7 @@ export class Events {
      * Убирает невалидность формы element
      * @param {HTMLSelectElement} element
      */
-    static #makeValid(element) {
+    static #makeValid(element: any) {
         element.setCustomValidity('');
         const errorClass = "error-message";
         const siblings = element.parentNode.childNodes;
@@ -262,7 +272,7 @@ export class Events {
      */
     static emailValidateListenerLogin() {
         const emailForm = document.getElementById('login_form__email_login');
-        const email = emailForm.value.trim();
+        const email = (emailForm as any).value.trim();
         if (email === '') {
             Events.#makeValid(emailForm);
             return true;
@@ -280,7 +290,7 @@ export class Events {
      */
     static passwordValidateListenerLogin() {
         const passwordForm = document.getElementById("login_form__password");
-        const password = passwordForm.value.trim();
+        const password = (passwordForm as any).value.trim();
         if (password === '') {
             Events.#makeValid(passwordForm);
             return true;
@@ -298,7 +308,7 @@ export class Events {
      */
     static emailValidateListenerRegistration() {
         const emailForm = document.getElementById('registration_form__email');
-        const email = emailForm.value.trim();
+        const email = (emailForm as any).value.trim();
 
         if (email === '') {
             Events.#makeValid(emailForm);
@@ -317,7 +327,7 @@ export class Events {
      */
     static loginValidateListenerRegistration() {
         const loginForm = document.getElementById("registration_form__login");
-        const login = loginForm.value.trim();
+        const login = (loginForm as any).value.trim();
 
         if (login === '') {
             Events.#makeValid(loginForm);
@@ -336,7 +346,7 @@ export class Events {
      */
     static usernameValidateListenerRegistration() {
         const usernameForm = document.getElementById("registration_form__username");
-        const username = usernameForm.value.trim();
+        const username = (usernameForm as any).value.trim();
 
         if (username === '') {
             Events.#makeValid(usernameForm);
@@ -355,7 +365,7 @@ export class Events {
      */
     static passwordValidateListenerRegistration() {
         const passwordForm = document.getElementById("registration_form__password");
-        const password = passwordForm.value.trim();
+        const password = (passwordForm as any).value.trim();
 
         if (password === '') {
             Events.#makeValid(passwordForm);
@@ -375,8 +385,8 @@ export class Events {
     static passwordRepeatValidateListenerRegistration() {
         const passwordForm = document.getElementById("registration_form__password");
         const repeatPasswordForm = document.getElementById("registration_form__repeat-password");
-        const password = passwordForm.value.trim();
-        const repeatPassword = repeatPasswordForm.value.trim();
+        const password = (passwordForm as any).value.trim();
+        const repeatPassword = (repeatPasswordForm as any).value.trim();
 
         if (password === '' || repeatPassword === '') {
             Events.#makeValid(repeatPasswordForm);
@@ -394,7 +404,7 @@ export class Events {
      * Возвращает значение куки name
      * @param {string} name
      */
-    static #getCookie(name) {
+    static #getCookie(name: any) {
         let cookieArr = document.cookie.split(";");
         for (let i = 0; i < cookieArr.length; i++) {
             let cookiePair = cookieArr[i].split("=");
@@ -421,19 +431,26 @@ export class Events {
         const userPlug = new UserPlug();
         if (Events.#hasSession()) {
             Requests.getSessionInfo().then((response) => {
-                if (response.status === 200) {
-                    userPlug.render({nickname: response.response.username});
-                } else {
-                    userPlug.render();
-                }
-                userPlug.subscribe();
-                profileButton.innerHTML = '';
-                profileButton.appendChild(userPlug.root);
-            });
+    if ((response as any).status === 200) {
+        userPlug.render({ nickname: (response as any).response.username });
+    }
+    else {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
+        userPlug.render();
+    }
+    userPlug.subscribe();
+    // @ts-expect-error TS(2531): Object is possibly 'null'.
+    profileButton.innerHTML = '';
+    // @ts-expect-error TS(2531): Object is possibly 'null'.
+    profileButton.appendChild(userPlug.root);
+});
         }
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         userPlug.render();
         userPlug.subscribe();
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.innerHTML = '';
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.appendChild(userPlug.root);
     }
 
@@ -446,6 +463,7 @@ export class Events {
             const userPlugMenu = new UserPlugMenu();
             userPlugMenu.render();
             const root = document.getElementById('root');
+            // @ts-expect-error TS(2531): Object is possibly 'null'.
             root.appendChild(userPlugMenu.root);
             userPlugMenu.subscribe();
         }
@@ -456,8 +474,11 @@ export class Events {
      */
     static showProfileMenuListener() {
         Events.showProfileMenu()
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         const profileButton = document.getElementById("navbar__auth_button").lastChild;
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.removeEventListener('click', Events.showProfileMenuListener);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', Events.closeProfileMenuListener);
     }
 
@@ -468,6 +489,7 @@ export class Events {
         const profileMenu = document.getElementById('profile_menu');
         if (profileMenu) {
             const root = document.getElementById('root');
+            // @ts-expect-error TS(2531): Object is possibly 'null'.
             root.removeChild(profileMenu);
         }
     }
@@ -477,8 +499,11 @@ export class Events {
      */
     static closeProfileMenuListener() {
         Events.closeProfileMenu()
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         const profileButton = document.getElementById("navbar__auth_button").lastChild;
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.removeEventListener('click', Events.closeProfileMenuListener);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', Events.showProfileMenuListener);
     }
 
@@ -507,21 +532,21 @@ export class Events {
     /**
      * Отрисовка страницы автора
      */
-    static goToAuthorFeed(login) {
+    static goToAuthorFeed(login: any) {
         PageLoaders.userFeedPage(login);
     }
 
     /**
      * Отрисовка страницы автора
      */
-    static goToCategoryFeed(category) {
+    static goToCategoryFeed(category: any) {
         PageLoaders.categoryFeedPage(category);
     }
 
     /**
      * Отрисовка страницы просмотра статьи
      */
-    static openArticle(articleId) {
+    static openArticle(articleId: any) {
         PageLoaders.articlePage(articleId);
     }
 
@@ -535,7 +560,7 @@ export class Events {
     /**
      * Отправление изменений профиля
      */
-    static saveProfileEvent(userData) {
+    static saveProfileEvent(userData: any) {
         Requests.saveProfile(userData);
     }
 
@@ -550,11 +575,11 @@ export class Events {
         const repeatPasswordForm = document.getElementById("settings__repeat_password");
 
         const userData = {
-            email: emailForm.value.trim(),
-            login: loginForm.value.trim(),
-            username: usernameForm.value.trim(),
-            password: passwordForm.value.trim(),
-        }
+    email: (emailForm as any).value.trim(),
+    login: (loginForm as any).value.trim(),
+    username: (usernameForm as any).value.trim(),
+    password: (passwordForm as any).value.trim(),
+};
 
         if (!Validators.validateLogin(userData.login)) {
             Events.#makeInvalid(loginForm, "Неправильный формат логина");
@@ -580,7 +605,7 @@ export class Events {
         }
         Events.#makeValid(passwordForm);
 
-        if (userData.password !== repeatPasswordForm.value.trim()) {
+        if (userData.password !== (repeatPasswordForm as any).value.trim()) {
             Events.#makeInvalid(repeatPasswordForm, "Пароли не совпадают");
             return
         }
@@ -636,13 +661,13 @@ export class Events {
         const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
         const contentForm = document.getElementsByClassName('article_edit__content')[0];
         const articleData = {
-            title: titleForm.textContent,
-            category: categoryForm.value,
-            description: descriptionForm.textContent,
-            tags: [''],
-            co_author: '',
-            content: contentForm.textContent,
-        }
+    title: titleForm.textContent,
+    category: (categoryForm as any).value,
+    description: descriptionForm.textContent,
+    tags: [''],
+    co_author: '',
+    content: contentForm.textContent,
+};
 
         Events.articleCreate(articleData);
         PageLoaders.feedPage();
@@ -651,19 +676,19 @@ export class Events {
     /**
      * Обработчик изменения статьи
      */
-    static articleUpdateListener(articleId) {
+    static articleUpdateListener(articleId: any) {
         const titleForm = document.getElementsByClassName('article_edit__title')[0];
         const categoryForm = document.getElementsByClassName('select_menu')[0];
         const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
         const contentForm = document.getElementsByClassName('article_edit__content')[0];
         const articleData = {
-            id: articleId,
-            title: titleForm.textContent,
-            category: categoryForm.value,
-            description: descriptionForm.textContent,
-            tags: [""],
-            content: contentForm.textContent,
-        }
+    id: articleId,
+    title: titleForm.textContent,
+    category: (categoryForm as any).value,
+    description: descriptionForm.textContent,
+    tags: [""],
+    content: contentForm.textContent,
+};
 
         Events.articleUpdate(articleData);
     }
@@ -671,21 +696,21 @@ export class Events {
     /**
      * Удаление статьи по id
      */
-    static articleRemove(articleId) {
+    static articleRemove(articleId: any) {
         Requests.articleRemove(articleId);
     }
 
     /**
      * Создание статьи
      */
-    static articleCreate(articleData) {
+    static articleCreate(articleData: any) {
         Requests.articleCreate(articleData);
     }
 
     /**
      * Обновление статьи
      */
-    static articleUpdate(articleData) {
+    static articleUpdate(articleData: any) {
         Requests.articleUpdate(articleData);
     }
 }

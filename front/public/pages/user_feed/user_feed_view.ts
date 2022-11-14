@@ -6,45 +6,47 @@ import Navbar from "../../components/navbar/navbar.js";
  * @class UserFeedView
  */
 export default class UserFeedView extends PageView {
-    /**
-     * @param {HTMLElement} root
-     */
-    constructor(root) {
-        super(root);
-    }
+ center: any;
+ mainContentElement: any;
+ /**
+  * @param {HTMLElement} root
+  */
+ constructor(root: any) {
+     super(root);
+ }
 
-    /**
-     * Перерисовать главную страницу
-     */
-    render() {
-        super.render();
-        const navbar = new Navbar();
-        navbar.render();
-        this.children.set('navbar', navbar);
-        this.root.appendChild(navbar.root);
+ /**
+  * Перерисовать главную страницу
+  */
+ render() {
+     super.render();
+     const navbar = new Navbar();
+     navbar.render();
+     this.children.set('navbar', navbar);
+     this.root.appendChild(navbar.root);
 
-        const rootEl = document.createElement('div');
-        rootEl.id = 'root';
-        rootEl.classList.add('root');
-        this.root.appendChild(rootEl);
-        this.root = rootEl;
+     const rootEl = document.createElement('div');
+     rootEl.id = 'root';
+     rootEl.classList.add('root');
+     this.root.appendChild(rootEl);
+     this.root = rootEl;
 
-        this.root.appendChild(document.createElement('div'));
+     this.root.appendChild(document.createElement('div'));
 
-        const center = document.createElement('div');
-        center.classList.add('column');
-        this.center = center;
-        this.root.appendChild(center);
+     const center = document.createElement('div');
+     center.classList.add('column');
+     this.center = center;
+     this.root.appendChild(center);
 
-        const content = document.createElement('div');
-        content.classList.add('center_with_sidebar');
-        center.appendChild(content);
+     const content = document.createElement('div');
+     content.classList.add('center_with_sidebar');
+     center.appendChild(content);
 
-        const mainContentElement = document.createElement('div');
-        mainContentElement.classList.add('feed');
-        this.mainContentElement = mainContentElement;
-        content.appendChild(this.mainContentElement);
+     const mainContentElement = document.createElement('div');
+     mainContentElement.classList.add('feed');
+     this.mainContentElement = mainContentElement;
+     content.appendChild(this.mainContentElement);
 
-        this.root.appendChild(document.createElement('div'));
-    }
+     this.root.appendChild(document.createElement('div'));
+ }
 }

@@ -33,7 +33,8 @@ export default class OpenedArticle extends BasicComponent {
      * @property {string} article.coАuthor.login
      * @return {HTMLElement}
      */
-    render(article) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'OpenedArticle' is not a... Remove this comment to see the full error message
+    render(article: any) {
         super.render();
         this.root = this.view.render(article);
         return this.root;

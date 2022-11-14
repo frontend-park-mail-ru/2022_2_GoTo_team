@@ -5,6 +5,8 @@ import "../tmpl/article_edit.tmpl.js";
  * @class ArticleEditView
  */
 export default class ArticleEditView extends BasicComponentView {
+    id: any;
+    update: any;
     /**
      * Перерисовка подконтрольного элемента
      * @param {Object?} article
@@ -26,9 +28,11 @@ export default class ArticleEditView extends BasicComponentView {
      * @param {string[]} categories
      * @return {HTMLElement}
      */
-    render(article, categories) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'ArticleEditView' is not... Remove this comment to see the full error message
+    render(article: any, categories: any) {
         const wrapper = document.createElement('div');
         if (typeof article !== 'undefined') {
+            // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
             wrapper.innerHTML = Handlebars.templates['article_edit.html']({
                 title: article.title,
                 description: article.description,
@@ -42,6 +46,7 @@ export default class ArticleEditView extends BasicComponentView {
             this.id = article.id;
             this.update = true;
         }else{
+            // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
             wrapper.innerHTML = Handlebars.templates['article_edit.html']({
                 update: false,
                 categories: categories,

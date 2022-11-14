@@ -10,6 +10,9 @@ const covers = [
     "static/img/article_cover_3.jpg",
 ]
 export default class ArticleView extends BasicComponentView {
+    category: any;
+    id: any;
+    publisher: any;
     /**
      * Перерисовка подконтрольного элемента
      * @param {Object} article
@@ -29,8 +32,10 @@ export default class ArticleView extends BasicComponentView {
      * @property {string} article.co_author.login
      * @return {HTMLElement}
      */
-    render(article) {
+    // @ts-expect-error TS(2416): Property 'render' in type 'ArticleView' is not ass... Remove this comment to see the full error message
+    render(article: any) {
         const wrapper = document.createElement('div');
+        // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['article.html']({
             title: article.title,
             description: article.description,
