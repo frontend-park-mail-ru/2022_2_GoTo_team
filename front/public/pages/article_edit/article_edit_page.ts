@@ -20,7 +20,7 @@ export default class ArticleEditPage extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'ArticleEditPage' is not... Remove this comment to see the full error message
+    // @ts-ignore
     async render(articleId: any) {
         if (typeof articleId !== 'undefined'){
             const article = await Requests.getArticle(articleId);
@@ -34,6 +34,7 @@ export default class ArticleEditPage extends Page {
     /**
      * Подписка на связанные события
      */
+    // @ts-ignore
     subscribe() {
         this.view.children.get('navbar').subscribe();
         this.view.children.get('edit').subscribe();

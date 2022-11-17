@@ -7,6 +7,8 @@ import Feed from "../pages/feed/feed.js";
 import UserPlug from "../components/user_plug/user_plug.js";
 import UserPlugMenu from "../components/user_plug_menu/user_plug_menu.js";
 import {PageLoaders} from "./page_loaders.js";
+import {UserPlugData} from "../common/types";
+import BasicComponent from "../components/_basic_component/basic_component";
 
 
 export class Events {
@@ -32,9 +34,9 @@ export class Events {
     /**
      * Отрисовывает оверлей
      */
-    static openOverlay() {
+    static async openOverlay() {
         const overlay = new Overlay();
-        overlay.render();
+        await overlay.render();
         const root = document.getElementById('root');
         // @ts-expect-error TS(2531): Object is possibly 'null'.
         root.appendChild(overlay.root);
@@ -54,21 +56,22 @@ export class Events {
      * Перерисовывает плашку оверлея на view
      * @param {BasicComponent} controller
      */
-    static #changeOverlay(controller: any, eventBus: any) {
+    static #changeOverlay(controller: BasicComponent, eventBus: any) {
         const overlayCenter = document.getElementById('overlay__center');
         // @ts-expect-error TS(2531): Object is possibly 'null'.
         overlayCenter.innerHTML = '';
-        controller.render();
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        overlayCenter.appendChild(controller.root);
-        controller.subscribe(eventBus);
+        controller.render().then(() => {
+            // @ts-expect-error TS(2531): Object is possibly 'null'.
+            overlayCenter.appendChild(controller.root);
+            controller.subscribe(eventBus);
+        });
     }
 
     /**
      * Создаёт оверлей с формой логина
      */
-    static makeLoginOverlayListener() {
-        Events.openOverlay();
+    static async makeLoginOverlayListener() {
+        await Events.openOverlay();
         Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
 
         // @ts-expect-error TS(2531): Object is possibly 'null'.
@@ -114,9 +117,9 @@ export class Events {
         const emailForm = document.getElementById("login_form__email_login");
         const passwordForm = document.getElementById("login_form__password");
         const userData = {
-    email: (emailForm as any).value.trim(),
-    password: (passwordForm as any).value.trim(),
-};
+            email: (emailForm as any).value.trim(),
+            password: (passwordForm as any).value.trim(),
+        };
 
         const emailValidation = Events.emailValidateListenerLogin();
         const passwordValidation = Events.passwordValidateListenerLogin();
@@ -162,11 +165,11 @@ export class Events {
         const passwordForm = document.getElementById("registration_form__password");
 
         const userData = {
-    email: (emailForm as any).value.trim(),
-    login: (loginForm as any).value.trim(),
-    username: (usernameForm as any).value.trim(),
-    password: (passwordForm as any).value.trim()
-};
+            email: (emailForm as any).value.trim(),
+            login: (loginForm as any).value.trim(),
+            username: (usernameForm as any).value.trim(),
+            password: (passwordForm as any).value.trim()
+        };
 
         const emailValidation = Events.emailValidateListenerRegistration();
         const loginValidation = Events.loginValidateListenerRegistration();
@@ -426,32 +429,41 @@ export class Events {
     /**
      * Обновляет вид кнопки пользователя на навбаре
      */
-    static updateAuth() {
+    static async updateAuth() {
         const profileButton = document.getElementById("navbar__auth_button");
         const userPlug = new UserPlug();
+        let promise: Promise<HTMLElement>;
         if (Events.#hasSession()) {
-            Requests.getSessionInfo().then((response) => {
-    if ((response as any).status === 200) {
-        userPlug.render({ nickname: (response as any).response.username });
-    }
-    else {
-        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-        userPlug.render();
-    }
-    userPlug.subscribe();
-    // @ts-expect-error TS(2531): Object is possibly 'null'.
-    profileButton.innerHTML = '';
-    // @ts-expect-error TS(2531): Object is possibly 'null'.
-    profileButton.appendChild(userPlug.root);
-});
+            console.log('Getting session info');
+            const response = await Requests.getSessionInfo()
+            console.log('Gotsession info');
+            if ((response as any).status === 200) {
+                const userData: UserPlugData = {
+                    nickname: (response as any).response.username,
+                    avatarUrl: "",
+                }
+                promise = userPlug.render(userData);
+            } else {
+                promise = userPlug.render();
+            }
+            promise.then(() => {
+                console.log('Promise came');
+                console.log(userPlug);
+                userPlug.subscribe();
+                // @ts-expect-error TS(2531): Object is possibly 'null'.
+                profileButton.innerHTML = '';
+                // @ts-expect-error TS(2531): Object is possibly 'null'.
+                profileButton.appendChild(userPlug.root);
+            })
+        }else{
+            userPlug.render().then(() => {
+                userPlug.subscribe();
+                // @ts-expect-error TS(2531): Object is possibly 'null'.
+                profileButton.innerHTML = '';
+                // @ts-expect-error TS(2531): Object is possibly 'null'.
+                profileButton.appendChild(userPlug.root);
+            })
         }
-        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-        userPlug.render();
-        userPlug.subscribe();
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        profileButton.innerHTML = '';
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        profileButton.appendChild(userPlug.root);
     }
 
     /**
@@ -575,11 +587,11 @@ export class Events {
         const repeatPasswordForm = document.getElementById("settings__repeat_password");
 
         const userData = {
-    email: (emailForm as any).value.trim(),
-    login: (loginForm as any).value.trim(),
-    username: (usernameForm as any).value.trim(),
-    password: (passwordForm as any).value.trim(),
-};
+            email: (emailForm as any).value.trim(),
+            login: (loginForm as any).value.trim(),
+            username: (usernameForm as any).value.trim(),
+            password: (passwordForm as any).value.trim(),
+        };
 
         if (!Validators.validateLogin(userData.login)) {
             Events.#makeInvalid(loginForm, "Неправильный формат логина");
@@ -661,13 +673,13 @@ export class Events {
         const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
         const contentForm = document.getElementsByClassName('article_edit__content')[0];
         const articleData = {
-    title: titleForm.textContent,
-    category: (categoryForm as any).value,
-    description: descriptionForm.textContent,
-    tags: [''],
-    co_author: '',
-    content: contentForm.textContent,
-};
+            title: titleForm.textContent,
+            category: (categoryForm as any).value,
+            description: descriptionForm.textContent,
+            tags: [''],
+            co_author: '',
+            content: contentForm.textContent,
+        };
 
         Events.articleCreate(articleData);
         PageLoaders.feedPage();
@@ -682,13 +694,13 @@ export class Events {
         const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
         const contentForm = document.getElementsByClassName('article_edit__content')[0];
         const articleData = {
-    id: articleId,
-    title: titleForm.textContent,
-    category: (categoryForm as any).value,
-    description: descriptionForm.textContent,
-    tags: [""],
-    content: contentForm.textContent,
-};
+            id: articleId,
+            title: titleForm.textContent,
+            category: (categoryForm as any).value,
+            description: descriptionForm.textContent,
+            tags: [""],
+            content: contentForm.textContent,
+        };
 
         Events.articleUpdate(articleData);
     }

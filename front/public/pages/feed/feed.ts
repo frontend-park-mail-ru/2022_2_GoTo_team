@@ -8,11 +8,12 @@ import Page from "../_basic/page.js";
  * @class Feed
  */
 export default class Feed extends Page{
+    view: FeedView;
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
         this.view = new FeedView(root);
     }
@@ -21,16 +22,17 @@ export default class Feed extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    render() {
-        this.view.render();
+    async render() {
+        await this.view.render();
         Requests.getArticles().then((articles) => {
             if (articles && Array.isArray(articles)) {
-                this.view.mainContentElement.innerHTML = '';
+                this.view.mainContentElement!.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
-                    articleView.render(article);
-                    articleView.subscribe();
-                    this.view.mainContentElement.appendChild(articleView.root);
+                    articleView.render(article).then(() => {
+                        this.view.mainContentElement!.appendChild(articleView.root);
+                        articleView.subscribe();
+                    });
                 })
             }
         });
@@ -40,7 +42,7 @@ export default class Feed extends Page{
     /**
      * Подписка на связанные события
      */
-    subscribe() {
+    async subscribe() {
         this.view.children.get('navbar').subscribe();
     }
 }

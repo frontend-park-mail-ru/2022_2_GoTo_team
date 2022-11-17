@@ -1,11 +1,25 @@
 import BasicComponent from "../_basic_component/basic_component.js";
 import RegistrationFormView from "./registration_form_view.js";
+import {Listener} from "../../common/types";
+
+export type RegistrationFormEventBus = {
+    submit: Listener,
+    goToLogin: Listener,
+    emailValidation: Listener,
+    loginValidation: Listener,
+    usernameValidation: Listener,
+    passwordValidation: Listener,
+    repeatPasswordValidation: Listener,
+    closeForm: Listener,
+}
 
 /**
  * View_model-компонент соответсвующего View
  * @class RegistrationForm
  */
 export default class RegistrationForm extends BasicComponent {
+    view: RegistrationFormView;
+
     /**
      * Универсальный компонент заголовка
      */
@@ -18,9 +32,9 @@ export default class RegistrationForm extends BasicComponent {
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render() {
-        super.render();
-        this.root = this.view.render();
+    async render() {
+        await super.render();
+        this.root = await this.view.render();
         return this.root;
     }
 
@@ -36,26 +50,22 @@ export default class RegistrationForm extends BasicComponent {
      * @property {function} repeatPasswordValidation
      * @property {function?} closeForm
      */
-    // @ts-expect-error TS(2416): Property 'subscribe' in type 'RegistrationForm' is... Remove this comment to see the full error message
-    subscribe(eventBus: any) {
-        super.subscribe();
-        const submitButton = document.getElementById("registration_form__submit_button");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+    async subscribe(eventBus: RegistrationFormEventBus) {
+        await super.subscribe();
+        const submitButton = document.getElementById("registration_form__submit_button")!;
         submitButton.addEventListener('click', eventBus.submit);
 
-        const backButton = document.getElementById("login_form__go_back");
+        const backButton = document.getElementById("login_form__go_back")!;
         if (typeof eventBus.goToLogin !== 'undefined') {
-            // @ts-expect-error TS(2531): Object is possibly 'null'.
             backButton.addEventListener('click', eventBus.goToLogin);
-        }else{
+        } else {
             this.root.removeChild(backButton);
         }
 
-        const closeButton = document.getElementById("login_form__cross");
+        const closeButton = document.getElementById("login_form__cross")!;
         if (typeof eventBus.closeForm !== 'undefined') {
-            // @ts-expect-error TS(2531): Object is possibly 'null'.
             closeButton.addEventListener('click', eventBus.closeForm);
-        }else{
+        } else {
             this.root.removeChild(closeButton);
         }
 

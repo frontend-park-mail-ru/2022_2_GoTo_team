@@ -8,6 +8,9 @@
     --slight-darker-dark: #c7c7c7;
     --negative: #FF1D89;
     --dark-negative: #ba1563;
+    --text: #000000;
+    --ligther-text: #363636;
+    --focused-background: #eeeeee;
 }
 
 body {
@@ -807,21 +810,43 @@ div.log-button-container {
 
 .div_textarea{
     width: 100%;
-    border: var(--slight-dark) 1px solid;
+    /*border: var(--slight-dark) 1px solid;*/
     outline: none;
     resize: none;
     font-size: 16px;
     margin: 6px;
-    padding: 5px;
+    padding: 7px;
+    border-radius: 15px;
+    word-wrap: anywhere;
+}
+
+.div_textarea:focus{
+    background: rgba(104, 11, 197, 0.15);
+}
+
+.div_textarea[placeholder]:empty:before{
+    content: attr(placeholder);
+    color: var(--ligther-text);
+}
+
+.div_textarea[placeholder]:empty:focus:before{
+    content: ' ';
+}
+
+.article_edit__title{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.article_edit__description{
+    font-weight: bold;
 }
 
 .article_edit__content{
-    min-height: 200px;
     margin-bottom: 55px;
 }
 
 .article_edit__footer{
-
     position: fixed;
     bottom: 0;
     left: 20%;
@@ -855,4 +880,21 @@ div.log-button-container {
 .article_edit__label{
     font-size: 20px;
     margin-left: 10px;
+}
+
+.select_menu{
+    outline: none;
+    background: transparent;
+    border: 6px solid transparent;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.select_menu:hover{
+    background: var(--slight-dark);
+}
+
+.select_menu:active{
+    background: rgba(104, 11, 197, 0.25);
 }

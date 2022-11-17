@@ -1,5 +1,6 @@
 import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/opened_article.tmpl.js";
+import {FullArticleData} from "../../common/types";
 /**
  * @class OpenedArticleView
  */
@@ -10,29 +11,15 @@ const covers = [
     "static/img/article_cover_3.jpg",
 ]
 export default class OpenedArticleView extends BasicComponentView {
-    category: any;
-    publisher: any;
+    category: string | undefined;
+    publisher: string | undefined;
+
     /**
      * Перерисовка подконтрольного элемента
-     * @param {Object} article
-     * @property {string} article.title
-     * @property {string} article.description
-     * @property {string[]} article.tags
-     * @property {string} article.category
-     * @property {int} article.rating
-     * @property {int} article.comments
-     * @property {string} article.coverImgPath
-     * @property {Object} article.publisher
-     * @property {string} article.publisher.username
-     * @property {string} article.publisher.login
-     * @property {Object} article.coAuthor
-     * @property {string} article.coAuthor.username
-     * @property {string} article.coAuthor.login
-     * @property {string} article.content
+     * @param {FullArticleData} article
      * @return {HTMLElement}
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'OpenedArticleView' is n... Remove this comment to see the full error message
-    render(article: any) {
+    async render(article: FullArticleData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['opened_article.html']({
@@ -48,6 +35,6 @@ export default class OpenedArticleView extends BasicComponentView {
         });
         this.publisher = article.publisher.login;
         this.category = article.category;
-        return wrapper.firstChild;
+        return wrapper.querySelector('div')!;
     }
 }

@@ -20,18 +20,16 @@ export default class ArticlePage extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'ArticlePage' is not ass... Remove this comment to see the full error message
-    async render(articleId: any) {
-
+    async render(articleId: number) {
         const article = await Requests.getArticle(articleId);
-        this.view.render(article);
+        await this.view.render(article);
         Events.updateAuth();
     }
 
     /**
      * Подписка на связанные события
      */
-    subscribe() {
+    async subscribe() {
         this.view.children.get('navbar').subscribe();
         this.view.children.get('article').subscribe();
     }

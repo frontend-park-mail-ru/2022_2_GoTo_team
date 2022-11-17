@@ -3,20 +3,21 @@
  * @class PageView
  */
 export default class PageView {
- children: any;
- root: any;
- /**
-  * @param {HTMLElement} root
-  */
- constructor(root: any) {
-     this.root = root;
-     this.children = new Map();
- }
+    children: any;
+    root: HTMLElement;
 
- /**
-  * Нарисовать страницу
-  */
- render() {
-     this.root.innerHTML = '';
- }
+    /**
+     * @param {HTMLElement} root
+     */
+    constructor(root: HTMLElement) {
+        this.root = root;
+        this.children = new Map();
+    }
+
+    /**
+     * Нарисовать страницу
+     */
+    async render(parameters?: object) {
+        this.root.innerHTML = '';
+    }
 }

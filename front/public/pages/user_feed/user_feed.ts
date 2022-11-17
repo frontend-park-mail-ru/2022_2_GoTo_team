@@ -10,6 +10,8 @@ import Article from "../../components/article/article.js";
  * @class  UserFeed
  */
 export default class UserFeed extends Page {
+    // @ts-ignore
+    view: UserFeedView;
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
@@ -23,7 +25,7 @@ export default class UserFeed extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'UserFeed' is not assign... Remove this comment to see the full error message
+    // @ts-ignore
     render(login: any) {
         this.view.render();
         Requests.userHeaderInfo(login).then((userData) => {
@@ -51,6 +53,7 @@ export default class UserFeed extends Page {
     /**
      * Подписка на связанные события
      */
+    // @ts-ignore
     subscribe() {
         this.view.children.get('navbar').subscribe();
     }

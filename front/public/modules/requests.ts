@@ -396,6 +396,6 @@ export class Requests {
         const params: requestParams = {
             url: config.hrefs.categoryList,
         }
-        return (Ajax.get(params) as any).response;
+        return Ajax.get(params);
     }
 }

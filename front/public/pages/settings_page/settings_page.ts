@@ -9,6 +9,8 @@ import {Requests} from "../../modules/requests.js";
  * @class  SettingsPage
  */
 export default class SettingsPage extends Page{
+    // @ts-ignore
+    view: SettingsPageView;
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
@@ -37,6 +39,7 @@ export default class SettingsPage extends Page{
     /**
      * Подписка на связанные события
      */
+    // @ts-ignore
     subscribe() {
         this.view.children.get('navbar').subscribe();
         this.view.children.get('form').subscribe();

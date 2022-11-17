@@ -6,13 +6,12 @@
         {{/each}}
     </select>
     <div>
-        <label class="article_edit__label">Заголовок:</label>
-        <div contenteditable class="div_textarea article_edit__title" role="textbox" id="title">{{title}}</div>
-        <label class="article_edit__label">Описание:</label>
-        <div contenteditable class="div_textarea article_edit__description" role="textbox">{{description}}</div>
-        <label class="article_edit__label" for="title">Наполнение:</label>
-        <div contenteditable class="div_textarea article_edit__content" role="textbox" id="description">{{content}}
-        </div>
+        <div contenteditable="true" class="div_textarea article_edit__title" role="textbox" id="title"
+             placeholder="Заголовок">{{title}}</div>
+        <div contenteditable="true" class="div_textarea article_edit__description" role="textbox"
+             placeholder="Описание">{{description}}</div>
+        <div contenteditable="true" class="div_textarea article_edit__content" role="textbox" id="description"
+             placeholder="Наполнение">{{content}}</div>
     </div>
     <div class="article_edit__footer row">
         {{#if update}}

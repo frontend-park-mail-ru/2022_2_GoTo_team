@@ -15,8 +15,9 @@ export class PageLoaders {
      */
     static feedPage() {
         const page = new Feed(root);
-        page.render();
-        page.subscribe();
+        page.render().then(() => {
+            page.subscribe();
+        });
     }
 
     /**

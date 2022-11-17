@@ -7,6 +7,8 @@ import {PageLoaders} from "../../modules/page_loaders.js";
  * @class  RegistrationPage
  */
 export default class RegistrationPage extends Page{
+    // @ts-ignore
+    view: RegistrationPageView;
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
@@ -19,6 +21,7 @@ export default class RegistrationPage extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
+    // @ts-ignore
     render() {
         this.view.render();
         Events.updateAuth();
@@ -27,6 +30,7 @@ export default class RegistrationPage extends Page{
     /**
      * Подписка на связанные события
      */
+    // @ts-ignore
     subscribe() {
         this.view.children.get('navbar').subscribe();
         const registrationEventBus = {

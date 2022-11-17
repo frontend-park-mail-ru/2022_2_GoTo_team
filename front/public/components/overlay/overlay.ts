@@ -6,6 +6,7 @@ import OverlayView from "./overlay_view.js";
  * @class Overlay
  */
 export default class Overlay extends BasicComponent {
+    view: OverlayView;
     /**
      * Универсальный компонент заголовка
      */
@@ -17,9 +18,9 @@ export default class Overlay extends BasicComponent {
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render() {
-        super.render();
-        this.root = this.view.render();
+    async render(eventBus?: object) {
+        await super.render();
+        this.root = await this.view.render();
         return this.root;
     }
 }

@@ -1,11 +1,13 @@
 import UserFeedHeaderView from "./user_feed_header_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
+import {UserHeaderData} from "../../common/types";
 
 /**
  * View_model-компонент соответсвующего View
  * @class UserFeedHeader
  */
 export default class UserFeedHeader extends BasicComponent {
+    view: UserFeedHeaderView;
     /**
      * Универсальный компонент заголовка
      */
@@ -13,22 +15,20 @@ export default class UserFeedHeader extends BasicComponent {
         super();
         this.view = new UserFeedHeaderView();
     }
+
     /**
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'UserFeedHeader' is not ... Remove this comment to see the full error message
-    render(userData: any) {
-        super.render();
-        this.root = this.view.render(userData);
+    async render(userData: UserHeaderData): Promise<HTMLElement> {
+        await super.render();
+        this.root = await this.view.render(userData);
         return this.root;
     }
 
     /**
      * Подписка на связанные события
      */
-    subscribe() {
-
+    async subscribe() {
     }
-    //TODO:subscribe()
 };

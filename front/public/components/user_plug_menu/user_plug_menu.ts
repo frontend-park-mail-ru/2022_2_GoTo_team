@@ -7,6 +7,7 @@ import {Events} from "../../modules/events.js";
  * @class UserPlugMenu
  */
 export default class UserPlugMenu extends BasicComponent {
+    view: UserPlugMenuView;
     /**
      * Универсальный компонент заголовка
      */
@@ -14,20 +15,21 @@ export default class UserPlugMenu extends BasicComponent {
         super();
         this.view = new UserPlugMenuView();
     }
+
     /**
      * @return {HTMLElement}
      */
-    render() {
-        super.render();
-        this.root = this.view.render();
+    async render() {
+        await super.render();
+        this.root = await this.view.render();
         return this.root;
     }
 
     /**
      * Подписка на связанные события
      */
-    subscribe() {
-        super.subscribe();
+    async subscribe() {
+        await super.subscribe();
         const profileButton = document.getElementById('profile_menu__profile_button');
         // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', Events.goToSettingsPage);

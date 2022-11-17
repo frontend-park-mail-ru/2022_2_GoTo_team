@@ -8,6 +8,7 @@ import {PageLoaders} from "../../modules/page_loaders.js";
  * @class Navbar
  */
 export default class Navbar extends BasicComponent {
+    view: NavbarView;
     /**
      * Универсальный компонент заголовка
      */
@@ -19,16 +20,16 @@ export default class Navbar extends BasicComponent {
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render() {
-        super.render();
-        this.root = this.view.render();
+    async render() {
+        await super.render();
+        this.root = await this.view.render();
         return this.root;
     }
 
     /**
      * Подписка на связанные события
      */
-    subscribe() {
+    async subscribe() {
         const logo = this.root.getElementsByClassName('navbar__logo')[0];
         logo.addEventListener('click', Events.goToFeedPage);
 

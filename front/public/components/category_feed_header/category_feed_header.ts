@@ -1,11 +1,13 @@
 import CategoryFeedHeaderView from "./category_feed_header_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
+import {CategoryData} from "../../common/types";
 
 /**
  * View_model-компонент соответсвующего View
  * @class Category_feed_header
  */
 export default class CategoryFeedHeader extends BasicComponent {
+    view: CategoryFeedHeaderView;
     /**
      * Универсальный компонент заголовка
      */
@@ -13,22 +15,20 @@ export default class CategoryFeedHeader extends BasicComponent {
         super();
         this.view = new CategoryFeedHeaderView();
     }
+
     /**
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'CategoryFeedHeader' is ... Remove this comment to see the full error message
-    render(categoryData: any) {
-        super.render();
-        this.root = this.view.render(categoryData);
+    async render(categoryData: CategoryData): Promise<HTMLElement> {
+        await super.render();
+        this.root = await this.view.render(categoryData);
         return this.root;
     }
 
     /**
      * Подписка на связанные события
      */
-    subscribe() {
-
+    async subscribe() {
     }
-    //TODO:subscribe()
 };

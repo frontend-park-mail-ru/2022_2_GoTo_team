@@ -1,25 +1,24 @@
 import BasicComponentView from "../_basic_component/basic_component_view.js";
 import "../tmpl/unauthorized_user.tmpl.js"
 import "../tmpl/authorized_user.tmpl.js";
+import {UserPlugData} from "../../common/types";
 /**
  * @class UserPlugView
  */
 export default class UserPlugView extends BasicComponentView {
-    authed: any;
+    authed: boolean | undefined;
+
     /**
-     * @param {Object?} user
-     * @property {string} username
-     * @property {string?} avatarUrl
+     * @param {UserPlugData} userData
      * @return {HTMLElement}
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'UserPlugView' is not as... Remove this comment to see the full error message
-    render(user: any) {
+    async render(userData?: UserPlugData) {
         const wrapper = document.createElement('div');
-        if (user){
+        if (userData){
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
             wrapper.innerHTML = Handlebars.templates["authorized_user.html"]({
-                nickname: user.nickname,
-                picture: user.avatarUrl !== '' && typeof user.avatarUrl !== 'undefined' ? user.avatarUrl : "static/img/user_icon.jpg",
+                nickname: userData.nickname,
+                picture: userData.avatarUrl !== '' && typeof userData.avatarUrl !== 'undefined' ? userData.avatarUrl : "static/img/user_icon.jpg",
             });
             this.authed = true;
         }else{

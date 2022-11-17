@@ -1,11 +1,21 @@
 import LoginFormView from "./login_form_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
+import {Listener} from "../../common/types";
+
+export type LoginFormEventBus = {
+    submit: Listener,
+    goToRegistration: Listener,
+    emailValidation: Listener,
+    passwordValidation: Listener,
+    closeForm: Listener,
+}
 
 /**
  * View_model-компонент соответсвующего View
  * @class LoginForm
  */
 export default class LoginForm extends BasicComponent {
+    view: LoginFormView;
     /**
      * Универсальный компонент заголовка
      */
@@ -13,28 +23,24 @@ export default class LoginForm extends BasicComponent {
         super();
         this.view = new LoginFormView();
     }
+
     /**
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    render() {
-        super.render();
-        this.root = this.view.render();
+    async render(): Promise<HTMLElement> {
+        await super.render();
+        this.root = await this.view.render();
         return this.root;
     }
 
     /**
      * Подписка на связанные события
-     * @param {Object} eventBus
-     * @property {function} submit
-     * @property {function} goToRegistration
-     * @property {function} emailValidation
-     * @property {function} passwordValidation
+     * @param {LoginFormEventBus} eventBus
      * @property {function?} closeForm
      */
-    // @ts-expect-error TS(2416): Property 'subscribe' in type 'LoginForm' is not as... Remove this comment to see the full error message
-    subscribe(eventBus: any) {
-        super.subscribe()
+    async subscribe(eventBus: LoginFormEventBus) {
+        await super.subscribe()
         const submit_button = document.getElementById("login_form__submit_button");
         // @ts-expect-error TS(2531): Object is possibly 'null'.
         submit_button.addEventListener('click', eventBus.submit);
@@ -52,13 +58,11 @@ export default class LoginForm extends BasicComponent {
         password_form.addEventListener('focusout', eventBus.passwordValidation);
 
 
-        const close_button = document.getElementById("login_form__cross");
-        if (typeof eventBus.closeForm !== 'undefined'){
-            // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const close_button = document.getElementById("login_form__cross")!;
+        if (typeof eventBus.closeForm !== 'undefined') {
             close_button.addEventListener('click', eventBus.closeForm);
-        }else{
+        } else {
             this.root.removeChild(close_button);
         }
     }
-    //TODO:destroy()
 };

@@ -7,43 +7,44 @@ import ArticleEdit from "../../components/article_edit/article_edit.js";
  * @class ArticleEditPageView
  */
 export default class ArticleEditPageView extends PageView {
- main_content_element: any;
- /**
-  * @param {HTMLElement} root
-  */
- constructor(root: any) {
-     super(root);
- }
+    main_content_element: any;
 
- /**
-  * Перерисовать главную страницу
-  */
- // @ts-expect-error TS(2416): Property 'render' in type 'ArticleEditPageView' is... Remove this comment to see the full error message
- async render(articleData: any) {
-     super.render();
-     const navbar = new Navbar();
-     navbar.render();
-     this.children.set('navbar', navbar);
-     this.root.appendChild(navbar.root);
+    /**
+     * @param {HTMLElement} root
+     */
+    constructor(root: any) {
+        super(root);
+    }
 
-     const rootEl = document.createElement('div');
-     rootEl.id = 'root';
-     rootEl.classList.add('root');
-     this.root.appendChild(rootEl);
-     this.root = rootEl;
+    /**
+     * Перерисовать главную страницу
+     */
+    // @ts-ignore
+    async render(articleData: any) {
+        super.render();
+        const navbar = new Navbar();
+        navbar.render();
+        this.children.set('navbar', navbar);
+        this.root.appendChild(navbar.root);
 
-     this.root.appendChild(document.createElement('div'));
+        const rootEl = document.createElement('div');
+        rootEl.id = 'root';
+        rootEl.classList.add('root');
+        this.root.appendChild(rootEl);
+        this.root = rootEl;
 
-     const mainContentElement = document.createElement('div');
-     mainContentElement.classList.add('feed');
-     this.main_content_element = mainContentElement;
-     this.root.appendChild(this.main_content_element);
+        this.root.appendChild(document.createElement('div'));
 
-     const editView = new ArticleEdit();
-     await editView.render(articleData);
-     this.children.set('edit', editView);
-     mainContentElement.appendChild(editView.root);
+        const mainContentElement = document.createElement('div');
+        mainContentElement.classList.add('feed');
+        this.main_content_element = mainContentElement;
+        this.root.appendChild(this.main_content_element);
 
-     this.root.appendChild(document.createElement('div'));
- }
+        const editView = new ArticleEdit();
+        await editView.render(articleData);
+        this.children.set('edit', editView);
+        mainContentElement.appendChild(editView.root);
+
+        this.root.appendChild(document.createElement('div'));
+    }
 }

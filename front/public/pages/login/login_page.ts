@@ -9,6 +9,8 @@ import {PageLoaders} from "../../modules/page_loaders.js";
  * @class  LoginPage
  */
 export default class LoginPage extends Page{
+    // @ts-ignore
+    view: LoginPageView;
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
@@ -21,6 +23,7 @@ export default class LoginPage extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
+    // @ts-ignore
     render() {
         this.view.render();
 
@@ -30,6 +33,7 @@ export default class LoginPage extends Page{
     /**
      * Подписка на связанные события
      */
+    // @ts-ignore
     subscribe() {
        this.view.children.get('navbar').subscribe();
        const loginEventBus = {

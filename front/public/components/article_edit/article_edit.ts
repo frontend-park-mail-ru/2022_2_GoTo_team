@@ -2,12 +2,14 @@ import ArticleEditView from "./article_edit_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 import {Requests} from "../../modules/requests.js";
+import {EditArticleData, FullArticleData} from "../../common/types";
 
 /**
  * View_model-компонент соответсвующего View
  * @class ArticleEdit
  */
 export default class ArticleEdit extends BasicComponent {
+    view: ArticleEditView;
     /**
      * Универсальный компонент заголовка
      */
@@ -18,33 +20,45 @@ export default class ArticleEdit extends BasicComponent {
 
     /**
      * Перерисовка подконтрольного элемента
-     * @param {Object?} article
-     * @property {string} article.title
-     * @property {string} article.description
-     * @property {string[]} article.tags
-     * @property {string} article.category
-     * @property {int} article.rating
-     * @property {int} article.comments
-     * @property {string} article.coverImgPath
-     * @property {Object} article.publisher
-     * @property {string} article.publisher.username
-     * @property {string} article.publisher.login
-     * @property {Object} article.coAuthor
-     * @property {string} article.coAuthor.username
-     * @property {string} article.coAuthor.login
+     * @param {FullArticleData} articleData
      * @return {HTMLElement}
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'ArticleEdit' is not ass... Remove this comment to see the full error message
-    async render(article: any) {
-        super.render();
-        const categories = await Requests.getCategories();
-        this.root = this.view.render(article, categories);
+    async render(articleData?: FullArticleData): Promise<HTMLElement> {
+        await super.render();
+        const categories_promise: { status: number; response: any; } = (await Requests.getCategories())!;
+        const categories: object = categories_promise.status == 200 ? categories_promise.response : {};
+        const editData: EditArticleData = {
+            article: articleData,
+            categories: categories,
+        }
+        this.root = await this.view.render(editData);
         return this.root;
     }
 
-    subscribe() {
-        super.subscribe();
-        const submitButton = this.root.getElementsByClassName('article_edit__save_button')[0];
+    async subscribe() {
+        await super.subscribe();
+        const submitButton = this.root.querySelector('.article_edit__save_button')!;
+
+        const titleForm = this.root.querySelector('.article_edit__title')!;
+        titleForm.addEventListener('focusout', () => {
+            if (!titleForm.textContent!.replace(' ', '').length) {
+                titleForm.innerHTML = '';
+            }
+        });
+
+        const descriptionForm = this.root.querySelector('.article_edit__description')!;
+        descriptionForm.addEventListener('focusout', () => {
+            if (!descriptionForm.textContent!.replace(' ', '').length) {
+                descriptionForm.innerHTML = '';
+            }
+        });
+
+        const contentForm = this.root.querySelector('.article_edit__content')!;
+        contentForm.addEventListener('focusout', () => {
+            if (!contentForm.textContent!.replace(' ', '').length) {
+                contentForm.innerHTML = '';
+            }
+        });
 
         if (this.view.update) {
             submitButton.addEventListener('click', () => {

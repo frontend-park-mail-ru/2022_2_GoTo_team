@@ -1,39 +1,27 @@
 import "../tmpl/article.tmpl.js";
 import BasicComponentView from "../_basic_component/basic_component_view.js";
-/**
- * @class ArticleView
- */
+import {IncompleteArticleData} from "../../common/types";
 
 const covers = [
     "static/img/article_cover_1.jpg",
     "static/img/article_cover_2.jpg",
     "static/img/article_cover_3.jpg",
 ]
+
+/**
+ * @class ArticleView
+ */
 export default class ArticleView extends BasicComponentView {
-    category: any;
-    id: any;
-    publisher: any;
+    category: string | undefined;
+    id: number | undefined;
+    publisher: string | undefined;
+
     /**
      * Перерисовка подконтрольного элемента
-     * @param {Object} article
-     * @property {int} article.id
-     * @property {string} article.title
-     * @property {string} article.description
-     * @property {string[]} article.tags
-     * @property {string} article.category
-     * @property {int} article.rating
-     * @property {int} article.comments
-     * @property {string} article.coverImgPath
-     * @property {Object} article.publisher
-     * @property {string} article.publisher.username
-     * @property {string} article.publisher.login
-     * @property {Object} article.co_author
-     * @property {string} article.co_author.username
-     * @property {string} article.co_author.login
+     * @param {ArticleData} article
      * @return {HTMLElement}
      */
-    // @ts-expect-error TS(2416): Property 'render' in type 'ArticleView' is not ass... Remove this comment to see the full error message
-    render(article: any) {
+    async render(article: IncompleteArticleData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['article.html']({
@@ -50,6 +38,6 @@ export default class ArticleView extends BasicComponentView {
         this.publisher = article.publisher.login;
         this.category = article.category;
         this.id = article.id;
-        return wrapper.firstChild;
+        return wrapper.querySelector('div')!;
     }
 }
