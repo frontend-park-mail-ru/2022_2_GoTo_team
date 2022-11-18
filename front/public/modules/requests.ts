@@ -9,7 +9,8 @@ import {
     UserPlugData,
     UserRegistrationData
 } from "../common/types";
-import {response} from "express";
+
+import {ResponseErrors} from "../common/consts.js"
 
 const config = {
     hrefs: {

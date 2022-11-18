@@ -41,20 +41,16 @@ export default class LoginForm extends BasicComponent {
      */
     async subscribe(eventBus: LoginFormEventBus) {
         await super.subscribe()
-        const submit_button = document.getElementById("login_form__submit_button");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const submit_button = document.getElementById("login_form__submit_button")!;
         submit_button.addEventListener('click', eventBus.submit);
 
-        const reg_button = document.getElementById("login_form__signup_button");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const reg_button = document.getElementById("login_form__signup_button")!;
         reg_button.addEventListener('click', eventBus.goToRegistration);
 
-        const email_form = document.getElementById("login_form__email_login");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const email_form = document.getElementById("login_form__email_login")!;
         email_form.addEventListener('focusout', eventBus.emailValidation);
 
-        const password_form = document.getElementById("login_form__password");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const password_form = document.getElementById("login_form__password")!;
         password_form.addEventListener('focusout', eventBus.passwordValidation);
 
 

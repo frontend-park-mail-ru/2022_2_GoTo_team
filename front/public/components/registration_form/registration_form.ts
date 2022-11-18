@@ -40,15 +40,7 @@ export default class RegistrationForm extends BasicComponent {
 
     /**
      * Подписка на связанные события
-     * @param {Object} eventBus
-     * @property {function} submit
-     * @property {function?} goToLogin
-     * @property {function} emailValidation
-     * @property {function} loginValidation
-     * @property {function} usernameValidation
-     * @property {function} passwordValidation
-     * @property {function} repeatPasswordValidation
-     * @property {function?} closeForm
+     * @param {RegistrationFormEventBus} eventBus
      */
     async subscribe(eventBus: RegistrationFormEventBus) {
         await super.subscribe();
@@ -69,26 +61,20 @@ export default class RegistrationForm extends BasicComponent {
             this.root.removeChild(closeButton);
         }
 
-        const emailForm = document.getElementById("registration_form__email");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const emailForm = document.getElementById("registration_form__email")!;
         emailForm.addEventListener('focusout', eventBus.emailValidation);
 
-        const loginForm = document.getElementById("registration_form__login");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const loginForm = document.getElementById("registration_form__login")!;
         loginForm.addEventListener('focusout', eventBus.loginValidation);
 
-        const usernameForm = document.getElementById("registration_form__username");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const usernameForm = document.getElementById("registration_form__username")!;
         usernameForm.addEventListener('focusout', eventBus.usernameValidation);
 
-        const passwordForm = document.getElementById("registration_form__password");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const passwordForm = document.getElementById("registration_form__password")!;
         passwordForm.addEventListener('focusout', eventBus.passwordValidation);
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
         passwordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
 
-        const repeatPasswordForm = document.getElementById("registration_form__repeat-password");
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const repeatPasswordForm = document.getElementById("registration_form__repeat-password")!;
         repeatPasswordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
     }
 };

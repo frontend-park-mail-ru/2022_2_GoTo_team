@@ -8,7 +8,7 @@ import UserPlugMenu from "../components/user_plug_menu/user_plug_menu.js";
 import {PageLoaders} from "./page_loaders.js";
 import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
 import BasicComponent from "../components/_basic_component/basic_component";
-import * as assert from "assert";
+import {ResponseErrors} from "../common/consts.js"
 
 
 export class Events {
@@ -221,8 +221,9 @@ export class Events {
      * @param {string} message
      */
     static #makeInvalid(element: HTMLElement, message: string): void {
+        Events.#makeValid(element);
         const errorClass = "error-message"
-        const siblings = element.parentNode!.children;
+        const siblings = element.parentNode!.childNodes;
 
         const wrongSign = document.createElement('div');
         wrongSign.innerHTML = `<div class=\"${errorClass}\">${message}</div>`;
