@@ -19,11 +19,10 @@ export default class CategoryFeedView extends PageView {
     /**
      * Перерисовать главную страницу
      */
-    // @ts-ignore
-    render() {
-        super.render();
+    async render() {
+        await super.render();
         const navbar = new Navbar();
-        navbar.render();
+        await navbar.render();
         this.children.set('navbar', navbar);
         this.root.appendChild(navbar.root);
 

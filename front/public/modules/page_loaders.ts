@@ -52,8 +52,9 @@ export class PageLoaders {
      */
     static categoryFeedPage(category: any) {
         const page = new CategoryFeed(root);
-        page.render(category);
-        page.subscribe();
+        page.render(category).then(() => {
+            page.subscribe();
+        });
     }
 
     /**

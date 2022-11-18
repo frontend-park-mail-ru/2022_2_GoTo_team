@@ -3,7 +3,9 @@ import Page from "../_basic/page.js";
 import CategoryFeedView from "./category_feed_view.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
-import CategoryFeedHeader from "../../components/category_feed_header/category_feed_header.js";
+import CategoryFeedHeader, {
+    CategoryFeedHeaderEventBus
+} from "../../components/category_feed_header/category_feed_header.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
@@ -11,7 +13,6 @@ import {PageLoaders} from "../../modules/page_loaders.js";
  * @class  CategoryFeed
  */
 export default class CategoryFeed extends Page {
-    // @ts-ignore
     view: CategoryFeedView;
     /**
      * Страница содержит главный компонент
@@ -26,23 +27,28 @@ export default class CategoryFeed extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    // @ts-ignore
-    render(category: any) {
-        this.view.render();
-        const articleEventBus : ArticleComponentEventBus = {
-            goToAuthorFeed: Events.goToAuthorFeed,
-            goToCategoryFeed: Events.goToCategoryFeed,
-            openArticle: PageLoaders.articlePage,
-        }
+    async render(category: string): Promise<void> {
+        await this.view.render();
 
         Requests.categoryHeaderInfo(category).then((categoryData) => {
-            const header = new CategoryFeedHeader()
-            header.render(categoryData);
-            header.subscribe();
-            this.view.center.insertBefore(header.root, this.view.center.children[0]);
+            const eventBus: CategoryFeedHeaderEventBus = {
+
+            };
+
+            const header = new CategoryFeedHeader();
+            header.render(categoryData).then(() => {
+                header.subscribe(eventBus);
+                this.view.center.insertBefore(header.root, this.view.center.children[0]);
+            });
         });
 
         Requests.getCategoryArticles(category).then((articles) => {
+            const articleEventBus : ArticleComponentEventBus = {
+                goToAuthorFeed: Events.goToAuthorFeed,
+                goToCategoryFeed: Events.goToCategoryFeed,
+                openArticle: PageLoaders.articlePage,
+            }
+
             if (articles && Array.isArray(articles)) {
                 this.view.mainContentElement.innerHTML = '';
                 articles.forEach((article) => {
@@ -61,8 +67,7 @@ export default class CategoryFeed extends Page {
     /**
      * Подписка на связанные события
      */
-    // @ts-ignore
-    subscribe() {
+    async subscribe(): Promise<void> {
         this.view.children.get('navbar').subscribe();
     }
 }
