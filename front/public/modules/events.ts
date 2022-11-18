@@ -1,4 +1,4 @@
-import Overlay from "../components/overlay/overlay.js";
+import Overlay, {OverlayEventBus} from "../components/overlay/overlay.js";
 import LoginForm, {LoginFormEventBus} from "../components/login_form/login_form.js";
 import RegistrationForm, {RegistrationFormEventBus} from "../components/registration_form/registration_form.js";
 import {Validators} from "./validators.js";
@@ -35,11 +35,16 @@ export class Events {
      * Отрисовывает оверлей
      */
     static async openOverlay(): Promise<void> {
+        const eventBus: OverlayEventBus = {
+
+        }
+
         const overlay = new Overlay();
         await overlay.render();
+
         const root = document.getElementById('root')!;
         root.appendChild(overlay.root);
-        await overlay.subscribe();
+        await overlay.subscribe(eventBus);
     }
 
     /**

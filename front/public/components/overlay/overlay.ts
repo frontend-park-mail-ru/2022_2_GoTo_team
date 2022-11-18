@@ -1,12 +1,16 @@
 import BasicComponent from "../_basic_component/basic_component.js";
 import OverlayView from "./overlay_view.js";
 
+export type OverlayEventBus = {
+}
+
 /**
  * View_model-компонент соответсвующего View
  * @class Overlay
  */
 export default class Overlay extends BasicComponent {
     view: OverlayView;
+
     /**
      * Универсальный компонент заголовка
      */
@@ -14,13 +18,21 @@ export default class Overlay extends BasicComponent {
         super();
         this.view = new OverlayView();
     }
+
     /**
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    async render(eventBus?: object) {
+    async render() {
         await super.render();
         this.root = await this.view.render();
         return this.root;
+    }
+
+    /**
+     * Подписка на связанные события
+     */
+    async subscribe(eventBus: OverlayEventBus) {
+        await super.subscribe();
     }
 }

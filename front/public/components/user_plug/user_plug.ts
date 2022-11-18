@@ -14,6 +14,7 @@ export type UserPlugEventBus = {
  */
 export default class UserPlug extends BasicComponent {
     view: UserPlugView;
+
     /**
      * Универсальный компонент заголовка
      */
