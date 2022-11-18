@@ -3,7 +3,8 @@ import Page from "../_basic/page.js";
 import UserFeedView from "./user_feed_view.js";
 import UserFeedHeader from "../../components/user_feed_header/user_feed_header.js";
 import {Requests} from "../../modules/requests.js";
-import Article from "../../components/article/article.js";
+import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -28,6 +29,12 @@ export default class UserFeed extends Page {
     // @ts-ignore
     render(login: any) {
         this.view.render();
+        const articleEventBus : ArticleComponentEventBus = {
+            goToAuthorFeed: Events.goToAuthorFeed,
+            goToCategoryFeed: Events.goToCategoryFeed,
+            openArticle: PageLoaders.articlePage,
+        }
+
         Requests.userHeaderInfo(login).then((userData) => {
             const header = new UserFeedHeader();
             header.render(userData);
@@ -40,9 +47,10 @@ export default class UserFeed extends Page {
                 this.view.mainContentElement.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
-                    articleView.render(article);
-                    articleView.subscribe();
-                    this.view.mainContentElement.appendChild(articleView.root);
+                    articleView.render(article).then(()=>{
+                        articleView.subscribe(articleEventBus);
+                        this.view.mainContentElement.appendChild(articleView.root);
+                    });
                 })
             }
         });

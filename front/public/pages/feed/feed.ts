@@ -1,8 +1,9 @@
 import FeedView from "./feed_view.js";
 import {Requests} from "../../modules/requests.js"
-import Article from "../../components/article/article.js";
+import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
+import {PageLoaders} from "../../modules/page_loaders.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Feed
@@ -23,6 +24,11 @@ export default class Feed extends Page{
      * Должен быть вызван render() для обновления.
      */
     async render() {
+        const articleEventBus : ArticleComponentEventBus = {
+            goToAuthorFeed: Events.goToAuthorFeed,
+            goToCategoryFeed: Events.goToCategoryFeed,
+            openArticle: PageLoaders.articlePage,
+        }
         await this.view.render();
         Requests.getArticles().then((articles) => {
             if (articles && Array.isArray(articles)) {
@@ -31,7 +37,7 @@ export default class Feed extends Page{
                     const articleView = new Article();
                     articleView.render(article).then(() => {
                         this.view.mainContentElement!.appendChild(articleView.root);
-                        articleView.subscribe();
+                        articleView.subscribe(articleEventBus);
                     });
                 })
             }

@@ -2,8 +2,9 @@ import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import CategoryFeedView from "./category_feed_view.js";
 import {Requests} from "../../modules/requests.js";
-import Article from "../../components/article/article.js";
+import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import CategoryFeedHeader from "../../components/category_feed_header/category_feed_header.js";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -28,6 +29,12 @@ export default class CategoryFeed extends Page {
     // @ts-ignore
     render(category: any) {
         this.view.render();
+        const articleEventBus : ArticleComponentEventBus = {
+            goToAuthorFeed: Events.goToAuthorFeed,
+            goToCategoryFeed: Events.goToCategoryFeed,
+            openArticle: PageLoaders.articlePage,
+        }
+
         Requests.categoryHeaderInfo(category).then((categoryData) => {
             const header = new CategoryFeedHeader()
             header.render(categoryData);
@@ -40,9 +47,10 @@ export default class CategoryFeed extends Page {
                 this.view.mainContentElement.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
-                    articleView.render(article);
-                    articleView.subscribe();
-                    this.view.mainContentElement.appendChild(articleView.root);
+                    articleView.render(article).then(()=>{
+                        articleView.subscribe(articleEventBus);
+                        this.view.mainContentElement.appendChild(articleView.root);
+                    });
                 })
             }
         });

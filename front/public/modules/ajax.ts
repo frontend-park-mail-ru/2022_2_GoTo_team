@@ -10,7 +10,6 @@ const REQUEST_TYPE = {
 
 export type requestParams = {
     url: string;
-    body?: string;
     data?: object;
     method?: string;
 };
@@ -30,11 +29,14 @@ export default class Ajax {
 
     static #ajax(params: requestParams): Promise<void | RequestAnswer> {
         const url = new URL(APIurl + (params.url || '/'));
-        url.search = new URLSearchParams(JSON.stringify(params.body)).toString();
+        if (params.method == REQUEST_TYPE.GET){
+            url.search = new URLSearchParams({...params.data}).toString();
+        }
+
 
         const fetchParams: object = {
             method: params.method,
-            body: JSON.stringify(params.data),
+            body: params.method == REQUEST_TYPE.POST ? JSON.stringify(params.data) : null,
             headers: {
                 'Content-Type': 'application/json'
             },
