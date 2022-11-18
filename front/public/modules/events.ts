@@ -744,4 +744,111 @@ export class Events {
     static articleUpdate(articleData: FullArticleData): Promise<boolean> {
         return Requests.articleUpdate(articleData);
     }
+
+    /**
+     * Проверяет валидность значения в поле почты на странице профиля
+     */
+    static emailValidateListenerSettings(): boolean {
+        const emailForm : HTMLFormElement = document.getElementById('settings__email') as HTMLFormElement;
+
+        const email: string = emailForm.value.trim();
+        if (email === '') {
+            Events.#makeValid(emailForm);
+            return true;
+        }
+
+        if (!Validators.validateEmail(email)) {
+            Events.#makeInvalid(emailForm, "Неверный формат email");
+            return false;
+        }
+
+        Events.#makeValid(emailForm);
+        return true;
+    }
+
+    /**
+     * Проверяет валидность значения в поле логина на странице профиля
+     */
+    static loginValidateListenerSettings(): boolean {
+        const loginForm : HTMLFormElement = document.getElementById("settings__login") as HTMLFormElement;
+
+        const login: string = loginForm.value.trim();
+        if (login === '') {
+            Events.#makeValid(loginForm);
+            return true;
+        }
+
+        if (!Validators.validateLogin(login)) {
+            Events.#makeInvalid(loginForm, "Неправильный формат логина");
+            return false;
+        }
+
+        Events.#makeValid(loginForm);
+        return true;
+    }
+
+    /**
+     * Проверяет валидность значения в поле ника на странице профиля
+     */
+    static usernameValidateListenerSettings(): boolean {
+        const usernameForm : HTMLFormElement = document.getElementById("settings__nickname") as HTMLFormElement;
+
+        const username: string = usernameForm.value.trim();
+        if (username === '') {
+            Events.#makeValid(usernameForm);
+            return true;
+        }
+
+        if (!Validators.validateUsername(username)) {
+            Events.#makeInvalid(usernameForm, "Неправильный формат ника");
+            return false;
+        }
+
+        Events.#makeValid(usernameForm);
+        return true;
+    }
+
+    /**
+     * Проверяет валидность значения в поле пароля на странице профиля
+     */
+    static passwordValidateListenerSettings(): boolean {
+        const passwordForm : HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
+
+        const password: string = passwordForm.value.trim();
+        if (password === '') {
+            Events.#makeValid(passwordForm);
+            return true;
+        }
+
+        if (!Validators.validatePassword(password)) {
+            Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
+            return false;
+        }
+
+        Events.#makeValid(passwordForm);
+        return true;
+    }
+
+    /**
+     * Проверяет совпаденик значений в полях пароля и повторения пароля на странице профиля
+     */
+    static passwordRepeatValidateListenerSettings(): boolean {
+        const passwordForm : HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
+        const repeatPasswordForm : HTMLFormElement = document.getElementById("settings__repeat_password") as HTMLFormElement;
+
+        const password: string = passwordForm.value.trim();
+        const repeatPassword: string = repeatPasswordForm.value.trim();
+        if (password === '' || repeatPassword === '') {
+            Events.#makeValid(repeatPasswordForm);
+            return true;
+        }
+
+        if (password !== repeatPassword) {
+            Events.#makeInvalid(repeatPasswordForm, "Пароли не совпадают");
+            return false;
+        }
+
+        Events.#makeValid(repeatPasswordForm);
+        return true;
+    }
 }

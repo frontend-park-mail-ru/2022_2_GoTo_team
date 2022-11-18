@@ -6,19 +6,18 @@ import Navbar from "../../components/navbar/navbar.js";
  * @class SettingsPageView
  */
 export default class SettingsPageView extends PageView {
-    mainContentElement: any;
+    mainContentElement: HTMLElement | undefined;
 
     /**
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
     }
 
     /**
      * Перерисовать главную страницу
      */
-    // @ts-ignore
     async render() {
         await super.render();
         const navbar = new Navbar();

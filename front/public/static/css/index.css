@@ -645,6 +645,7 @@ div.log-button-container {
     margin: 10px 10px;
     border-radius: 10px;
     width: 250px;
+    outline: none;
 }
 
 .form:focus {

@@ -1,7 +1,15 @@
 import SettingsView from "./settings_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
-import {Events} from "../../modules/events.js";
-import {UserData} from "../../common/types";
+import {Listener, UserData} from "../../common/types";
+
+export type SettingsEventBus = {
+    saveProfile: Listener,
+    emailValidation: Listener,
+    loginValidation: Listener,
+    usernameValidation: Listener,
+    passwordValidation: Listener,
+    repeatPasswordValidation: Listener,
+}
 
 /**
  * View_model-компонент соответсвующего View
@@ -29,9 +37,24 @@ export default class Settings extends BasicComponent {
     /**
      * Подписка на связанные события
      */
-    async subscribe() {
-        const saveButton = document.getElementById('save');
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        saveButton.addEventListener('click', Events.saveProfileListener);
+    async subscribe(eventBus: SettingsEventBus) {
+        const saveButton = document.getElementById('save')!;
+        saveButton.addEventListener('click', eventBus.saveProfile);
+
+        const emailForm = document.getElementById("settings__email")!;
+        emailForm.addEventListener('focusout', eventBus.emailValidation);
+
+        const loginForm = document.getElementById("settings__login")!;
+        loginForm.addEventListener('focusout', eventBus.loginValidation);
+
+        const usernameForm = document.getElementById("settings__nickname")!;
+        usernameForm.addEventListener('focusout', eventBus.usernameValidation);
+
+        const passwordForm = document.getElementById("settings__password")!;
+        passwordForm.addEventListener('focusout', eventBus.passwordValidation);
+        passwordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
+
+        const repeatPasswordForm = document.getElementById("settings__repeat_password")!;
+        repeatPasswordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
     }
 };

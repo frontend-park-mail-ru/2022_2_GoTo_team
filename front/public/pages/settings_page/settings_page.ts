@@ -1,7 +1,7 @@
 import {Events} from "../../modules/events.js";
 import SettingsPageView from "./settings_page_view.js";
 import Page from "../_basic/page.js";
-import Settings from "../../components/settings/settings.js";
+import Settings, {SettingsEventBus} from "../../components/settings/settings.js";
 import {Requests} from "../../modules/requests.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {PageLoaders} from "../../modules/page_loaders.js";
@@ -11,16 +11,17 @@ import {PageLoaders} from "../../modules/page_loaders.js";
  * @class  SettingsPage
  */
 export default class SettingsPage extends Page{
-    // @ts-ignore
     view: SettingsPageView;
+
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
         this.view = new SettingsPageView(root);
     }
+
     /**
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
@@ -31,7 +32,7 @@ export default class SettingsPage extends Page{
         const userData = await Requests.getProfile();
         const settingsForm = new Settings();
         await settingsForm.render(userData);
-        this.view.mainContentElement.appendChild(settingsForm.root);
+        this.view.mainContentElement!.appendChild(settingsForm.root);
         this.view.children.set('form', settingsForm);
 
         Events.updateAuth();
@@ -40,8 +41,7 @@ export default class SettingsPage extends Page{
     /**
      * Подписка на связанные события
      */
-    // @ts-ignore
-    subscribe() {
+    async subscribe() {
         const navbarEventBus: NavbarEventBus = {
             goToHotFeed: PageLoaders.feedPage,
             goToNewFeed: PageLoaders.feedPage,
@@ -50,6 +50,15 @@ export default class SettingsPage extends Page{
         }
 
         this.view.children.get('navbar').subscribe(navbarEventBus);
-        this.view.children.get('form').subscribe();
+
+        const settingsEventBus: SettingsEventBus = {
+            emailValidation: Events.emailValidateListenerSettings,
+            loginValidation: Events.loginValidateListenerSettings,
+            passwordValidation: Events.passwordValidateListenerSettings,
+            repeatPasswordValidation: Events.passwordRepeatValidateListenerSettings,
+            usernameValidation: Events.usernameValidateListenerSettings,
+            saveProfile: Events.saveProfileListener,
+        }
+        this.view.children.get('form').subscribe(settingsEventBus);
     }
 }
