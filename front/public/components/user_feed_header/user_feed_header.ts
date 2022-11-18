@@ -2,6 +2,10 @@ import UserFeedHeaderView from "./user_feed_header_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
 import {UserHeaderData} from "../../common/types";
 
+export type UserFeedHeaderEventBus = {
+
+}
+
 /**
  * View_model-компонент соответсвующего View
  * @class UserFeedHeader
@@ -29,6 +33,6 @@ export default class UserFeedHeader extends BasicComponent {
     /**
      * Подписка на связанные события
      */
-    async subscribe() {
+    async subscribe(eventBus: UserFeedHeaderEventBus) {
     }
 };

@@ -14,6 +14,7 @@ import {PageLoaders} from "../../modules/page_loaders.js";
  */
 export default class CategoryFeed extends Page {
     view: CategoryFeedView;
+
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root

@@ -3,11 +3,14 @@ import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {OpenedArticleEventBus} from "../../components/opened_article/opened_article";
+
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class ArticlePage
  */
-export default class ArticlePage extends Page{
+export default class ArticlePage extends Page {
+    view: ArticlePageView;
+
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
@@ -31,7 +34,7 @@ export default class ArticlePage extends Page{
      * Подписка на связанные события
      */
     async subscribe() {
-        const articleEventBus : OpenedArticleEventBus = {
+        const articleEventBus: OpenedArticleEventBus = {
             goToCategoryFeed: Events.goToCategoryFeed,
             goToAuthorFeed: Events.goToAuthorFeed,
         }

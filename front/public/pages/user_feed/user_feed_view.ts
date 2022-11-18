@@ -6,8 +6,8 @@ import Navbar from "../../components/navbar/navbar.js";
  * @class UserFeedView
  */
 export default class UserFeedView extends PageView {
-    center: any;
-    mainContentElement: any;
+    center: HTMLElement | undefined;
+    mainContentElement: HTMLElement | undefined;
 
     /**
      * @param {HTMLElement} root
@@ -19,13 +19,13 @@ export default class UserFeedView extends PageView {
     /**
      * Перерисовать главную страницу
      */
-    // @ts-ignore
-    render() {
-        super.render();
+    async render() {
+        await super.render();
+
         const navbar = new Navbar();
-        navbar.render();
-        this.children.set('navbar', navbar);
+        await navbar.render();
         this.root.appendChild(navbar.root);
+        this.children.set('navbar', navbar);
 
         const rootEl = document.createElement('div');
         rootEl.id = 'root';
