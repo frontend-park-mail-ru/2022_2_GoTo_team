@@ -11,6 +11,7 @@
     --text: #000000;
     --ligther-text: #363636;
     --focused-background: #eeeeee;
+    --focus-textarea-background: #e5e5e5;
 }
 
 body {
@@ -822,7 +823,7 @@ div.log-button-container {
 }
 
 .div_textarea:focus{
-    background: rgba(104, 11, 197, 0.15);
+    background: var(--focus-textarea-background);
 }
 
 .div_textarea[placeholder]:empty:before{

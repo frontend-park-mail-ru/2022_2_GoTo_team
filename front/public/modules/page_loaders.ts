@@ -41,16 +41,17 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу автора
      */
-    static userFeedPage(login: any) {
+    static userFeedPage(login: string) {
         const page = new UserFeed(root);
-        page.render(login);
-        page.subscribe();
+        page.render(login).then(() => {
+            page.subscribe();
+        });
     }
 
     /**
      * Отрисовывает страницу автора
      */
-    static categoryFeedPage(category: any) {
+    static categoryFeedPage(category: string) {
         const page = new CategoryFeed(root);
         page.render(category).then(() => {
             page.subscribe();
@@ -60,7 +61,7 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static articlePage(articleId: any) {
+    static articlePage(articleId: number) {
         const page = new ArticlePage(root);
         page.render(articleId).then(() => {
             page.subscribe();
@@ -80,9 +81,10 @@ export class PageLoaders {
     /**
      * Отрисовывает редактирования/создания статьи
      */
-    static async editArticle(articleId?: any) {
+    static async editArticle(articleId?: number) {
         const page = new ArticleEditPage(root)
-        await page.render(articleId);
-        page.subscribe();
+        await page.render(articleId).then(() => {
+            page.subscribe();
+        });
     }
 }

@@ -18,7 +18,7 @@ export default class UserFeed extends Page {
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
         this.view = new UserFeedView(root);
     }

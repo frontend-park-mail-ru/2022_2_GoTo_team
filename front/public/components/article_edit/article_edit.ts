@@ -1,8 +1,13 @@
 import ArticleEditView from "./article_edit_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
-import {Events} from "../../modules/events.js";
 import {Requests} from "../../modules/requests.js";
-import {EditArticleData, FullArticleData, RequestAnswer} from "../../common/types";
+import {EditArticleData, FullArticleData, Listener, RequestAnswer} from "../../common/types";
+
+export type ArticleEditEventBus = {
+    articleUpdate: (id: number) => void,
+    articleCreate: Listener,
+    articleRemove: (id: number) => Promise<boolean>,
+}
 
 /**
  * View_model-компонент соответсвующего View
@@ -10,6 +15,7 @@ import {EditArticleData, FullArticleData, RequestAnswer} from "../../common/type
  */
 export default class ArticleEdit extends BasicComponent {
     view: ArticleEditView;
+
     /**
      * Универсальный компонент заголовка
      */
@@ -26,7 +32,8 @@ export default class ArticleEdit extends BasicComponent {
     async render(articleData?: FullArticleData): Promise<HTMLElement> {
         await super.render();
         const categoriesPromise: RequestAnswer = (await Requests.getCategories())!;
-        const categories: object = categoriesPromise.status == 200 ? categoriesPromise.response : {};
+
+        const categories: object = categoriesPromise.status == 200 ? categoriesPromise.response.categories : {};
         const editData: EditArticleData = {
             article: articleData,
             categories: categories,
@@ -35,7 +42,7 @@ export default class ArticleEdit extends BasicComponent {
         return this.root;
     }
 
-    async subscribe() {
+    async subscribe(eventBus: ArticleEditEventBus) {
         await super.subscribe();
         const submitButton = this.root.querySelector('.article_edit__save_button')!;
 
@@ -62,15 +69,15 @@ export default class ArticleEdit extends BasicComponent {
 
         if (this.view.update) {
             submitButton.addEventListener('click', () => {
-                Events.articleUpdateListener(this.view.id!);
+                eventBus.articleUpdate(this.view.id!);
             });
 
             const deleteButton = this.root.getElementsByClassName('article_edit__delete_button')[0];
             deleteButton.addEventListener('click', () => {
-                Events.articleRemove(this.view.id!);
+                eventBus.articleRemove(this.view.id!);
             });
         } else {
-            submitButton.addEventListener('click', Events.articleCreateListener);
+            submitButton.addEventListener('click', eventBus.articleCreate);
         }
     }
 };

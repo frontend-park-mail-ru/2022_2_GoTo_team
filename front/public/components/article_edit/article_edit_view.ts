@@ -8,6 +8,7 @@ import {EditArticleData} from "../../common/types";
 export default class ArticleEditView extends BasicComponentView {
     id: number | undefined;
     update: boolean | undefined;
+
     /**
      * Перерисовка подконтрольного элемента
      * @param {EditArticleData} editData
