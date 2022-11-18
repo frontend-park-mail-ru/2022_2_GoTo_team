@@ -1,7 +1,12 @@
 import UserPlugView from "./user_plug_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
-import {UserPlugData} from "../../common/types";
+import {Listener, UserPlugData} from "../../common/types";
+
+export type UserPlugEventBus = {
+    authedListener: Listener,
+    unauthedListener: Listener,
+}
 
 /**
  * View_model-компонент соответсвующего View
@@ -30,12 +35,12 @@ export default class UserPlug extends BasicComponent {
     /**
      * Подписка на связанные события
      */
-    async subscribe() {
+    async subscribe(eventBus: UserPlugEventBus) {
         await super.subscribe();
         if (this.view.authed){
-            this.root.addEventListener('click', Events.showProfileMenuListener)
+            this.root.addEventListener('click', eventBus.authedListener);
         }else{
-            this.root.addEventListener('click', Events.makeLoginOverlayListener);
+            this.root.addEventListener('click', eventBus.unauthedListener);
         }
     }
 };

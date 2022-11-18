@@ -3,7 +3,7 @@ import LoginForm, {LoginFormEventBus} from "../components/login_form/login_form.
 import RegistrationForm, {RegistrationFormEventBus} from "../components/registration_form/registration_form.js";
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
-import UserPlug from "../components/user_plug/user_plug.js";
+import UserPlug, {UserPlugEventBus} from "../components/user_plug/user_plug.js";
 import UserPlugMenu from "../components/user_plug_menu/user_plug_menu.js";
 import {PageLoaders} from "./page_loaders.js";
 import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
@@ -437,9 +437,15 @@ export class Events {
      * Обновляет вид кнопки пользователя на навбаре
      */
     static async updateAuth(): Promise<void> {
+        const eventBus : UserPlugEventBus = {
+            authedListener: Events.showProfileMenuListener,
+            unauthedListener: Events.makeLoginOverlayListener,
+        }
+
         const profileButton = document.getElementById("navbar__auth_button")!;
         const userPlug = new UserPlug();
         let promise: Promise<HTMLElement>;
+
         if (Events.#hasSession()) {
             const response = await Requests.getSessionInfo()
             if (response.status === 200) {
@@ -454,13 +460,13 @@ export class Events {
             promise.then(() => {
                 profileButton.innerHTML = '';
                 profileButton.appendChild(userPlug.root);
-                userPlug.subscribe();
+                userPlug.subscribe(eventBus);
             })
         } else {
             userPlug.render().then(() => {
                 profileButton.innerHTML = '';
                 profileButton.appendChild(userPlug.root);
-                userPlug.subscribe();
+                userPlug.subscribe(eventBus);
             })
         }
     }
