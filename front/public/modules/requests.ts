@@ -1,7 +1,14 @@
 import Ajax from "./ajax.js";
 import {requestParams} from "./ajax"
-import {IncompleteArticleData, RequestAnswer, UserLoginData, UserPlugData, UserRegistrationData} from "../common/types";
-import {response} from "express";
+import {
+    CategoryData, FullArticleData,
+    IncompleteArticleData,
+    RequestAnswer, UserData,
+    UserHeaderData,
+    UserLoginData,
+    UserPlugData,
+    UserRegistrationData
+} from "../common/types";
 
 const config = {
     hrefs: {
@@ -154,7 +161,7 @@ export class Requests {
             url: config.hrefs.sessionInfo,
         }).then((response) => {
             let result = response!;
-            const userData : UserPlugData = {
+            const userData: UserPlugData = {
                 username: response!.response.username,
                 avatarUrl: "",
             }
@@ -176,18 +183,19 @@ export class Requests {
     /**
      * Информация в шапку страницы автора
      */
-    static userHeaderInfo(login: any) {
+    static userHeaderInfo(login: string): Promise<UserHeaderData> {
         return Ajax.get({
             url: config.hrefs.userInfo,
             data: {
                 login: login,
             }
         }).then((response) => {
-            const userData = {
-                username: (response as any).response.username,
-                rating: (response as any).response.rating,
-                subscribers: (response as any).response.subscribers_count,
-                registration_date: (response as any).response.registration_date,
+            const result = response!;
+            const userData: UserHeaderData = {
+                username: result.response.username,
+                rating: result.response.rating,
+                subscribers: result.response.subscribers_count,
+                registration_date: result.response.registration_date,
             };
             return userData;
         });
@@ -197,32 +205,51 @@ export class Requests {
      * Запрашивает статьи автора
      * @return {Promise} Promise с массивом статей
      */
-    static getUserArticles(login: any) {
-        const promise = Ajax.get({
+    static getUserArticles(login: string): Promise<IncompleteArticleData[]> {
+        return Ajax.get({
             url: config.hrefs.userFeed,
             data: {
                 login: login,
             }
         }).then((response) => {
-            return (response as any).response.articles;
+            const result: RequestAnswer = response!;
+            let articles: IncompleteArticleData[] = [];
+            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                const article: IncompleteArticleData = {
+                    id: rawArticle.id,
+                    title: rawArticle.title,
+                    description: rawArticle.description,
+                    tags: rawArticle.tags,
+                    category: rawArticle.category,
+                    rating: rawArticle.rating,
+                    comments: rawArticle.comments,
+                    publisher: {
+                        login: rawArticle.publisher.login,
+                        username: rawArticle.publisher.username,
+                    },
+                    coverImgPath: "",
+                }
+                articles.push(article);
+            });
+            return articles;
         });
-        return promise;
     }
 
     /**
      * Информация в шапку страницы категории
      */
-    static categoryHeaderInfo(category: any) {
+    static categoryHeaderInfo(category: string): Promise<CategoryData> {
         return Ajax.get({
             url: config.hrefs.categoryInfo,
             data: {
                 category: category,
             }
         }).then((response) => {
-            const categoryData = {
-                name: (response as any).response.category_name,
-                description: (response as any).response.description,
-                subscribers: (response as any).response.subscribers_count,
+            const result = response!;
+            const categoryData: CategoryData = {
+                name: result.response.category_name,
+                description: result.response.description,
+                subscribers: result.response.subscribers_count,
             };
             return categoryData;
         });
@@ -232,44 +259,79 @@ export class Requests {
      * Запрашивает статьи автора
      * @return {Promise} Promise с массивом статей
      */
-    static getCategoryArticles(category: any) {
-        const promise = Ajax.get({
+    static getCategoryArticles(category: string): Promise<IncompleteArticleData[]> {
+        return Ajax.get({
             url: config.hrefs.categoryFeed,
             data: {
                 category: category,
             }
         }).then((response) => {
-            return (response as any).response.articles;
+            const result: RequestAnswer = response!;
+            let articles: IncompleteArticleData[] = [];
+            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                const article: IncompleteArticleData = {
+                    id: rawArticle.id,
+                    title: rawArticle.title,
+                    description: rawArticle.description,
+                    tags: rawArticle.tags,
+                    category: rawArticle.category,
+                    rating: rawArticle.rating,
+                    comments: rawArticle.comments,
+                    publisher: {
+                        login: rawArticle.publisher.login,
+                        username: rawArticle.publisher.username,
+                    },
+                    coverImgPath: "",
+                }
+                articles.push(article);
+            });
+            return articles;
         });
-        return promise;
     }
 
     /**
      * Запрашивает статью по id
      */
-    static getArticle(articleId: any) {
+    static getArticle(articleId: number): Promise<FullArticleData> {
         return Ajax.get({
             url: config.hrefs.article,
             data: {
                 id: articleId,
             }
         }).then((response) => {
-            return (response as any).response;
+            const result: RequestAnswer = response!;
+            const article: FullArticleData = {
+                id: result.response.id,
+                title:  result.response.title,
+                description:  result.response.description,
+                tags:  result.response.tags,
+                category:  result.response.category,
+                rating:  result.response.rating,
+                comments:  result.response.comments,
+                publisher: {
+                    login:  result.response.publisher.login,
+                    username:  result.response.publisher.username,
+                },
+                coverImgPath: "",
+                content:  result.response.content,
+            }
+            return article;
         });
     }
 
     /**
      * Запрашивает данные профиля
      */
-    static getProfile() {
+    static getProfile(): Promise<UserData> {
         return Ajax.get({
             url: config.hrefs.profile,
         }).then((response) => {
+            const result = response!;
             return {
-                email: (response as any).response.email,
-                login: (response as any).response.login,
-                username: (response as any).response.username,
-                avatarLink: (response as any).response.avatar_img_path,
+                email: result.response.email,
+                login: result.response.login,
+                username: result.response.username,
+                avatarLink: result.response.avatar_img_path,
             };
         });
     }
@@ -277,62 +339,42 @@ export class Requests {
     /**
      * Сохраняет настройки профиля
      */
-    static saveProfile(userData: any) {
+    static saveProfile(userData: UserData): Promise<RequestAnswer> {
         const params: requestParams = {
             url: config.hrefs.saveProfile,
             data: {
                 email: userData.email,
                 login: userData.login,
                 username: userData.username,
-                password: userData.password,
-                avatarImgPath: userData.avatar_link,
+                password: userData.password ? userData.password : "",
+                avatarImgPath: userData.avatar_link ? userData.avatar_link : "",
             },
         }
-        return Ajax.post(params).then((result) => {
-            if ((result as any).status === 200) {
-                return {
-                    status: (result as any).status,
-                    body: "",
-                };
+        return Ajax.post(params).then((response) => {
+            let result = response!;
+            if (result.status === 200) {
+                result.response = "";
+                return result;
             }
-            const errors = {
-                login_conflict: "login conflict",
-                email_conflict: "email conflict",
-                email_invalid: "invalid email",
-                login_invalid: "invalid login",
-                password_invalid: "invalid password",
-            }
-            switch ((result as any).response) {
+
+            switch (result.response) {
                 case "login exists":
-                    return {
-                        status: (result as any).status,
-                        body: errors.login_conflict,
-                    };
+                    result.response = ResponseErrors.loginConflict;
+                    return result;
                 case "email exists":
-                    return {
-                        status: (result as any).status,
-                        body: errors.email_conflict,
-                    };
+                    result.response = ResponseErrors.emailConflict;
+                    return result;
                 case "email is not valid":
-                    return {
-                        status: (result as any).status,
-                        body: errors.email_invalid,
-                    };
+                    result.response = ResponseErrors.emailInvalid;
+                    return result;
                 case "login is not valid":
-                    return {
-                        status: (result as any).status,
-                        body: errors.login_invalid,
-                    };
+                    result.response = ResponseErrors.loginInvalid;
+                    return result;
                 case "password is not valid":
-                    return {
-                        status: (result as any).status,
-                        body: errors.password_invalid,
-                    };
+                    result.response = ResponseErrors.passwordInvalid;
+                    return result;
                 default:
-                    return {
-                        status: (result as any).status,
-                        body: (result as any).response,
-                    };
+                    return result;
             }
         });
     }

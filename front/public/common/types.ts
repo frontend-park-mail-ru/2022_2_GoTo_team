@@ -49,6 +49,7 @@ export type UserData = {
     email: string,
     login?: string,
     username: string,
+    password?: string,
     avatar_link?: string,
 }
 

@@ -585,18 +585,18 @@ export class Events {
     /**
      * Отправление изменений профиля
      */
-    static saveProfileListener() {
-        const emailForm = document.getElementById("settings__email") as HTMLFormElement;
-        const loginForm = document.getElementById("settings__login") as HTMLFormElement;
-        const usernameForm = document.getElementById("settings__nickname") as HTMLFormElement;
-        const passwordForm = document.getElementById("settings__password") as HTMLFormElement;
-        const repeatPasswordForm = document.getElementById("settings__repeat_password") as HTMLFormElement;
+    static saveProfileListener(): void {
+        const emailForm : HTMLFormElement = document.getElementById("settings__email") as HTMLFormElement;
+        const loginForm : HTMLFormElement = document.getElementById("settings__login") as HTMLFormElement;
+        const usernameForm : HTMLFormElement = document.getElementById("settings__nickname") as HTMLFormElement;
+        const passwordForm : HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
+        const repeatPasswordForm : HTMLFormElement = document.getElementById("settings__repeat_password") as HTMLFormElement;
 
         const userData = {
-            email: (emailForm as any).value.trim(),
-            login: (loginForm as any).value.trim(),
-            username: (usernameForm as any).value.trim(),
-            password: (passwordForm as any).value.trim(),
+            email: emailForm.value.trim(),
+            login: loginForm.value.trim(),
+            username: usernameForm.value.trim(),
+            password: passwordForm.value.trim(),
         };
 
         if (!Validators.validateLogin(userData.login)) {
@@ -623,7 +623,7 @@ export class Events {
         }
         Events.#makeValid(passwordForm);
 
-        if (userData.password !== (repeatPasswordForm as any).value.trim()) {
+        if (userData.password !== repeatPasswordForm.value.trim()) {
             Events.#makeInvalid(repeatPasswordForm, "Пароли не совпадают");
             return
         }
@@ -638,24 +638,24 @@ export class Events {
                 const form = document.getElementById("login-form_inputs-wrapper") as HTMLFormElement;
                 switch (response.status) {
                     case 400:
-                        switch (response.body) {
-                            case "invalid email":
+                        switch (response.response) {
+                            case ResponseErrors.emailInvalid:
                                 Events.#makeInvalid(emailForm, "Неверный формат email");
                                 return;
-                            case "invalid login":
+                            case ResponseErrors.loginInvalid:
                                 Events.#makeInvalid(loginForm, "Неверный формат логина");
                                 return;
-                            case "invalid password":
+                            case ResponseErrors.passwordInvalid:
                                 Events.#makeInvalid(passwordForm, "Неверный формат пароля");
                                 return;
                         }
                         break;
                     case 409:
-                        switch (response.body) {
-                            case "login conflict":
+                        switch (response.response) {
+                            case ResponseErrors.loginConflict:
                                 Events.#makeInvalid(loginForm, "Логин занят");
                                 return;
-                            case "email conflict":
+                            case ResponseErrors.emailConflict:
                                 Events.#makeInvalid(emailForm, "Email занят");
                                 return;
                         }
