@@ -3,7 +3,6 @@ import LoginForm, {LoginFormEventBus} from "../components/login_form/login_form.
 import RegistrationForm, {RegistrationFormEventBus} from "../components/registration_form/registration_form.js";
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
-import Feed from "../pages/feed/feed.js";
 import UserPlug from "../components/user_plug/user_plug.js";
 import UserPlugMenu from "../components/user_plug_menu/user_plug_menu.js";
 import {PageLoaders} from "./page_loaders.js";
@@ -34,7 +33,7 @@ export class Events {
     /**
      * Отрисовывает оверлей
      */
-    static async openOverlay() {
+    static async openOverlay(): Promise<void> {
         const overlay = new Overlay();
         await overlay.render();
         const root = document.getElementById('root')!;
@@ -45,7 +44,7 @@ export class Events {
     /**
      * Удаляет оверлей
      */
-    static #closeOverlay() {
+    static #closeOverlay(): void {
         const overlay = document.getElementById('overlay');
         if (overlay !== null) {
             overlay.parentNode!.removeChild(overlay);
@@ -57,7 +56,7 @@ export class Events {
      * @param {BasicComponent} controller
      * @param {Object?} eventBus
      */
-    static async #changeOverlay(controller: BasicComponent, eventBus?: object) {
+    static async #changeOverlay(controller: BasicComponent, eventBus?: object): Promise<void> {
         const overlayCenter = document.getElementById('overlay__center')!;
         overlayCenter.innerHTML = '';
         await controller.render();
@@ -68,7 +67,7 @@ export class Events {
     /**
      * Создаёт оверлей с формой логина
      */
-    static async makeLoginOverlayListener() {
+    static async makeLoginOverlayListener(): Promise<void> {
         await Events.openOverlay();
         await Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
 
@@ -80,7 +79,7 @@ export class Events {
     /**
      * Удаляет оверлей
      */
-    static closeOverlayListener() {
+    static closeOverlayListener(): void {
         Events.#closeOverlay()
 
         const authButton = document.getElementById('navbar__auth_button')!.lastChild!;
@@ -91,14 +90,14 @@ export class Events {
     /**
      * Перерисовывает плашку оверлея на логин
      */
-    static redrawRegistrationOverlay() {
+    static redrawRegistrationOverlay(): void {
         Events.#changeOverlay(new RegistrationForm(), Events.#overlayRegistrationEventBus);
     }
 
     /**
      * Перерисовывает плашку оверлея на регистрацию
      */
-    static redrawLoginOverlay() {
+    static redrawLoginOverlay(): void {
         Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
     }
 
@@ -137,12 +136,12 @@ export class Events {
                                 Events.#makeInvalid(passwordForm, "Неверный формат пароля");
                                 break;
                             case ResponseErrors.wrongAuth:
-                                Events.#makeInvalid(form, "Неверный email или пароль");
+                                Events.#makeInvalid(form as HTMLFormElement, "Неверный email или пароль");
                                 break;
                         }
                         break;
                     default:
-                        Events.#makeInvalid(form, "Что-то пошло не так");
+                        Events.#makeInvalid(form as HTMLFormElement, "Что-то пошло не так");
                 }
             }
         });
@@ -204,7 +203,7 @@ export class Events {
                         break;
                     default:
                         const form = document.getElementById("login-form_inputs-wrapper");
-                        Events.#makeInvalid(form, "Что-то пошло не так");
+                        Events.#makeInvalid(form as HTMLFormElement, "Что-то пошло не так");
                 }
             }
         });
@@ -212,16 +211,18 @@ export class Events {
 
     /**
      * Выводит сообщение message под элементом element
-     * @param {HTMLSelectElement} element
+     * @param {HTMLElement} element
      * @param {string} message
      */
-    static #makeInvalid(element: any, message: any) {
+    static #makeInvalid(element: HTMLElement, message: string): void {
         const errorClass = "error-message"
-        const siblings = element.parentNode.childNodes;
+        const siblings = element.parentNode!.children;
+
         const wrongSign = document.createElement('div');
         wrongSign.innerHTML = `<div class=\"${errorClass}\">${message}</div>`;
-        if (typeof element.setCustomValidity !== 'undefined') {
-            element.setCustomValidity(message);
+
+        if (typeof (element as HTMLFormElement).setCustomValidity !== 'undefined') {
+            (element as HTMLFormElement).setCustomValidity(message);
         }
 
         for (let i = 0; i < siblings.length; i++) {
@@ -230,7 +231,7 @@ export class Events {
                     element.after(wrongSign);
                     break;
                 }
-                if (!(siblings[i + 1].innerHTML.startsWith(`<div class=\"${errorClass}\">`))) {
+                if (!((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class=\"${errorClass}\">`))) {
                     element.after(wrongSign);
                 }
                 break;
@@ -240,20 +241,20 @@ export class Events {
 
     /**
      * Убирает невалидность формы element
-     * @param {HTMLSelectElement} element
+     * @param {HTMLElement} element
      */
-    static #makeValid(element: any) {
-        element.setCustomValidity('');
+    static #makeValid(element: HTMLElement): void {
+        (element as HTMLFormElement).setCustomValidity('');
         const errorClass = "error-message";
-        const siblings = element.parentNode.childNodes;
+        const siblings = element.parentNode!.childNodes;
 
         for (let i = 0; i < siblings.length; i++) {
             if (siblings[i] === element) {
                 if (siblings[i + 1].nodeName === "#text") {
                     break;
                 }
-                if (siblings[i + 1].innerHTML.startsWith(`<div class=\"${errorClass}\">`)) {
-                    element.parentNode.removeChild(siblings[i + 1]);
+                if ((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class=\"${errorClass}\">`)) {
+                    element.parentNode!.removeChild(siblings[i + 1]);
                 }
                 break;
             }
@@ -263,17 +264,20 @@ export class Events {
     /**
      * Проверяет валидность значения в поле почты в плашке логина
      */
-    static emailValidateListenerLogin() {
-        const emailForm = document.getElementById('login_form__email_login');
-        const email = (emailForm as any).value.trim();
+    static emailValidateListenerLogin(): boolean {
+        const emailForm : HTMLFormElement = document.getElementById('login_form__email_login') as HTMLFormElement;
+
+        const email: string = emailForm.value.trim();
         if (email === '') {
             Events.#makeValid(emailForm);
             return true;
         }
+
         if (!Validators.validateEmail(email)) {
             Events.#makeInvalid(emailForm, "Неверный формат email");
             return false;
         }
+
         Events.#makeValid(emailForm);
         return true;
     }
@@ -281,17 +285,20 @@ export class Events {
     /**
      * Проверяет валидность значения в поле пароля в плашке логина
      */
-    static passwordValidateListenerLogin() {
-        const passwordForm = document.getElementById("login_form__password");
-        const password = (passwordForm as any).value.trim();
+    static passwordValidateListenerLogin(): boolean {
+        const passwordForm : HTMLFormElement = document.getElementById("login_form__password") as HTMLFormElement;
+
+        const password: string = passwordForm.value.trim();
         if (password === '') {
             Events.#makeValid(passwordForm);
             return true;
         }
+
         if (!Validators.validatePassword(password)) {
             Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
             return false;
         }
+
         Events.#makeValid(passwordForm);
         return true;
     }
@@ -299,14 +306,15 @@ export class Events {
     /**
      * Проверяет валидность значения в поле почты в плашке регистрации
      */
-    static emailValidateListenerRegistration() {
-        const emailForm = document.getElementById('registration_form__email');
-        const email = (emailForm as any).value.trim();
+    static emailValidateListenerRegistration(): boolean {
+        const emailForm : HTMLFormElement = document.getElementById('registration_form__email') as HTMLFormElement;
 
+        const email: string = emailForm.value.trim();
         if (email === '') {
             Events.#makeValid(emailForm);
             return true;
         }
+
         if (!Validators.validateEmail(email)) {
             Events.#makeInvalid(emailForm, "Неверный формат email");
             return false;
@@ -318,10 +326,10 @@ export class Events {
     /**
      * Проверяет валидность значения в поле логина в плашке регистрации
      */
-    static loginValidateListenerRegistration() {
-        const loginForm = document.getElementById("registration_form__login");
-        const login = (loginForm as any).value.trim();
+    static loginValidateListenerRegistration(): boolean {
+        const loginForm : HTMLFormElement = document.getElementById("registration_form__login") as HTMLFormElement;
 
+        const login: string = loginForm.value.trim();
         if (login === '') {
             Events.#makeValid(loginForm);
             return true;
@@ -337,18 +345,20 @@ export class Events {
     /**
      * Проверяет валидность значения в поле ника в плашке регистрации
      */
-    static usernameValidateListenerRegistration() {
-        const usernameForm = document.getElementById("registration_form__username");
-        const username = (usernameForm as any).value.trim();
+    static usernameValidateListenerRegistration(): boolean {
+        const usernameForm : HTMLFormElement = document.getElementById("registration_form__username") as HTMLFormElement;
 
+        const username: string = usernameForm.value.trim();
         if (username === '') {
             Events.#makeValid(usernameForm);
             return true;
         }
+
         if (!Validators.validateUsername(username)) {
             Events.#makeInvalid(usernameForm, "Неправильный формат ника");
             return false;
         }
+
         Events.#makeValid(usernameForm);
         return true;
     }
@@ -356,18 +366,20 @@ export class Events {
     /**
      * Проверяет валидность значения в поле пароля в плашке регистрации
      */
-    static passwordValidateListenerRegistration() {
-        const passwordForm = document.getElementById("registration_form__password");
-        const password = (passwordForm as any).value.trim();
+    static passwordValidateListenerRegistration(): boolean {
+        const passwordForm : HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
 
+        const password: string = passwordForm.value.trim();
         if (password === '') {
             Events.#makeValid(passwordForm);
             return true;
         }
+
         if (!Validators.validatePassword(password)) {
             Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
             return false;
         }
+
         Events.#makeValid(passwordForm);
         return true;
     }
@@ -375,20 +387,22 @@ export class Events {
     /**
      * Проверяет совпаденик значений в полях пароля и повторения пароля в плашке регистрации
      */
-    static passwordRepeatValidateListenerRegistration() {
-        const passwordForm = document.getElementById("registration_form__password");
-        const repeatPasswordForm = document.getElementById("registration_form__repeat-password");
-        const password = (passwordForm as any).value.trim();
-        const repeatPassword = (repeatPasswordForm as any).value.trim();
+    static passwordRepeatValidateListenerRegistration(): boolean {
+        const passwordForm : HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
+        const repeatPasswordForm : HTMLFormElement = document.getElementById("registration_form__repeat-password") as HTMLFormElement;
 
+        const password: string = passwordForm.value.trim();
+        const repeatPassword: string = repeatPasswordForm.value.trim();
         if (password === '' || repeatPassword === '') {
             Events.#makeValid(repeatPasswordForm);
             return true;
         }
+
         if (password !== repeatPassword) {
             Events.#makeInvalid(repeatPasswordForm, "Пароли не совпадают");
             return false;
         }
+
         Events.#makeValid(repeatPasswordForm);
         return true;
     }
@@ -397,21 +411,23 @@ export class Events {
      * Возвращает значение куки name
      * @param {string} name
      */
-    static #getCookie(name: any) {
+    static #getCookie(name: string): string | null {
         let cookieArr = document.cookie.split(";");
+
         for (let i = 0; i < cookieArr.length; i++) {
             let cookiePair = cookieArr[i].split("=");
             if (name === cookiePair[0].trim()) {
                 return decodeURIComponent(cookiePair[1]);
             }
         }
+
         return null;
     }
 
     /**
      * Проверяет наличие куки сессии
      */
-    static #hasSession() {
+    static #hasSession(): boolean {
         let session = Events.#getCookie("session_id");
         return !(session === "" || session === null);
     }
@@ -429,7 +445,7 @@ export class Events {
             console.log('Gotsession info');
             if ((response as any).status === 200) {
                 const userData: UserPlugData = {
-                    nickname: (response as any).response.username,
+                    username: response.response.username,
                     avatarUrl: "",
                 }
                 promise = userPlug.render(userData);
@@ -570,11 +586,11 @@ export class Events {
      * Отправление изменений профиля
      */
     static saveProfileListener() {
-        const emailForm = document.getElementById("settings__email");
-        const loginForm = document.getElementById("settings__login");
-        const usernameForm = document.getElementById("settings__nickname");
-        const passwordForm = document.getElementById("settings__password");
-        const repeatPasswordForm = document.getElementById("settings__repeat_password");
+        const emailForm = document.getElementById("settings__email") as HTMLFormElement;
+        const loginForm = document.getElementById("settings__login") as HTMLFormElement;
+        const usernameForm = document.getElementById("settings__nickname") as HTMLFormElement;
+        const passwordForm = document.getElementById("settings__password") as HTMLFormElement;
+        const repeatPasswordForm = document.getElementById("settings__repeat_password") as HTMLFormElement;
 
         const userData = {
             email: (emailForm as any).value.trim(),
@@ -619,7 +635,7 @@ export class Events {
             if (response.status === 200) {
                 PageLoaders.settingsPage();
             } else {
-                const form = document.getElementById("login-form_inputs-wrapper");
+                const form = document.getElementById("login-form_inputs-wrapper") as HTMLFormElement;
                 switch (response.status) {
                     case 400:
                         switch (response.body) {

@@ -60,7 +60,7 @@ export type UserHeaderData = {
 }
 
 export type UserPlugData = {
-    nickname: string,
+    username: string,
     avatarUrl: string,
 }
 
@@ -76,4 +76,4 @@ export type UserRegistrationData = {
     password: string,
 }
 
-export type Listener = () => void;
+export type Listener = () => any;

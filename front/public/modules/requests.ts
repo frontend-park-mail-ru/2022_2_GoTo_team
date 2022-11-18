@@ -1,6 +1,7 @@
 import Ajax from "./ajax.js";
 import {requestParams} from "./ajax"
-import {IncompleteArticleData, RequestAnswer, UserLoginData, UserRegistrationData} from "../common/types";
+import {IncompleteArticleData, RequestAnswer, UserLoginData, UserPlugData, UserRegistrationData} from "../common/types";
+import {response} from "express";
 
 const config = {
     hrefs: {
@@ -28,7 +29,7 @@ export class Requests {
      * Запрашивает статьи
      * @return {Promise} Promise с массивом статей
      */
-    static getArticles(): Promise<void | IncompleteArticleData[]> {
+    static getArticles(): Promise<IncompleteArticleData[]> {
         return Ajax.get({
             url: config.hrefs.articles,
         }).then((response) => {
@@ -148,17 +149,25 @@ export class Requests {
      * Получение информации пользователя по куке
      * @return {Promise} Promise со статусом и никнеймом
      */
-    static getSessionInfo() {
+    static getSessionInfo(): Promise<RequestAnswer> {
         return Ajax.get({
             url: config.hrefs.sessionInfo,
+        }).then((response) => {
+            let result = response!;
+            const userData : UserPlugData = {
+                username: response!.response.username,
+                avatarUrl: "",
+            }
+            result.response = userData;
+            return result;
         });
     }
 
     /**
      * Деавторизация
      */
-    static removeSession() {
-        return Ajax.post({
+    static removeSession(): void {
+        Ajax.post({
             url: config.hrefs.sessionRemove,
         });
     }
