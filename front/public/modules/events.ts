@@ -4,7 +4,7 @@ import RegistrationForm, {RegistrationFormEventBus} from "../components/registra
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import UserPlug, {UserPlugEventBus} from "../components/user_plug/user_plug.js";
-import UserPlugMenu from "../components/user_plug_menu/user_plug_menu.js";
+import UserPlugMenu, {UserPlugMenuEventBus} from "../components/user_plug_menu/user_plug_menu.js";
 import {PageLoaders} from "./page_loaders.js";
 import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
 import BasicComponent from "../components/_basic_component/basic_component";
@@ -487,7 +487,12 @@ export class Events {
             userPlugMenu.render().then(() => {
                 const root = document.getElementById('root')!;
                 root.appendChild(userPlugMenu.root);
-                userPlugMenu.subscribe();
+
+                const eventBus: UserPlugMenuEventBus = {
+                    goToSettings: PageLoaders.settingsPage,
+                    unauthorize: Events.profileMenuUnauthorizeListener,
+                }
+                userPlugMenu.subscribe(eventBus);
             });
         }
     }

@@ -1,6 +1,11 @@
 import BasicComponent from "../_basic_component/basic_component.js";
 import UserPlugMenuView from "./user_plug_menu_view.js";
-import {Events} from "../../modules/events.js";
+import {Listener} from "../../common/types";
+
+export type UserPlugMenuEventBus = {
+    goToSettings: Listener,
+    unauthorize: Listener,
+}
 
 /**
  * View_model-компонент соответсвующего View
@@ -28,13 +33,13 @@ export default class UserPlugMenu extends BasicComponent {
     /**
      * Подписка на связанные события
      */
-    async subscribe() {
+    async subscribe(eventBus: UserPlugMenuEventBus) {
         await super.subscribe();
-        const profileButton = document.getElementById('profile_menu__profile_button');
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        profileButton.addEventListener('click', Events.goToSettingsPage);
-        const exitButton = document.getElementById('profile_menu__unauthorize_button');
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        exitButton.addEventListener('click', Events.profileMenuUnauthorizeListener);
+
+        const profileButton = document.getElementById('profile_menu__profile_button')!;
+        profileButton.addEventListener('click', eventBus.goToSettings);
+
+        const exitButton = document.getElementById('profile_menu__unauthorize_button')!;
+        exitButton.addEventListener('click', eventBus.unauthorize);
     }
 }
