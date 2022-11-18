@@ -25,7 +25,6 @@ export default class Ajax {
     static post(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.POST;
-        console.log(parameters);
         return Ajax.#ajax(parameters);
     }
 

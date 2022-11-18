@@ -28,10 +28,9 @@ export default class SettingsPage extends Page{
 
         const userData = await Requests.getProfile();
         const settingsForm = new Settings();
-        settingsForm.render(userData);
+        await settingsForm.render(userData);
         this.view.mainContentElement.appendChild(settingsForm.root);
         this.view.children.set('form', settingsForm);
-        console.log(this.view.children);
 
         Events.updateAuth();
     }

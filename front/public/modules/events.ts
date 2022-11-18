@@ -6,8 +6,9 @@ import {Requests} from "./requests.js";
 import UserPlug from "../components/user_plug/user_plug.js";
 import UserPlugMenu from "../components/user_plug_menu/user_plug_menu.js";
 import {PageLoaders} from "./page_loaders.js";
-import {UserPlugData} from "../common/types";
+import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
 import BasicComponent from "../components/_basic_component/basic_component";
+import * as assert from "assert";
 
 
 export class Events {
@@ -435,15 +436,13 @@ export class Events {
     /**
      * Обновляет вид кнопки пользователя на навбаре
      */
-    static async updateAuth() {
-        const profileButton = document.getElementById("navbar__auth_button");
+    static async updateAuth(): Promise<void> {
+        const profileButton = document.getElementById("navbar__auth_button")!;
         const userPlug = new UserPlug();
         let promise: Promise<HTMLElement>;
         if (Events.#hasSession()) {
-            console.log('Getting session info');
             const response = await Requests.getSessionInfo()
-            console.log('Gotsession info');
-            if ((response as any).status === 200) {
+            if (response.status === 200) {
                 const userData: UserPlugData = {
                     username: response.response.username,
                     avatarUrl: "",
@@ -453,21 +452,15 @@ export class Events {
                 promise = userPlug.render();
             }
             promise.then(() => {
-                console.log('Promise came');
-                console.log(userPlug);
-                userPlug.subscribe();
-                // @ts-expect-error TS(2531): Object is possibly 'null'.
                 profileButton.innerHTML = '';
-                // @ts-expect-error TS(2531): Object is possibly 'null'.
                 profileButton.appendChild(userPlug.root);
+                userPlug.subscribe();
             })
         } else {
             userPlug.render().then(() => {
-                userPlug.subscribe();
-                // @ts-expect-error TS(2531): Object is possibly 'null'.
                 profileButton.innerHTML = '';
-                // @ts-expect-error TS(2531): Object is possibly 'null'.
                 profileButton.appendChild(userPlug.root);
+                userPlug.subscribe();
             })
         }
     }
@@ -475,39 +468,36 @@ export class Events {
     /**
      * Открывает меню пользователя под кнопкой пользователя
      */
-    static showProfileMenu() {
+    static showProfileMenu(): void {
         const profileMenu = document.getElementById('profile_menu');
         if (profileMenu === null) {
             const userPlugMenu = new UserPlugMenu();
-            userPlugMenu.render();
-            const root = document.getElementById('root');
-            // @ts-expect-error TS(2531): Object is possibly 'null'.
-            root.appendChild(userPlugMenu.root);
-            userPlugMenu.subscribe();
+            userPlugMenu.render().then(() => {
+                const root = document.getElementById('root')!;
+                root.appendChild(userPlugMenu.root);
+                userPlugMenu.subscribe();
+            });
         }
     }
 
     /**
      * Листенер открытия меню пользователя кнопки на навбаре
      */
-    static showProfileMenuListener() {
-        Events.showProfileMenu()
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        const profileButton = document.getElementById("navbar__auth_button").lastChild;
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+    static showProfileMenuListener(): void {
+        Events.showProfileMenu();
+
+        const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
         profileButton.removeEventListener('click', Events.showProfileMenuListener);
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', Events.closeProfileMenuListener);
     }
 
     /**
      * Закрывает меню пользователя под кнопкой пользователя
      */
-    static closeProfileMenu() {
+    static closeProfileMenu(): void {
         const profileMenu = document.getElementById('profile_menu');
         if (profileMenu) {
-            const root = document.getElementById('root');
-            // @ts-expect-error TS(2531): Object is possibly 'null'.
+            const root = document.getElementById('root')!;
             root.removeChild(profileMenu);
         }
     }
@@ -515,27 +505,25 @@ export class Events {
     /**
      * Листенер закрытия меню пользователя кнопки на навбаре
      */
-    static closeProfileMenuListener() {
-        Events.closeProfileMenu()
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        const profileButton = document.getElementById("navbar__auth_button").lastChild;
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+    static closeProfileMenuListener(): void {
+        Events.closeProfileMenu();
+
+        const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
         profileButton.removeEventListener('click', Events.closeProfileMenuListener);
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', Events.showProfileMenuListener);
     }
 
     /**
      * Деавторизация
      */
-    static unauthorize() {
+    static unauthorize(): void {
         Requests.removeSession();
     }
 
     /**
      * Деавторизация
      */
-    static profileMenuUnauthorizeListener() {
+    static profileMenuUnauthorizeListener(): void {
         Events.unauthorize();
         PageLoaders.feedPage();
     }
@@ -543,43 +531,43 @@ export class Events {
     /**
      * Отрисовка страницы популярного
      */
-    static goToFeedPage() {
+    static goToFeedPage(): void {
         PageLoaders.feedPage();
     }
 
     /**
      * Отрисовка страницы автора
      */
-    static goToAuthorFeed(login: any) {
+    static goToAuthorFeed(login: string): void {
         PageLoaders.userFeedPage(login);
     }
 
     /**
      * Отрисовка страницы автора
      */
-    static goToCategoryFeed(category: any) {
+    static goToCategoryFeed(category: string): void {
         PageLoaders.categoryFeedPage(category);
     }
 
     /**
      * Отрисовка страницы просмотра статьи
      */
-    static openArticle(articleId: any) {
+    static openArticle(articleId: number): void {
         PageLoaders.articlePage(articleId);
     }
 
     /**
      * Отрисовка страницы профиля
      */
-    static goToSettingsPage() {
+    static goToSettingsPage(): void {
         PageLoaders.settingsPage();
     }
 
     /**
      * Отправление изменений профиля
      */
-    static saveProfileEvent(userData: any) {
-        Requests.saveProfile(userData);
+    static saveProfileEvent(userData: UserData): Promise<RequestAnswer> {
+        return Requests.saveProfile(userData);
     }
 
     /**
@@ -631,7 +619,7 @@ export class Events {
 
         //TODO:Загрузка картинки
 
-        Requests.saveProfile(userData).then((response) => {
+        Events.saveProfileEvent(userData).then((response) => {
             if (response.status === 200) {
                 PageLoaders.settingsPage();
             } else {
@@ -673,18 +661,22 @@ export class Events {
     /**
      * Обработчик создания статьи
      */
-    static articleCreateListener() {
-        const titleForm = document.getElementsByClassName('article_edit__title')[0];
-        const categoryForm = document.getElementsByClassName('select_menu')[0];
-        const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
-        const contentForm = document.getElementsByClassName('article_edit__content')[0];
-        const articleData = {
-            title: titleForm.textContent,
-            category: (categoryForm as any).value,
-            description: descriptionForm.textContent,
+    static articleCreateListener(): void {
+        const titleForm = document.querySelector('.article_edit__title')!;
+        const categoryForm = document.querySelector('.select_menu')!;
+        const descriptionForm = document.querySelector('.article_edit__description')!;
+        const contentForm = document.querySelector('.article_edit__content')!;
+        const articleData: FullArticleData = {
+            id: 0,
+            title: titleForm.textContent ? titleForm.textContent : "",
+            category: categoryForm.textContent ? categoryForm.textContent : "",
+            description: descriptionForm.textContent ? descriptionForm.textContent : "",
             tags: [''],
-            co_author: '',
-            content: contentForm.textContent,
+            comments: 0,
+            rating: 0,
+            content: contentForm.textContent ? contentForm.textContent : "",
+            coverImgPath: "",
+            publisher: {login: "", username: ""},
         };
 
         Events.articleCreate(articleData);
@@ -694,18 +686,22 @@ export class Events {
     /**
      * Обработчик изменения статьи
      */
-    static articleUpdateListener(articleId: any) {
-        const titleForm = document.getElementsByClassName('article_edit__title')[0];
-        const categoryForm = document.getElementsByClassName('select_menu')[0];
-        const descriptionForm = document.getElementsByClassName('article_edit__description')[0];
-        const contentForm = document.getElementsByClassName('article_edit__content')[0];
-        const articleData = {
+    static articleUpdateListener(articleId: number): void {
+        const titleForm = document.querySelector('.article_edit__title')!;
+        const categoryForm = document.querySelector('.select_menu')!;
+        const descriptionForm = document.querySelector('.article_edit__description')!;
+        const contentForm = document.querySelector('.article_edit__content')!;
+        const articleData : FullArticleData = {
             id: articleId,
-            title: titleForm.textContent,
-            category: (categoryForm as any).value,
-            description: descriptionForm.textContent,
-            tags: [""],
-            content: contentForm.textContent,
+            title: titleForm.textContent ? titleForm.textContent : "",
+            category: categoryForm.textContent ? categoryForm.textContent : "",
+            description: descriptionForm.textContent ? descriptionForm.textContent : "",
+            tags: [''],
+            comments: 0,
+            rating: 0,
+            content: contentForm.textContent ? contentForm.textContent : "",
+            coverImgPath: "",
+            publisher: {login: "", username: ""},
         };
 
         Events.articleUpdate(articleData);
@@ -714,21 +710,21 @@ export class Events {
     /**
      * Удаление статьи по id
      */
-    static articleRemove(articleId: any) {
-        Requests.articleRemove(articleId);
+    static articleRemove(articleId: number): Promise<boolean> {
+        return Requests.articleRemove(articleId);
     }
 
     /**
      * Создание статьи
      */
-    static articleCreate(articleData: any) {
-        Requests.articleCreate(articleData);
+    static articleCreate(articleData: FullArticleData): Promise<boolean>  {
+        return Requests.articleCreate(articleData);
     }
 
     /**
      * Обновление статьи
      */
-    static articleUpdate(articleData: any) {
-        Requests.articleUpdate(articleData);
+    static articleUpdate(articleData: FullArticleData): Promise<boolean> {
+        return Requests.articleUpdate(articleData);
     }
 }

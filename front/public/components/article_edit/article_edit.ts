@@ -62,12 +62,12 @@ export default class ArticleEdit extends BasicComponent {
 
         if (this.view.update) {
             submitButton.addEventListener('click', () => {
-                Events.articleUpdateListener(this.view.id);
+                Events.articleUpdateListener(this.view.id!);
             });
 
             const deleteButton = this.root.getElementsByClassName('article_edit__delete_button')[0];
             deleteButton.addEventListener('click', () => {
-                Events.articleRemove(this.view.id);
+                Events.articleRemove(this.view.id!);
             });
         } else {
             submitButton.addEventListener('click', Events.articleCreateListener);

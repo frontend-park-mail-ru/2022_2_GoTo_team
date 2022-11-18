@@ -36,25 +36,25 @@ export default class Article extends BasicComponent {
             const categoryLink: HTMLElement = this.root.querySelector('.article__category')!;
 
             categoryLink.addEventListener('click', () => {
-                Events.goToCategoryFeed(this.view.category);
+                Events.goToCategoryFeed(this.view.category!);
             });
             avatar.addEventListener('click', () => {
-                Events.goToCategoryFeed(this.view.category);
+                Events.goToCategoryFeed(this.view.category!);
             });
         } else {
             avatar.addEventListener('click', () => {
-                Events.goToAuthorFeed(this.view.publisher);
+                Events.goToAuthorFeed(this.view.publisher!);
             });
         }
 
         const author_link: HTMLElement = this.root.querySelector('.article__author')!;
         author_link.addEventListener('click', () => {
-            Events.goToAuthorFeed(this.view.publisher);
+            Events.goToAuthorFeed(this.view.publisher!);
         });
 
         const titleLink: HTMLElement = this.root.querySelector('.article__title')!;
         titleLink.addEventListener('click', () => {
-            Events.openArticle(this.view.id);
+            Events.openArticle(this.view.id!);
         });
         /*
         const deleteArticle = this.root.getElementsByClassName('login_form__cross')[0];

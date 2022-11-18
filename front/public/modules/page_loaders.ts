@@ -59,10 +59,11 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static async articlePage(articleId: any) {
+    static articlePage(articleId: any) {
         const page = new ArticlePage(root);
-        await page.render(articleId);
-        page.subscribe();
+        page.render(articleId).then(() => {
+            page.subscribe();
+        });
     }
 
     /**
@@ -70,8 +71,9 @@ export class PageLoaders {
      */
     static async settingsPage() {
         const page = new SettingsPage(root);
-        await page.render();
-        page.subscribe();
+        page.render().then(() => {
+            page.subscribe();
+        });
     }
 
     /**
