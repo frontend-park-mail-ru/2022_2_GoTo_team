@@ -3,6 +3,8 @@ import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {OpenedArticleEventBus} from "../../components/opened_article/opened_article";
+import {NavbarEventBus} from "../../components/navbar/navbar";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -34,11 +36,19 @@ export default class ArticlePage extends Page {
      * Подписка на связанные события
      */
     async subscribe() {
+        const navbarEventBus: NavbarEventBus = {
+            goToHotFeed: PageLoaders.feedPage,
+            goToNewFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: PageLoaders.feedPage,
+            goToNewArticle: PageLoaders.editArticle,
+        }
+
         const articleEventBus: OpenedArticleEventBus = {
             goToCategoryFeed: Events.goToCategoryFeed,
             goToAuthorFeed: Events.goToAuthorFeed,
         }
-        this.view.children.get('navbar').subscribe();
+
+        this.view.children.get('navbar').subscribe(navbarEventBus);
         this.view.children.get('article').subscribe(articleEventBus);
     }
 }

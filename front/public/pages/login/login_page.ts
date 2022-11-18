@@ -3,14 +3,16 @@ import LoginPageView from "./login_page_view.js";
 import Page from "../_basic/page.js";
 import RegistrationPage from "../registration/registration_page.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
+import {NavbarEventBus} from "../../components/navbar/navbar";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class  LoginPage
  */
-export default class LoginPage extends Page{
+export default class LoginPage extends Page {
     // @ts-ignore
     view: LoginPageView;
+
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
@@ -19,6 +21,7 @@ export default class LoginPage extends Page{
         super(root);
         this.view = new LoginPageView(root);
     }
+
     /**
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
@@ -35,20 +38,27 @@ export default class LoginPage extends Page{
      */
     // @ts-ignore
     subscribe() {
-       this.view.children.get('navbar').subscribe();
-       const loginEventBus = {
+        const navbarEventBus: NavbarEventBus = {
+            goToHotFeed: PageLoaders.feedPage,
+            goToNewFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: PageLoaders.feedPage,
+            goToNewArticle: PageLoaders.editArticle,
+        }
+
+        this.view.children.get('navbar').subscribe(navbarEventBus);
+        const loginEventBus = {
             submit: Events.submitLogin,
             go_to_registration: PageLoaders.registrationPage,
             email_validation: Events.emailValidateListenerLogin,
             password_validation: Events.passwordValidateListenerLogin
-       }
-       this.view.children.get('form').subscribe(loginEventBus);
+        }
+        this.view.children.get('form').subscribe(loginEventBus);
 
-       // @ts-expect-error TS(2531): Object is possibly 'null'.
-       const profile_button = document.getElementById('navbar__auth_button').lastChild;
-       // @ts-expect-error TS(2531): Object is possibly 'null'.
-       profile_button.removeEventListener('click', Events.makeLoginOverlayListener);
-       // @ts-expect-error TS(2531): Object is possibly 'null'.
-       profile_button.addEventListener('click', PageLoaders.loginPage);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const profile_button = document.getElementById('navbar__auth_button').lastChild;
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        profile_button.removeEventListener('click', Events.makeLoginOverlayListener);
+        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        profile_button.addEventListener('click', PageLoaders.loginPage);
     }
 }

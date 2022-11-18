@@ -80,7 +80,7 @@ export class PageLoaders {
     /**
      * Отрисовывает редактирования/создания статьи
      */
-    static async editArticle(articleId: any) {
+    static async editArticle(articleId?: any) {
         const page = new ArticleEditPage(root)
         await page.render(articleId);
         page.subscribe();

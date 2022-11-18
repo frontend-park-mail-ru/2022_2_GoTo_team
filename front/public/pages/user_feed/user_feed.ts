@@ -5,7 +5,7 @@ import UserFeedHeader, {UserFeedHeaderEventBus} from "../../components/user_feed
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
-import {CategoryFeedHeaderEventBus} from "../../components/category_feed_header/category_feed_header";
+import {NavbarEventBus} from "../../components/navbar/navbar";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -68,6 +68,13 @@ export default class UserFeed extends Page {
      * Подписка на связанные события
      */
     async subscribe() {
-        this.view.children.get('navbar').subscribe();
+        const navbarEventBus: NavbarEventBus = {
+            goToHotFeed: PageLoaders.feedPage,
+            goToNewFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: PageLoaders.feedPage,
+            goToNewArticle: PageLoaders.editArticle,
+        }
+
+        this.view.children.get('navbar').subscribe(navbarEventBus);
     }
 }

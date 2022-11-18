@@ -4,6 +4,7 @@ import Article, {ArticleComponentEventBus} from "../../components/article/articl
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
+import {NavbarEventBus} from "../../components/navbar/navbar";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Feed
@@ -49,6 +50,13 @@ export default class Feed extends Page{
      * Подписка на связанные события
      */
     async subscribe() {
-        this.view.children.get('navbar').subscribe();
+        const navbarEventBus: NavbarEventBus = {
+            goToHotFeed: PageLoaders.feedPage,
+            goToNewFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: PageLoaders.feedPage,
+            goToNewArticle: PageLoaders.editArticle,
+        }
+
+        this.view.children.get('navbar').subscribe(navbarEventBus);
     }
 }

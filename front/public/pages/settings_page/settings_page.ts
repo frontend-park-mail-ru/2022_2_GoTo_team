@@ -3,6 +3,8 @@ import SettingsPageView from "./settings_page_view.js";
 import Page from "../_basic/page.js";
 import Settings from "../../components/settings/settings.js";
 import {Requests} from "../../modules/requests.js";
+import {NavbarEventBus} from "../../components/navbar/navbar";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -40,7 +42,14 @@ export default class SettingsPage extends Page{
      */
     // @ts-ignore
     subscribe() {
-        this.view.children.get('navbar').subscribe();
+        const navbarEventBus: NavbarEventBus = {
+            goToHotFeed: PageLoaders.feedPage,
+            goToNewFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: PageLoaders.feedPage,
+            goToNewArticle: PageLoaders.editArticle,
+        }
+
+        this.view.children.get('navbar').subscribe(navbarEventBus);
         this.view.children.get('form').subscribe();
     }
 }

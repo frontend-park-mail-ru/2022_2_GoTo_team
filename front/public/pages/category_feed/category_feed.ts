@@ -7,6 +7,7 @@ import CategoryFeedHeader, {
     CategoryFeedHeaderEventBus
 } from "../../components/category_feed_header/category_feed_header.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
+import {NavbarEventBus} from "../../components/navbar/navbar";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -69,6 +70,13 @@ export default class CategoryFeed extends Page {
      * Подписка на связанные события
      */
     async subscribe(): Promise<void> {
-        this.view.children.get('navbar').subscribe();
+        const navbarEventBus: NavbarEventBus = {
+            goToHotFeed: PageLoaders.feedPage,
+            goToNewFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: PageLoaders.feedPage,
+            goToNewArticle: PageLoaders.editArticle,
+        }
+
+        this.view.children.get('navbar').subscribe(navbarEventBus);
     }
 }

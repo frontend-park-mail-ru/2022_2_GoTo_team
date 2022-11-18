@@ -1,7 +1,13 @@
 import NavbarView from "./navbar_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
-import {Events} from "../../modules/events.js";
-import {PageLoaders} from "../../modules/page_loaders.js";
+import {Listener} from "../../common/types";
+
+export type NavbarEventBus = {
+    goToHotFeed: Listener,
+    goToNewFeed: Listener,
+    goToSubscribeFeed: Listener,
+    goToNewArticle: Listener,
+}
 
 /**
  * View_model-компонент соответсвующего View
@@ -9,6 +15,7 @@ import {PageLoaders} from "../../modules/page_loaders.js";
  */
 export default class Navbar extends BasicComponent {
     view: NavbarView;
+
     /**
      * Универсальный компонент заголовка
      */
@@ -29,21 +36,20 @@ export default class Navbar extends BasicComponent {
     /**
      * Подписка на связанные события
      */
-    async subscribe() {
-        const logo = this.root.getElementsByClassName('navbar__logo')[0];
-        logo.addEventListener('click', Events.goToFeedPage);
+    async subscribe(eventBus: NavbarEventBus) {
+        const logo = this.root.querySelector('.navbar__logo')!;
+        logo.addEventListener('click', eventBus.goToHotFeed);
 
-        const popular = this.root.getElementsByClassName('navbar__button')[0];
-        const newFeed = this.root.getElementsByClassName('navbar__button')[1];
-        const subscribeFeed = this.root.getElementsByClassName('navbar__button')[2];
-        popular.addEventListener('click', Events.goToFeedPage);
-        newFeed.addEventListener('click', Events.goToFeedPage);
-        subscribeFeed.addEventListener('click', Events.goToFeedPage);
+        const popular = this.root.querySelectorAll('.navbar__button')[0];
+        const newFeed = this.root.querySelectorAll('.navbar__button')[1];
+        const subscribeFeed = this.root.querySelectorAll('.navbar__button')[2];
+        popular.addEventListener('click', eventBus.goToHotFeed);
+        newFeed.addEventListener('click', eventBus.goToNewFeed);
+        subscribeFeed.addEventListener('click', eventBus.goToSubscribeFeed);
 
-        const newArticle = this.root.getElementsByClassName('navbar__button')[3];
-        newArticle.addEventListener('click', () =>{
-            // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-            PageLoaders.editArticle();
+        const newArticle = this.root.querySelectorAll('.navbar__button')[3];
+        newArticle.addEventListener('click', () => {
+            eventBus.goToNewArticle();
         });
     }
 }

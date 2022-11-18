@@ -1,7 +1,8 @@
 import PageView from "../_basic/page_view.js";
-import Navbar from "../../components/navbar/navbar.js";
+import Navbar, {NavbarEventBus} from "../../components/navbar/navbar.js";
 import OpenedArticle from "../../components/opened_article/opened_article.js";
 import {FullArticleData} from "../../common/types";
+import {PageLoaders} from "../../modules/page_loaders.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
@@ -24,8 +25,14 @@ export default class ArticlePageView extends PageView {
         await super.render();
         const navbar = new Navbar();
         await navbar.render().then(() => {
+            const navbarEventBus: NavbarEventBus = {
+                goToHotFeed: PageLoaders.feedPage,
+                goToNewFeed: PageLoaders.feedPage,
+                goToSubscribeFeed: PageLoaders.feedPage,
+                goToNewArticle: PageLoaders.editArticle,
+            }
             this.root.appendChild(navbar.root);
-            navbar.subscribe();
+            navbar.subscribe(navbarEventBus);
 
             const rootEl = document.createElement('div');
             rootEl.id = 'root';
