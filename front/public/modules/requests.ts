@@ -1,5 +1,6 @@
 import Ajax from "./ajax.js";
 import {requestParams} from "./ajax"
+import {IncompleteArticleData, RequestAnswer, UserLoginData, UserRegistrationData} from "../common/types";
 
 const config = {
     hrefs: {
@@ -27,74 +28,79 @@ export class Requests {
      * Запрашивает статьи
      * @return {Promise} Promise с массивом статей
      */
-    static getArticles() {
-        const promise = Ajax.get({
+    static getArticles(): Promise<void | IncompleteArticleData[]> {
+        return Ajax.get({
             url: config.hrefs.articles,
         }).then((response) => {
-            return (response as any).response.articles;
+            const result: RequestAnswer = response!;
+            let articles: IncompleteArticleData[] = [];
+            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                const article: IncompleteArticleData = {
+                    id: rawArticle.id,
+                    title: rawArticle.title,
+                    description: rawArticle.description,
+                    tags: rawArticle.tags,
+                    category: rawArticle.category,
+                    rating: rawArticle.rating,
+                    comments: rawArticle.comments,
+                    publisher: {
+                        login: rawArticle.publisher.login,
+                        username: rawArticle.publisher.username,
+                    },
+                    coverImgPath: "",
+                }
+                articles.push(article);
+            });
+            return articles;
         });
-        return promise;
     }
 
     /**
      * Авторизация
-     * @param {Object} userData
-     * @property {string} email
-     * @property {string} password
+     * @param {UserLoginData} userData
      * @return {Promise} Promise со статусом запроса
      */
-    static login(userData: any) {
+    static login(userData: UserLoginData): Promise<RequestAnswer> {
         const params: requestParams = {
             url: config.hrefs.login,
-            data: {"user_data": {"email": userData.email, "password": userData.password}},
-        }
+            data: {
+                "user_data": {
+                    "email": userData.email,
+                    "password": userData.password
+                }
+            },
+        };
+
         return Ajax.post(params).then((response) => {
-            if ((response as any).status === 200) {
-                return {
-                    status: (response as any).status,
-                    body: "",
-                };
+            let result: RequestAnswer = response!;
+
+            if (result.status === 200) {
+                result.response = "";
+                return result;
             }
-            const errors = {
-                email_invalid: "invalid email",
-                password_invalid: "invalid password",
-                wrong_auth: "wrong email or password",
-            }
-            switch ((response as any).response) {
+
+            switch (result.response) {
                 case "email is not valid":
-                    return {
-                        status: (response as any).status,
-                        body: errors.email_invalid,
-                    };
+                    result.response = ResponseErrors.emailInvalid;
+                    return result;
                 case "password is not valid":
-                    return {
-                        status: (response as any).status,
-                        body: errors.password_invalid,
-                    };
+                    result.response = ResponseErrors.passwordInvalid;
+                    return result;
                 case "incorrect email or password":
-                    return {
-                        status: (response as any).status,
-                        body: errors.wrong_auth,
-                    };
+                    result.response = ResponseErrors.wrongAuth;
+                    return result;
                 default:
-                    return {
-                        status: (response as any).status,
-                        body: (response as any).response,
-                    };
+                    return result;
             }
         });
     }
 
     /**
      * Регистрация
-     * @param {Object} userData
-     * @property {string} email
-     * @property {string} login
-     * @property {string} username
-     * @property {string} password
+     * @param {UserRegistrationData} userData
      * @return {Promise} Promise со статусом запроса
      */
-    static signup(userData: any) {
+    static signup(userData: UserRegistrationData): Promise<RequestAnswer> {
         const params: requestParams = {
             url: config.hrefs.signup,
             data: {
@@ -102,55 +108,37 @@ export class Requests {
                     "email": userData.email,
                     "login": userData.login,
                     "username": userData.username,
-                    "password": userData.password
+                    "password": userData.password,
                 }
             },
         }
+
         return Ajax.post(params).then((response) => {
-            if ((response as any).status === 200) {
-                return {
-                    status: (response as any).status,
-                    body: "",
-                };
+            let result: RequestAnswer = response!;
+
+            if (result.status === 200) {
+                result.response = "";
+                return result;
             }
-            const errors = {
-                email_invalid: "invalid email",
-                login_invalid: "invalid login",
-                password_invalid: "invalid password",
-                email_conflict: "email exists",
-                login_conflict: "login exists",
-            }
-            switch ((response as any).response) {
+
+            switch (result.response) {
                 case "email is not valid":
-                    return {
-                        status: (response as any).status,
-                        body: errors.email_invalid,
-                    };
+                    result.response = ResponseErrors.emailInvalid;
+                    return result;
                 case "login is not valid":
-                    return {
-                        status: (response as any).status,
-                        body: errors.login_invalid,
-                    };
+                    result.response = ResponseErrors.loginInvalid;
+                    return result;
                 case "password is not valid":
-                    return {
-                        status: (response as any).status,
-                        body: errors.password_invalid,
-                    };
+                    result.response = ResponseErrors.passwordInvalid;
+                    return result;
                 case "email exists":
-                    return {
-                        status: (response as any).status,
-                        body: errors.email_conflict,
-                    };
+                    result.response = ResponseErrors.emailConflict;
+                    return result;
                 case "login exists":
-                    return {
-                        status: (response as any).status,
-                        body: errors.login_conflict,
-                    };
+                    result.response = ResponseErrors.loginConflict;
+                    return result;
                 default:
-                    return {
-                        status: (response as any).status,
-                        body: (response as any).response,
-                    };
+                    return result;
             }
         });
 

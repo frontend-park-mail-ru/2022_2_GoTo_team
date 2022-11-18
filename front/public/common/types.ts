@@ -1,6 +1,6 @@
-export type requestAnswer = {
+export type RequestAnswer = {
     status: number,
-    response: object,
+    response: any,
 }
 
 export type IncompleteArticleData = {
@@ -62,6 +62,18 @@ export type UserHeaderData = {
 export type UserPlugData = {
     nickname: string,
     avatarUrl: string,
+}
+
+export type UserLoginData = {
+    email: string,
+    password: string,
+}
+
+export type UserRegistrationData = {
+    email: string,
+    login: string,
+    username: string,
+    password: string,
 }
 
 export type Listener = () => void;

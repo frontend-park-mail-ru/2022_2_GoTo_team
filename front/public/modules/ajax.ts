@@ -1,3 +1,5 @@
+import {RequestAnswer} from "../common/types";
+
 const APIurl = "http://127.0.0.1:8080/api/v1";
 //const APIurl = "http://95.163.213.142:8080/api/v1";
 
@@ -14,20 +16,20 @@ export type requestParams = {
 };
 
 export default class Ajax {
-    static get(params: requestParams) {
+    static get(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.GET;
-        return Ajax.#ajax(params);
+        return Ajax.#ajax(parameters);
     }
 
-    static post(params: requestParams) {
+    static post(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.POST;
         console.log(parameters);
         return Ajax.#ajax(parameters);
     }
 
-    static #ajax(params: requestParams) {
+    static #ajax(params: requestParams): Promise<void | RequestAnswer> {
         const url = new URL(APIurl + (params.url || '/'));
         url.search = new URLSearchParams(JSON.stringify(params.body)).toString();
 
@@ -40,9 +42,10 @@ export default class Ajax {
             mode: 'cors',
             credentials: 'include',
         };
-        let status = 0;
 
-        return fetch(url, fetchParams)
+        let status: number = 0;
+
+        const response = fetch(url, fetchParams)
             .then((response) => {
                 status = response.status;
                 const contentType = response.headers.get("content-type");
@@ -50,16 +53,17 @@ export default class Ajax {
                     return response.json();
                 }
                 return status;
-            }).then((response) => {
-                return {
-                    status,
-                    response,
-                };
+            })
+            .then((response) => {
+                const result: RequestAnswer = {
+                    status: status,
+                    response: response,
+                }
+                return result;
             })
             .catch((error) => {
                 console.warn(error);
             });
+        return response!;
     }
 }
-
-

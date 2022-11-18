@@ -1,6 +1,6 @@
 import Overlay from "../components/overlay/overlay.js";
-import LoginForm from "../components/login_form/login_form.js";
-import RegistrationForm from "../components/registration_form/registration_form.js";
+import LoginForm, {LoginFormEventBus} from "../components/login_form/login_form.js";
+import RegistrationForm, {RegistrationFormEventBus} from "../components/registration_form/registration_form.js";
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import Feed from "../pages/feed/feed.js";
@@ -12,7 +12,7 @@ import BasicComponent from "../components/_basic_component/basic_component";
 
 
 export class Events {
-    static #overlayLoginEventBus = {
+    static #overlayLoginEventBus: LoginFormEventBus = {
         submit: Events.submitLogin,
         goToRegistration: Events.redrawRegistrationOverlay,
         emailValidation: Events.emailValidateListenerLogin,
@@ -20,7 +20,7 @@ export class Events {
         closeForm: Events.closeOverlayListener,
     }
 
-    static #overlayRegistrationEventBus = {
+    static #overlayRegistrationEventBus: RegistrationFormEventBus = {
         submit: Events.submitRegistration,
         goToLogin: Events.redrawLoginOverlay,
         emailValidation: Events.emailValidateListenerRegistration,
@@ -37,10 +37,9 @@ export class Events {
     static async openOverlay() {
         const overlay = new Overlay();
         await overlay.render();
-        const root = document.getElementById('root');
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const root = document.getElementById('root')!;
         root.appendChild(overlay.root);
-        overlay.subscribe();
+        await overlay.subscribe();
     }
 
     /**
@@ -48,23 +47,22 @@ export class Events {
      */
     static #closeOverlay() {
         const overlay = document.getElementById('overlay');
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        overlay.parentNode.removeChild(overlay);
+        if (overlay !== null) {
+            overlay.parentNode!.removeChild(overlay);
+        }
     }
 
     /**
      * Перерисовывает плашку оверлея на view
      * @param {BasicComponent} controller
+     * @param {Object?} eventBus
      */
-    static #changeOverlay(controller: BasicComponent, eventBus: any) {
-        const overlayCenter = document.getElementById('overlay__center');
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+    static async #changeOverlay(controller: BasicComponent, eventBus?: object) {
+        const overlayCenter = document.getElementById('overlay__center')!;
         overlayCenter.innerHTML = '';
-        controller.render().then(() => {
-            // @ts-expect-error TS(2531): Object is possibly 'null'.
-            overlayCenter.appendChild(controller.root);
-            controller.subscribe(eventBus);
-        });
+        await controller.render();
+        overlayCenter.appendChild(controller.root);
+        controller.subscribe(eventBus);
     }
 
     /**
@@ -72,13 +70,10 @@ export class Events {
      */
     static async makeLoginOverlayListener() {
         await Events.openOverlay();
-        Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
+        await Events.#changeOverlay(new LoginForm(), Events.#overlayLoginEventBus);
 
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        const auth_button = document.getElementById('navbar__auth_button').lastChild;
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const auth_button = document.getElementById('navbar__auth_button')!.lastChild!;
         auth_button.removeEventListener('click', Events.makeLoginOverlayListener);
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
         auth_button.addEventListener('click', Events.closeOverlayListener);
     }
 
@@ -88,11 +83,8 @@ export class Events {
     static closeOverlayListener() {
         Events.#closeOverlay()
 
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        const authButton = document.getElementById('navbar__auth_button').lastChild;
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        const authButton = document.getElementById('navbar__auth_button')!.lastChild!;
         authButton.removeEventListener('click', Events.closeOverlayListener);
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
         authButton.addEventListener('click', Events.makeLoginOverlayListener);
     }
 
@@ -113,16 +105,17 @@ export class Events {
     /**
      * Подтверждение формы логина
      */
-    static submitLogin() {
-        const emailForm = document.getElementById("login_form__email_login");
-        const passwordForm = document.getElementById("login_form__password");
+    static submitLogin(): void {
+        const emailForm: HTMLFormElement = document.getElementById("login_form__email_login")! as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("login_form__password")! as HTMLFormElement;
+
         const userData = {
-            email: (emailForm as any).value.trim(),
-            password: (passwordForm as any).value.trim(),
+            email: emailForm.value.trim(),
+            password: passwordForm.value.trim(),
         };
 
-        const emailValidation = Events.emailValidateListenerLogin();
-        const passwordValidation = Events.passwordValidateListenerLogin();
+        const emailValidation: boolean = Events.emailValidateListenerLogin();
+        const passwordValidation: boolean = Events.passwordValidateListenerLogin();
 
         if (!(emailValidation && passwordValidation)) {
             return;
@@ -136,14 +129,14 @@ export class Events {
                 const form = document.getElementById("login-form_inputs-wrapper");
                 switch (result.status) {
                     case 400:
-                        switch (result.body) {
-                            case "invalid email":
+                        switch (result.response) {
+                            case  ResponseErrors.emailInvalid:
                                 Events.#makeInvalid(emailForm, "Неверный формат email");
                                 break;
-                            case "invalid password":
+                            case  ResponseErrors.passwordInvalid:
                                 Events.#makeInvalid(passwordForm, "Неверный формат пароля");
                                 break;
-                            case "wrong email or password":
+                            case ResponseErrors.wrongAuth:
                                 Events.#makeInvalid(form, "Неверный email или пароль");
                                 break;
                         }
@@ -158,24 +151,24 @@ export class Events {
     /**
      * Подтверждение формы регистрации
      */
-    static submitRegistration() {
-        const emailForm = document.getElementById("registration_form__email");
-        const loginForm = document.getElementById("registration_form__login");
-        const usernameForm = document.getElementById("registration_form__username");
-        const passwordForm = document.getElementById("registration_form__password");
+    static submitRegistration(): void {
+        const emailForm : HTMLFormElement = document.getElementById("registration_form__email") as HTMLFormElement;
+        const loginForm : HTMLFormElement = document.getElementById("registration_form__login") as HTMLFormElement;
+        const usernameForm : HTMLFormElement = document.getElementById("registration_form__username") as HTMLFormElement;
+        const passwordForm : HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
 
         const userData = {
-            email: (emailForm as any).value.trim(),
-            login: (loginForm as any).value.trim(),
-            username: (usernameForm as any).value.trim(),
-            password: (passwordForm as any).value.trim()
+            email: emailForm.value.trim(),
+            login: loginForm.value.trim(),
+            username: usernameForm.value.trim(),
+            password: passwordForm.value.trim()
         };
 
-        const emailValidation = Events.emailValidateListenerRegistration();
-        const loginValidation = Events.loginValidateListenerRegistration();
-        const usernameValidation = Events.usernameValidateListenerRegistration();
-        const passwordValidation = Events.passwordValidateListenerRegistration();
-        const repeatPasswordValidation = Events.passwordRepeatValidateListenerRegistration();
+        const emailValidation : boolean = Events.emailValidateListenerRegistration();
+        const loginValidation : boolean = Events.loginValidateListenerRegistration();
+        const usernameValidation : boolean = Events.usernameValidateListenerRegistration();
+        const passwordValidation : boolean = Events.passwordValidateListenerRegistration();
+        const repeatPasswordValidation : boolean = Events.passwordRepeatValidateListenerRegistration();
 
         if (!(emailValidation && loginValidation && usernameValidation && passwordValidation && passwordValidation && repeatPasswordValidation)) {
             return;
@@ -183,31 +176,28 @@ export class Events {
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
-                const root = document.getElementsByTagName('body')[0];
-                const page = new Feed(root);
-                page.render();
-                page.subscribe();
+                PageLoaders.feedPage();
             } else {
                 switch (result.status) {
                     case 409:
-                        switch (result.body) {
-                            case "email exists":
+                        switch (result.response) {
+                            case ResponseErrors.emailConflict:
                                 Events.#makeInvalid(emailForm, "Email занят");
                                 break;
-                            case "login exists":
+                            case ResponseErrors.loginConflict:
                                 Events.#makeInvalid(loginForm, "Логин занят");
                                 break;
                         }
                         break;
                     case 400:
-                        switch (result.body) {
-                            case "invalid email":
+                        switch (result.response) {
+                            case ResponseErrors.emailInvalid:
                                 Events.#makeInvalid(emailForm, "Неверный формат email");
                                 break;
-                            case "invalid login":
+                            case ResponseErrors.loginInvalid:
                                 Events.#makeInvalid(loginForm, "Неверный формат логина");
                                 break;
-                            case "invalid password":
+                            case ResponseErrors.passwordInvalid:
                                 Events.#makeInvalid(passwordForm, "Неверный формат пароля");
                                 break;
                         }
@@ -455,7 +445,7 @@ export class Events {
                 // @ts-expect-error TS(2531): Object is possibly 'null'.
                 profileButton.appendChild(userPlug.root);
             })
-        }else{
+        } else {
             userPlug.render().then(() => {
                 userPlug.subscribe();
                 // @ts-expect-error TS(2531): Object is possibly 'null'.
