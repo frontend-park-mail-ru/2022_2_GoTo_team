@@ -2,7 +2,7 @@ import ArticleEditView from "./article_edit_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
 import {Events} from "../../modules/events.js";
 import {Requests} from "../../modules/requests.js";
-import {EditArticleData, FullArticleData} from "../../common/types";
+import {EditArticleData, FullArticleData, RequestAnswer} from "../../common/types";
 
 /**
  * View_model-компонент соответсвующего View
@@ -25,8 +25,8 @@ export default class ArticleEdit extends BasicComponent {
      */
     async render(articleData?: FullArticleData): Promise<HTMLElement> {
         await super.render();
-        const categories_promise: { status: number; response: any; } = (await Requests.getCategories())!;
-        const categories: object = categories_promise.status == 200 ? categories_promise.response : {};
+        const categoriesPromise: RequestAnswer = (await Requests.getCategories())!;
+        const categories: object = categoriesPromise.status == 200 ? categoriesPromise.response : {};
         const editData: EditArticleData = {
             article: articleData,
             categories: categories,

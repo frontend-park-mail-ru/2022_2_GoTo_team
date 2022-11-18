@@ -30,6 +30,10 @@ export type FullArticleData = {
         login: string,
         username: string,
     },
+    coAuthor?: {
+        login: string,
+        username: string,
+    },
     coverImgPath: string,
     content: string,
 }

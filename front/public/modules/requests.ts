@@ -9,6 +9,7 @@ import {
     UserPlugData,
     UserRegistrationData
 } from "../common/types";
+import {response} from "express";
 
 const config = {
     hrefs: {
@@ -350,6 +351,7 @@ export class Requests {
                 avatarImgPath: userData.avatar_link ? userData.avatar_link : "",
             },
         }
+
         return Ajax.post(params).then((response) => {
             let result = response!;
             if (result.status === 200) {
@@ -382,20 +384,23 @@ export class Requests {
     /**
      * Удаляет статью по id
      */
-    static articleRemove(articleId: any) {
+    static articleRemove(articleId: number): Promise<boolean> {
         const params: requestParams = {
             url: config.hrefs.articleRemove,
             data: {
                 id: articleId
             },
         }
-        return Ajax.post(params);
+
+        return Ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
     }
 
     /**
      * Создаёт статью
      */
-    static articleCreate(articleData: any) {
+    static articleCreate(articleData: FullArticleData): Promise<boolean> {
         const params: requestParams = {
             url: config.hrefs.articleCreate,
             data: {
@@ -407,13 +412,16 @@ export class Requests {
                 content: articleData.content,
             },
         }
-        return Ajax.post(params);
+
+        return Ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
     }
 
     /**
      * Обновляет статью
      */
-    static articleUpdate(articleData: any) {
+    static articleUpdate(articleData: FullArticleData): Promise<boolean> {
         const params: requestParams = {
             url: config.hrefs.articleUpdate,
             data: {
@@ -425,16 +433,22 @@ export class Requests {
                 content: articleData.content,
             },
         }
-        return Ajax.post(params);
+
+        return Ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
     }
 
     /**
      * Обновляет статью
      */
-    static getCategories() {
+    static getCategories(): Promise<RequestAnswer> {
         const params: requestParams = {
             url: config.hrefs.categoryList,
         }
-        return Ajax.get(params);
+
+        return Ajax.get(params).then((response) => {
+            return response!;
+        });
     }
 }
