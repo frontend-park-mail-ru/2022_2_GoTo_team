@@ -6,7 +6,8 @@ export type NavbarEventBus = {
     goToHotFeed: Listener,
     goToNewFeed: Listener,
     goToSubscribeFeed: Listener,
-    goToNewArticle: Listener,
+    //goToNewArticle: Listener,
+    openOtherMenu: Listener,
 }
 
 /**
@@ -47,9 +48,15 @@ export default class Navbar extends BasicComponent {
         newFeed.addEventListener('click', eventBus.goToNewFeed);
         subscribeFeed.addEventListener('click', eventBus.goToSubscribeFeed);
 
+        /*
         const newArticle = this.root.querySelectorAll('.navbar__button')[3];
         newArticle.addEventListener('click', () => {
             eventBus.goToNewArticle();
         });
+        */
+
+        const otherMenuButton = this.root.querySelectorAll('.navbar__button')[3];
+        otherMenuButton.addEventListener('click', eventBus.openOtherMenu);
+
     }
 }

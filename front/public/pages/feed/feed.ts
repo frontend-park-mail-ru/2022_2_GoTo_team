@@ -54,7 +54,8 @@ export default class Feed extends Page{
             goToHotFeed: PageLoaders.feedPage,
             goToNewFeed: PageLoaders.feedPage,
             goToSubscribeFeed: PageLoaders.feedPage,
-            goToNewArticle: PageLoaders.editArticle,
+            //goToNewArticle: PageLoaders.editArticle,
+            openOtherMenu: Events.showOtherMenuListener,
         }
 
         this.view.children.get('navbar').subscribe(navbarEventBus);

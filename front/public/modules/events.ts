@@ -7,8 +7,9 @@ import UserPlug, {UserPlugEventBus} from "../components/user_plug/user_plug.js";
 import UserPlugMenu, {UserPlugMenuEventBus} from "../components/user_plug_menu/user_plug_menu.js";
 import {PageLoaders} from "./page_loaders.js";
 import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
-import BasicComponent from "../components/_basic_component/basic_component";
+import BasicComponent from "../components/_basic_component/basic_component.js";
 import {ResponseErrors} from "../common/consts.js"
+import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
 
 
 export class Events {
@@ -478,23 +479,38 @@ export class Events {
     }
 
     /**
+     * Закрывает меню под навбарам
+     */
+    static #closeNavbarMenu(){
+        const root = document.getElementById('root')!;
+        const openedMenu : HTMLElement | null = root.querySelector('.navbar_menu');
+        if (openedMenu !== null){
+            root.removeChild(openedMenu!);
+        }
+    }
+
+    /**
+     * Открывает меню под навбарам и закрывает открытое, если такая есть
+     */
+    static #openNavbarMenu(controller: BasicComponent, eventBus?: object){
+        Events.#closeNavbarMenu();
+
+        const root = document.getElementById('root')!;
+        controller.render().then(() => {
+            root.appendChild(controller.root);
+            controller.subscribe(eventBus);
+        });
+    }
+
+    /**
      * Открывает меню пользователя под кнопкой пользователя
      */
     static showProfileMenu(): void {
-        const profileMenu = document.getElementById('profile_menu');
-        if (profileMenu === null) {
-            const userPlugMenu = new UserPlugMenu();
-            userPlugMenu.render().then(() => {
-                const root = document.getElementById('root')!;
-                root.appendChild(userPlugMenu.root);
-
-                const eventBus: UserPlugMenuEventBus = {
-                    goToSettings: PageLoaders.settingsPage,
-                    unauthorize: Events.profileMenuUnauthorizeListener,
-                }
-                userPlugMenu.subscribe(eventBus);
-            });
+        const eventBus: UserPlugMenuEventBus = {
+            goToSettings: PageLoaders.settingsPage,
+            unauthorize: Events.profileMenuUnauthorizeListener,
         }
+        Events.#openNavbarMenu(new UserPlugMenu(), eventBus);
     }
 
     /**
@@ -506,28 +522,57 @@ export class Events {
         const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
         profileButton.removeEventListener('click', Events.showProfileMenuListener);
         profileButton.addEventListener('click', Events.closeProfileMenuListener);
-    }
 
-    /**
-     * Закрывает меню пользователя под кнопкой пользователя
-     */
-    static closeProfileMenu(): void {
-        const profileMenu = document.getElementById('profile_menu');
-        if (profileMenu) {
-            const root = document.getElementById('root')!;
-            root.removeChild(profileMenu);
-        }
+        const otherButton = document.getElementById("navbar__other")!;
+        otherButton.removeEventListener('click', Events.closeOtherMenuListener);
+        otherButton.addEventListener('click', Events.showOtherMenuListener);
     }
 
     /**
      * Листенер закрытия меню пользователя кнопки на навбаре
      */
     static closeProfileMenuListener(): void {
-        Events.closeProfileMenu();
+        Events.#closeNavbarMenu();
 
         const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
         profileButton.removeEventListener('click', Events.closeProfileMenuListener);
         profileButton.addEventListener('click', Events.showProfileMenuListener);
+    }
+
+    /**
+     * Открывает меню пользователя под кнопкой пользователя
+     */
+    static showOtherMenu(): void {
+        const eventBus: OtherMenuEventBus = {
+            newArticle: PageLoaders.editArticle,
+        }
+        Events.#openNavbarMenu(new OtherMenu(), eventBus);
+    }
+
+    /**
+     * Листенер открытия меню пользователя кнопки на навбаре
+     */
+    static showOtherMenuListener(): void {
+        Events.showOtherMenu();
+
+        const otherButton = document.getElementById("navbar__other")!;
+        otherButton.removeEventListener('click', Events.showOtherMenuListener);
+        otherButton.addEventListener('click', Events.closeOtherMenuListener);
+
+        const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
+        profileButton.removeEventListener('click', Events.closeProfileMenuListener);
+        profileButton.addEventListener('click', Events.showProfileMenuListener);
+    }
+
+    /**
+     * Листенер закрытия меню пользователя кнопки на навбаре
+     */
+    static closeOtherMenuListener(): void {
+        Events.#closeNavbarMenu();
+
+        const otherButton = document.getElementById("navbar__other")!;
+        otherButton.removeEventListener('click', Events.closeOtherMenuListener);
+        otherButton.addEventListener('click', Events.showOtherMenuListener);
     }
 
     /**

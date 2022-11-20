@@ -3,6 +3,7 @@ import Navbar, {NavbarEventBus} from "../../components/navbar/navbar.js";
 import OpenedArticle from "../../components/opened_article/opened_article.js";
 import {FullArticleData} from "../../common/types";
 import {PageLoaders} from "../../modules/page_loaders.js";
+import {Events} from "../../modules/events.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
@@ -29,7 +30,8 @@ export default class ArticlePageView extends PageView {
                 goToHotFeed: PageLoaders.feedPage,
                 goToNewFeed: PageLoaders.feedPage,
                 goToSubscribeFeed: PageLoaders.feedPage,
-                goToNewArticle: PageLoaders.editArticle,
+                //goToNewArticle: PageLoaders.editArticle,
+                openOtherMenu: Events.showOtherMenuListener,
             }
             this.root.appendChild(navbar.root);
             navbar.subscribe(navbarEventBus);

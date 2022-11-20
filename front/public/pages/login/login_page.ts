@@ -1,7 +1,6 @@
 import {Events} from "../../modules/events.js";
 import LoginPageView from "./login_page_view.js";
 import Page from "../_basic/page.js";
-import RegistrationPage from "../registration/registration_page.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 
@@ -42,7 +41,8 @@ export default class LoginPage extends Page {
             goToHotFeed: PageLoaders.feedPage,
             goToNewFeed: PageLoaders.feedPage,
             goToSubscribeFeed: PageLoaders.feedPage,
-            goToNewArticle: PageLoaders.editArticle,
+            //goToNewArticle: PageLoaders.editArticle,
+            openOtherMenu: Events.showOtherMenuListener,
         }
 
         this.view.children.get('navbar').subscribe(navbarEventBus);

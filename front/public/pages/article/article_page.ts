@@ -40,7 +40,8 @@ export default class ArticlePage extends Page {
             goToHotFeed: PageLoaders.feedPage,
             goToNewFeed: PageLoaders.feedPage,
             goToSubscribeFeed: PageLoaders.feedPage,
-            goToNewArticle: PageLoaders.editArticle,
+            //goToNewArticle: PageLoaders.editArticle,
+            openOtherMenu: Events.showOtherMenuListener,
         }
 
         const articleEventBus: OpenedArticleEventBus = {

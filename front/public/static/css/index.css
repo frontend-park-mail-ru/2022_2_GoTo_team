@@ -110,15 +110,18 @@ body {
     max-width: 100%;
 }
 
-.profile_menu {
+.navbar_menu {
+    border-radius: 0 0 14px 14px;
+}
+
+.user_plug_menu {
     width: 150px;
     position: fixed;
     right: 20px;
     top: 60px;
-    border-radius: 0 0 14px 14px;
 }
 
-.profile_menu__element {
+.navbar_menu__element {
     width: auto;
     height: fit-content;
     font-size: 16px;
@@ -126,16 +129,45 @@ body {
     cursor: pointer;
 }
 
-.profile_menu__element:hover {
+.navbar_menu__element:hover {
     background: var(--slight-dark);
 }
 
-.profile_menu__element:active {
+.navbar_menu__element:active {
     background: var(--slight-darker-dark);
 }
 
-.profile_menu__element_last {
+.navbar_menu_element_last {
     border-radius: 0 0 14px 14px;
+}
+
+.other_menu {
+    width: 60%;
+    position: fixed;
+    top: 60px;
+    left: 20%;
+    right: 20%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    padding: 15px;
+}
+
+.other_menu__element {
+    width: auto;
+    height: fit-content;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 14px;
+}
+
+.other_menu__element:hover {
+    background: var(--slight-dark);
+}
+
+.other_menu__element:active {
+    background: var(--slight-darker-dark);
 }
 
 .content {
@@ -305,7 +337,7 @@ body {
     cursor: pointer;
 }
 
-.article__title:hover{
+.article__title:hover {
     color: var(--main);
     word-wrap: anywhere;
 }
@@ -779,21 +811,21 @@ div.log-button-container {
     color: var(--negative);
 }
 
-.subscribers_avatars_wrapper{
+.subscribers_avatars_wrapper {
     display: flex;
     flex-flow: row;
     flex-wrap: wrap;
     margin: 3px 10px 10px 10px;
 }
 
-.subscriber_avatar{
-    width: calc(100%/5 - 5px);
+.subscriber_avatar {
+    width: calc(100% / 5 - 5px);
     height: 20px;
     margin: 2.5px;
     background: var(--slight-dark);
 }
 
-.right_side_bar__content{
+.right_side_bar__content {
     font-family: 'Arial', serif;
     padding: 10px;
     font-size: 15px;
@@ -803,14 +835,14 @@ div.log-button-container {
     max-height: 75%;
 }
 
-.article__content{
+.article__content {
     font-size: 16px;
     padding: 10px 0;
     width: 75%;
     word-wrap: anywhere;
 }
 
-.div_textarea{
+.div_textarea {
     width: 100%;
     /*border: var(--slight-dark) 1px solid;*/
     outline: none;
@@ -822,33 +854,33 @@ div.log-button-container {
     word-wrap: anywhere;
 }
 
-.div_textarea:focus{
+.div_textarea:focus {
     background: var(--focus-textarea-background);
 }
 
-.div_textarea[placeholder]:empty:before{
+.div_textarea[placeholder]:empty:before {
     content: attr(placeholder);
     color: var(--ligther-text);
 }
 
-.div_textarea[placeholder]:empty:focus:before{
+.div_textarea[placeholder]:empty:focus:before {
     content: ' ';
 }
 
-.article_edit__title{
+.article_edit__title {
     font-weight: bold;
     font-size: 20px;
 }
 
-.article_edit__description{
+.article_edit__description {
     font-weight: bold;
 }
 
-.article_edit__content{
+.article_edit__content {
     margin-bottom: 55px;
 }
 
-.article_edit__footer{
+.article_edit__footer {
     position: fixed;
     bottom: 0;
     left: 20%;
@@ -856,7 +888,7 @@ div.log-button-container {
     height: 55px;
 }
 
-.article_edit__save_button{
+.article_edit__save_button {
     height: fit-content;
     font-size: 16px;
     text-align: center;
@@ -864,7 +896,7 @@ div.log-button-container {
     padding: 8px;
 }
 
-.article_edit__delete_button{
+.article_edit__delete_button {
     height: 40px;
     width: 40px;
     font-size: 16px;
@@ -874,17 +906,17 @@ div.log-button-container {
     margin-left: auto;
 }
 
-.article_edit__delete_button svg{
+.article_edit__delete_button svg {
     width: 20px;
     height: 20px;
 }
 
-.article_edit__label{
+.article_edit__label {
     font-size: 20px;
     margin-left: 10px;
 }
 
-.select_menu{
+.select_menu {
     outline: none;
     background: transparent;
     border: 6px solid transparent;
@@ -893,10 +925,10 @@ div.log-button-container {
     border-radius: 10px;
 }
 
-.select_menu:hover{
+.select_menu:hover {
     background: var(--slight-dark);
 }
 
-.select_menu:active{
+.select_menu:active {
     background: rgba(104, 11, 197, 0.25);
 }
