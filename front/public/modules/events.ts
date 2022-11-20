@@ -544,7 +544,7 @@ export class Events {
      */
     static showOtherMenu(): void {
         const eventBus: OtherMenuEventBus = {
-            newArticle: PageLoaders.editArticle,
+            newArticle: Events.newArticlePageListener,
         }
         Events.#openNavbarMenu(new OtherMenu(), eventBus);
     }
@@ -895,5 +895,16 @@ export class Events {
 
         Events.#makeValid(repeatPasswordForm);
         return true;
+    }
+
+    static newArticlePageListener(){
+        Requests.getSessionInfo().then((result) => {
+            if (result.status === 401){
+                alert("Для создания статьи нужно авторизироваться");
+                return;
+            }
+
+            PageLoaders.editArticle();
+        });
     }
 }

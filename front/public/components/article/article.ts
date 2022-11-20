@@ -1,6 +1,6 @@
 import ArticleView from "./article_view.js";
 import BasicComponent from "../_basic_component/basic_component.js";
-import {IncompleteArticleData, Listener} from "../../common/types";
+import {IncompleteArticleData} from "../../common/types";
 
 export type ArticleComponentEventBus = {
     goToCategoryFeed: (category: string) => void,
