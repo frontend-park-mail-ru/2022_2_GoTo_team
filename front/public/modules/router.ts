@@ -5,7 +5,7 @@ export default class Router {
 
     constructor(options: any) {
         if (options.root) this.root = options.root;
-        this.#current = '';
+        this.#current = '/';
         this.listen();
     }
 
@@ -49,9 +49,9 @@ export default class Router {
     };
 
     interval: () => any = () => {
+        console.log(this.#current)
         if (this.#current === this.getFragment()) return;
         this.#current = this.getFragment();
-
         this.routes.some(route => {
             const match = this.#current.match(route.path);
             if (match) {

@@ -19,7 +19,7 @@ export const API = {
 }
 
 export const APIStrings = {
-    root: () => {return '/'},
+    root: () => {return ''},
     feedPage: () => {return '/feed'},
     settingsPage: () => {return '/settings'},
     articlePage: (id: number) => {return '/article/' + id},
