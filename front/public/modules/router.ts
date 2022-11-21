@@ -36,7 +36,7 @@ export default class Router {
 
     getFragment = () => {
         let fragment = '';
-        const match = window.location.href.match(/(.*)$/);
+        const match = window.location.href.match(/#(.*)$/);
         fragment = match ? match[1] : '';
         return this.clearSlashes(fragment);
     };

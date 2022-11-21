@@ -11,7 +11,7 @@ import {APIStrings} from "../../common/consts.js";
  * ModalView-контроллер для соответсвующих страниц
  * @class  SettingsPage
  */
-export default class SettingsPage extends Page{
+export default class SettingsPage extends Page {
     view: SettingsPageView;
 
     /**
@@ -28,6 +28,12 @@ export default class SettingsPage extends Page{
      * Должен быть вызван render() для обновления.
      */
     async render() {
+        const authCheck = await Requests.getSessionInfo();
+        if (authCheck.status === 401) {
+            alert("Вы не авторизованы");
+            PageLoaders.feedPage();
+            return;
+        }
         Events.setLocation(APIStrings.settingsPage());
         this.view.render();
 
