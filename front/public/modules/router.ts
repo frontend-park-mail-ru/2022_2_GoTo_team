@@ -49,7 +49,6 @@ export default class Router {
     };
 
     interval: () => any = () => {
-        console.log(this.#current)
         if (this.#current === this.getFragment()) return;
         this.#current = this.getFragment();
         this.routes.some(route => {
