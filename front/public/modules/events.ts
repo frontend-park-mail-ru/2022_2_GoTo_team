@@ -559,9 +559,11 @@ export class Events {
         otherButton.removeEventListener('click', Events.showOtherMenuListener);
         otherButton.addEventListener('click', Events.closeOtherMenuListener);
 
-        const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
-        profileButton.removeEventListener('click', Events.closeProfileMenuListener);
-        profileButton.addEventListener('click', Events.showProfileMenuListener);
+        if (document.querySelector('.navbar__profile_block__nickname') !== null){
+            const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
+            profileButton.removeEventListener('click', Events.closeProfileMenuListener);
+            profileButton.addEventListener('click', Events.showProfileMenuListener);
+        }
     }
 
     /**
