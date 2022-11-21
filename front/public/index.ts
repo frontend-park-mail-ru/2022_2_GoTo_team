@@ -2,22 +2,35 @@
 
 import {PageLoaders} from "./modules/page_loaders.js";
 import Router from "./modules/router.js";
+import {API} from "./common/consts.js";
 
 const router = new Router({
     root: ''
 });
 
 router
-    .add(/about/, () => {
-        alert('welcome in about page');
+    .add(API.feedPage, () => {
+        PageLoaders.feedPage();
     })
-    .add(/settings/, () => {
+    .add(API.settingsPage, () => {
         PageLoaders.settingsPage();
     })
-    .add(/products\/(.*)\/specification\/(.*)/, (id: string, specification: string) => {
-        alert(`products: ${id} specification: ${specification}`);
+    .add(API.articlePage, (id: number) => {
+        PageLoaders.articlePage(id);
     })
-    .add('', () => {
+    .add(API.categoryPage, (name: string) => {
+        PageLoaders.categoryFeedPage(name);
+    })
+    .add(API.authorPage, (login: string) => {
+        PageLoaders.userFeedPage(login);
+    })
+    .add(API.newArticlePage, () => {
+        PageLoaders.editArticle();
+    })
+    .add(API.articleEditPage, (id: number) => {
+        PageLoaders.editArticle(id);
+    })
+    .add(API.root, () => {
         PageLoaders.feedPage();
     });
 //PageLoaders.feedPage();

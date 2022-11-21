@@ -32,6 +32,9 @@ export default class CategoryFeed extends Page {
     async render(category: string): Promise<void> {
         await this.view.render();
 
+        category = decodeURIComponent(category);
+        console.log(category);
+
         Requests.categoryHeaderInfo(category).then((categoryData) => {
             const eventBus: CategoryFeedHeaderEventBus = {
 

@@ -1,5 +1,5 @@
 export default class Router {
-    routes: {path: RegExp | string, handler: any}[]= [];
+    routes: { path: RegExp | string, handler: any }[] = [];
     root: string = '/';
     #current: string;
 
@@ -10,7 +10,7 @@ export default class Router {
     }
 
     add = (path: RegExp | string, handler: any) => {
-        this.routes.push({ path, handler });
+        this.routes.push({path, handler});
         return this;
     };
 
@@ -36,9 +36,8 @@ export default class Router {
 
     getFragment = () => {
         let fragment = '';
-            const match = window.location.href.match(/#(.*)$/);
-            fragment = match ? match[1] : '';
-
+        const match = window.location.href.match(/(.*)$/);
+        fragment = match ? match[1] : '';
         return this.clearSlashes(fragment);
     };
 
