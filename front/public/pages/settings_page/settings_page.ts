@@ -5,6 +5,7 @@ import Settings, {SettingsEventBus} from "../../components/settings/settings.js"
 import {Requests} from "../../modules/requests.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {PageLoaders} from "../../modules/page_loaders.js";
+import {APIStrings} from "../../common/consts.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -27,6 +28,7 @@ export default class SettingsPage extends Page{
      * Должен быть вызван render() для обновления.
      */
     async render() {
+        Events.setLocation(APIStrings.settingsPage());
         this.view.render();
 
         const userData = await Requests.getProfile();

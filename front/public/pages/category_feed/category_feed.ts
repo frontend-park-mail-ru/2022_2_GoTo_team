@@ -8,6 +8,7 @@ import CategoryFeedHeader, {
 } from "../../components/category_feed_header/category_feed_header.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
+import {APIStrings} from "../../common/consts.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -33,7 +34,7 @@ export default class CategoryFeed extends Page {
         await this.view.render();
 
         category = decodeURIComponent(category);
-        console.log(category);
+        Events.setLocation(APIStrings.categoryPage(category));
 
         Requests.categoryHeaderInfo(category).then((categoryData) => {
             const eventBus: CategoryFeedHeaderEventBus = {

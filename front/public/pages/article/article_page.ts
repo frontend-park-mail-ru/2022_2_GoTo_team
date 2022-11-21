@@ -5,6 +5,7 @@ import Page from "../_basic/page.js";
 import {OpenedArticleEventBus} from "../../components/opened_article/opened_article";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {PageLoaders} from "../../modules/page_loaders.js";
+import {APIStrings} from "../../common/consts.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -27,6 +28,7 @@ export default class ArticlePage extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(articleId: number) {
+        Events.setLocation(APIStrings.articlePage(articleId));
         const article = await Requests.getArticle(articleId);
         await this.view.render(article);
         Events.updateAuth();

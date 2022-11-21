@@ -17,3 +17,14 @@ export const API = {
     newArticlePage: /new_article$/,
     articleEditPage: /article\/([0-9]*)\/edit$/,
 }
+
+export const APIStrings = {
+    root: () => {return '/'},
+    feedPage: () => {return '/feed'},
+    settingsPage: () => {return '/settings'},
+    articlePage: (id: number) => {return '/article/' + id},
+    categoryPage: (name: string) => {return '/category/' + name},
+    authorPage: (login: string) => {return '/author/' + login},
+    newArticlePage: () => {return '/new_article'},
+    articleEditPage: (id: number) => {return '/article/' + id + '/edit/'},
+}

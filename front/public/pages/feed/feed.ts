@@ -5,6 +5,7 @@ import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
+import {APIStrings} from "../../common/consts.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Feed
@@ -25,6 +26,7 @@ export default class Feed extends Page{
      * Должен быть вызван render() для обновления.
      */
     async render() {
+        Events.setLocation(APIStrings.feedPage());
         const articleEventBus : ArticleComponentEventBus = {
             goToAuthorFeed: Events.goToAuthorFeed,
             goToCategoryFeed: Events.goToCategoryFeed,

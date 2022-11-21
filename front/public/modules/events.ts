@@ -907,4 +907,8 @@ export class Events {
             PageLoaders.editArticle();
         });
     }
+
+    static setLocation(uri: string){
+        location.hash = uri;
+    }
 }

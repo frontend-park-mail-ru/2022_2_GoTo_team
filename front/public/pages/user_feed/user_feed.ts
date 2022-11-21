@@ -6,6 +6,7 @@ import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
+import {APIStrings} from "../../common/consts.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -28,6 +29,7 @@ export default class UserFeed extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(login: string) {
+        Events.setLocation(APIStrings.authorPage(login));
         await this.view.render();
 
         Requests.userHeaderInfo(login).then((userData) => {

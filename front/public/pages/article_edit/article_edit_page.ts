@@ -5,6 +5,7 @@ import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {PageLoaders} from "../../modules/page_loaders.js";
 import {ArticleEditEventBus} from "../../components/article_edit/article_edit";
+import {APIStrings} from "../../common/consts.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class ArticleEditPage
@@ -25,9 +26,11 @@ export default class ArticleEditPage extends Page {
      */
     async render(articleId?: number) {
         if (typeof articleId !== 'undefined'){
+            Events.setLocation(APIStrings.articleEditPage(articleId));
             const article = await Requests.getArticle(articleId);
             await this.view.render(article);
         }else{
+            Events.setLocation(APIStrings.newArticlePage());
             await this.view.render();
         }
         Events.updateAuth();
