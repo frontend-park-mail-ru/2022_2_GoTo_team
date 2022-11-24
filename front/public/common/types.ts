@@ -3,6 +3,12 @@ export type RequestAnswer = {
     response: any,
 }
 
+type publisher = {
+    login: string,
+    username: string,
+    avatar?: string
+}
+
 export type IncompleteArticleData = {
     id: number,
     title: string,
@@ -11,10 +17,7 @@ export type IncompleteArticleData = {
     category: string,
     rating: number,
     comments: number,
-    publisher: {
-        login: string,
-        username: string,
-    },
+    publisher: publisher,
     coverImgPath: string,
 };
 
@@ -26,14 +29,8 @@ export type FullArticleData = {
     category: string,
     rating: number,
     comments: number,
-    publisher: {
-        login: string,
-        username: string,
-    },
-    coAuthor?: {
-        login: string,
-        username: string,
-    },
+    publisher: publisher,
+    coAuthor?: publisher,
     coverImgPath: string,
     content: string,
 }
@@ -82,3 +79,17 @@ export type UserRegistrationData = {
 }
 
 export type Listener = () => any;
+
+export const CommentaryParent = {
+    article: "article",
+    commentary: "commentary",
+}
+
+export type CommentaryData = {
+    id: number,
+    publisher: publisher,
+    parentType: string,
+    parentId: number,
+    rating: number,
+    content: string,
+}
