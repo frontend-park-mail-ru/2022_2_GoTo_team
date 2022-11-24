@@ -12,7 +12,7 @@ app.use(body.json());
 const port = process.env.PORT || 8081;
 
 app.get(/.*/, (req: any, res: any) => {
-    res.sendfile(path.resolve(__dirname, '..', 'public', 'index.html'));
+    res.sendfile(path.resolve(__dirname, '..', 'public', 'index.other_html'));
 })
 
 app.listen(port, function () {
