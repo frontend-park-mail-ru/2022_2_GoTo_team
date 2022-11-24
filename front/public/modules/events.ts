@@ -727,13 +727,13 @@ export class Events {
      */
     static articleCreateListener(): void {
         const titleForm = document.querySelector('.article_edit__title')!;
-        const categoryForm = document.querySelector('.select_menu')!;
+        const categoryForm = document.querySelector('.select_menu')! as HTMLSelectElement;
         const descriptionForm = document.querySelector('.article_edit__description')!;
         const contentForm = document.querySelector('.article_edit__content')!;
         const articleData: FullArticleData = {
             id: 0,
             title: titleForm.textContent ? titleForm.textContent : "",
-            category: categoryForm.textContent ? categoryForm.textContent : "",
+            category: categoryForm.value,
             description: descriptionForm.textContent ? descriptionForm.textContent : "",
             tags: [''],
             comments: 0,
