@@ -16,7 +16,7 @@ export default class CommentaryView extends BasicComponentView {
     async render(commentary: CommentaryData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-        wrapper.innerHTML = Handlebars.templates['article.html']({
+        wrapper.innerHTML = Handlebars.templates['commentary.html']({
             rating: commentary.rating,
             publisher: commentary.publisher.username !== "" ? commentary.publisher.username : commentary.publisher.login,
             publisher_avatar_url: commentary.publisher.avatar,

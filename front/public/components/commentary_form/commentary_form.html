@@ -1,0 +1,11 @@
+<div class="commentary_form">
+    <div contenteditable="true" class="div_textarea commentary_form__content" role="textbox" id="title"
+             placeholder="Ваш комментарий">{{content}}</div>
+    <div class="commentary_form__footer row">
+        {{#if update}}
+        <div class="button accent_button commentary_form__save_button">Сохранить</div>
+        {{else}}
+        <div class="button accent_button commentary_form__save_button">Опубликовать</div>
+        {{/if}}
+    </div>
+</div>

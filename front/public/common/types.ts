@@ -93,3 +93,12 @@ export type CommentaryData = {
     rating: number,
     content: string,
 }
+
+export type SearchData = {
+    request: string,
+    number: number,
+}
+
+export type RulesData = {
+    content: string,
+}

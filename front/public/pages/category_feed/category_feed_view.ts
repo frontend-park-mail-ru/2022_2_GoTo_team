@@ -1,5 +1,7 @@
 import PageView from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
+import CategoryRulesSidebar from "../../components/category_rules_sidebar/category_rules_sidebar.js";
+import {RulesData} from "../../common/types";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
@@ -48,6 +50,12 @@ export default class CategoryFeedView extends PageView {
         this.mainContentElement = mainContentElement;
         content.appendChild(this.mainContentElement);
 
-        this.root.appendChild(document.createElement('div'));
+        const rules = new CategoryRulesSidebar();
+        const rulesData: RulesData = {
+            content: "",
+        }
+        await rules.render(rulesData);
+        this.children.set('rules', rules);
+        content.appendChild(rules.root);
     }
 }
