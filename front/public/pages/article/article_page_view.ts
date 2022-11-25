@@ -32,6 +32,7 @@ export default class ArticlePageView extends PageView {
                 goToSubscribeFeed: PageLoaders.feedPage,
                 //goToNewArticle: PageLoaders.editArticle,
                 openOtherMenu: Events.showOtherMenuListener,
+                openSearch: Events.showSearchForm,
             }
             this.root.appendChild(navbar.root);
             navbar.subscribe(navbarEventBus);

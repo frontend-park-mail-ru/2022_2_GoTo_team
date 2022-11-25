@@ -26,7 +26,7 @@ export default class CommentaryFormView extends BasicComponentView {
             this.update = true;
         }else{
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-            wrapper.innerHTML = Handlebars.templates['article_edit.html']({});
+            wrapper.innerHTML = Handlebars.templates['commentary_form.html']({});
             this.update = false;
         }
         return wrapper.querySelector('div')!;

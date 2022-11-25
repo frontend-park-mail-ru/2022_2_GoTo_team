@@ -40,7 +40,7 @@ body {
     overflow: hidden;
     background-color: var(--main);
     display: grid;
-    grid-template-columns: 2fr 3fr 1fr 220px;
+    grid-template-columns: 1.5fr 3fr 1fr 160px;
     gap: 10px;
 }
 
@@ -1034,4 +1034,28 @@ div.log-button-container {
     width: fit-content;
     padding: 8px;
     margin: 0 0 0 auto;
+}
+
+.navbar__profile_block__nickname {
+    max-width: 70px;
+    word-break: break-word;
+}
+
+.navbar__search_form__wrapper {
+    width: 100%;
+    height: 60px;
+    display: grid;
+}
+
+.navbar__search_form {
+    width: 85%;
+    background: var(--slight-darken-main);
+    color: var(--light);
+    border: 3px solid var(--slight-darken-main);
+    outline: none;
+}
+
+.navbar__search_form:focus {
+    background: var(--darken-main);
+    border: 3px solid var(--darken-main);
 }

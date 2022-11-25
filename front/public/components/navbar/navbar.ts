@@ -8,6 +8,7 @@ export type NavbarEventBus = {
     goToSubscribeFeed: Listener,
     //goToNewArticle: Listener,
     openOtherMenu: Listener,
+    openSearch: Listener,
 }
 
 /**
@@ -58,5 +59,7 @@ export default class Navbar extends BasicComponent {
         const otherMenuButton = this.root.querySelectorAll('.navbar__button')[3];
         otherMenuButton.addEventListener('click', eventBus.openOtherMenu);
 
+        const searchButton = this.root.querySelectorAll('.navbar__button')[4];
+        searchButton.addEventListener('click', eventBus.openSearch);
     }
 }

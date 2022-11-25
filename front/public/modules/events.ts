@@ -10,6 +10,7 @@ import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/
 import BasicComponent from "../components/_basic_component/basic_component.js";
 import {ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
+import SearchForm from "../components/search_form/search_form.js";
 
 
 export class Events {
@@ -912,5 +913,24 @@ export class Events {
 
     static setLocation(uri: string){
         location.hash = uri;
+    }
+
+    static showSearchForm(){
+        const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
+        const searchButton = document.getElementById("navbar__search")!;
+        const form = new SearchForm();
+        form.render().then(() => {
+           wrapper.append(form.root);
+           searchButton.removeEventListener('click', Events.showSearchForm);
+           searchButton.addEventListener('click', Events.closeSearchForm);
+        });
+    }
+
+    static closeSearchForm(){
+        const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
+        wrapper.innerHTML = '';
+        const searchButton = document.getElementById("navbar__search")!;
+        searchButton.removeEventListener('click', Events.closeSearchForm);
+        searchButton.addEventListener('click', Events.showSearchForm);
     }
 }

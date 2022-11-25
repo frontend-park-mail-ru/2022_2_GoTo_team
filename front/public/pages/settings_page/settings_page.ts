@@ -56,6 +56,7 @@ export default class SettingsPage extends Page {
             goToSubscribeFeed: PageLoaders.feedPage,
             //goToNewArticle: PageLoaders.editArticle,
             openOtherMenu: Events.showOtherMenuListener,
+            openSearch: Events.showSearchForm,
         }
 
         this.view.children.get('navbar').subscribe(navbarEventBus);
