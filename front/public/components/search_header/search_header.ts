@@ -1,7 +1,7 @@
 
 import BasicComponent from "../_basic_component/basic_component.js";
 import {SearchData} from "../../common/types";
-import SearchHeaderView from "./search_header_view";
+import SearchHeaderView from "./search_header_view.js";
 
 export type SearchHeaderEventBus = {
 

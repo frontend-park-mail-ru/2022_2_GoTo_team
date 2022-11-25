@@ -46,25 +46,12 @@ export default class ArticleEdit extends BasicComponent {
         await super.subscribe();
         const submitButton = this.root.querySelector('.article_edit__save_button')!;
 
-        const titleForm = this.root.querySelector('.article_edit__title')!;
-        titleForm.addEventListener('focusout', () => {
-            if (!titleForm.textContent!.replace(' ', '').length) {
-                titleForm.innerHTML = '';
-            }
-        });
-
-        const descriptionForm = this.root.querySelector('.article_edit__description')!;
-        descriptionForm.addEventListener('focusout', () => {
-            if (!descriptionForm.textContent!.replace(' ', '').length) {
-                descriptionForm.innerHTML = '';
-            }
-        });
-
-        const contentForm = this.root.querySelector('.article_edit__content')!;
-        contentForm.addEventListener('focusout', () => {
-            if (!contentForm.textContent!.replace(' ', '').length) {
-                contentForm.innerHTML = '';
-            }
+        this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {
+            form.addEventListener('focusout', () => {
+                if (!form.textContent!.replace(' ', '').length) {
+                    form.innerHTML = '';
+                }
+            });
         });
 
         if (this.view.update) {

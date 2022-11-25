@@ -94,11 +94,21 @@ export type CommentaryData = {
     content: string,
 }
 
+export type RulesData = {
+    content: string,
+}
+
 export type SearchData = {
     request: string,
     number: number,
 }
 
-export type RulesData = {
-    content: string,
+export type AdvSearchData = {
+    author?: string,
+    tags?: string[],
+}
+
+export type FullSearchData = {
+    primary: SearchData,
+    advanced: AdvSearchData,
 }

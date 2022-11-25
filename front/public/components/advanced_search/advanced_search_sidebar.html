@@ -1,0 +1,27 @@
+<div class="box right_side_bar advanced_search__sidebar">
+    <div class="sidebar_title">Расширенный поиск</div>
+    <div class="right_side_bar__content">
+        Контент конкретного автора
+    </div>
+    {{#if author}}
+    <div contenteditable="true" class="div_textarea advanced_search_textarea div_width_available"
+         placeholder="Логин автора">{{author}}
+    </div>
+    {{else}}
+    <div contenteditable="true" class="div_textarea advanced_search_textarea div_width_available"
+         placeholder="Логин автора"></div>
+    {{/if}}
+    <div class="right_side_bar__content">
+        Посты с тегами
+    </div>
+    <div contenteditable="true" class="div_textarea advanced_search_textarea div_width_available"
+         placeholder="Тег"></div>
+    <div class="row">
+        {{#each tags}}
+        <div class="article__tag">{{this}}</div>
+        {{/each}}
+    </div>
+    <div class="row">
+        <div class="button accent_button advanced_search__sidebar__add_tag">Применить</div>
+    </div>
+</div>

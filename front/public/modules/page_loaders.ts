@@ -6,6 +6,8 @@ import CategoryFeed from "../pages/category_feed/category_feed.js";
 import ArticlePage from "../pages/article/article_page.js";
 import SettingsPage from "../pages/settings_page/settings_page.js";
 import ArticleEditPage from "../pages/article_edit/article_edit_page.js";
+import {FullSearchData} from "../common/types";
+import SearchPage from "../pages/search/search_page.js";
 
 const root = document.getElementsByTagName('body')[0];
 
@@ -84,6 +86,16 @@ export class PageLoaders {
     static async editArticle(articleId?: number) {
         const page = new ArticleEditPage(root)
         await page.render(articleId).then(() => {
+            page.subscribe();
+        });
+    }
+
+    /**
+     * Отрисовывает поиск
+     */
+    static async searchPage(searchData: FullSearchData) {
+        const page = new SearchPage(root)
+        await page.render(searchData).then(() => {
             page.subscribe();
         });
     }

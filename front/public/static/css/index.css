@@ -31,6 +31,11 @@ body {
     flex-flow: column;
 }
 
+.div_width_available {
+    width: -moz-available !important;
+    width: -webkit-fill-available !important;
+}
+
 .navbar {
     z-index: 2;
     position: fixed;
@@ -729,12 +734,13 @@ div.log-button-container {
 .sidebar_title {
     font-size: 18px;
     padding: 10px;
+    font-style: bold;
 }
 
 .right_side_bar {
     width: -moz-available;
     width: -webkit-fill-available;
-    margin: 0 10px 0 0;
+    margin: 10px 10px 0 0;
     border-radius: 14px;
 
 }
@@ -1058,4 +1064,22 @@ div.log-button-container {
 .navbar__search_form:focus {
     background: var(--darken-main);
     border: 3px solid var(--darken-main);
+}
+
+.center_with_bigger_sidebar {
+    display: grid;
+    grid-template-columns: 1fr 210px;
+    gap: 10px;
+}
+
+.advanced_search__sidebar {
+    padding:5px;
+}
+
+.advanced_search__sidebar__add_tag {
+    width: fit-content;
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 5px 6px 5px auto;
 }
