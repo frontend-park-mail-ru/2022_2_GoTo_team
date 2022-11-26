@@ -4,9 +4,8 @@ import UserFeedView from "./user_feed_view.js";
 import UserFeedHeader, {UserFeedHeaderEventBus} from "../../components/user_feed_header/user_feed_header.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
-import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {APIStrings} from "../../common/consts.js";
+import {URIChanger} from "../../modules/uri_changer.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -29,7 +28,6 @@ export default class UserFeed extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(login: string) {
-        Events.setLocation(APIStrings.authorPage(login));
         await this.view.render();
 
         Requests.userHeaderInfo(login).then((userData) => {
@@ -48,7 +46,7 @@ export default class UserFeed extends Page {
             const articleEventBus : ArticleComponentEventBus = {
                 goToAuthorFeed: Events.goToAuthorFeed,
                 goToCategoryFeed: Events.goToCategoryFeed,
-                openArticle: PageLoaders.articlePage,
+                openArticle: URIChanger.articlePage,
             }
 
             if (articles && Array.isArray(articles)) {
@@ -71,10 +69,9 @@ export default class UserFeed extends Page {
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
-            goToHotFeed: PageLoaders.feedPage,
-            goToNewFeed: PageLoaders.feedPage,
-            goToSubscribeFeed: PageLoaders.feedPage,
-            //goToNewArticle: PageLoaders.editArticle,
+            goToHotFeed: URIChanger.feedPage,
+            goToNewFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.feedPage,
             openOtherMenu: Events.showOtherMenuListener,
             openSearch: Events.showSearchForm,
         }

@@ -5,12 +5,13 @@ import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import UserPlug, {UserPlugEventBus} from "../components/user_plug/user_plug.js";
 import UserPlugMenu, {UserPlugMenuEventBus} from "../components/user_plug_menu/user_plug_menu.js";
-import {PageLoaders} from "./page_loaders.js";
 import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
 import BasicComponent from "../components/_basic_component/basic_component.js";
 import {ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
 import SearchForm from "../components/search_form/search_form.js";
+import {URIChanger} from "./uri_changer.js";
+import {PageLoaders} from "./page_loaders.js";
 
 
 export class Events {
@@ -183,7 +184,7 @@ export class Events {
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
-                PageLoaders.feedPage();
+                URIChanger.rootPage();
             } else {
                 switch (result.status) {
                     case 409:
@@ -508,7 +509,7 @@ export class Events {
      */
     static showProfileMenu(): void {
         const eventBus: UserPlugMenuEventBus = {
-            goToSettings: PageLoaders.settingsPage,
+            goToSettings: URIChanger.settingsPage,
             unauthorize: Events.profileMenuUnauthorizeListener,
         }
         Events.#openNavbarMenu(new UserPlugMenu(), eventBus);
@@ -590,6 +591,7 @@ export class Events {
      */
     static profileMenuUnauthorizeListener(): void {
         Events.unauthorize();
+        URIChanger.feedPage();
         PageLoaders.feedPage();
     }
 
@@ -597,35 +599,35 @@ export class Events {
      * Отрисовка страницы популярного
      */
     static goToFeedPage(): void {
-        PageLoaders.feedPage();
+        URIChanger.feedPage();
     }
 
     /**
      * Отрисовка страницы автора
      */
     static goToAuthorFeed(login: string): void {
-        PageLoaders.userFeedPage(login);
+        URIChanger.userFeedPage(login);
     }
 
     /**
      * Отрисовка страницы автора
      */
     static goToCategoryFeed(category: string): void {
-        PageLoaders.categoryFeedPage(category);
+        URIChanger.categoryFeedPage(category);
     }
 
     /**
      * Отрисовка страницы просмотра статьи
      */
     static openArticle(articleId: number): void {
-        PageLoaders.articlePage(articleId);
+        URIChanger.articlePage(articleId);
     }
 
     /**
      * Отрисовка страницы профиля
      */
     static goToSettingsPage(): void {
-        PageLoaders.settingsPage();
+        URIChanger.settingsPage();
     }
 
     /**
@@ -686,7 +688,7 @@ export class Events {
 
         Events.saveProfileEvent(userData).then((response) => {
             if (response.status === 200) {
-                PageLoaders.settingsPage();
+                URIChanger.settingsPage();
             } else {
                 const form = document.getElementById("login-form_inputs-wrapper") as HTMLFormElement;
                 switch (response.status) {
@@ -745,7 +747,7 @@ export class Events {
         };
 
         Events.articleCreate(articleData);
-        PageLoaders.feedPage();
+        URIChanger.feedPage();
     }
 
     /**
@@ -907,7 +909,7 @@ export class Events {
                 return;
             }
 
-            PageLoaders.editArticle();
+            URIChanger.editArticle();
         });
     }
 

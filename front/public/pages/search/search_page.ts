@@ -1,12 +1,11 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {APIStrings} from "../../common/consts.js";
 import {FullSearchData} from "../../common/types";
 import SearchPageView from "./search_page_view.js";
 import {SearchHeaderEventBus} from "../../components/search_header/search_header";
 import {AdvancedSearchSidebarEventBus} from "../../components/advanced_search/advanced_search_sidebar";
+import {URIChanger} from "../../modules/uri_changer.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -33,8 +32,7 @@ export default class SearchPage extends Page {
         if (typeof data.advanced.author !== 'undefined'){
             data.advanced.author = decodeURIComponent(data.advanced.author);
         }
-        //Events.setLocation(APIStrings.searchPage(data.primary.request, data.advanced.author, data.advanced.tags));
-        await this.view.render(data);
+       await this.view.render(data);
 
         Events.updateAuth();
     }
@@ -44,10 +42,9 @@ export default class SearchPage extends Page {
      */
     async subscribe(): Promise<void> {
         const navbarEventBus: NavbarEventBus = {
-            goToHotFeed: PageLoaders.feedPage,
-            goToNewFeed: PageLoaders.feedPage,
-            goToSubscribeFeed: PageLoaders.feedPage,
-            //goToNewArticle: PageLoaders.editArticle,
+            goToHotFeed: URIChanger.feedPage,
+            goToNewFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.feedPage,
             openOtherMenu: Events.showOtherMenuListener,
             openSearch: Events.showSearchForm,
         }

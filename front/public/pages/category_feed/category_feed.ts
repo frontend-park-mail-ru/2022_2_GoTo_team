@@ -6,9 +6,8 @@ import Article, {ArticleComponentEventBus} from "../../components/article/articl
 import CategoryFeedHeader, {
     CategoryFeedHeaderEventBus
 } from "../../components/category_feed_header/category_feed_header.js";
-import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {APIStrings} from "../../common/consts.js";
+import {URIChanger} from "../../modules/uri_changer.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -34,12 +33,9 @@ export default class CategoryFeed extends Page {
         await this.view.render();
 
         category = decodeURIComponent(category);
-        Events.setLocation(APIStrings.categoryPage(category));
 
         Requests.categoryHeaderInfo(category).then((categoryData) => {
-            const eventBus: CategoryFeedHeaderEventBus = {
-
-            };
+            const eventBus: CategoryFeedHeaderEventBus = {};
 
             const header = new CategoryFeedHeader();
             header.render(categoryData).then(() => {
@@ -49,17 +45,17 @@ export default class CategoryFeed extends Page {
         });
 
         Requests.getCategoryArticles(category).then((articles) => {
-            const articleEventBus : ArticleComponentEventBus = {
+            const articleEventBus: ArticleComponentEventBus = {
                 goToAuthorFeed: Events.goToAuthorFeed,
                 goToCategoryFeed: Events.goToCategoryFeed,
-                openArticle: PageLoaders.articlePage,
+                openArticle: URIChanger.articlePage,
             }
 
             if (articles && Array.isArray(articles)) {
                 this.view.mainContentElement.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
-                    articleView.render(article).then(()=>{
+                    articleView.render(article).then(() => {
                         articleView.subscribe(articleEventBus);
                         this.view.mainContentElement.appendChild(articleView.root);
                     });
@@ -75,10 +71,9 @@ export default class CategoryFeed extends Page {
      */
     async subscribe(): Promise<void> {
         const navbarEventBus: NavbarEventBus = {
-            goToHotFeed: PageLoaders.feedPage,
-            goToNewFeed: PageLoaders.feedPage,
-            goToSubscribeFeed: PageLoaders.feedPage,
-            //goToNewArticle: PageLoaders.editArticle,
+            goToHotFeed: URIChanger.feedPage,
+            goToNewFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.feedPage,
             openOtherMenu: Events.showOtherMenuListener,
             openSearch: Events.showSearchForm,
         }

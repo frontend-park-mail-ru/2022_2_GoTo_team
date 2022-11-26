@@ -4,8 +4,7 @@ import Page from "../_basic/page.js";
 import Settings, {SettingsEventBus} from "../../components/settings/settings.js";
 import {Requests} from "../../modules/requests.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {PageLoaders} from "../../modules/page_loaders.js";
-import {APIStrings} from "../../common/consts.js";
+import {URIChanger} from "../../modules/uri_changer.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -31,10 +30,10 @@ export default class SettingsPage extends Page {
         const authCheck = await Requests.getSessionInfo();
         if (authCheck.status === 401) {
             alert("Вы не авторизованы");
-            PageLoaders.feedPage();
+            URIChanger.feedPage();
             return;
         }
-        Events.setLocation(APIStrings.settingsPage());
+
         this.view.render();
 
         const userData = await Requests.getProfile();
@@ -51,10 +50,9 @@ export default class SettingsPage extends Page {
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
-            goToHotFeed: PageLoaders.feedPage,
-            goToNewFeed: PageLoaders.feedPage,
-            goToSubscribeFeed: PageLoaders.feedPage,
-            //goToNewArticle: PageLoaders.editArticle,
+            goToHotFeed: URIChanger.feedPage,
+            goToNewFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.feedPage,
             openOtherMenu: Events.showOtherMenuListener,
             openSearch: Events.showSearchForm,
         }

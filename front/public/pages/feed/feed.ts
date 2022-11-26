@@ -3,9 +3,9 @@ import {Requests} from "../../modules/requests.js"
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {APIStrings} from "../../common/consts.js";
+import {URIChanger} from "../../modules/uri_changer.js";
+
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class Feed
@@ -26,11 +26,10 @@ export default class Feed extends Page{
      * Должен быть вызван render() для обновления.
      */
     async render() {
-        Events.setLocation(APIStrings.feedPage());
         const articleEventBus : ArticleComponentEventBus = {
             goToAuthorFeed: Events.goToAuthorFeed,
             goToCategoryFeed: Events.goToCategoryFeed,
-            openArticle: PageLoaders.articlePage,
+            openArticle: URIChanger.articlePage,
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {
@@ -53,10 +52,9 @@ export default class Feed extends Page{
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
-            goToHotFeed: PageLoaders.feedPage,
-            goToNewFeed: PageLoaders.feedPage,
-            goToSubscribeFeed: PageLoaders.feedPage,
-            //goToNewArticle: PageLoaders.editArticle,
+            goToHotFeed: URIChanger.feedPage,
+            goToNewFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.feedPage,
             openOtherMenu: Events.showOtherMenuListener,
             openSearch: Events.showSearchForm,
         }
