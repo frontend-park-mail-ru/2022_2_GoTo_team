@@ -1025,6 +1025,11 @@ div.log-button-container {
     background: rgba(0, 0, 0, 0.1);
 }
 
+.commentary_form {
+    width: 75%;
+    padding: 10px;
+}
+
 .commentary_form__content {
     min-height: 100px;
 }

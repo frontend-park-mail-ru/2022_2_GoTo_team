@@ -5,6 +5,7 @@ import Page from "../_basic/page.js";
 import {OpenedArticleEventBus} from "../../components/opened_article/opened_article";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uri_changer.js";
+import {CommentaryFormEventBus} from "../../components/commentary_form/commentary_form";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -49,7 +50,12 @@ export default class ArticlePage extends Page {
             goToAuthorFeed: Events.goToAuthorFeed,
         }
 
+        const commentaryFormEventBus: CommentaryFormEventBus = {
+            commentaryCreate: Events.createCommentary,
+        }
+
         this.view.children.get('navbar').subscribe(navbarEventBus);
         this.view.children.get('article').subscribe(articleEventBus);
+        this.view.children.get('commentary form').subscribe(commentaryFormEventBus);
     }
 }

@@ -14,20 +14,20 @@ export type requestParams = {
     method?: string;
 };
 
-export default class Ajax {
-    static get(params: requestParams): Promise<void | RequestAnswer> {
+export class Ajax {
+    get(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.GET;
-        return Ajax.#ajax(parameters);
+        return this.#ajax(parameters);
     }
 
-    static post(params: requestParams): Promise<void | RequestAnswer> {
+    post(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.POST;
-        return Ajax.#ajax(parameters);
+        return this.#ajax(parameters);
     }
 
-    static #ajax(params: requestParams): Promise<void | RequestAnswer> {
+    #ajax(params: requestParams): Promise<void | RequestAnswer> {
         const url = new URL(APIurl + (params.url || '/'));
         if (params.method == REQUEST_TYPE.GET){
             url.search = new URLSearchParams({...params.data}).toString();

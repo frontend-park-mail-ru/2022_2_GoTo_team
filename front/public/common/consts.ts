@@ -47,3 +47,8 @@ export const APIStrings = {
         return uri;
     }
 }
+
+export const CommentaryParent = {
+    article: "article",
+    commentary: "commentary",
+}

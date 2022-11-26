@@ -80,14 +80,9 @@ export type UserRegistrationData = {
 
 export type Listener = () => any;
 
-export const CommentaryParent = {
-    article: "article",
-    commentary: "commentary",
-}
-
 export type CommentaryData = {
     id: number,
-    publisher: publisher,
+    publisher?: publisher,
     parentType: string,
     parentId: number,
     rating: number,

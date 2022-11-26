@@ -18,13 +18,13 @@ export default class CommentaryView extends BasicComponentView {
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['commentary.html']({
             rating: commentary.rating,
-            publisher: commentary.publisher.username !== "" ? commentary.publisher.username : commentary.publisher.login,
-            publisher_avatar_url: commentary.publisher.avatar,
+            publisher: commentary.publisher!.username !== "" ? commentary.publisher!.username : commentary.publisher!.login,
+            publisher_avatar_url: commentary.publisher!.avatar,
             content: commentary.content,
             time: "",
         });
 
-        this.publisher = commentary.publisher.login;
+        this.publisher = commentary.publisher!.login;
         return wrapper.querySelector('div')!;
     }
 }

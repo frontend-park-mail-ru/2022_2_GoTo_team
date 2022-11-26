@@ -5,13 +5,14 @@ import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import UserPlug, {UserPlugEventBus} from "../components/user_plug/user_plug.js";
 import UserPlugMenu, {UserPlugMenuEventBus} from "../components/user_plug_menu/user_plug_menu.js";
-import {FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
+import {CommentaryData, FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
 import BasicComponent from "../components/_basic_component/basic_component.js";
 import {ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
 import SearchForm from "../components/search_form/search_form.js";
 import {URIChanger} from "./uri_changer.js";
 import {PageLoaders} from "./page_loaders.js";
+import CommentaryForm from "../components/commentary_form/commentary_form";
 
 
 export class Events {
@@ -934,5 +935,23 @@ export class Events {
         const searchButton = document.getElementById("navbar__search")!;
         searchButton.removeEventListener('click', Events.closeSearchForm);
         searchButton.addEventListener('click', Events.showSearchForm);
+    }
+
+    static createCommentary(form: CommentaryForm) {
+        const contentForm = form.root.querySelector(".div_textarea")! as HTMLElement;
+        const content = contentForm.textContent!;
+
+        if (!Validators.validateCommentary(content.trim())) {
+            return;
+        }
+
+        const commentaryDate: CommentaryData = {
+            id: 0,
+            parentId: form.parent,
+            parentType: form.parentType,
+            rating: 0,
+            content: content,
+        }
+        Requests.commentaryCreate(commentaryDate);
     }
 }

@@ -14,7 +14,7 @@ export default class CommentaryFormView extends BasicComponentView {
      * @param {CommentaryData?} editData
      * @return {HTMLElement}
      */
-    async render(editData?: CommentaryData): Promise<HTMLElement> {
+    async render(editData: CommentaryData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         if (typeof editData !== 'undefined') {
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.

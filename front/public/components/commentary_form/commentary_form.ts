@@ -1,11 +1,10 @@
 import BasicComponent from "../_basic_component/basic_component.js";
-import {Requests} from "../../modules/requests.js";
 import {CommentaryData} from "../../common/types";
-import CommentaryFormView from "./commentary_form_view";
+import CommentaryFormView from "./commentary_form_view.js";
+import {CommentaryParent} from "../../common/consts.js";
 
 export type CommentaryFormEventBus = {
-    commentaryUpdate: (commentary: CommentaryData) => void,
-    commentaryCreate: (commentary: CommentaryData) => void,
+    commentaryCreate: (form: CommentaryForm) => void,
 }
 
 /**
@@ -14,6 +13,8 @@ export type CommentaryFormEventBus = {
  */
 export default class CommentaryForm extends BasicComponent {
     view: CommentaryFormView;
+    parentType: string;
+    parent: number;
 
     /**
      * Универсальный компонент заголовка
@@ -21,6 +22,8 @@ export default class CommentaryForm extends BasicComponent {
     constructor() {
         super();
         this.view = new CommentaryFormView();
+        this.parent = 0;
+        this.parentType = CommentaryParent.article;
     }
 
     /**
@@ -28,32 +31,27 @@ export default class CommentaryForm extends BasicComponent {
      * @param {CommentaryData} commentaryData
      * @return {HTMLElement}
      */
-    async render(commentaryData?: CommentaryData): Promise<HTMLElement> {
+    async render(commentaryData: CommentaryData): Promise<HTMLElement> {
         await super.render();
         this.root = await this.view.render(commentaryData);
+        this.parent = commentaryData.parentId;
         return this.root;
     }
 
     async subscribe(eventBus: CommentaryFormEventBus) {
         await super.subscribe();
-        const submitButton = this.root.querySelector('.article_edit__save_button')!;
 
-        const titleForm = this.root.querySelector('.article_edit__title')!;
-        titleForm.addEventListener('focusout', () => {
-            if (!titleForm.textContent!.replace(' ', '').length) {
-                titleForm.innerHTML = '';
-            }
+        this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {
+            form.addEventListener('focusout', () => {
+                if (!form.textContent!.replace(' ', '').length) {
+                    form.innerHTML = '';
+                }
+            });
         });
 
-
-        /*
-        if (this.view.update) {
-            submitButton.addEventListener('click', () => {
-                eventBus.commentaryUpdate(this.view.id!);
-            });
-        } else {
-            submitButton.addEventListener('click', eventBus.commentaryCreate);
-        }
-        */
+        const submitButton = this.root.querySelector('.commentary_form__save_button')!;
+        submitButton.addEventListener('click', () => {
+            eventBus.commentaryCreate(this);
+        });
     }
 };

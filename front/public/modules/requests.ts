@@ -1,7 +1,7 @@
-import Ajax from "./ajax.js";
+import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
-    CategoryData, FullArticleData,
+    CategoryData, CommentaryData, FullArticleData,
     IncompleteArticleData,
     RequestAnswer, UserData,
     UserHeaderData,
@@ -10,7 +10,7 @@ import {
     UserRegistrationData
 } from "../common/types";
 
-import {ResponseErrors} from "../common/consts.js"
+import {CommentaryParent, ResponseErrors} from "../common/consts.js"
 
 const config = {
     hrefs: {
@@ -30,8 +30,11 @@ const config = {
         articleCreate: '/article/create',
         articleUpdate: '/article/update',
         categoryList: '/category/list',
+        commentaryCreate: '/commentary/create'
     }
 }
+
+const ajax = new Ajax();
 
 export class Requests {
     /**
@@ -39,7 +42,7 @@ export class Requests {
      * @return {Promise} Promise с массивом статей
      */
     static getArticles(): Promise<IncompleteArticleData[]> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.articles,
         }).then((response) => {
             const result: RequestAnswer = response!;
@@ -81,7 +84,7 @@ export class Requests {
             },
         };
 
-        return Ajax.post(params).then((response) => {
+        return ajax.post(params).then((response) => {
             let result: RequestAnswer = response!;
 
             if (result.status === 200) {
@@ -123,7 +126,7 @@ export class Requests {
             },
         }
 
-        return Ajax.post(params).then((response) => {
+        return ajax.post(params).then((response) => {
             let result: RequestAnswer = response!;
 
             if (result.status === 200) {
@@ -159,7 +162,7 @@ export class Requests {
      * @return {Promise} Promise со статусом и никнеймом
      */
     static getSessionInfo(): Promise<RequestAnswer> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.sessionInfo,
         }).then((response) => {
             let result = response!;
@@ -176,7 +179,7 @@ export class Requests {
      * Деавторизация
      */
     static removeSession(): void {
-        Ajax.post({
+        ajax.post({
             url: config.hrefs.sessionRemove,
         });
     }
@@ -186,7 +189,7 @@ export class Requests {
      * Информация в шапку страницы автора
      */
     static userHeaderInfo(login: string): Promise<UserHeaderData> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.userInfo,
             data: {
                 login: login,
@@ -208,7 +211,7 @@ export class Requests {
      * @return {Promise} Promise с массивом статей
      */
     static getUserArticles(login: string): Promise<IncompleteArticleData[]> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.userFeed,
             data: {
                 login: login,
@@ -241,7 +244,7 @@ export class Requests {
      * Информация в шапку страницы категории
      */
     static categoryHeaderInfo(category: string): Promise<CategoryData> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.categoryInfo,
             data: {
                 category: category,
@@ -262,7 +265,7 @@ export class Requests {
      * @return {Promise} Promise с массивом статей
      */
     static getCategoryArticles(category: string): Promise<IncompleteArticleData[]> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.categoryFeed,
             data: {
                 category: category,
@@ -295,7 +298,7 @@ export class Requests {
      * Запрашивает статью по id
      */
     static getArticle(articleId: number): Promise<FullArticleData> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.article,
             data: {
                 id: articleId,
@@ -325,7 +328,7 @@ export class Requests {
      * Запрашивает данные профиля
      */
     static getProfile(): Promise<UserData> {
-        return Ajax.get({
+        return ajax.get({
             url: config.hrefs.profile,
         }).then((response) => {
             const result = response!;
@@ -353,7 +356,7 @@ export class Requests {
             },
         }
 
-        return Ajax.post(params).then((response) => {
+        return ajax.post(params).then((response) => {
             let result = response!;
             if (result.status === 200) {
                 result.response = "";
@@ -393,7 +396,7 @@ export class Requests {
             },
         }
 
-        return Ajax.post(params).then((response) => {
+        return ajax.post(params).then((response) => {
             return response!.status == 200;
         });
     }
@@ -414,7 +417,7 @@ export class Requests {
             },
         }
 
-        return Ajax.post(params).then((response) => {
+        return ajax.post(params).then((response) => {
             return response!.status == 200;
         });
     }
@@ -435,21 +438,52 @@ export class Requests {
             },
         }
 
-        return Ajax.post(params).then((response) => {
+        return ajax.post(params).then((response) => {
             return response!.status == 200;
         });
     }
 
     /**
-     * Обновляет статью
+     * Получение списка категорий
      */
     static getCategories(): Promise<RequestAnswer> {
         const params: requestParams = {
             url: config.hrefs.categoryList,
         }
 
-        return Ajax.get(params).then((response) => {
+        return ajax.get(params).then((response) => {
             return response!;
+        });
+    }
+
+    /**
+     * Создаёт комментарий
+     */
+    static commentaryCreate(commentaryData: CommentaryData): Promise<boolean> {
+        let params: requestParams;
+        if (commentaryData.parentType == CommentaryParent.article){
+            params = {
+                url: config.hrefs.commentaryCreate,
+                data: {
+                    origin_article: commentaryData.parentId,
+                    origin_commentary: "",
+                    content: commentaryData.content
+                },
+            }
+        }else{
+            params = {
+                url: config.hrefs.commentaryCreate,
+                data: {
+                    origin_article: "",
+                    origin_commentary: commentaryData.parentId,
+                    content: commentaryData.content
+                },
+            }
+        }
+
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
         });
     }
 }
