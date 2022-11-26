@@ -688,7 +688,7 @@ export class Events {
 
         Events.saveProfileEvent(userData).then((response) => {
             if (response.status === 200) {
-                URIChanger.settingsPage();
+                PageLoaders.settingsPage();
             } else {
                 const form = document.getElementById("login-form_inputs-wrapper") as HTMLFormElement;
                 switch (response.status) {
