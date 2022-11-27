@@ -75,7 +75,9 @@ export default class SearchPage extends Page {
         const headerEventBus: SearchHeaderEventBus = {};
         this.view.children.get('header').subscribe(headerEventBus);
 
-        const sidebarEventBus: AdvancedSearchSidebarEventBus = {};
+        const sidebarEventBus: AdvancedSearchSidebarEventBus = {
+            addTag: Events.addSearchedTagListener,
+        };
         this.view.children.get('sidebar').subscribe(sidebarEventBus);
     }
 }

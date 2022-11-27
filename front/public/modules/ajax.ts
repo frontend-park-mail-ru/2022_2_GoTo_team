@@ -39,7 +39,7 @@ export class Ajax {
             });
         }
 
-        console.log(params);
+        console.log(params.data)
         if (params.method == REQUEST_TYPE.GET){
             url.search = new URLSearchParams({...params.data}).toString();
         }

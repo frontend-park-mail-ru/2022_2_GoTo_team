@@ -1078,7 +1078,7 @@ div.log-button-container {
 }
 
 .advanced_search__sidebar {
-    padding:5px;
+    padding: 11px;
 }
 
 .advanced_search__sidebar__add_tag {
@@ -1086,5 +1086,23 @@ div.log-button-container {
     font-size: 15px;
     padding: 5px;
     border-radius: 20px;
-    margin: 5px 6px 5px auto;
+    margin: 5px 0 5px auto;
+}
+
+.advanced_search__sidebar__apply {
+    width: fit-content;
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 5px 0 5px auto;
+}
+
+.advanced_search__sidebar__tags {
+    flex-wrap: wrap;
+    margin: 5px 0 5px 0;
+}
+
+.advanced_search__sidebar__tags__message {
+    font-size: 15px;
+    padding: 10px;
 }

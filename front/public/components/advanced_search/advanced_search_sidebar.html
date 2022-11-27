@@ -5,8 +5,7 @@
     </div>
     {{#if author}}
     <div contenteditable="true" class="div_textarea advanced_search_textarea div_width_available"
-         placeholder="Логин автора">{{author}}
-    </div>
+         placeholder="Логин автора">{{author}}</div>
     {{else}}
     <div contenteditable="true" class="div_textarea advanced_search_textarea div_width_available"
          placeholder="Логин автора"></div>
@@ -14,14 +13,27 @@
     <div class="right_side_bar__content">
         Посты с тегами
     </div>
-    <div contenteditable="true" class="div_textarea advanced_search_textarea div_width_available"
-         placeholder="Тег"></div>
-    <div class="row">
+    <select class="select_menu">
+        <option value="">Выбрать тег</option>
         {{#each tags}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <!--div contenteditable="true" class="div_textarea advanced_search_textarea div_width_available"
+         placeholder="Тег"></div-->
+    <div class="row">
+        <div class="button accent_button advanced_search__sidebar__add_tag">Добавить тег</div>
+    </div>
+    <div class="row advanced_search__sidebar__tags">
+        {{#if appliedTags}}
+        {{#each appliedTags}}
         <div class="article__tag">{{this}}</div>
         {{/each}}
+        {{else}}
+        <div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>
+        {{/if}}
     </div>
     <div class="row">
-        <div class="button accent_button advanced_search__sidebar__add_tag">Применить</div>
+        <div class="button accent_button advanced_search__sidebar__apply">Применить</div>
     </div>
 </div>

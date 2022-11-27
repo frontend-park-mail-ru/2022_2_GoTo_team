@@ -32,6 +32,7 @@ const config = {
         categoryList: '/category/list',
         commentaryCreate: '/commentary/create',
         searchPage: '/search',
+        tagList: '/tag/list',
     }
 }
 
@@ -450,6 +451,19 @@ export class Requests {
     static getCategories(): Promise<RequestAnswer> {
         const params: requestParams = {
             url: config.hrefs.categoryList,
+        }
+
+        return ajax.get(params).then((response) => {
+            return response!;
+        });
+    }
+
+    /**
+     * Получение списка тегов
+     */
+    static getTags(): Promise<RequestAnswer> {
+        const params: requestParams = {
+            url: config.hrefs.tagList,
         }
 
         return ajax.get(params).then((response) => {

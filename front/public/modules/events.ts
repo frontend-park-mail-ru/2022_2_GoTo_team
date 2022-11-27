@@ -21,6 +21,7 @@ import SearchForm from "../components/search_form/search_form.js";
 import {URIChanger} from "./uri_changer.js";
 import {PageLoaders} from "./page_loaders.js";
 import CommentaryForm from "../components/commentary_form/commentary_form";
+import AdvancedSearchSidebar from "../components/advanced_search/advanced_search_sidebar";
 
 
 export class Events {
@@ -1016,5 +1017,38 @@ export class Events {
         }
 
         URIChanger.searchPage(data);
+    }
+
+    /**
+     * Обработчик добавления тега к списку тегов на странице поиска
+     */
+    static addSearchedTagListener(form: AdvancedSearchSidebar): void {
+        const tagsForm = form.root.querySelector('.select_menu')! as HTMLSelectElement;
+        const newTagString: string = tagsForm.value;
+
+        if (newTagString != ''){
+            if(!form.tags.includes(newTagString)){
+                const tagsRow = form.root.querySelector('.advanced_search__sidebar__tags')!;
+                if (tagsRow.querySelectorAll('.article__tag').length === 0){
+                    tagsRow.innerHTML = '';
+                }
+
+                const newTag = document.createElement('div');
+                newTag.classList.add('article__tag');
+                newTag.innerHTML = newTagString;
+                tagsRow.appendChild(newTag);
+
+                form.tags.push(newTagString);
+
+                newTag.addEventListener('click', () => {
+                    const index = form.tags.indexOf(newTagString);
+                    if (index > -1) {
+                        form.tags.splice(index, 1);
+                    }
+                    console.log(form.tags);
+                    newTag.parentNode!.removeChild(newTag);
+                })
+            }
+        }
     }
 }
