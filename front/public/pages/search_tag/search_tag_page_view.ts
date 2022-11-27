@@ -1,6 +1,6 @@
 import PageView from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
-import {FullSearchData} from "../../common/types";
+import {FullSearchData, SearchData} from "../../common/types";
 import SearchHeader from "../../components/search_header/search_header.js";
 import AdvancedSearchSidebar from "../../components/advanced_search/advanced_search_sidebar.js";
 
@@ -22,7 +22,7 @@ export default class SearchTagPageView extends PageView {
     /**
      * Перерисовать главную страницу
      */
-    async render(data: FullSearchData) {
+    async render(data: SearchData) {
         await super.render();
         const navbar = new Navbar();
         await navbar.render();
@@ -42,24 +42,16 @@ export default class SearchTagPageView extends PageView {
         this.center = center;
         this.root.appendChild(center);
 
-        const content = document.createElement('div');
-        content.classList.add('center_with_bigger_sidebar');
-        center.appendChild(content);
-
         const mainContentElement = document.createElement('div');
         mainContentElement.classList.add('feed');
         this.mainContentElement = mainContentElement;
-        content.appendChild(this.mainContentElement);
+        center.appendChild(this.mainContentElement);
 
         const header = new SearchHeader();
-        header.render(data.primary).then(() => {
+        header.render(data).then(() => {
             center.insertBefore(header.root, center.children[0]);
             this.children.set('header', header);
         });
 
-        const sidebar = new AdvancedSearchSidebar();
-        await sidebar.render(data.advanced);
-        this.children.set('sidebar', sidebar);
-        content.appendChild(sidebar.root);
     }
 }

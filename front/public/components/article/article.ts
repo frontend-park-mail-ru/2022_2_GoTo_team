@@ -6,6 +6,7 @@ export type ArticleComponentEventBus = {
     goToCategoryFeed: (category: string) => void,
     goToAuthorFeed: (login: string) => void,
     openArticle: (id: number) => void,
+    openTagPage: (tag: string) => void,
 }
 
 /**
@@ -61,12 +62,11 @@ export default class Article extends BasicComponent {
         titleLink.addEventListener('click', () => {
             eventBus.openArticle(this.view.id!);
         });
-        /*
-        const deleteArticle = this.root.getElementsByClassName('login_form__cross')[0];
-        deleteArticle.addEventListener('click', () => {
-            Events.articleRemove(this.view.id);
-            PageLoaders.feedPage();
-        });
-         */
+
+        this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
+            tagDiv.addEventListener('click', () => {
+                eventBus.openTagPage(tagDiv.innerHTML);
+            })
+        })
     }
 };

@@ -41,6 +41,7 @@ export default class SearchPage extends Page {
                 goToAuthorFeed: Events.goToAuthorFeed,
                 goToCategoryFeed: Events.goToCategoryFeed,
                 openArticle: URIChanger.articlePage,
+                openTagPage: URIChanger.searchByTagPage,
             }
 
             if (articles && Array.isArray(articles)) {

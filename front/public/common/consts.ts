@@ -16,7 +16,8 @@ export const API = {
     authorPage: /author\/(.+)$/,
     newArticlePage: /new_article$/,
     articleEditPage: /article\/([0-9]+)\/edit$/,
-    searchPage: /search\/([^\/]+)(\/publisher\/([^\/]+))?(\/tags\/(.+))?$/
+    searchPage: /search\/([^\/]+)(\/publisher\/([^\/]+))?(\/tags\/(.+))?$/,
+    searchByTagPage: /search\/tag\/([^\/]+)$/,
 }
 
 export const APIStrings = {
@@ -43,9 +44,9 @@ export const APIStrings = {
             uri = uri.slice(0, -1);
         }
 
-        console.log(uri);
         return uri;
-    }
+    },
+    searchByTagPage: (tag: string) => {return '/search/tag/' + tag;}
 }
 
 export const CommentaryParent = {

@@ -3,7 +3,7 @@
 import {PageLoaders} from "./modules/page_loaders.js";
 import Router from "./modules/router.js";
 import {API} from "./common/consts.js";
-import {FullSearchData} from "./common/types";
+import {FullSearchData, SearchData} from "./common/types";
 
 const router = new Router({
     root: ''
@@ -32,7 +32,6 @@ router
         PageLoaders.editArticle(id);
     })
     .add(API.searchPage, (request: string, ...params: string[]) => {
-        console.log(params);
         const searchData : FullSearchData = {
             primary: {
                 request: request,
@@ -45,12 +44,13 @@ router
         }
         PageLoaders.searchPage(searchData);
     })
+    .add(API.searchByTagPage, (tag: string) => {
+        const searchData: SearchData = {
+            request: tag,
+            number: 0,
+        }
+        PageLoaders.searchByTagPage(searchData);
+    })
     .add(API.root, () => {
         PageLoaders.feedPage();
     });
-//PageLoaders.feedPage();
-//PageLoaders.userFeedPage('admin');
-//PageLoaders.categoryFeedPage('Финансы');
-//PageLoaders.articlePage(3);
-//PageLoaders.settingsPage();
-//PageLoaders.editArticle();

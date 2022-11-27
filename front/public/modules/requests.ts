@@ -32,6 +32,7 @@ const config = {
         categoryList: '/category/list',
         commentaryCreate: '/commentary/create',
         searchPage: '/search',
+        searchTagPage: '/search/tag',
         tagList: '/tag/list',
     }
 }
@@ -512,6 +513,41 @@ export class Requests {
                 article: searchData.primary.request,
                 author: searchData.advanced.author,
                 tag: searchData.advanced.tags,
+            },
+        }
+
+        return ajax.get(params).then((response) => {
+            const result: RequestAnswer = response!;
+            let articles: IncompleteArticleData[] = [];
+            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                const article: IncompleteArticleData = {
+                    id: rawArticle.id,
+                    title: rawArticle.title,
+                    description: rawArticle.description,
+                    tags: rawArticle.tags,
+                    category: rawArticle.category,
+                    rating: rawArticle.rating,
+                    comments: rawArticle.comments,
+                    publisher: {
+                        login: rawArticle.publisher.login,
+                        username: rawArticle.publisher.username,
+                    },
+                    coverImgPath: "",
+                }
+                articles.push(article);
+            });
+            return articles;
+        });
+    }
+
+    /**
+     * Запрос поиска
+     */
+    static searchByTag(tag: string): Promise<IncompleteArticleData[]> {
+        let params = {
+            url: config.hrefs.searchTagPage,
+            data: {
+                tag: tag,
             },
         }
 

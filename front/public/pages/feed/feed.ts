@@ -30,6 +30,7 @@ export default class Feed extends Page{
             goToAuthorFeed: Events.goToAuthorFeed,
             goToCategoryFeed: Events.goToCategoryFeed,
             openArticle: URIChanger.articlePage,
+            openTagPage: URIChanger.searchByTagPage,
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {

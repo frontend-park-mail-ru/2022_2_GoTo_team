@@ -1,20 +1,20 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {FullSearchData} from "../../common/types";
-import SearchPageView from "./search_tag_page_view";
+import {FullSearchData, SearchData} from "../../common/types";
 import {SearchHeaderEventBus} from "../../components/search_header/search_header";
 import {AdvancedSearchSidebarEventBus} from "../../components/advanced_search/advanced_search_sidebar";
 import {URIChanger} from "../../modules/uri_changer.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
+import SearchTagPageView from "./search_tag_page_view.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class  SearchTagPage
  */
 export default class SearchTagPage extends Page {
-    view: SearchPageView;
+    view: SearchTagPageView;
 
     /**
      * Страница содержит главный компонент
@@ -22,25 +22,23 @@ export default class SearchTagPage extends Page {
      */
     constructor(root: HTMLElement) {
         super(root);
-        this.view = new SearchPageView(root);
+        this.view = new SearchTagPageView(root);
     }
 
     /**
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(data: FullSearchData): Promise<void> {
-        data.primary.request = decodeURIComponent(data.primary.request);
-        if (typeof data.advanced.author !== 'undefined'){
-            data.advanced.author = decodeURIComponent(data.advanced.author);
-        }
+    async render(data: SearchData): Promise<void> {
+        data.request = 'Поиск по тегу \"' + decodeURIComponent(data.request) + '\"';
         await this.view.render(data);
 
-        Requests.search(data).then((articles) => {
+        Requests.searchByTag(data.request).then((articles) => {
             const articleEventBus: ArticleComponentEventBus = {
                 goToAuthorFeed: Events.goToAuthorFeed,
                 goToCategoryFeed: Events.goToCategoryFeed,
                 openArticle: URIChanger.articlePage,
+                openTagPage: URIChanger.searchByTagPage,
             }
 
             if (articles && Array.isArray(articles)) {
