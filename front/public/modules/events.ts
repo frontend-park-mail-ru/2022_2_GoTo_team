@@ -255,7 +255,9 @@ export class Events {
      * @param {HTMLElement} element
      */
     static #makeValid(element: HTMLElement): void {
-        (element as HTMLFormElement).setCustomValidity('');
+        if (typeof (element as HTMLFormElement).setCustomValidity !== 'undefined') {
+            (element as HTMLFormElement).setCustomValidity('');
+        }
         const errorClass = "error-message";
         const siblings = element.parentNode!.childNodes;
 
@@ -730,10 +732,40 @@ export class Events {
      * Обработчик создания статьи
      */
     static articleCreateListener(): void {
-        const titleForm = document.querySelector('.article_edit__title')!;
+        const titleForm = document.querySelector('.article_edit__title')! as HTMLElement;
         const categoryForm = document.querySelector('.select_menu')! as HTMLSelectElement;
-        const descriptionForm = document.querySelector('.article_edit__description')!;
-        const contentForm = document.querySelector('.article_edit__content')!;
+        const descriptionForm = document.querySelector('.article_edit__description')! as HTMLElement;
+        const contentForm = document.querySelector('.article_edit__content')! as HTMLElement;
+
+        const title: string = titleForm.textContent!;
+        const description: string = descriptionForm.textContent!;
+        const content: string = contentForm.textContent!;
+
+        const titleValidation: boolean = Validators.validateArticleTitle(title.trim());
+        const descriptionValidation: boolean = Validators.validateArticleDescription(description.trim());
+        const contentValidation: boolean = Validators.validateArticleContent(content.trim());
+
+        if (!titleValidation) {
+            Events.#makeInvalid(titleForm, "Необходим заголовок");
+        }
+
+        if (!descriptionValidation) {
+            Events.#makeInvalid(descriptionForm, "Неверное описание");
+        }
+
+        if (!contentValidation) {
+            Events.#makeInvalid(contentForm, "Вы не можте сохранить пустую статью");
+        }
+
+        if (!(titleValidation && contentValidation && contentValidation)){
+            return;
+        }
+
+        Events.#makeValid(titleForm);
+        Events.#makeValid(descriptionForm);
+        Events.#makeValid(contentForm);
+
+
         const articleData: FullArticleData = {
             id: 0,
             title: titleForm.textContent ? titleForm.textContent : "",
@@ -942,8 +974,11 @@ export class Events {
         const content = contentForm.textContent!;
 
         if (!Validators.validateCommentary(content.trim())) {
+            Events.#makeInvalid(contentForm, "Вы не можете отправить пустой комментарий");
             return;
         }
+        Events.#makeValid(contentForm);
+
 
         const commentaryDate: CommentaryData = {
             id: 0,

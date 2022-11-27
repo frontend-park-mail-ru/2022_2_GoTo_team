@@ -32,6 +32,30 @@ export class Validators {
     }
 
     /**
+     * Проверяет валидность заголовка статьи
+     * @param {string} title
+     */
+    static validateArticleTitle(title: string) {
+        return /.+/.test(title);
+    }
+
+    /**
+     * Проверяет валидность описания статьи
+     * @param {string} description
+     */
+    static validateArticleDescription(description: string) {
+        return true;
+    }
+
+    /**
+     * Проверяет валидность наполнения статьи
+     * @param {string} content
+     */
+    static validateArticleContent(content: string) {
+        return /.+/.test(content);
+    }
+
+    /**
      * Проверяет валидность комментария
      * @param {string} commentary
      */
