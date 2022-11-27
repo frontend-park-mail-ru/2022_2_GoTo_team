@@ -48,9 +48,7 @@ export class Events {
      * Отрисовывает оверлей
      */
     static async openOverlay(): Promise<void> {
-        const eventBus: OverlayEventBus = {
-
-        }
+        const eventBus: OverlayEventBus = {}
 
         const overlay = new Overlay();
         await overlay.render();
@@ -170,10 +168,10 @@ export class Events {
      * Подтверждение формы регистрации
      */
     static submitRegistration(): void {
-        const emailForm : HTMLFormElement = document.getElementById("registration_form__email") as HTMLFormElement;
-        const loginForm : HTMLFormElement = document.getElementById("registration_form__login") as HTMLFormElement;
-        const usernameForm : HTMLFormElement = document.getElementById("registration_form__username") as HTMLFormElement;
-        const passwordForm : HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
+        const emailForm: HTMLFormElement = document.getElementById("registration_form__email") as HTMLFormElement;
+        const loginForm: HTMLFormElement = document.getElementById("registration_form__login") as HTMLFormElement;
+        const usernameForm: HTMLFormElement = document.getElementById("registration_form__username") as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
 
         const userData = {
             email: emailForm.value.trim(),
@@ -182,11 +180,11 @@ export class Events {
             password: passwordForm.value.trim()
         };
 
-        const emailValidation : boolean = Events.emailValidateListenerRegistration();
-        const loginValidation : boolean = Events.loginValidateListenerRegistration();
-        const usernameValidation : boolean = Events.usernameValidateListenerRegistration();
-        const passwordValidation : boolean = Events.passwordValidateListenerRegistration();
-        const repeatPasswordValidation : boolean = Events.passwordRepeatValidateListenerRegistration();
+        const emailValidation: boolean = Events.emailValidateListenerRegistration();
+        const loginValidation: boolean = Events.loginValidateListenerRegistration();
+        const usernameValidation: boolean = Events.usernameValidateListenerRegistration();
+        const passwordValidation: boolean = Events.passwordValidateListenerRegistration();
+        const repeatPasswordValidation: boolean = Events.passwordRepeatValidateListenerRegistration();
 
         if (!(emailValidation && loginValidation && usernameValidation && passwordValidation && passwordValidation && repeatPasswordValidation)) {
             return;
@@ -287,7 +285,7 @@ export class Events {
      * Проверяет валидность значения в поле почты в плашке логина
      */
     static emailValidateListenerLogin(): boolean {
-        const emailForm : HTMLFormElement = document.getElementById('login_form__email_login') as HTMLFormElement;
+        const emailForm: HTMLFormElement = document.getElementById('login_form__email_login') as HTMLFormElement;
 
         const email: string = emailForm.value.trim();
         if (email === '') {
@@ -308,7 +306,7 @@ export class Events {
      * Проверяет валидность значения в поле пароля в плашке логина
      */
     static passwordValidateListenerLogin(): boolean {
-        const passwordForm : HTMLFormElement = document.getElementById("login_form__password") as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("login_form__password") as HTMLFormElement;
 
         const password: string = passwordForm.value.trim();
         if (password === '') {
@@ -329,7 +327,7 @@ export class Events {
      * Проверяет валидность значения в поле почты в плашке регистрации
      */
     static emailValidateListenerRegistration(): boolean {
-        const emailForm : HTMLFormElement = document.getElementById('registration_form__email') as HTMLFormElement;
+        const emailForm: HTMLFormElement = document.getElementById('registration_form__email') as HTMLFormElement;
 
         const email: string = emailForm.value.trim();
         if (email === '') {
@@ -349,7 +347,7 @@ export class Events {
      * Проверяет валидность значения в поле логина в плашке регистрации
      */
     static loginValidateListenerRegistration(): boolean {
-        const loginForm : HTMLFormElement = document.getElementById("registration_form__login") as HTMLFormElement;
+        const loginForm: HTMLFormElement = document.getElementById("registration_form__login") as HTMLFormElement;
 
         const login: string = loginForm.value.trim();
         if (login === '') {
@@ -368,7 +366,7 @@ export class Events {
      * Проверяет валидность значения в поле ника в плашке регистрации
      */
     static usernameValidateListenerRegistration(): boolean {
-        const usernameForm : HTMLFormElement = document.getElementById("registration_form__username") as HTMLFormElement;
+        const usernameForm: HTMLFormElement = document.getElementById("registration_form__username") as HTMLFormElement;
 
         const username: string = usernameForm.value.trim();
         if (username === '') {
@@ -389,7 +387,7 @@ export class Events {
      * Проверяет валидность значения в поле пароля в плашке регистрации
      */
     static passwordValidateListenerRegistration(): boolean {
-        const passwordForm : HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
 
         const password: string = passwordForm.value.trim();
         if (password === '') {
@@ -410,8 +408,8 @@ export class Events {
      * Проверяет совпаденик значений в полях пароля и повторения пароля в плашке регистрации
      */
     static passwordRepeatValidateListenerRegistration(): boolean {
-        const passwordForm : HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
-        const repeatPasswordForm : HTMLFormElement = document.getElementById("registration_form__repeat-password") as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("registration_form__password") as HTMLFormElement;
+        const repeatPasswordForm: HTMLFormElement = document.getElementById("registration_form__repeat-password") as HTMLFormElement;
 
         const password: string = passwordForm.value.trim();
         const repeatPassword: string = repeatPasswordForm.value.trim();
@@ -458,7 +456,7 @@ export class Events {
      * Обновляет вид кнопки пользователя на навбаре
      */
     static async updateAuth(): Promise<void> {
-        const eventBus : UserPlugEventBus = {
+        const eventBus: UserPlugEventBus = {
             authedListener: Events.showProfileMenuListener,
             unauthedListener: Events.makeLoginOverlayListener,
         }
@@ -495,10 +493,10 @@ export class Events {
     /**
      * Закрывает меню под навбарам
      */
-    static #closeNavbarMenu(){
+    static #closeNavbarMenu() {
         const root = document.getElementById('root')!;
-        const openedMenu : HTMLElement | null = root.querySelector('.navbar_menu');
-        if (openedMenu !== null){
+        const openedMenu: HTMLElement | null = root.querySelector('.navbar_menu');
+        if (openedMenu !== null) {
             root.removeChild(openedMenu!);
         }
     }
@@ -506,7 +504,7 @@ export class Events {
     /**
      * Открывает меню под навбарам и закрывает открытое, если такая есть
      */
-    static #openNavbarMenu(controller: BasicComponent, eventBus?: object){
+    static #openNavbarMenu(controller: BasicComponent, eventBus?: object) {
         Events.#closeNavbarMenu();
 
         const root = document.getElementById('root')!;
@@ -573,7 +571,7 @@ export class Events {
         otherButton.removeEventListener('click', Events.showOtherMenuListener);
         otherButton.addEventListener('click', Events.closeOtherMenuListener);
 
-        if (document.querySelector('.navbar__profile_block__nickname') !== null){
+        if (document.querySelector('.navbar__profile_block__nickname') !== null) {
             const profileButton = document.getElementById("navbar__auth_button")!.lastChild!;
             profileButton.removeEventListener('click', Events.closeProfileMenuListener);
             profileButton.addEventListener('click', Events.showProfileMenuListener);
@@ -653,11 +651,11 @@ export class Events {
      * Отправление изменений профиля
      */
     static saveProfileListener(): void {
-        const emailForm : HTMLFormElement = document.getElementById("settings__email") as HTMLFormElement;
-        const loginForm : HTMLFormElement = document.getElementById("settings__login") as HTMLFormElement;
-        const usernameForm : HTMLFormElement = document.getElementById("settings__nickname") as HTMLFormElement;
-        const passwordForm : HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
-        const repeatPasswordForm : HTMLFormElement = document.getElementById("settings__repeat_password") as HTMLFormElement;
+        const emailForm: HTMLFormElement = document.getElementById("settings__email") as HTMLFormElement;
+        const loginForm: HTMLFormElement = document.getElementById("settings__login") as HTMLFormElement;
+        const usernameForm: HTMLFormElement = document.getElementById("settings__nickname") as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
+        const repeatPasswordForm: HTMLFormElement = document.getElementById("settings__repeat_password") as HTMLFormElement;
 
         const userData = {
             email: emailForm.value.trim(),
@@ -766,7 +764,7 @@ export class Events {
             Events.#makeInvalid(contentForm, "Вы не можте сохранить пустую статью");
         }
 
-        if (!(titleValidation && contentValidation && contentValidation)){
+        if (!(titleValidation && contentValidation && contentValidation)) {
             return;
         }
 
@@ -800,7 +798,7 @@ export class Events {
         const categoryForm = document.querySelector('.select_menu')!;
         const descriptionForm = document.querySelector('.article_edit__description')!;
         const contentForm = document.querySelector('.article_edit__content')!;
-        const articleData : FullArticleData = {
+        const articleData: FullArticleData = {
             id: articleId,
             title: titleForm.textContent ? titleForm.textContent : "",
             category: categoryForm.textContent ? categoryForm.textContent : "",
@@ -826,7 +824,7 @@ export class Events {
     /**
      * Создание статьи
      */
-    static articleCreate(articleData: FullArticleData): Promise<boolean>  {
+    static articleCreate(articleData: FullArticleData): Promise<boolean> {
         return Requests.articleCreate(articleData);
     }
 
@@ -841,7 +839,7 @@ export class Events {
      * Проверяет валидность значения в поле почты на странице профиля
      */
     static emailValidateListenerSettings(): boolean {
-        const emailForm : HTMLFormElement = document.getElementById('settings__email') as HTMLFormElement;
+        const emailForm: HTMLFormElement = document.getElementById('settings__email') as HTMLFormElement;
 
         const email: string = emailForm.value.trim();
         if (email === '') {
@@ -862,7 +860,7 @@ export class Events {
      * Проверяет валидность значения в поле логина на странице профиля
      */
     static loginValidateListenerSettings(): boolean {
-        const loginForm : HTMLFormElement = document.getElementById("settings__login") as HTMLFormElement;
+        const loginForm: HTMLFormElement = document.getElementById("settings__login") as HTMLFormElement;
 
         const login: string = loginForm.value.trim();
         if (login === '') {
@@ -883,7 +881,7 @@ export class Events {
      * Проверяет валидность значения в поле ника на странице профиля
      */
     static usernameValidateListenerSettings(): boolean {
-        const usernameForm : HTMLFormElement = document.getElementById("settings__nickname") as HTMLFormElement;
+        const usernameForm: HTMLFormElement = document.getElementById("settings__nickname") as HTMLFormElement;
 
         const username: string = usernameForm.value.trim();
         if (username === '') {
@@ -904,7 +902,7 @@ export class Events {
      * Проверяет валидность значения в поле пароля на странице профиля
      */
     static passwordValidateListenerSettings(): boolean {
-        const passwordForm : HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
 
         const password: string = passwordForm.value.trim();
         if (password === '') {
@@ -925,8 +923,8 @@ export class Events {
      * Проверяет совпаденик значений в полях пароля и повторения пароля на странице профиля
      */
     static passwordRepeatValidateListenerSettings(): boolean {
-        const passwordForm : HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
-        const repeatPasswordForm : HTMLFormElement = document.getElementById("settings__repeat_password") as HTMLFormElement;
+        const passwordForm: HTMLFormElement = document.getElementById("settings__password") as HTMLFormElement;
+        const repeatPasswordForm: HTMLFormElement = document.getElementById("settings__repeat_password") as HTMLFormElement;
 
         const password: string = passwordForm.value.trim();
         const repeatPassword: string = repeatPasswordForm.value.trim();
@@ -944,9 +942,9 @@ export class Events {
         return true;
     }
 
-    static newArticlePageListener(){
+    static newArticlePageListener() {
         Requests.getSessionInfo().then((result) => {
-            if (result.status === 401){
+            if (result.status === 401) {
                 alert("Для создания статьи нужно авторизироваться");
                 return;
             }
@@ -955,28 +953,28 @@ export class Events {
         });
     }
 
-    static setLocation(uri: string){
+    static setLocation(uri: string) {
         location.hash = uri;
     }
 
-    static showSearchForm(){
+    static showSearchForm() {
         const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
         const searchButton = document.getElementById("navbar__search")!;
         const form = new SearchForm();
         form.render().then(() => {
-           wrapper.append(form.root);
-           searchButton.removeEventListener('click', Events.showSearchForm);
-           searchButton.addEventListener('click', Events.closeSearchForm);
-           const area = form.root.querySelector('.navbar__search_form')!;
-           area.addEventListener('keypress', (event) => {
-               if ((event as KeyboardEvent).key === 'Enter') {
-                   Events.searchFormListener();
-               }
-           });
+            wrapper.append(form.root);
+            searchButton.removeEventListener('click', Events.showSearchForm);
+            searchButton.addEventListener('click', Events.closeSearchForm);
+            const area = form.root.querySelector('.navbar__search_form')!;
+            area.addEventListener('keypress', (event) => {
+                if ((event as KeyboardEvent).key === 'Enter') {
+                    Events.searchFormListener();
+                }
+            });
         });
     }
 
-    static closeSearchForm(){
+    static closeSearchForm() {
         const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
         wrapper.innerHTML = '';
         const searchButton = document.getElementById("navbar__search")!;
@@ -1005,15 +1003,15 @@ export class Events {
         Requests.commentaryCreate(commentaryDate);
     }
 
-    static searchFormListener(){
+    static searchFormListener() {
         const form = document.querySelector(".navbar__search_form")! as HTMLFormElement;
-        if (form.value.trim().length === 0){
+        if (form.value.trim().length === 0) {
             return;
         }
 
         const data: SearchData = {
-                request: form.value,
-                number: 0,
+            request: form.value,
+            number: 0,
         }
 
         URIChanger.searchPage(data);
@@ -1026,10 +1024,10 @@ export class Events {
         const tagsForm = form.root.querySelector('.select_menu')! as HTMLSelectElement;
         const newTagString: string = tagsForm.value;
 
-        if (newTagString != ''){
-            if(!form.tags.includes(newTagString)){
+        if (newTagString != '') {
+            if (!form.tags.includes(newTagString)) {
                 const tagsRow = form.root.querySelector('.advanced_search__sidebar__tags')!;
-                if (tagsRow.querySelectorAll('.article__tag').length === 0){
+                if (tagsRow.querySelectorAll('.article__tag').length === 0) {
                     tagsRow.innerHTML = '';
                 }
 
@@ -1045,10 +1043,40 @@ export class Events {
                     if (index > -1) {
                         form.tags.splice(index, 1);
                     }
-                    console.log(form.tags);
-                    newTag.parentNode!.removeChild(newTag);
-                })
+
+                    if (form.tags.length == 0) {
+                        newTag.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
+                    }else{
+                        newTag.parentNode!.removeChild(newTag);
+                    }
+                });
             }
         }
+    }
+
+    /**
+     * Обработчик подтверждения в панели расширенного поиска
+     */
+    static submitAdvSearchListener(form: AdvancedSearchSidebar) {
+        const request = document.querySelector(".feed_page__header__name")!.innerHTML;
+
+        let login: string | undefined = form.root.querySelector(".advanced_search__author_textarea")!.textContent!;
+        login = login !== '' ? login : undefined;
+
+        const tags = form.tags.length !== 0 ? form.tags : undefined;
+
+        let data: FullSearchData = {
+            primary: {
+                request: request,
+                number: 0,
+            },
+            advanced: {
+                author: login,
+                tags: tags,
+            }
+        }
+
+        console.log(data);
+        URIChanger.searchPage(data);
     }
 }

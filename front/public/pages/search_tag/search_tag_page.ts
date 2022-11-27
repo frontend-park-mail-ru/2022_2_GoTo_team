@@ -2,7 +2,7 @@ import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {FullSearchData} from "../../common/types";
-import SearchPageView from "./search_page_view.js";
+import SearchPageView from "./search_tag_page_view";
 import {SearchHeaderEventBus} from "../../components/search_header/search_header";
 import {AdvancedSearchSidebarEventBus} from "../../components/advanced_search/advanced_search_sidebar";
 import {URIChanger} from "../../modules/uri_changer.js";
@@ -11,9 +11,9 @@ import Article, {ArticleComponentEventBus} from "../../components/article/articl
 
 /**
  * ModalView-контроллер для соответсвующих страниц
- * @class  SearchPage
+ * @class  SearchTagPage
  */
-export default class SearchPage extends Page {
+export default class SearchTagPage extends Page {
     view: SearchPageView;
 
     /**
