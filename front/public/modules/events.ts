@@ -5,7 +5,15 @@ import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import UserPlug, {UserPlugEventBus} from "../components/user_plug/user_plug.js";
 import UserPlugMenu, {UserPlugMenuEventBus} from "../components/user_plug_menu/user_plug_menu.js";
-import {CommentaryData, FullArticleData, RequestAnswer, UserData, UserPlugData} from "../common/types";
+import {
+    CommentaryData,
+    FullArticleData,
+    FullSearchData,
+    RequestAnswer,
+    SearchData,
+    UserData,
+    UserPlugData
+} from "../common/types";
 import BasicComponent from "../components/_basic_component/basic_component.js";
 import {ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
@@ -958,6 +966,12 @@ export class Events {
            wrapper.append(form.root);
            searchButton.removeEventListener('click', Events.showSearchForm);
            searchButton.addEventListener('click', Events.closeSearchForm);
+           const area = form.root.querySelector('.navbar__search_form')!;
+           area.addEventListener('keypress', (event) => {
+               if ((event as KeyboardEvent).key === 'Enter') {
+                   Events.searchFormListener();
+               }
+           });
         });
     }
 
@@ -988,5 +1002,19 @@ export class Events {
             content: content,
         }
         Requests.commentaryCreate(commentaryDate);
+    }
+
+    static searchFormListener(){
+        const form = document.querySelector(".navbar__search_form")! as HTMLFormElement;
+        if (form.value.trim().length === 0){
+            return;
+        }
+
+        const data: SearchData = {
+                request: form.value,
+                number: 0,
+        }
+
+        URIChanger.searchPage(data);
     }
 }

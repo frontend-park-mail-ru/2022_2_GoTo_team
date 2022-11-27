@@ -29,6 +29,17 @@ export class Ajax {
 
     #ajax(params: requestParams): Promise<void | RequestAnswer> {
         const url = new URL(APIurl + (params.url || '/'));
+        if (params.data !== undefined){
+            Object.keys(params.data).forEach(key => {
+                // @ts-ignore
+                if (params.data[key] === undefined) {
+                    // @ts-ignore
+                    delete params.data[key];
+                }
+            });
+        }
+
+        console.log(params);
         if (params.method == REQUEST_TYPE.GET){
             url.search = new URLSearchParams({...params.data}).toString();
         }

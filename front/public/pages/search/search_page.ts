@@ -6,6 +6,8 @@ import SearchPageView from "./search_page_view.js";
 import {SearchHeaderEventBus} from "../../components/search_header/search_header";
 import {AdvancedSearchSidebarEventBus} from "../../components/advanced_search/advanced_search_sidebar";
 import {URIChanger} from "../../modules/uri_changer.js";
+import {Requests} from "../../modules/requests.js";
+import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -32,7 +34,26 @@ export default class SearchPage extends Page {
         if (typeof data.advanced.author !== 'undefined'){
             data.advanced.author = decodeURIComponent(data.advanced.author);
         }
-       await this.view.render(data);
+        await this.view.render(data);
+
+        Requests.search(data).then((articles) => {
+            const articleEventBus: ArticleComponentEventBus = {
+                goToAuthorFeed: Events.goToAuthorFeed,
+                goToCategoryFeed: Events.goToCategoryFeed,
+                openArticle: URIChanger.articlePage,
+            }
+
+            if (articles && Array.isArray(articles)) {
+                this.view.mainContentElement.innerHTML = '';
+                articles.forEach((article) => {
+                    const articleView = new Article();
+                    articleView.render(article).then(() => {
+                        articleView.subscribe(articleEventBus);
+                        this.view.mainContentElement.appendChild(articleView.root);
+                    });
+                })
+            }
+        });
 
         Events.updateAuth();
     }

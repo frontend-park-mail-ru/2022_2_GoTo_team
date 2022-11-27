@@ -1,9 +1,9 @@
 import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
-    CategoryData, CommentaryData, FullArticleData,
+    CategoryData, CommentaryData, FullArticleData, FullSearchData,
     IncompleteArticleData,
-    RequestAnswer, UserData,
+    RequestAnswer, SearchData, UserData,
     UserHeaderData,
     UserLoginData,
     UserPlugData,
@@ -30,7 +30,8 @@ const config = {
         articleCreate: '/article/create',
         articleUpdate: '/article/update',
         categoryList: '/category/list',
-        commentaryCreate: '/commentary/create'
+        commentaryCreate: '/commentary/create',
+        searchPage: '/search',
     }
 }
 
@@ -307,18 +308,18 @@ export class Requests {
             const result: RequestAnswer = response!;
             const article: FullArticleData = {
                 id: result.response.id,
-                title:  result.response.title,
-                description:  result.response.description,
-                tags:  result.response.tags,
-                category:  result.response.category,
-                rating:  result.response.rating,
-                comments:  result.response.comments,
+                title: result.response.title,
+                description: result.response.description,
+                tags: result.response.tags,
+                category: result.response.category,
+                rating: result.response.rating,
+                comments: result.response.comments,
                 publisher: {
-                    login:  result.response.publisher.login,
-                    username:  result.response.publisher.username,
+                    login: result.response.publisher.login,
+                    username: result.response.publisher.username,
                 },
                 coverImgPath: "",
-                content:  result.response.content,
+                content: result.response.content,
             }
             return article;
         });
@@ -461,7 +462,7 @@ export class Requests {
      */
     static commentaryCreate(commentaryData: CommentaryData): Promise<boolean> {
         let params: requestParams;
-        if (commentaryData.parentType == CommentaryParent.article){
+        if (commentaryData.parentType == CommentaryParent.article) {
             params = {
                 url: config.hrefs.commentaryCreate,
                 data: {
@@ -470,7 +471,7 @@ export class Requests {
                     content: commentaryData.content
                 },
             }
-        }else{
+        } else {
             params = {
                 url: config.hrefs.commentaryCreate,
                 data: {
@@ -484,6 +485,43 @@ export class Requests {
 
         return ajax.post(params).then((response) => {
             return response!.status == 200;
+        });
+    }
+
+    /**
+     * Запрос поиска
+     */
+    static search(searchData: FullSearchData): Promise<IncompleteArticleData[]> {
+        let params = {
+            url: config.hrefs.searchPage,
+            data: {
+                article: searchData.primary.request,
+                author: searchData.advanced.author,
+                tag: searchData.advanced.tags,
+            },
+        }
+
+        return ajax.get(params).then((response) => {
+            const result: RequestAnswer = response!;
+            let articles: IncompleteArticleData[] = [];
+            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                const article: IncompleteArticleData = {
+                    id: rawArticle.id,
+                    title: rawArticle.title,
+                    description: rawArticle.description,
+                    tags: rawArticle.tags,
+                    category: rawArticle.category,
+                    rating: rawArticle.rating,
+                    comments: rawArticle.comments,
+                    publisher: {
+                        login: rawArticle.publisher.login,
+                        username: rawArticle.publisher.username,
+                    },
+                    coverImgPath: "",
+                }
+                articles.push(article);
+            });
+            return articles;
         });
     }
 }
