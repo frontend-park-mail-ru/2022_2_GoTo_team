@@ -7,6 +7,7 @@ export type ArticleEditEventBus = {
     articleUpdate: (id: number) => void,
     articleCreate: Listener,
     articleRemove: (id: number) => Promise<boolean>,
+    tagAdd: () => void,
 }
 
 /**
@@ -31,11 +32,15 @@ export default class ArticleEdit extends BasicComponent {
      */
     async render(articleData?: FullArticleData): Promise<HTMLElement> {
         await super.render();
-        const categoriesPromise: RequestAnswer = (await Requests.getCategories())!;
+        const categoriesPromise: Promise<RequestAnswer> = Requests.getCategories();
+        const tagsPromise: Promise<RequestAnswer> = Requests.getTags();
 
-        const categories: object = categoriesPromise.status == 200 ? categoriesPromise.response.categories : {};
+        const categories: object = (await categoriesPromise).status == 200 ? (await categoriesPromise).response.categories : {};
+        const tags: string[] = (await tagsPromise).status == 200 ? (await tagsPromise).response.tags : [];
+
         const editData: EditArticleData = {
             article: articleData,
+            tags: tags,
             categories: categories,
         }
         this.root = await this.view.render(editData);
@@ -66,5 +71,8 @@ export default class ArticleEdit extends BasicComponent {
         } else {
             submitButton.addEventListener('click', eventBus.articleCreate);
         }
+
+        const addTagButton = this.root.querySelector('.article_edit__add_tag')!;
+        addTagButton.addEventListener('click', eventBus.tagAdd);
     }
 };

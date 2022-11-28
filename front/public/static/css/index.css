@@ -36,6 +36,10 @@ body {
     width: -webkit-fill-available !important;
 }
 
+.flex-wrapper{
+    flex-wrap: wrap;
+}
+
 .navbar {
     z-index: 2;
     position: fixed;
@@ -1105,4 +1109,16 @@ div.log-button-container {
 .advanced_search__sidebar__tags__message {
     font-size: 15px;
     padding: 10px;
+}
+
+.article_edit__add_tag{
+    width: fit-content;
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 5px;
+}
+
+.article_edit__tags_row {
+    margin: 5px 0 5px 0;
 }

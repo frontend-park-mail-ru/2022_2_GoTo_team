@@ -38,6 +38,7 @@ export type FullArticleData = {
 export type EditArticleData = {
     article?: FullArticleData,
     categories: object,
+    tags: string[]
 }
 
 export type CategoryData = {

@@ -51,6 +51,7 @@ export default class ArticleEditPage extends Page {
             articleCreate: Events.articleCreateListener,
             articleRemove: Events.articleRemove,
             articleUpdate: Events.articleUpdateListener,
+            tagAdd: Events.addArticleTagListener,
         }
         this.view.children.get('edit').subscribe(articleEventBus);
     }

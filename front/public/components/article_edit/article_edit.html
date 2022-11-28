@@ -5,6 +5,24 @@
         <option value="{{this}}">{{this}}</option>
         {{/each}}
     </select>
+    <div class="row flex-wrapper">
+        <div class="button accent_button article_edit__add_tag">Добавить тег</div>
+        <select class="select_menu tag_selector">
+            <option value="">Выбрать тег</option>
+            {{#each allTags}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <div class="row article_edit__tags_row">
+            {{#if tags}}
+            {{#each tags}}
+            <div class="article__tag">{{this}}</div>
+            {{/each}}
+            {{else}}
+            <div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>
+            {{/if}}
+        </div>
+    </div>
     <div>
         <div contenteditable="true" class="div_textarea article_edit__title" role="textbox" id="title"
              placeholder="Заголовок">{{title}}</div>

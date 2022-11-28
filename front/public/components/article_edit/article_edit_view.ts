@@ -16,12 +16,13 @@ export default class ArticleEditView extends BasicComponentView {
      */
     async render(editData: EditArticleData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
-        if (typeof editData.article !== 'undefined') {
+        if (editData.article !== undefined) {
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
             wrapper.innerHTML = Handlebars.templates['article_edit.html']({
                 title: editData.article.title,
                 description: editData.article.description,
-                //tags: editData.article.tags,
+                allTags: editData.tags,
+                tags: editData.article.tags,
                 category: editData.article.category,
                 // publisher: editData.article.publisher.username !== "" ? editData.article.publisher.username : editData.article.publisher.login,
                 content: editData.article.content,
@@ -35,6 +36,7 @@ export default class ArticleEditView extends BasicComponentView {
             wrapper.innerHTML = Handlebars.templates['article_edit.html']({
                 update: false,
                 categories: editData.categories,
+                allTags: editData.tags,
             });
             this.update = false;
         }

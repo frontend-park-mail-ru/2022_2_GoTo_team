@@ -772,13 +772,18 @@ export class Events {
         Events.#makeValid(descriptionForm);
         Events.#makeValid(contentForm);
 
+        let tags: string[] = [];
+        document.querySelectorAll('.article__tag').forEach((tagDiv) => {
+            tags.push(tagDiv.innerHTML);
+        });
+
 
         const articleData: FullArticleData = {
             id: 0,
             title: titleForm.textContent ? titleForm.textContent : "",
             category: categoryForm.value,
             description: descriptionForm.textContent ? descriptionForm.textContent : "",
-            tags: [''],
+            tags: tags,
             comments: 0,
             rating: 0,
             content: contentForm.textContent ? contentForm.textContent : "",
@@ -1076,5 +1081,50 @@ export class Events {
 
         console.log(data);
         URIChanger.searchPage(data);
+    }
+
+    /**
+     * Обработчик добавления тега к списку тегов при создании/редактирвоании страницы
+     */
+    static addArticleTagListener(): void {
+        const tagsForm = document.querySelector('.tag_selector')! as HTMLSelectElement;
+        const newTagString: string = tagsForm.value;
+
+        let tags: string[] = [];
+        document.querySelectorAll('.article__tag').forEach((tagDiv) => {
+           tags.push(tagDiv.innerHTML);
+        });
+
+        if (newTagString != '') {
+            if (!tags.includes(newTagString)) {
+                const tagsRow = document.querySelector('.article_edit__tags_row')!;
+                if (tagsRow.querySelectorAll('.article__tag').length === 0) {
+                    tagsRow.innerHTML = '';
+                }
+
+                const newTag = document.createElement('div');
+                newTag.classList.add('article__tag');
+                newTag.innerHTML = newTagString;
+                tagsRow.appendChild(newTag);
+
+                newTag.addEventListener('click', () => {
+                    let tags: string[] = [];
+                    document.querySelectorAll('.article__tag').forEach((tagDiv) => {
+                        tags.push(tagDiv.innerHTML);
+                    });
+
+                    const index = tags.indexOf(newTagString);
+                    if (index > -1) {
+                        tags.splice(index, 1);
+                    }
+
+                    if (tags.length == 0) {
+                        newTag.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
+                    }else{
+                        newTag.parentNode!.removeChild(newTag);
+                    }
+                });
+            }
+        }
     }
 }
