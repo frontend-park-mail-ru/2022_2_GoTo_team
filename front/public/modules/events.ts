@@ -1014,7 +1014,11 @@ export class Events {
             rating: 0,
             content: content
         }
-        Requests.commentaryCreate(commentaryDate);
+        Requests.commentaryCreate(commentaryDate).then((result) => {
+            if (!result){
+                alert("Для отправки комментариев нужно авторизироваться");
+            }
+        });
     }
 
     static searchFormListener() {
