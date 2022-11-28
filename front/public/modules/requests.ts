@@ -510,7 +510,7 @@ export class Requests {
         let params = {
             url: config.hrefs.searchPage,
             data: {
-                article: searchData.primary.request,
+                substringToSearch: searchData.primary.request,
                 author: searchData.advanced.author,
                 tag: searchData.advanced.tags,
             },

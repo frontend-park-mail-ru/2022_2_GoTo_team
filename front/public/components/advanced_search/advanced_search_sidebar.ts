@@ -40,7 +40,6 @@ export default class AdvancedSearchSidebar extends BasicComponent {
         }
 
         const formData: AdvSearchFormData = {
-        const formData: AdvSearchFormData = {
             tagList: tags,
             advSearchData: data,
         }
