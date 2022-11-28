@@ -15,7 +15,7 @@
     </div>
     <select class="select_menu tag_selector">
         <option value="">Выбрать тег</option>
-        {{#each tags}}
+        {{#each allTags}}
         <option value="{{this}}">{{this}}</option>
         {{/each}}
     </select>
@@ -25,8 +25,8 @@
         <div class="button accent_button advanced_search__sidebar__add_tag">Добавить тег</div>
     </div>
     <div class="row advanced_search__sidebar__tags">
-        {{#if appliedTags}}
-        {{#each appliedTags}}
+        {{#if tags}}
+        {{#each tags}}
         <div class="article__tag">{{this}}</div>
         {{/each}}
         {{else}}

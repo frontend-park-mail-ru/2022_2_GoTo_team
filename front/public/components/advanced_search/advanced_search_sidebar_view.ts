@@ -18,11 +18,12 @@ export default class AdvancedSearchSidebarView extends BasicComponentView {
      */
     async render(data: AdvSearchFormData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
+        console.log(data);
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['advanced_search_sidebar.html']({
             author: data.advSearchData?.author,
-            tags: data.tagList,
-            appliedTags: data.advSearchData?.tags === undefined ? null : data.advSearchData.tags,
+            allTags: data.tagList,
+            tags: data.advSearchData?.tags === undefined ? null : data.advSearchData.tags,
         });
 
         return wrapper.querySelector('div')!;

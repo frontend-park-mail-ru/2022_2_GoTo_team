@@ -32,13 +32,14 @@ export default class AdvancedSearchSidebar extends BasicComponent {
      */
     async render(data?: AdvSearchData): Promise<HTMLElement> {
         await super.render();
-        const tagsRequest: RequestAnswer = await Requests.getCategories();
+        const tagsRequest: RequestAnswer = await Requests.getTags();
         let tags: string[] = [];
 
         if (tagsRequest.status == 200) {
             tags = tagsRequest.response.tags;
         }
 
+        const formData: AdvSearchFormData = {
         const formData: AdvSearchFormData = {
             tagList: tags,
             advSearchData: data,
