@@ -74,6 +74,7 @@ export default class AdvancedSearchSidebar extends BasicComponent {
 
         this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
             tagDiv.addEventListener('click', () => {
+                /*
                 const index = this.tags.indexOf(tagDiv.innerHTML);
                 if (index > -1) {
                     this.tags.splice(index, 1);
@@ -83,7 +84,10 @@ export default class AdvancedSearchSidebar extends BasicComponent {
                 }else{
                     tagDiv.parentNode!.removeChild(tagDiv);
                 }
-            });
-        })
+                 */
+                this.tags = [];
+                tagDiv.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
+            })
+        });
     }
-};
+}

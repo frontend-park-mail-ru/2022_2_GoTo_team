@@ -47,7 +47,8 @@ export default class SearchTagPage extends Page {
                 if (articles.length === 0){
                     foundNumString = "Результатов не найдено";
                 }else{
-                    foundNumString = 'Найдено ' + articles.length + ' ' + Helpers.numWord(articles.length,
+                    foundNumString = Helpers.numWord(articles.length,
+                        ["Найдена", "Найдено", "Найдено"]) + ' ' + articles.length + ' ' + Helpers.numWord(articles.length,
                         ["статья", "статьи", "статей"]);
                 }
                 document.querySelector('.feed_page__header__subscribers')!.innerHTML = foundNumString;

@@ -51,23 +51,25 @@ export class Requests {
         }).then((response) => {
             const result: RequestAnswer = response!;
             let articles: IncompleteArticleData[] = [];
-            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                const article: IncompleteArticleData = {
-                    id: rawArticle.id,
-                    title: rawArticle.title,
-                    description: rawArticle.description,
-                    tags: rawArticle.tags,
-                    category: rawArticle.category,
-                    rating: rawArticle.rating,
-                    comments: rawArticle.comments,
-                    publisher: {
-                        login: rawArticle.publisher.login,
-                        username: rawArticle.publisher.username,
-                    },
-                    coverImgPath: "",
-                }
-                articles.push(article);
-            });
+            if (result.response.articles){
+                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                    const article: IncompleteArticleData = {
+                        id: rawArticle.id,
+                        title: rawArticle.title,
+                        description: rawArticle.description,
+                        tags: rawArticle.tags,
+                        category: rawArticle.category,
+                        rating: rawArticle.rating,
+                        comments: rawArticle.comments,
+                        publisher: {
+                            login: rawArticle.publisher.login,
+                            username: rawArticle.publisher.username,
+                        },
+                        coverImgPath: "",
+                    }
+                    articles.push(article);
+                });
+            }
             return articles;
         });
     }
@@ -224,23 +226,25 @@ export class Requests {
         }).then((response) => {
             const result: RequestAnswer = response!;
             let articles: IncompleteArticleData[] = [];
-            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                const article: IncompleteArticleData = {
-                    id: rawArticle.id,
-                    title: rawArticle.title,
-                    description: rawArticle.description,
-                    tags: rawArticle.tags,
-                    category: rawArticle.category,
-                    rating: rawArticle.rating,
-                    comments: rawArticle.comments,
-                    publisher: {
-                        login: rawArticle.publisher.login,
-                        username: rawArticle.publisher.username,
-                    },
-                    coverImgPath: "",
-                }
-                articles.push(article);
-            });
+            if (result.response.articles){
+                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                    const article: IncompleteArticleData = {
+                        id: rawArticle.id,
+                        title: rawArticle.title,
+                        description: rawArticle.description,
+                        tags: rawArticle.tags,
+                        category: rawArticle.category,
+                        rating: rawArticle.rating,
+                        comments: rawArticle.comments,
+                        publisher: {
+                            login: rawArticle.publisher.login,
+                            username: rawArticle.publisher.username,
+                        },
+                        coverImgPath: "",
+                    }
+                    articles.push(article);
+                });
+            }
             return articles;
         });
     }
@@ -278,23 +282,25 @@ export class Requests {
         }).then((response) => {
             const result: RequestAnswer = response!;
             let articles: IncompleteArticleData[] = [];
-            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                const article: IncompleteArticleData = {
-                    id: rawArticle.id,
-                    title: rawArticle.title,
-                    description: rawArticle.description,
-                    tags: rawArticle.tags,
-                    category: rawArticle.category,
-                    rating: rawArticle.rating,
-                    comments: rawArticle.comments,
-                    publisher: {
-                        login: rawArticle.publisher.login,
-                        username: rawArticle.publisher.username,
-                    },
-                    coverImgPath: "",
-                }
-                articles.push(article);
-            });
+            if (result.response.articles){
+                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                    const article: IncompleteArticleData = {
+                        id: rawArticle.id,
+                        title: rawArticle.title,
+                        description: rawArticle.description,
+                        tags: rawArticle.tags,
+                        category: rawArticle.category,
+                        rating: rawArticle.rating,
+                        comments: rawArticle.comments,
+                        publisher: {
+                            login: rawArticle.publisher.login,
+                            username: rawArticle.publisher.username,
+                        },
+                        coverImgPath: "",
+                    }
+                    articles.push(article);
+                });
+            }
             return articles;
         });
     }
@@ -521,23 +527,25 @@ export class Requests {
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
             let articles: IncompleteArticleData[] = [];
-            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                const article: IncompleteArticleData = {
-                    id: rawArticle.id,
-                    title: rawArticle.title,
-                    description: rawArticle.description,
-                    tags: rawArticle.tags,
-                    category: rawArticle.category,
-                    rating: rawArticle.rating,
-                    comments: rawArticle.comments,
-                    publisher: {
-                        login: rawArticle.publisher.login,
-                        username: rawArticle.publisher.username,
-                    },
-                    coverImgPath: "",
-                }
-                articles.push(article);
-            });
+            if (result.response.articles){
+                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                    const article: IncompleteArticleData = {
+                        id: rawArticle.id,
+                        title: rawArticle.title,
+                        description: rawArticle.description,
+                        tags: rawArticle.tags,
+                        category: rawArticle.category,
+                        rating: rawArticle.rating,
+                        comments: rawArticle.comments,
+                        publisher: {
+                            login: rawArticle.publisher.login,
+                            username: rawArticle.publisher.username,
+                        },
+                        coverImgPath: "",
+                    }
+                    articles.push(article);
+                });
+            }
             return articles;
         });
     }
@@ -556,23 +564,25 @@ export class Requests {
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
             let articles: IncompleteArticleData[] = [];
-            result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                const article: IncompleteArticleData = {
-                    id: rawArticle.id,
-                    title: rawArticle.title,
-                    description: rawArticle.description,
-                    tags: rawArticle.tags,
-                    category: rawArticle.category,
-                    rating: rawArticle.rating,
-                    comments: rawArticle.comments,
-                    publisher: {
-                        login: rawArticle.publisher.login,
-                        username: rawArticle.publisher.username,
-                    },
-                    coverImgPath: "",
-                }
-                articles.push(article);
-            });
+            if (result.response.articles){
+                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                    const article: IncompleteArticleData = {
+                        id: rawArticle.id,
+                        title: rawArticle.title,
+                        description: rawArticle.description,
+                        tags: rawArticle.tags,
+                        category: rawArticle.category,
+                        rating: rawArticle.rating,
+                        comments: rawArticle.comments,
+                        publisher: {
+                            login: rawArticle.publisher.login,
+                            username: rawArticle.publisher.username,
+                        },
+                        coverImgPath: "",
+                    }
+                    articles.push(article);
+                });
+            }
             return articles;
         });
     }

@@ -1030,6 +1030,7 @@ export class Events {
         const newTagString: string = tagsForm.value;
 
         if (newTagString != '') {
+            /*
             if (!form.tags.includes(newTagString)) {
                 const tagsRow = form.root.querySelector('.advanced_search__sidebar__tags')!;
                 if (tagsRow.querySelectorAll('.article__tag').length === 0) {
@@ -1044,6 +1045,7 @@ export class Events {
                 form.tags.push(newTagString);
 
                 newTag.addEventListener('click', () => {
+
                     const index = form.tags.indexOf(newTagString);
                     if (index > -1) {
                         form.tags.splice(index, 1);
@@ -1054,8 +1056,25 @@ export class Events {
                     } else {
                         newTag.parentNode!.removeChild(newTag);
                     }
-                });
+
+                 });
+            }*/
+            const tagsRow = form.root.querySelector('.advanced_search__sidebar__tags')!;
+            if (tagsRow.querySelectorAll('.article__tag').length !== 0) {
+                tagsRow.innerHTML = '';
+                form.tags = [];
             }
+            const newTag = document.createElement('div');
+            newTag.classList.add('article__tag');
+            newTag.innerHTML = newTagString;
+            form.tags.push(newTagString);
+            tagsRow.innerHTML = '';
+
+            newTag.addEventListener('click', () => {
+                form.tags = [];
+                newTag.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
+            });
+            tagsRow.appendChild(newTag);
         }
     }
 
