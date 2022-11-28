@@ -980,7 +980,7 @@ export class Events {
             searchButton.addEventListener('click', Events.closeSearchForm);
             const area = form.root.querySelector('.navbar__search_form')!;
             area.addEventListener('keypress', (event) => {
-                if ((event as KeyboardEvent).key === 'Enter') {
+                if ((event as KeyboardEvent).key === 'Enter' || (event as KeyboardEvent).keyCode === 13) {
                     Events.searchFormListener();
                 }
             });

@@ -1262,7 +1262,8 @@ div.log-button-container {
 
     .article_edit__add_tag {
         font-size: 20px;
-        line-height: 27px;
+        line-height: 40px;
+        border-radius: 25px;
     }
 
     .select_menu {
@@ -1272,5 +1273,13 @@ div.log-button-container {
     .article_edit__save_button {
         font-size: 30px;
         border-radius: 25px;
+    }
+
+    .article_edit__footer {
+        bottom: 24px;
+    }
+
+    .article_edit div, select {
+        margin: 10px;
     }
 }
