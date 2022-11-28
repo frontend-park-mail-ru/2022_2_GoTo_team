@@ -96,6 +96,7 @@ export default class ArticlePage extends Page {
         const articleEventBus: OpenedArticleEventBus = {
             goToCategoryFeed: Events.goToCategoryFeed,
             goToAuthorFeed: Events.goToAuthorFeed,
+            openTagPage: URIChanger.searchByTagPage,
         }
 
         const commentaryFormEventBus: CommentaryFormEventBus = {

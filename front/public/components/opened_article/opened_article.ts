@@ -5,6 +5,7 @@ import {FullArticleData} from "../../common/types";
 export type OpenedArticleEventBus = {
     goToCategoryFeed: (category: string) => void,
     goToAuthorFeed: (author: string) => void,
+    openTagPage: (tag: string) => void,
 }
 /**
  * View_model-компонент соответсвующего View
@@ -53,6 +54,12 @@ export default class OpenedArticle extends BasicComponent {
         const authorLink = this.root.querySelector('.article__author')!;
         authorLink.addEventListener('click', () => {
             eventBus.goToAuthorFeed(this.view.publisher!);
+        })
+
+        this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
+            tagDiv.addEventListener('click', () => {
+                eventBus.openTagPage(tagDiv.innerHTML);
+            })
         })
     }
 };
