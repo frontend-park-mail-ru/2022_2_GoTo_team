@@ -800,8 +800,9 @@ div.log-button-container {
 .feed_page__header__login {
     font-family: 'Arial', serif;
     padding: 3px;
-    font-size: 24px;
-    font-weight: medium;
+    font-size: 16px;
+    margin: auto 0 3px 0;
+    font-weight: normal;
 }
 
 .feed_page__header__description {
@@ -1128,4 +1129,8 @@ div.log-button-container {
 
 .article_edit__tags_row {
     margin: 5px 0 5px 0;
+}
+
+.commentary__reply_box {
+    border-left: var(--main) 2px solid;
 }

@@ -6,6 +6,8 @@ import {OpenedArticleEventBus} from "../../components/opened_article/opened_arti
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uri_changer.js";
 import {CommentaryFormEventBus} from "../../components/commentary_form/commentary_form";
+import Commentary, {CommentaryComponentEventBus} from "../../components/commentary/commentary.js";
+import {CommentaryParent} from "../../common/consts.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -30,6 +32,52 @@ export default class ArticlePage extends Page {
     async render(articleId: number) {
         const article = await Requests.getArticle(articleId);
         await this.view.render(article);
+        Requests.getCommentaries(articleId).then(async (commentaries) => {
+            const renderedCommentaries: Commentary[] = [];
+            for (const commentaryData of commentaries) {
+                const commentary = new Commentary();
+                await commentary.render(commentaryData);
+                const eventBus: CommentaryComponentEventBus = {
+                    goToAuthorFeed: URIChanger.userFeedPage,
+                    showAnswerForm: () => {
+                    },
+                }
+                commentary.subscribe(eventBus);
+                renderedCommentaries.push(commentary);
+            }
+
+            const addToComment = (parent: Commentary, child: Commentary) => {
+                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
+                wrapper.appendChild(child.root);
+            }
+
+            const addedCommentaries: Commentary[] = [];
+            renderedCommentaries.forEach((renderedCommentary) => {
+                if (renderedCommentary.data!.parentType === CommentaryParent.article) {
+                    this.view.children.get('commentary container').appendChild(renderedCommentary);
+
+                    const index = renderedCommentaries.indexOf(renderedCommentary);
+                    if (index > -1) {
+                        renderedCommentaries.splice(index, 1);
+                    }
+                    addedCommentaries.push(renderedCommentary);
+                } else {
+                    for (const addedCommentary of addedCommentaries) {
+                        if (renderedCommentary.data!.parentId === addedCommentary.data!.id) {
+                            addToComment(addedCommentary, renderedCommentary);
+
+                            const index = renderedCommentaries.indexOf(renderedCommentary);
+                            if (index > -1) {
+                                renderedCommentaries.splice(index, 1);
+                            }
+                            addedCommentaries.push(renderedCommentary);
+                            break;
+                        }
+                    }
+
+                }
+            })
+        })
         Events.updateAuth();
     }
 

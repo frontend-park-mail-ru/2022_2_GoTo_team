@@ -13,6 +13,7 @@ export type CommentaryComponentEventBus = {
  */
 export default class Commentary extends BasicComponent {
     view: CommentaryView;
+    data: CommentaryData | undefined;
 
     /**
      * Универсальный компонент заголовка
@@ -29,6 +30,7 @@ export default class Commentary extends BasicComponent {
      */
     async render(commentary: CommentaryData): Promise<HTMLElement> {
         await super.render();
+        this.data = commentary;
         this.root = await this.view.render(commentary);
         return this.root;
     }
