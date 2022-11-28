@@ -1037,7 +1037,6 @@ div.log-button-container {
 }
 
 .commentary_form {
-    width: 75%;
     padding: 10px;
 }
 
@@ -1137,6 +1136,14 @@ div.log-button-container {
 
 .commentary__reply_box {
     border-left: var(--main) 2px solid;
+}
+
+.commentary{
+    padding: 10px;
+}
+
+.commentary__block__wrapper{
+    width: 75%;
 }
 
 @media screen and (max-device-width: 420px) {

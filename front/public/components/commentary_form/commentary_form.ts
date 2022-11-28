@@ -38,6 +38,7 @@ export default class CommentaryForm extends BasicComponent {
         this.root = await this.view.render(commentaryData);
         this.parent = commentaryData.parentId;
         this.article = commentaryData.article;
+        this.parentType = commentaryData.parentType;
         return this.root;
     }
 

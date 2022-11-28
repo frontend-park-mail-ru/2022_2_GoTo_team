@@ -1018,6 +1018,7 @@ export class Events {
             if (!result){
                 alert("Для отправки комментариев нужно авторизироваться");
             }
+            PageLoaders.articlePage(form.article);
         });
     }
 

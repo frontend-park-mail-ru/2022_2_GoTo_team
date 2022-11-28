@@ -51,31 +51,33 @@ export default class ArticlePage extends Page {
             }
 
             const addedCommentaries: Commentary[] = [];
-            renderedCommentaries.forEach((renderedCommentary) => {
+            const commentariesToCommentaries: Commentary[] = [];
+            for (const renderedCommentary of renderedCommentaries) {
                 if (renderedCommentary.data!.parentType === CommentaryParent.article) {
-                    this.view.children.get('commentary container').appendChild(renderedCommentary);
-
-                    const index = renderedCommentaries.indexOf(renderedCommentary);
-                    if (index > -1) {
-                        renderedCommentaries.splice(index, 1);
-                    }
+                    this.view.children.get('commentary container').appendChild(renderedCommentary.root);
                     addedCommentaries.push(renderedCommentary);
                 } else {
-                    for (const addedCommentary of addedCommentaries) {
-                        if (renderedCommentary.data!.parentId === addedCommentary.data!.id) {
-                            addToComment(addedCommentary, renderedCommentary);
+                    commentariesToCommentaries.push(renderedCommentary);
 
-                            const index = renderedCommentaries.indexOf(renderedCommentary);
+                }
+            }
+
+            while (commentariesToCommentaries.length > 0){
+                const buf = commentariesToCommentaries;
+                for (const comment of buf){
+                    for (const addedCommentary of addedCommentaries){
+                        if (addedCommentary.data!.id === comment.data!.parentId){
+                            addToComment(addedCommentary, comment);
+                            addedCommentaries.push(comment);
+                            const index = commentariesToCommentaries.indexOf(comment);
                             if (index > -1) {
-                                renderedCommentaries.splice(index, 1);
+                                commentariesToCommentaries.splice(index, 1);
                             }
-                            addedCommentaries.push(renderedCommentary);
-                            break;
                         }
                     }
 
                 }
-            })
+            }
         })
         Events.updateAuth();
     }

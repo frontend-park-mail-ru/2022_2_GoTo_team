@@ -485,12 +485,12 @@ export class Requests {
      */
     static commentaryCreate(commentaryData: CommentaryData): Promise<boolean> {
         let params: requestParams;
-        if (commentaryData.parentType == CommentaryParent.article) {
+        if (commentaryData.parentType === CommentaryParent.article) {
             params = {
                 url: config.hrefs.commentaryCreate,
                 data: {
                     article_id: commentaryData.article,
-                    comment_for_comment_id: commentaryData.parentType === CommentaryParent.commentary ? commentaryData.parentId : "",
+                    comment_for_comment_id: "",
                     content: commentaryData.content
                 },
             }
@@ -499,7 +499,7 @@ export class Requests {
                 url: config.hrefs.commentaryCreate,
                 data: {
                     article_id: commentaryData.article,
-                    comment_for_comment_id: commentaryData.parentType === CommentaryParent.commentary ? commentaryData.parentId : "",
+                    comment_for_comment_id: "" + commentaryData.parentId,
                     content: commentaryData.content
                 },
             }
