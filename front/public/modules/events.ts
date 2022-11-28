@@ -22,7 +22,7 @@ import {URIChanger} from "./uri_changer.js";
 import {PageLoaders} from "./page_loaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentary_form/commentary_form.js";
 import AdvancedSearchSidebar from "../components/advanced_search/advanced_search_sidebar.js";
-import Commentary from "../components/commentary/commentary.js";
+import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
 
 
 export class Events {
@@ -1014,11 +1014,12 @@ export class Events {
             rating: 0,
             content: content
         }
+
         Requests.commentaryCreate(commentaryDate).then((result) => {
             if (!result){
                 alert("Для отправки комментариев нужно авторизироваться");
             }
-            PageLoaders.articlePage(form.article);
+            Events.rerenderCommentaries(form.article);
         });
     }
 
@@ -1181,5 +1182,64 @@ export class Events {
             form.subscribe(eventBus);
             parent.root.querySelector('.commentary__reply_box')!.appendChild(form.root);
         });
+    }
+
+    /**
+     * @param {int} articleId
+     */
+    static rerenderCommentaries(articleId: number){
+        Requests.getCommentaries(articleId).then(async (commentaries) => {
+            const renderedCommentaries: Commentary[] = [];
+            for (const commentaryData of commentaries) {
+                const commentary = new Commentary();
+                await commentary.render(commentaryData);
+                const eventBus: CommentaryComponentEventBus = {
+                    goToAuthorFeed: URIChanger.userFeedPage,
+                    showAnswerForm: Events.addCommentaryFormToComment,
+                }
+                commentary.subscribe(eventBus);
+                renderedCommentaries.push(commentary);
+            }
+
+            const addToComment = (parent: Commentary, child: Commentary) => {
+                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
+                wrapper.appendChild(child.root);
+            }
+
+            const container = document.querySelector('.commentary__block__wrapper')!;
+            const form = container.querySelector('.commentary_form')!;
+            form.querySelector('.commentary_form__content')!.innerHTML = '';
+            container.innerHTML = '';
+            container.appendChild(form);
+
+
+            const addedCommentaries: Commentary[] = [];
+            const commentariesToCommentaries: Commentary[] = [];
+            for (const renderedCommentary of renderedCommentaries) {
+                if (renderedCommentary.data!.parentType === CommentaryParent.article) {
+                    container.appendChild(renderedCommentary.root);
+                    addedCommentaries.push(renderedCommentary);
+                } else {
+                    commentariesToCommentaries.push(renderedCommentary);
+
+                }
+            }
+
+            while (commentariesToCommentaries.length > 0){
+                const buf = commentariesToCommentaries;
+                for (const comment of buf){
+                    for (const addedCommentary of addedCommentaries){
+                        if (addedCommentary.data!.id === comment.data!.parentId){
+                            addToComment(addedCommentary, comment);
+                            addedCommentaries.push(comment);
+                            const index = commentariesToCommentaries.indexOf(comment);
+                            if (index > -1) {
+                                commentariesToCommentaries.splice(index, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
 }

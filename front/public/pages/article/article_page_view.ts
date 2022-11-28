@@ -53,8 +53,9 @@ export default class ArticlePageView extends PageView {
         commentaryWrapper.classList.add('commentary__block__wrapper');
         commentaryWrapper.classList.add('horizontal_center_div');
         this.commentaryContainer = commentaryWrapper;
-        this.mainContentElement!.appendChild(this.commentaryContainer);
-        this.children.set('commentary container', this.commentaryContainer)
+        this.mainContentElement!.appendChild(commentaryContainer);
+        commentaryContainer.appendChild(this.commentaryContainer);
+        this.children.set('commentary container', this.commentaryContainer);
 
         const newCommentary = new CommentaryForm();
         const data: CommentaryData = {
@@ -66,7 +67,7 @@ export default class ArticlePageView extends PageView {
             content: ""
         }
         await newCommentary.render(data);
-        commentaryContainer.appendChild(newCommentary.root);
+        this.commentaryContainer.appendChild(newCommentary.root);
         this.children.set('commentary form', newCommentary);
 
         this.root.appendChild(document.createElement('div'));
