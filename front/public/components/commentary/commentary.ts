@@ -4,7 +4,7 @@ import CommentaryView from "./commentary_view.js";
 
 export type CommentaryComponentEventBus = {
     goToAuthorFeed: (login: string) => void,
-    showAnswerForm: () => void,
+    showAnswerForm: (comment: Commentary) => void,
 }
 
 /**
@@ -50,7 +50,7 @@ export default class Commentary extends BasicComponent {
 
         const answer_button: HTMLElement = this.root.querySelector('.commentary__answer_button')!;
         answer_button.addEventListener('click', () => {
-            eventBus.showAnswerForm();
+            eventBus.showAnswerForm(this);
         });
     }
 };

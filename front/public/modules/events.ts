@@ -15,13 +15,14 @@ import {
     UserPlugData
 } from "../common/types";
 import BasicComponent from "../components/_basic_component/basic_component.js";
-import {ResponseErrors} from "../common/consts.js"
+import {CommentaryParent, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
 import SearchForm from "../components/search_form/search_form.js";
 import {URIChanger} from "./uri_changer.js";
 import {PageLoaders} from "./page_loaders.js";
-import CommentaryForm from "../components/commentary_form/commentary_form";
-import AdvancedSearchSidebar from "../components/advanced_search/advanced_search_sidebar";
+import CommentaryForm, {CommentaryFormEventBus} from "../components/commentary_form/commentary_form.js";
+import AdvancedSearchSidebar from "../components/advanced_search/advanced_search_sidebar.js";
+import Commentary from "../components/commentary/commentary.js";
 
 
 export class Events {
@@ -1050,7 +1051,7 @@ export class Events {
 
                     if (form.tags.length == 0) {
                         newTag.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
-                    }else{
+                    } else {
                         newTag.parentNode!.removeChild(newTag);
                     }
                 });
@@ -1092,7 +1093,7 @@ export class Events {
 
         let tags: string[] = [];
         document.querySelectorAll('.article__tag').forEach((tagDiv) => {
-           tags.push(tagDiv.innerHTML);
+            tags.push(tagDiv.innerHTML);
         });
 
         if (newTagString != '') {
@@ -1120,11 +1121,32 @@ export class Events {
 
                     if (tags.length == 0) {
                         newTag.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
-                    }else{
+                    } else {
                         newTag.parentNode!.removeChild(newTag);
                     }
                 });
             }
         }
+    }
+
+    /**
+     * Добавление формы комментария к комментарию
+     */
+    static addCommentaryFormToComment(parent: Commentary): void {
+        const form = new CommentaryForm();
+        const commentaryData: CommentaryData = {
+            id: 0,
+            parentId: parent.data!.id,
+            parentType: CommentaryParent.commentary,
+            rating: 0,
+            content: "",
+        }
+        form.render(commentaryData).then(() => {
+            const eventBus: CommentaryFormEventBus = {
+                commentaryCreate: Events.createCommentary,
+            }
+            form.subscribe(eventBus);
+            parent.root.querySelector('.commentary__reply_box')!.appendChild(form.root);
+        });
     }
 }

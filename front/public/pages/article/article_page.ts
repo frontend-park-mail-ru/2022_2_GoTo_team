@@ -39,8 +39,7 @@ export default class ArticlePage extends Page {
                 await commentary.render(commentaryData);
                 const eventBus: CommentaryComponentEventBus = {
                     goToAuthorFeed: URIChanger.userFeedPage,
-                    showAnswerForm: () => {
-                    },
+                    showAnswerForm: Events.addCommentaryFormToComment,
                 }
                 commentary.subscribe(eventBus);
                 renderedCommentaries.push(commentary);
