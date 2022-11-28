@@ -35,7 +35,6 @@ router
         const searchData : FullSearchData = {
             primary: {
                 request: request,
-                number: 0,
             },
             advanced: {
                 author: params[1],
@@ -47,7 +46,6 @@ router
     .add(API.searchByTagPage, (tag: string) => {
         const searchData: SearchData = {
             request: tag,
-            number: 0,
         }
         PageLoaders.searchByTagPage(searchData);
     })

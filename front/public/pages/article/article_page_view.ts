@@ -51,6 +51,7 @@ export default class ArticlePageView extends PageView {
         commentaryContainer.classList.add('box');
         this.commentaryContainer = commentaryContainer;
         this.mainContentElement!.appendChild(this.commentaryContainer);
+        this.children.set('commentary container', commentaryContainer)
 
         const newCommentary = new CommentaryForm();
         console.log(articleData.id);

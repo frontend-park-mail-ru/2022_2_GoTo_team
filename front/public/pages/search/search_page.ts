@@ -8,6 +8,7 @@ import {AdvancedSearchSidebarEventBus} from "../../components/advanced_search/ad
 import {URIChanger} from "../../modules/uri_changer.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
+import {Helpers} from "../../modules/helpers.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -43,6 +44,16 @@ export default class SearchPage extends Page {
                 openArticle: URIChanger.articlePage,
                 openTagPage: URIChanger.searchByTagPage,
             }
+
+            let foundNumString: string;
+            if (articles.length === 0){
+                foundNumString = "Результатов не найдено";
+            }else{
+                foundNumString = 'Найдено ' + articles.length + ' ' + Helpers.numWord(articles.length,
+                    ["статья", "статьи", "статей"]);
+            }
+            document.querySelector('.feed_page__header__subscribers')!.innerHTML = foundNumString;
+
 
             if (articles && Array.isArray(articles)) {
                 this.view.mainContentElement.innerHTML = '';

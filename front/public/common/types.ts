@@ -95,7 +95,6 @@ export type RulesData = {
 
 export type SearchData = {
     request: string,
-    number: number,
 }
 
 export type AdvSearchData = {

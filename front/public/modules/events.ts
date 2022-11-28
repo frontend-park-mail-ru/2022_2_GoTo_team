@@ -1011,7 +1011,6 @@ export class Events {
 
         const data: SearchData = {
             request: form.value,
-            number: 0,
         }
 
         URIChanger.searchPage(data);
@@ -1068,7 +1067,6 @@ export class Events {
         let data: FullSearchData = {
             primary: {
                 request: request,
-                number: 0,
             },
             advanced: {
                 author: login,

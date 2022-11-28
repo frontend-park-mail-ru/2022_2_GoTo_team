@@ -52,10 +52,9 @@ export default class SearchPageView extends PageView {
         content.appendChild(this.mainContentElement);
 
         const header = new SearchHeader();
-        header.render(data.primary).then(() => {
-            center.insertBefore(header.root, center.children[0]);
-            this.children.set('header', header);
-        });
+        await header.render(data.primary)
+        center.insertBefore(header.root, center.children[0]);
+        this.children.set('header', header);
 
         const sidebar = new AdvancedSearchSidebar();
         await sidebar.render(data.advanced);

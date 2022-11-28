@@ -48,10 +48,8 @@ export default class SearchTagPageView extends PageView {
         center.appendChild(this.mainContentElement);
 
         const header = new SearchHeader();
-        header.render(data).then(() => {
-            center.insertBefore(header.root, center.children[0]);
-            this.children.set('header', header);
-        });
-
+        await header.render(data)
+        center.insertBefore(header.root, center.children[0]);
+        this.children.set('header', header);
     }
 }

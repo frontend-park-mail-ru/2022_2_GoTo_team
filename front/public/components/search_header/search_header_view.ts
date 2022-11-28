@@ -16,7 +16,6 @@ export default class SearchHeaderView extends BasicComponentView {
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['search_header.html']({
             request: searchData.request,
-            result_number: searchData.number,
         });
         return wrapper.querySelector('div')!;
     }
