@@ -1141,7 +1141,7 @@ div.log-button-container {
 
 @media screen and (max-device-width: 420px) {
     .root {
-        grid-template-columns: 1fr 6fr 1fr;
+        grid-template-columns: 0fr 6fr 0fr;
         margin-top: 80px;
     }
 
