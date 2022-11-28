@@ -3,7 +3,7 @@ import {requestParams} from "./ajax"
 import {
     CategoryData, CommentaryData, FullArticleData, FullSearchData,
     IncompleteArticleData,
-    RequestAnswer, SearchData, UserData,
+    RequestAnswer, UserData,
     UserHeaderData,
     UserLoginData,
     UserPlugData,
@@ -31,6 +31,7 @@ const config = {
         articleUpdate: '/article/update',
         categoryList: '/category/list',
         commentaryCreate: '/commentary/create',
+        commentaryFeed: '/commentary/feed',
         searchPage: '/search',
         searchTagPage: '/search/tag',
         tagList: '/tag/list',
@@ -201,6 +202,7 @@ export class Requests {
             const result = response!;
             const userData: UserHeaderData = {
                 username: result.response.username,
+                login: login,
                 rating: result.response.rating,
                 subscribers: result.response.subscribers_count,
                 registration_date: result.response.registration_date,
@@ -572,6 +574,45 @@ export class Requests {
                 articles.push(article);
             });
             return articles;
+        });
+    }
+
+    /**
+     * Запрос комментариев статьи
+     */
+    static getCommentaries(articleId: number): Promise<CommentaryData[]> {
+        let params = {
+            url: config.hrefs.commentaryFeed,
+            data: {
+                article: articleId,
+            },
+        }
+
+        return ajax.get(params).then((response) => {
+            const result: RequestAnswer = response!;
+            const commentaries: CommentaryData[] = [];
+            result.response.commentaries.forEach((rawCommentary: {
+                id: number,
+                origin_article: string,
+                origin_commentary: string
+                publisher: {
+                    username: string,
+                    login: string,
+                },
+                rating: number,
+                content: string,
+           }) => {
+                const commentary: CommentaryData = {
+                    id: rawCommentary.id,
+                    parentId: rawCommentary.origin_article !== ''? +rawCommentary.origin_article : +rawCommentary.origin_commentary,
+                    parentType: rawCommentary.origin_article !== ''? CommentaryParent.article : CommentaryParent.commentary,
+                    publisher: undefined,
+                    rating: rawCommentary.rating,
+                    content: rawCommentary.content,
+                }
+                commentaries.push(commentary);
+            });
+            return commentaries;
         });
     }
 }

@@ -57,6 +57,7 @@ export type UserData = {
 
 export type UserHeaderData = {
     username: string,
+    login: string,
     rating: number,
     subscribers: number,
     registration_date: string,

@@ -15,6 +15,7 @@ export default class UserFeedHeaderView extends BasicComponentView {
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['user_page_header.html']({
             username: userData.username,
+            login: userData.login,
             rating: userData.rating,
             subscribers: userData.subscribers,
             registration_date: userData.registration_date,

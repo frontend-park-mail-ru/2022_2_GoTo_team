@@ -797,6 +797,13 @@ div.log-button-container {
     font-weight: bold;
 }
 
+.feed_page__header__login {
+    font-family: 'Arial', serif;
+    padding: 3px;
+    font-size: 24px;
+    font-weight: medium;
+}
+
 .feed_page__header__description {
     font-family: 'Arial', serif;
     padding: 3px;
