@@ -1166,6 +1166,11 @@ export class Events {
      * Добавление формы комментария к комментарию
      */
     static addCommentaryFormToComment(parent: Commentary): void {
+        const potentialForm = parent.root.querySelector('.commentary_form');
+        if (potentialForm !== null){
+            potentialForm.parentNode!.removeChild(potentialForm);
+            return;
+        }
         const form = new CommentaryForm();
         const commentaryData: CommentaryData = {
             article: parent.data!.article,
@@ -1180,7 +1185,8 @@ export class Events {
                 commentaryCreate: Events.createCommentary,
             }
             form.subscribe(eventBus);
-            parent.root.querySelector('.commentary__reply_box')!.appendChild(form.root);
+            const parentReplyContainer = parent.root.querySelector('.commentary__reply_box')!
+            parentReplyContainer.insertBefore(form.root, parentReplyContainer.firstChild);
         });
     }
 
@@ -1240,6 +1246,10 @@ export class Events {
                     }
                 }
             }
+            const commentaryCount = commentaries.length;
+            document.querySelectorAll('.article__comments_count__count').forEach((element) => {
+                element.innerHTML = "" + commentaryCount;
+            })
         })
     }
 }

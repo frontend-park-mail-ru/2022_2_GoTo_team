@@ -1304,4 +1304,8 @@ div.log-button-container {
     .article__top_bar {
         margin-top: 20px;
     }
+
+    .commentary__block__wrapper {
+        width: 90%;
+    }
 }
