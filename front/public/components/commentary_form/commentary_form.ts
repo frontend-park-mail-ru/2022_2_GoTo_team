@@ -15,6 +15,7 @@ export default class CommentaryForm extends BasicComponent {
     view: CommentaryFormView;
     parentType: string;
     parent: number;
+    article: number;
 
     /**
      * Универсальный компонент заголовка
@@ -23,6 +24,7 @@ export default class CommentaryForm extends BasicComponent {
         super();
         this.view = new CommentaryFormView();
         this.parent = 0;
+        this.article = 0;
         this.parentType = CommentaryParent.article;
     }
 
@@ -35,6 +37,7 @@ export default class CommentaryForm extends BasicComponent {
         await super.render();
         this.root = await this.view.render(commentaryData);
         this.parent = commentaryData.parentId;
+        this.article = commentaryData.article;
         return this.root;
     }
 

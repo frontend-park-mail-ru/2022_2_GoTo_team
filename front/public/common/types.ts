@@ -84,6 +84,7 @@ export type Listener = () => any;
 
 export type CommentaryData = {
     id: number,
+    article: number,
     publisher?: publisher,
     parentType: string,
     parentId: number,

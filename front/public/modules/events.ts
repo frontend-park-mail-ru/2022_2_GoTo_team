@@ -1007,11 +1007,12 @@ export class Events {
 
 
         const commentaryDate: CommentaryData = {
+            article: form.article,
             id: 0,
             parentId: form.parent,
             parentType: form.parentType,
             rating: 0,
-            content: content,
+            content: content
         }
         Requests.commentaryCreate(commentaryDate);
     }
@@ -1161,11 +1162,12 @@ export class Events {
     static addCommentaryFormToComment(parent: Commentary): void {
         const form = new CommentaryForm();
         const commentaryData: CommentaryData = {
+            article: parent.data!.article,
             id: 0,
             parentId: parent.data!.id,
             parentType: CommentaryParent.commentary,
             rating: 0,
-            content: "",
+            content: ""
         }
         form.render(commentaryData).then(() => {
             const eventBus: CommentaryFormEventBus = {

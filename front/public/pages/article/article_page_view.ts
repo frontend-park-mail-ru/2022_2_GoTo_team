@@ -54,13 +54,13 @@ export default class ArticlePageView extends PageView {
         this.children.set('commentary container', commentaryContainer)
 
         const newCommentary = new CommentaryForm();
-        console.log(articleData.id);
         const data: CommentaryData = {
+            article: articleData.id,
             id: 0,
             parentId: articleData.id,
             parentType: CommentaryParent.article,
             rating: 0,
-            content: "",
+            content: ""
         }
         await newCommentary.render(data);
         commentaryContainer.appendChild(newCommentary.root);

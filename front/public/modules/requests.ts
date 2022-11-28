@@ -489,8 +489,8 @@ export class Requests {
             params = {
                 url: config.hrefs.commentaryCreate,
                 data: {
-                    origin_article: commentaryData.parentId,
-                    origin_commentary: "",
+                    article_id: commentaryData.article,
+                    comment_for_comment_id: commentaryData.parentType === CommentaryParent.commentary ? commentaryData.parentId : "",
                     content: commentaryData.content
                 },
             }
@@ -498,8 +498,8 @@ export class Requests {
             params = {
                 url: config.hrefs.commentaryCreate,
                 data: {
-                    origin_article: "",
-                    origin_commentary: commentaryData.parentId,
+                    article_id: commentaryData.article,
+                    comment_for_comment_id: commentaryData.parentType === CommentaryParent.commentary ? commentaryData.parentId : "",
                     content: commentaryData.content
                 },
             }
@@ -602,9 +602,9 @@ export class Requests {
             const result: RequestAnswer = response!;
             const commentaries: CommentaryData[] = [];
             result.response.commentaries.forEach((rawCommentary: {
-                id: number,
-                origin_article: string,
-                origin_commentary: string
+                comment_id: number,
+                article_id: number,
+                comment_for_comment_id: string
                 publisher: {
                     username: string,
                     login: string,
@@ -613,12 +613,16 @@ export class Requests {
                 content: string,
            }) => {
                 const commentary: CommentaryData = {
-                    id: rawCommentary.id,
-                    parentId: rawCommentary.origin_article !== ''? +rawCommentary.origin_article : +rawCommentary.origin_commentary,
-                    parentType: rawCommentary.origin_article !== ''? CommentaryParent.article : CommentaryParent.commentary,
-                    publisher: undefined,
+                    article: rawCommentary.article_id,
+                    id: rawCommentary.comment_id,
+                    parentId: rawCommentary.comment_for_comment_id === ''? +rawCommentary.article_id : +rawCommentary.comment_for_comment_id,
+                    parentType: rawCommentary.comment_for_comment_id === ''? CommentaryParent.article : CommentaryParent.commentary,
+                    publisher: {
+                        username: rawCommentary.publisher.username,
+                        login: rawCommentary.publisher.login,
+                    },
                     rating: rawCommentary.rating,
-                    content: rawCommentary.content,
+                    content: rawCommentary.content
                 }
                 commentaries.push(commentary);
             });
