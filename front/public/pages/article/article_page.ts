@@ -86,9 +86,10 @@ export default class ArticlePage extends Page {
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
             goToHotFeed: URIChanger.feedPage,
-            goToNewFeed: URIChanger.feedPage,
-            goToSubscribeFeed: URIChanger.feedPage,
-            openOtherMenu: Events.showOtherMenuListener,
+            //goToNewFeed: URIChanger.feedPage,
+            //goToSubscribeFeed: URIChanger.feedPage,
+            goToNewArticle: Events.newArticlePageListener,
+            //openOtherMenu: Events.showOtherMenuListener,
             openSearch: Events.showSearchForm,
         }
 

@@ -3,6 +3,7 @@ import LoginPageView from "./login_page_view.js";
 import Page from "../_basic/page.js";
 import {PageLoaders} from "../../modules/page_loaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
+import {URIChanger} from "../../modules/uri_changer.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -39,10 +40,11 @@ export default class LoginPage extends Page {
     subscribe() {
         const navbarEventBus: NavbarEventBus = {
             goToHotFeed: PageLoaders.feedPage,
-            goToNewFeed: PageLoaders.feedPage,
-            goToSubscribeFeed: PageLoaders.feedPage,
+            //goToNewFeed: PageLoaders.feedPage,
+            //goToSubscribeFeed: PageLoaders.feedPage,
             //goToNewArticle: PageLoaders.editArticle,
-            openOtherMenu: Events.showOtherMenuListener,
+            //openOtherMenu: Events.showOtherMenuListener,
+            goToNewArticle: URIChanger.editArticle,
             openSearch: Events.showSearchForm,
         }
 

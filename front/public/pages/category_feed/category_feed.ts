@@ -73,9 +73,10 @@ export default class CategoryFeed extends Page {
     async subscribe(): Promise<void> {
         const navbarEventBus: NavbarEventBus = {
             goToHotFeed: URIChanger.feedPage,
-            goToNewFeed: URIChanger.feedPage,
-            goToSubscribeFeed: URIChanger.feedPage,
-            openOtherMenu: Events.showOtherMenuListener,
+            //goToNewFeed: URIChanger.feedPage,
+            //goToSubscribeFeed: URIChanger.feedPage,
+            //openOtherMenu: Events.showOtherMenuListener,
+            goToNewArticle: Events.newArticlePageListener,
             openSearch: Events.showSearchForm,
         }
 

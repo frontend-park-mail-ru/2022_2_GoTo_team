@@ -54,9 +54,10 @@ export default class Feed extends Page{
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
             goToHotFeed: URIChanger.feedPage,
-            goToNewFeed: URIChanger.feedPage,
-            goToSubscribeFeed: URIChanger.feedPage,
-            openOtherMenu: Events.showOtherMenuListener,
+            //goToNewFeed: URIChanger.feedPage,
+            //goToSubscribeFeed: URIChanger.feedPage,
+            //openOtherMenu: Events.showOtherMenuListener,
+            goToNewArticle: Events.newArticlePageListener,
             openSearch: Events.showSearchForm,
         }
 
