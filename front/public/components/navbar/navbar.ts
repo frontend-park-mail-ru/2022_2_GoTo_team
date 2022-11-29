@@ -1,4 +1,4 @@
-import NavbarView from "./navbar_view.js";
+import NavbarView from "./navbarView.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {Listener} from "../../common/types";
 
@@ -12,32 +12,23 @@ export type NavbarEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class Navbar
  */
 export default class Navbar extends BasicComponent {
     view: NavbarView;
 
-    /**
-     * Универсальный компонент заголовка
-     */
     constructor() {
         super();
         this.view = new NavbarView();
     }
-    /**
-     * Перерисовка подконтрольного элемента
-     * @return {HTMLElement}
-     */
+
     async render() {
         await super.render();
         this.root = await this.view.render();
         return this.root;
     }
 
-    /**
-     * Подписка на связанные события
-     */
     async subscribe(eventBus: NavbarEventBus) {
         const logo = this.root.querySelector('.navbar__logo')!;
         logo.addEventListener('click', eventBus.goToHotFeed);
