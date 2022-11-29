@@ -2,8 +2,10 @@
  * View для соответсвующих страниц
  * @class PageView
  */
+import BasicComponent from "../../components/_basicComponent/basic_component.js";
+
 export default class PageView {
-    children: any;
+    children: Map<string, BasicComponent>;
     root: HTMLElement;
 
     /**
@@ -17,7 +19,7 @@ export default class PageView {
     /**
      * Нарисовать страницу
      */
-    async render(parameters?: object) {
+    render(parameters?: object): void {
         this.root.innerHTML = '';
     }
 }

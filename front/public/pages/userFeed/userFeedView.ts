@@ -1,4 +1,4 @@
-import PageView from "../_basic/page_view.js";
+import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
 
 /**
@@ -9,10 +9,7 @@ export default class UserFeedView extends PageView {
     center: HTMLElement | undefined;
     mainContentElement: HTMLElement | undefined;
 
-    /**
-     * @param {HTMLElement} root
-     */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
     }
 

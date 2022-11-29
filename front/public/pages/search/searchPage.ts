@@ -2,7 +2,7 @@ import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {FullSearchData} from "../../common/types";
-import SearchPageView from "./search_page_view.js";
+import SearchPageView from "./searchPageView.js";
 import {SearchHeaderEventBus} from "../../components/searchHeader/search_header";
 import {AdvancedSearchSidebarEventBus} from "../../components/advancedSearch/advanced_search_sidebar";
 import {URIChanger} from "../../modules/uriChanger.js";
@@ -17,10 +17,6 @@ import {Helpers} from "../../modules/helpers.js";
 export default class SearchPage extends Page {
     view: SearchPageView;
 
-    /**
-     * Страница содержит главный компонент
-     * @param {HTMLElement} root
-     */
     constructor(root: HTMLElement) {
         super(root);
         this.view = new SearchPageView(root);
@@ -64,12 +60,12 @@ export default class SearchPage extends Page {
 
 
             if (articles && Array.isArray(articles)) {
-                this.view.mainContentElement.innerHTML = '';
+                this.view.mainContentElement!.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
                     articleView.render(article).then(() => {
                         articleView.subscribe(articleEventBus);
-                        this.view.mainContentElement.appendChild(articleView.root);
+                        this.view.mainContentElement!.appendChild(articleView.root);
                     });
                 })
             }
@@ -91,15 +87,15 @@ export default class SearchPage extends Page {
             openSearch: Events.showSearchForm,
         }
 
-        this.view.children.get('navbar').subscribe(navbarEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
 
         const headerEventBus: SearchHeaderEventBus = {};
-        this.view.children.get('header').subscribe(headerEventBus);
+        this.view.children.get('header')!.subscribe(headerEventBus);
 
         const sidebarEventBus: AdvancedSearchSidebarEventBus = {
             addTag: Events.addSearchedTagListener,
             submit: Events.submitAdvSearchListener,
         };
-        this.view.children.get('sidebar').subscribe(sidebarEventBus);
+        this.view.children.get('sidebar')!.subscribe(sidebarEventBus);
     }
 }

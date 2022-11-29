@@ -1,5 +1,5 @@
 import {Events} from "../../modules/events.js";
-import SettingsPageView from "./settings_page_view.js";
+import SettingsPageView from "./settingsPageView.js";
 import Page from "../_basic/page.js";
 import Settings, {SettingsEventBus} from "../../components/settings/settings.js";
 import {Requests} from "../../modules/requests.js";
@@ -13,10 +13,6 @@ import {URIChanger} from "../../modules/uriChanger.js";
 export default class SettingsPage extends Page {
     view: SettingsPageView;
 
-    /**
-     * Страница содержит главный компонент
-     * @param {HTMLElement} root
-     */
     constructor(root: HTMLElement) {
         super(root);
         this.view = new SettingsPageView(root);
@@ -58,7 +54,7 @@ export default class SettingsPage extends Page {
             openSearch: Events.showSearchForm,
         }
 
-        this.view.children.get('navbar').subscribe(navbarEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
 
         const settingsEventBus: SettingsEventBus = {
             emailValidation: Events.emailValidateListenerSettings,
@@ -68,6 +64,6 @@ export default class SettingsPage extends Page {
             usernameValidation: Events.usernameValidateListenerSettings,
             saveProfile: Events.saveProfileListener,
         }
-        this.view.children.get('form').subscribe(settingsEventBus);
+        this.view.children.get('form')!.subscribe(settingsEventBus);
     }
 }

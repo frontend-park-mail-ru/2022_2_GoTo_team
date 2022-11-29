@@ -1,4 +1,4 @@
-import PageView from "./page_view.js";
+import PageView from "./pageView.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц

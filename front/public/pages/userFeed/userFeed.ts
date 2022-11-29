@@ -1,6 +1,6 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import UserFeedView from "./user_feed_view.js";
+import UserFeedView from "./userFeedView.js";
 import UserFeedHeader, {UserFeedHeaderEventBus} from "../../components/userFeedHeader/user_feed_header.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
@@ -78,6 +78,6 @@ export default class UserFeed extends Page {
             openSearch: Events.showSearchForm,
         }
 
-        this.view.children.get('navbar').subscribe(navbarEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
     }
 }

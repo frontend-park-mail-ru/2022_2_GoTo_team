@@ -1,4 +1,4 @@
-import PageView from "../_basic/page_view.js";
+import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
 import {FullSearchData} from "../../common/types";
 import SearchHeader from "../../components/searchHeader/search_header.js";
@@ -9,12 +9,9 @@ import AdvancedSearchSidebar from "../../components/advancedSearch/advanced_sear
  * @class SearchPageView
  */
 export default class SearchPageView extends PageView {
-    center: any;
-    mainContentElement: any;
+    center: HTMLElement | undefined;
+    mainContentElement: HTMLElement | undefined;
 
-    /**
-     * @param {HTMLElement} root
-     */
     constructor(root: HTMLElement) {
         super(root);
     }
@@ -23,7 +20,7 @@ export default class SearchPageView extends PageView {
      * Перерисовать главную страницу
      */
     async render(data: FullSearchData) {
-        await super.render();
+        super.render();
         const navbar = new Navbar();
         await navbar.render();
         this.children.set('navbar', navbar);

@@ -1,4 +1,4 @@
-import ArticleEditPageView from "./article_edit_page_view.js";
+import ArticleEditPageView from "./articleEditPageView.js";
 import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
@@ -46,7 +46,7 @@ export default class ArticleEditPage extends Page {
             goToNewArticle: Events.newArticlePageListener,
             openSearch: Events.showSearchForm,
         }
-        this.view.children.get('navbar').subscribe(navbarEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
 
         const articleEventBus: ArticleEditEventBus = {
             articleCreate: Events.articleCreateListener,
@@ -54,6 +54,6 @@ export default class ArticleEditPage extends Page {
             articleUpdate: Events.articleUpdateListener,
             tagAdd: Events.addArticleTagListener,
         }
-        this.view.children.get('edit').subscribe(articleEventBus);
+        this.view.children.get('edit')!.subscribe(articleEventBus);
     }
 }

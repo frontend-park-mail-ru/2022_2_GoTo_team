@@ -1,19 +1,18 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import RegistrationPageView from "./registration_page_view.js";
+import RegistrationPageView from "./registrationPageView.js";
 import {PageLoaders} from "../../modules/pageLoaders.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class  RegistrationPage
  */
 export default class RegistrationPage extends Page{
-    // @ts-ignore
     view: RegistrationPageView;
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
         this.view = new RegistrationPageView(root);
     }
@@ -30,9 +29,8 @@ export default class RegistrationPage extends Page{
     /**
      * Подписка на связанные события
      */
-    // @ts-ignore
-    subscribe() {
-        this.view.children.get('navbar').subscribe();
+    async subscribe() {
+        this.view.children.get('navbar')!.subscribe();
         const registrationEventBus = {
             submit: Events.submitRegistration,
             email_validation: Events.emailValidateListenerRegistration,
@@ -41,12 +39,10 @@ export default class RegistrationPage extends Page{
             password_validation: Events.passwordValidateListenerRegistration,
             repeat_password_validation: Events.passwordRepeatValidateListenerRegistration,
         }
-        this.view.children.get('form').subscribe(registrationEventBus);
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
-        const profileButton = document.getElementById('navbar__auth_button').lastChild;
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
+        this.view.children.get('form')!.subscribe(registrationEventBus);
+
+        const profileButton = document.getElementById('navbar__auth_button')!.lastChild!;
         profileButton.removeEventListener('click', Events.makeLoginOverlayListener);
-        // @ts-expect-error TS(2531): Object is possibly 'null'.
         profileButton.addEventListener('click', PageLoaders.loginPage);
     }
 }

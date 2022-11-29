@@ -1,4 +1,4 @@
-import ArticlePageView from "./article_page_view.js";
+import ArticlePageView from "./articlePageView.js";
 import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
@@ -20,7 +20,7 @@ export default class ArticlePage extends Page {
      * Страница содержит главный компонент
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
         this.view = new ArticlePageView(root);
     }
@@ -54,6 +54,7 @@ export default class ArticlePage extends Page {
             const commentariesToCommentaries: Commentary[] = [];
             for (const renderedCommentary of renderedCommentaries) {
                 if (renderedCommentary.data!.parentType === CommentaryParent.article) {
+                    // @ts-ignore
                     this.view.children.get('commentary container').appendChild(renderedCommentary.root);
                     addedCommentaries.push(renderedCommentary);
                 } else {
@@ -104,8 +105,8 @@ export default class ArticlePage extends Page {
             commentaryCreate: Events.createCommentary,
         }
 
-        this.view.children.get('navbar').subscribe(navbarEventBus);
-        this.view.children.get('article').subscribe(articleEventBus);
-        this.view.children.get('commentary form').subscribe(commentaryFormEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
+        this.view.children.get('article')!.subscribe(articleEventBus);
+        this.view.children.get('commentary form')!.subscribe(commentaryFormEventBus);
     }
 }

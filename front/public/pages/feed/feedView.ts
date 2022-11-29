@@ -1,30 +1,27 @@
-import PageView from "../_basic/page_view.js";
+import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
-import RegistrationForm from "../../components/registrationForm/registration_form.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
- * @class RegistrationPageView
+ * @class FeedView
  */
-export default class RegistrationPageView extends PageView {
-    mainContentElement: any;
+export default class FeedView extends PageView {
+    mainContentElement: HTMLElement | undefined;
 
     /**
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
     }
 
     /**
      * Перерисовать главную страницу
      */
-    // @ts-ignore
-    render() {
-        super.render();
+    async render() {
+        await super.render();
         const navbar = new Navbar();
-        navbar.render();
-        this.children.set('navbar', navbar);
+        await navbar.render();
         this.root.appendChild(navbar.root);
 
         const rootEl = document.createElement('div');
@@ -41,10 +38,6 @@ export default class RegistrationPageView extends PageView {
         this.root.appendChild(this.mainContentElement);
 
         this.root.appendChild(document.createElement('div'));
-
-        const registrationForm = new RegistrationForm();
-        registrationForm.render();
-        this.mainContentElement.appendChild(registrationForm.root);
-        this.children.set('form', registrationForm);
+        this.children.set('navbar', navbar);
     }
 }

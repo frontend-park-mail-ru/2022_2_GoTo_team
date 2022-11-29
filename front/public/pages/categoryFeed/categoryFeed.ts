@@ -1,6 +1,6 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import CategoryFeedView from "./category_feed_view.js";
+import CategoryFeedView from "./categoryFeedView.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import CategoryFeedHeader, {
@@ -18,9 +18,8 @@ export default class CategoryFeed extends Page {
 
     /**
      * Страница содержит главный компонент
-     * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
         this.view = new CategoryFeedView(root);
     }
@@ -40,7 +39,7 @@ export default class CategoryFeed extends Page {
             const header = new CategoryFeedHeader();
             header.render(categoryData).then(() => {
                 header.subscribe(eventBus);
-                this.view.center.insertBefore(header.root, this.view.center.children[0]);
+                this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
             });
         });
 
@@ -53,12 +52,12 @@ export default class CategoryFeed extends Page {
             }
 
             if (articles && Array.isArray(articles)) {
-                this.view.mainContentElement.innerHTML = '';
+                this.view.mainContentElement!.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
                     articleView.render(article).then(() => {
                         articleView.subscribe(articleEventBus);
-                        this.view.mainContentElement.appendChild(articleView.root);
+                        this.view.mainContentElement!.appendChild(articleView.root);
                     });
                 })
             }
@@ -80,6 +79,6 @@ export default class CategoryFeed extends Page {
             openSearch: Events.showSearchForm,
         }
 
-        this.view.children.get('navbar').subscribe(navbarEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
     }
 }

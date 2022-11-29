@@ -7,7 +7,7 @@ import {AdvancedSearchSidebarEventBus} from "../../components/advancedSearch/adv
 import {URIChanger} from "../../modules/uriChanger.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
-import SearchTagPageView from "./search_tag_page_view.js";
+import SearchTagPageView from "./searchTagPageView.js";
 import {Helpers} from "../../modules/helpers.js";
 
 /**
@@ -54,20 +54,19 @@ export default class SearchTagPage extends Page {
                 document.querySelector('.feed_page__header__subscribers')!.innerHTML = foundNumString;
 
                 if (articles && Array.isArray(articles)) {
-                    this.view.mainContentElement.innerHTML = '';
+                    this.view.mainContentElement!.innerHTML = '';
                     articles.forEach((article) => {
                         const articleView = new Article();
                         articleView.render(article).then(() => {
                             articleView.subscribe(articleEventBus);
-                            this.view.mainContentElement.appendChild(articleView.root);
+                            this.view.mainContentElement!.appendChild(articleView.root);
                         });
                     })
                 }
             }
         );
 
-        Events
-            .updateAuth();
+        Events.updateAuth();
     }
 
     /**
@@ -83,15 +82,15 @@ export default class SearchTagPage extends Page {
             openSearch: Events.showSearchForm,
         }
 
-        this.view.children.get('navbar').subscribe(navbarEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
 
         const headerEventBus: SearchHeaderEventBus = {};
-        this.view.children.get('header').subscribe(headerEventBus);
+        this.view.children.get('header')!.subscribe(headerEventBus);
 
         const sidebarEventBus: AdvancedSearchSidebarEventBus = {
             addTag: Events.addSearchedTagListener,
             submit: Events.submitAdvSearchListener,
         };
-        this.view.children.get('sidebar').subscribe(sidebarEventBus);
+        this.view.children.get('sidebar')!.subscribe(sidebarEventBus);
     }
 }

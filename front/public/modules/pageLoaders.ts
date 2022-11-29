@@ -1,14 +1,14 @@
-import LoginPage from "../pages/login/login_page.js";
+import LoginPage from "../pages/login/loginPage.js";
 import Feed from "../pages/feed/feed.js";
-import RegistrationPage from "../pages/registration/registration_page.js";
-import UserFeed from "../pages/userFeed/user_feed.js";
-import CategoryFeed from "../pages/categoryFeed/category_feed.js";
-import ArticlePage from "../pages/article/article_page.js";
-import SettingsPage from "../pages/settingsPage/settings_page.js";
-import ArticleEditPage from "../pages/articleEdit/article_edit_page.js";
+import RegistrationPage from "../pages/registration/registrationPage.js";
+import UserFeed from "../pages/userFeed/userFeed.js";
+import CategoryFeed from "../pages/categoryFeed/categoryFeed.js";
+import ArticlePage from "../pages/article/articlePage.js";
+import SettingsPage from "../pages/settingsPage/settingsPage.js";
+import ArticleEditPage from "../pages/articleEdit/articleEditPage.js";
 import {FullSearchData, SearchData} from "../common/types";
-import SearchPage from "../pages/search/search_page.js";
-import SearchTagPage from "../pages/searchTag/search_tag_page.js";
+import SearchPage from "../pages/search/searchPage.js";
+import SearchTagPage from "../pages/searchTag/searchTagPage.js";
 
 const root = document.getElementsByTagName('body')[0];
 

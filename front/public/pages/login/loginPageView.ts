@@ -1,27 +1,26 @@
-import PageView from "../_basic/page_view.js";
+import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
-import ArticleEdit from "../../components/articleEdit/article_edit.js";
-import {FullArticleData} from "../../common/types";
+import LoginForm from "../../components/loginForm/login_form.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
- * @class ArticleEditPageView
+ * @class LoginPageView
  */
-export default class ArticleEditPageView extends PageView {
-    main_content_element: HTMLElement | undefined;
+export default class LoginPageView extends PageView {
+    mainContentElement: HTMLElement | undefined;
 
     /**
      * @param {HTMLElement} root
      */
-    constructor(root: HTMLElement) {
+    constructor(root: any) {
         super(root);
     }
 
     /**
      * Перерисовать главную страницу
      */
-    async render(articleData: FullArticleData) {
-        await super.render();
+    async render() {
+        super.render();
         const navbar = new Navbar();
         await navbar.render();
         this.children.set('navbar', navbar);
@@ -37,16 +36,14 @@ export default class ArticleEditPageView extends PageView {
 
         const mainContentElement = document.createElement('div');
         mainContentElement.classList.add('feed');
-        this.main_content_element = mainContentElement;
-        this.root.appendChild(this.main_content_element);
+        this.mainContentElement = mainContentElement;
+        this.root.appendChild(this.mainContentElement);
 
-        const editView = new ArticleEdit();
-        await editView.render(articleData);
-        mainContentElement.appendChild(editView.root);
         this.root.appendChild(document.createElement('div'));
 
-
-        this.children.set('edit', editView);
-        this.children.set('navbar', navbar);
+        const loginForm = new LoginForm();
+        loginForm.render();
+        this.mainContentElement.appendChild(loginForm.root);
+        this.children.set('form', loginForm);
     }
 }

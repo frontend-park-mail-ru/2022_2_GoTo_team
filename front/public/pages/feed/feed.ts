@@ -1,4 +1,4 @@
-import FeedView from "./feed_view.js";
+import FeedView from "./feedView.js";
 import {Requests} from "../../modules/requests.js"
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {Events} from "../../modules/events.js";
@@ -12,10 +12,7 @@ import {URIChanger} from "../../modules/uriChanger.js";
  */
 export default class Feed extends Page{
     view: FeedView;
-    /**
-     * Страница содержит главный компонент
-     * @param {HTMLElement} root
-     */
+
     constructor(root: HTMLElement) {
         super(root);
         this.view = new FeedView(root);
@@ -23,7 +20,6 @@ export default class Feed extends Page{
 
     /**
      * Отобразить подконтрольную страницу.
-     * Должен быть вызван render() для обновления.
      */
     async render() {
         const articleEventBus : ArticleComponentEventBus = {
@@ -61,6 +57,6 @@ export default class Feed extends Page{
             openSearch: Events.showSearchForm,
         }
 
-        this.view.children.get('navbar').subscribe(navbarEventBus);
+        this.view.children.get('navbar')!.subscribe(navbarEventBus);
     }
 }
