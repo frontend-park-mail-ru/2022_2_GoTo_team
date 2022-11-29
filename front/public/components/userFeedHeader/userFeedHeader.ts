@@ -1,4 +1,4 @@
-import UserFeedHeaderView from "./user_feed_header_view.js";
+import UserFeedHeaderView from "./userFeedHeaderView.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {UserHeaderData} from "../../common/types";
 
@@ -7,14 +7,12 @@ export type UserFeedHeaderEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class UserFeedHeader
  */
 export default class UserFeedHeader extends BasicComponent {
     view: UserFeedHeaderView;
-    /**
-     * Универсальный компонент заголовка
-     */
+
     constructor() {
         super();
         this.view = new UserFeedHeaderView();
@@ -22,7 +20,6 @@ export default class UserFeedHeader extends BasicComponent {
 
     /**
      * Перерисовка подконтрольного элемента
-     * @return {HTMLElement}
      */
     async render(userData: UserHeaderData): Promise<HTMLElement> {
         await super.render();
@@ -30,9 +27,6 @@ export default class UserFeedHeader extends BasicComponent {
         return this.root;
     }
 
-    /**
-     * Подписка на связанные события
-     */
     async subscribe(eventBus: UserFeedHeaderEventBus) {
     }
 };

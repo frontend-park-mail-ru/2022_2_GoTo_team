@@ -1,7 +1,7 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import UserFeedView from "./userFeedView.js";
-import UserFeedHeader, {UserFeedHeaderEventBus} from "../../components/userFeedHeader/user_feed_header.js";
+import UserFeedHeader, {UserFeedHeaderEventBus} from "../../components/userFeedHeader/userFeedHeader.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
