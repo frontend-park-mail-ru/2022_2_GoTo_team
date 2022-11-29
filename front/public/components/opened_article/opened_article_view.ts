@@ -24,13 +24,13 @@ export default class OpenedArticleView extends BasicComponentView {
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['opened_article.html']({
             title: article.title,
-            description: article.description,
+            description: article.description.split('\n'),
             tags: article.tags,
             category: article.category,
             rating: article.rating,
             comments: article.comments,
             publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
-            content: article.content,
+            content: article.content.split('\n'),
             picture: article.coverImgPath !== '' && typeof article.coverImgPath !== 'undefined' ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
         });
         this.publisher = article.publisher.login;
