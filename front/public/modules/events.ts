@@ -4,7 +4,7 @@ import RegistrationForm, {RegistrationFormEventBus} from "../components/registra
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
 import UserPlug, {UserPlugEventBus} from "../components/userPlug/user_plug.js";
-import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/user_plug_menu.js";
+import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/userPlugMenu.js";
 import {
     CommentaryData,
     FullArticleData,

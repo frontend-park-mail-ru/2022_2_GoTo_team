@@ -4,7 +4,6 @@ import OpenedArticle from "../../components/openedArticle/opened_article.js";
 import {CommentaryData, FullArticleData} from "../../common/types";
 import CommentaryForm from "../../components/commentaryForm/commentary_form.js";
 import {CommentaryParent} from "../../common/consts.js";
-import BasicComponent from "../../components/_basicComponent/basic_component";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.

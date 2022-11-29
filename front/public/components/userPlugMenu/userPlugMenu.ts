@@ -1,5 +1,5 @@
 import BasicComponent from "../_basicComponent/basic_component.js";
-import UserPlugMenuView from "./user_plug_menu_view.js";
+import UserPlugMenuView from "./userPlugMenuView.js";
 import {Listener} from "../../common/types";
 
 export type UserPlugMenuEventBus = {
@@ -8,31 +8,23 @@ export type UserPlugMenuEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class UserPlugMenu
  */
 export default class UserPlugMenu extends BasicComponent {
     view: UserPlugMenuView;
-    /**
-     * Универсальный компонент заголовка
-     */
+
     constructor() {
         super();
         this.view = new UserPlugMenuView();
     }
 
-    /**
-     * @return {HTMLElement}
-     */
     async render() {
         await super.render();
         this.root = await this.view.render();
         return this.root;
     }
 
-    /**
-     * Подписка на связанные события
-     */
     async subscribe(eventBus: UserPlugMenuEventBus) {
         await super.subscribe();
 
