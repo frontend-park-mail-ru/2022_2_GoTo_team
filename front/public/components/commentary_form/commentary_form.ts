@@ -1,4 +1,4 @@
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import {CommentaryData} from "../../common/types";
 import CommentaryFormView from "./commentary_form_view.js";
 import {CommentaryParent} from "../../common/consts.js";

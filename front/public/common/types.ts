@@ -3,6 +3,12 @@ export type RequestAnswer = {
     response: any,
 }
 
+export type Subscription = {
+    element: Element,
+    event: string,
+    listener: () => any,
+}
+
 type publisher = {
     login: string,
     username: string,

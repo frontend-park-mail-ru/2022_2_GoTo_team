@@ -1,5 +1,5 @@
 
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import {SearchData} from "../../common/types";
 import SearchHeaderView from "./search_header_view.js";
 

@@ -14,14 +14,14 @@ import {
     UserData,
     UserPlugData
 } from "../common/types";
-import BasicComponent from "../components/_basic_component/basic_component.js";
+import BasicComponent from "../components/_basicComponent/basicComponent";
 import {CommentaryParent, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
 import SearchForm from "../components/search_form/search_form.js";
 import {URIChanger} from "./uri_changer.js";
 import {PageLoaders} from "./page_loaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentary_form/commentary_form.js";
-import AdvancedSearchSidebar from "../components/advanced_search/advanced_search_sidebar.js";
+import AdvancedSearchSidebar from "../components/advancedSearch/advancedSearchSidebar";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
 
 

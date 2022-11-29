@@ -1,4 +1,4 @@
-import BasicComponentView from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView";
 import "../tmpl/unauthorized_user.tmpl.js"
 import "../tmpl/authorized_user.tmpl.js";
 import {UserPlugData} from "../../common/types";
@@ -12,7 +12,7 @@ export default class UserPlugView extends BasicComponentView {
      * @param {UserPlugData} userData
      * @return {HTMLElement}
      */
-    async render(userData?: UserPlugData) {
+    render(userData?: UserPlugData): HTMLElement {
         const wrapper = document.createElement('div');
         if (userData){
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.

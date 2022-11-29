@@ -1,7 +1,7 @@
-import ArticleEditView from "./article_edit_view.js";
-import BasicComponent from "../_basic_component/basic_component.js";
+import ArticleEditView from "./articleEditView.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Requests} from "../../modules/requests.js";
-import {EditArticleData, FullArticleData, Listener, RequestAnswer} from "../../common/types";
+import {EditArticleData, FullArticleData, Listener, RequestAnswer, Subscription} from "../../common/types";
 
 export type ArticleEditEventBus = {
     articleUpdate: (id: number) => void,
@@ -11,7 +11,7 @@ export type ArticleEditEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class ArticleEdit
  */
 export default class ArticleEdit extends BasicComponent {
@@ -27,11 +27,8 @@ export default class ArticleEdit extends BasicComponent {
 
     /**
      * Перерисовка подконтрольного элемента
-     * @param {FullArticleData} articleData
-     * @return {HTMLElement}
      */
     async render(articleData?: FullArticleData): Promise<HTMLElement> {
-        await super.render();
         const categoriesPromise: Promise<RequestAnswer> = Requests.getCategories();
         const tagsPromise: Promise<RequestAnswer> = Requests.getTags();
 
@@ -48,10 +45,20 @@ export default class ArticleEdit extends BasicComponent {
     }
 
     async subscribe(eventBus: ArticleEditEventBus) {
-        await super.subscribe();
+        let newSubscription: Subscription;
         const submitButton = this.root.querySelector('.article_edit__save_button')!;
 
         this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {
+            newSubscription = {
+                element: form,
+                event: 'click',
+                listener: () => {
+                    if (!form.textContent!.replace(' ', '').length) {
+                        form.innerHTML = '';
+                    }
+                },
+            }
+            this._subscribeElement(newSubscription);
             form.addEventListener('focusout', () => {
                 if (!form.textContent!.replace(' ', '').length) {
                     form.innerHTML = '';

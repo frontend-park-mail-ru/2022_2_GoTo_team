@@ -1,4 +1,4 @@
-import BasicComponentView from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView";
 import "../tmpl/settings.tmpl.js";
 import {UserData} from "../../common/types";
 
@@ -10,7 +10,7 @@ export default class SettingsView extends BasicComponentView {
      * @param {UserData} userData
      * @return {HTMLElement}
      */
-    async render(userData: UserData): Promise<HTMLElement> {
+    render(userData: UserData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['settings.html']({
