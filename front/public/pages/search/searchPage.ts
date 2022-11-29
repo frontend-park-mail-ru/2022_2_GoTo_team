@@ -3,7 +3,7 @@ import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {FullSearchData} from "../../common/types";
 import SearchPageView from "./searchPageView.js";
-import {SearchHeaderEventBus} from "../../components/searchHeader/search_header";
+import {SearchHeaderEventBus} from "../../components/searchHeader/searchHeader.js";
 import {AdvancedSearchSidebarEventBus} from "../../components/advancedSearch/advanced_search_sidebar";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {Requests} from "../../modules/requests.js";

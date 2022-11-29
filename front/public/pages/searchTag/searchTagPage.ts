@@ -2,7 +2,7 @@ import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {SearchData} from "../../common/types";
-import {SearchHeaderEventBus} from "../../components/searchHeader/search_header";
+import {SearchHeaderEventBus} from "../../components/searchHeader/searchHeader.js";
 import {AdvancedSearchSidebarEventBus} from "../../components/advancedSearch/advanced_search_sidebar";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {Requests} from "../../modules/requests.js";

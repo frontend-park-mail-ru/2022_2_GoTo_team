@@ -1,7 +1,7 @@
 import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
 import {FullSearchData} from "../../common/types";
-import SearchHeader from "../../components/searchHeader/search_header.js";
+import SearchHeader from "../../components/searchHeader/searchHeader.js";
 import AdvancedSearchSidebar from "../../components/advancedSearch/advanced_search_sidebar.js";
 
 /**
