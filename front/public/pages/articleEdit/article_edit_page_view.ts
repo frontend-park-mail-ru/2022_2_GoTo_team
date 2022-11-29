@@ -1,29 +1,29 @@
 import PageView from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
-import LoginForm from "../../components/loginForm/login_form.js";
+import ArticleEdit from "../../components/articleEdit/article_edit.js";
+import {FullArticleData} from "../../common/types";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
- * @class LoginPageView
+ * @class ArticleEditPageView
  */
-export default class LoginPageView extends PageView {
-    mainContentElement: any;
+export default class ArticleEditPageView extends PageView {
+    main_content_element: HTMLElement | undefined;
 
     /**
      * @param {HTMLElement} root
      */
-    constructor(root: any) {
+    constructor(root: HTMLElement) {
         super(root);
     }
 
     /**
      * Перерисовать главную страницу
      */
-    // @ts-ignore
-    render() {
-        super.render();
+    async render(articleData: FullArticleData) {
+        await super.render();
         const navbar = new Navbar();
-        navbar.render();
+        await navbar.render();
         this.children.set('navbar', navbar);
         this.root.appendChild(navbar.root);
 
@@ -37,14 +37,16 @@ export default class LoginPageView extends PageView {
 
         const mainContentElement = document.createElement('div');
         mainContentElement.classList.add('feed');
-        this.mainContentElement = mainContentElement;
-        this.root.appendChild(this.mainContentElement);
+        this.main_content_element = mainContentElement;
+        this.root.appendChild(this.main_content_element);
 
+        const editView = new ArticleEdit();
+        await editView.render(articleData);
+        mainContentElement.appendChild(editView.root);
         this.root.appendChild(document.createElement('div'));
 
-        const login_form = new LoginForm();
-        login_form.render();
-        this.mainContentElement.appendChild(login_form.root);
-        this.children.set('form', login_form);
+
+        this.children.set('edit', editView);
+        this.children.set('navbar', navbar);
     }
 }

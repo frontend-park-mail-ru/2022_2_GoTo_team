@@ -1,6 +1,6 @@
 import PageView from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
-import RegistrationForm from "../../components/registration_form/registration_form.js";
+import RegistrationForm from "../../components/registrationForm/registration_form.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.

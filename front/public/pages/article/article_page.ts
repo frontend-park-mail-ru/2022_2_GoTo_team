@@ -2,10 +2,10 @@ import ArticlePageView from "./article_page_view.js";
 import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import {OpenedArticleEventBus} from "../../components/opened_article/opened_article";
+import {OpenedArticleEventBus} from "../../components/openedArticle/opened_article";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uri_changer.js";
-import {CommentaryFormEventBus} from "../../components/commentary_form/commentary_form";
+import {CommentaryFormEventBus} from "../../components/commentaryForm/commentary_form";
 import Commentary, {CommentaryComponentEventBus} from "../../components/commentary/commentary.js";
 import {CommentaryParent} from "../../common/consts.js";
 

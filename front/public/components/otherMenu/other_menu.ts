@@ -1,26 +1,26 @@
 import BasicComponent from "../_basicComponent/basic_component.js";
-import OverlayView from "./overlay_view.js";
+import {Listener} from "../../common/types";
+import OtherMenuView from "./other_menu_view.js";
 
-export type OverlayEventBus = {
+export type OtherMenuEventBus = {
+    newArticle: Listener,
 }
 
 /**
  * View_model-компонент соответсвующего View
- * @class Overlay
+ * @class OtherMMenu
  */
-export default class Overlay extends BasicComponent {
-    view: OverlayView;
-
+export default class OtherMenu extends BasicComponent {
+    view: OtherMenuView;
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new OverlayView();
+        this.view = new OtherMenuView();
     }
 
     /**
-     * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
     async render() {
@@ -32,7 +32,12 @@ export default class Overlay extends BasicComponent {
     /**
      * Подписка на связанные события
      */
-    async subscribe(eventBus: OverlayEventBus) {
+    async subscribe(eventBus: OtherMenuEventBus) {
         await super.subscribe();
+
+        const newArticleButton = document.getElementById('other_menu__new_article_button')!;
+        newArticleButton.addEventListener('click', () => {
+            eventBus.newArticle();
+        });
     }
 }

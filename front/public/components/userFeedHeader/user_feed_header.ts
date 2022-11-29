@@ -1,38 +1,38 @@
+import UserFeedHeaderView from "./user_feed_header_view.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
-import OverlayView from "./overlay_view.js";
+import {UserHeaderData} from "../../common/types";
 
-export type OverlayEventBus = {
+export type UserFeedHeaderEventBus = {
+
 }
 
 /**
  * View_model-компонент соответсвующего View
- * @class Overlay
+ * @class UserFeedHeader
  */
-export default class Overlay extends BasicComponent {
-    view: OverlayView;
-
+export default class UserFeedHeader extends BasicComponent {
+    view: UserFeedHeaderView;
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new OverlayView();
+        this.view = new UserFeedHeaderView();
     }
 
     /**
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    async render() {
+    async render(userData: UserHeaderData): Promise<HTMLElement> {
         await super.render();
-        this.root = await this.view.render();
+        this.root = await this.view.render(userData);
         return this.root;
     }
 
     /**
      * Подписка на связанные события
      */
-    async subscribe(eventBus: OverlayEventBus) {
-        await super.subscribe();
+    async subscribe(eventBus: UserFeedHeaderEventBus) {
     }
-}
+};

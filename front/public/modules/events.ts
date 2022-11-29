@@ -1,10 +1,10 @@
 import Overlay, {OverlayEventBus} from "../components/overlay/overlay.js";
-import LoginForm, {LoginFormEventBus} from "../components/login_form/login_form.js";
-import RegistrationForm, {RegistrationFormEventBus} from "../components/registration_form/registration_form.js";
+import LoginForm, {LoginFormEventBus} from "../components/loginForm/login_form.js";
+import RegistrationForm, {RegistrationFormEventBus} from "../components/registrationForm/registration_form.js";
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
-import UserPlug, {UserPlugEventBus} from "../components/user_plug/user_plug.js";
-import UserPlugMenu, {UserPlugMenuEventBus} from "../components/user_plug_menu/user_plug_menu.js";
+import UserPlug, {UserPlugEventBus} from "../components/userPlug/user_plug.js";
+import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/user_plug_menu.js";
 import {
     CommentaryData,
     FullArticleData,
@@ -14,14 +14,14 @@ import {
     UserData,
     UserPlugData
 } from "../common/types";
-import BasicComponent from "../components/_basic_component/basic_component.js";
+import BasicComponent from "../components/_basicComponent/basic_component.js";
 import {CommentaryParent, ResponseErrors} from "../common/consts.js"
-import OtherMenu, {OtherMenuEventBus} from "../components/other_menu/other_menu.js";
-import SearchForm from "../components/search_form/search_form.js";
+import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/other_menu.js";
+import SearchForm from "../components/searchForm/search_form.js";
 import {URIChanger} from "./uri_changer.js";
 import {PageLoaders} from "./page_loaders.js";
-import CommentaryForm, {CommentaryFormEventBus} from "../components/commentary_form/commentary_form.js";
-import AdvancedSearchSidebar from "../components/advanced_search/advanced_search_sidebar.js";
+import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentary_form.js";
+import AdvancedSearchSidebar from "../components/advancedSearch/advanced_search_sidebar.js";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
 
 
@@ -1166,6 +1166,11 @@ export class Events {
      * Добавление формы комментария к комментарию
      */
     static addCommentaryFormToComment(parent: Commentary): void {
+        const potentialForm = parent.root.querySelector('.commentary_form');
+        if (potentialForm !== null){
+            potentialForm.parentNode!.removeChild(potentialForm);
+            return;
+        }
         const form = new CommentaryForm();
         const commentaryData: CommentaryData = {
             article: parent.data!.article,
@@ -1180,7 +1185,8 @@ export class Events {
                 commentaryCreate: Events.createCommentary,
             }
             form.subscribe(eventBus);
-            parent.root.querySelector('.commentary__reply_box')!.appendChild(form.root);
+            const parentReplyContainer = parent.root.querySelector('.commentary__reply_box')!
+            parentReplyContainer.insertBefore(form.root, parentReplyContainer.firstChild);
         });
     }
 
@@ -1240,6 +1246,10 @@ export class Events {
                     }
                 }
             }
+            const commentaryCount = commentaries.length;
+            document.querySelectorAll('.article__comments_count__count').forEach((element) => {
+                element.innerHTML = "" + commentaryCount;
+            })
         })
     }
 }

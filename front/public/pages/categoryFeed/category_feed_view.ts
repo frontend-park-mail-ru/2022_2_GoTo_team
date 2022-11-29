@@ -1,12 +1,14 @@
 import PageView from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
-import LoginForm from "../../components/loginForm/login_form.js";
+import CategoryRulesSidebar from "../../components/categoryRulesSidebar/category_rules_sidebar.js";
+import {RulesData} from "../../common/types";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
- * @class LoginPageView
+ * @class CategoryFeedView
  */
-export default class LoginPageView extends PageView {
+export default class CategoryFeedView extends PageView {
+    center: any;
     mainContentElement: any;
 
     /**
@@ -19,11 +21,10 @@ export default class LoginPageView extends PageView {
     /**
      * Перерисовать главную страницу
      */
-    // @ts-ignore
-    render() {
-        super.render();
+    async render() {
+        await super.render();
         const navbar = new Navbar();
-        navbar.render();
+        await navbar.render();
         this.children.set('navbar', navbar);
         this.root.appendChild(navbar.root);
 
@@ -35,16 +36,26 @@ export default class LoginPageView extends PageView {
 
         this.root.appendChild(document.createElement('div'));
 
+        const center = document.createElement('div');
+        center.classList.add('column');
+        this.center = center;
+        this.root.appendChild(center);
+
+        const content = document.createElement('div');
+        content.classList.add('center_with_sidebar');
+        center.appendChild(content);
+
         const mainContentElement = document.createElement('div');
         mainContentElement.classList.add('feed');
         this.mainContentElement = mainContentElement;
-        this.root.appendChild(this.mainContentElement);
+        content.appendChild(this.mainContentElement);
 
-        this.root.appendChild(document.createElement('div'));
-
-        const login_form = new LoginForm();
-        login_form.render();
-        this.mainContentElement.appendChild(login_form.root);
-        this.children.set('form', login_form);
+        const rules = new CategoryRulesSidebar();
+        const rulesData: RulesData = {
+            content: "",
+        }
+        await rules.render(rulesData);
+        this.children.set('rules', rules);
+        content.appendChild(rules.root);
     }
 }

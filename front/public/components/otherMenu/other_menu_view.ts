@@ -1,17 +1,18 @@
 import BasicComponentView from "../_basicComponent/basic_component_view.js";
-import "../tmpl/navbar.tmpl.js";
+import "../tmpl/other_menu.tmpl.js";
 
 /**
- * @class NavbarView
+ * @class OtherMenuView
  */
-export default class NavbarView extends BasicComponentView {
+export default class OtherMenuView extends BasicComponentView {
     /**
      * @return {HTMLElement}
      */
-    async render(eventBus?: object) {
+    async render(): Promise<HTMLElement> {
+        await super.render();
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-        wrapper.innerHTML = Handlebars.templates['navbar.html']({});
+        wrapper.innerHTML = Handlebars.templates["other_menu.html"]({});
         return wrapper.querySelector('div')!;
     }
 }

@@ -635,7 +635,7 @@ div.log-button-container {
 }
 
 .overlay {
-    position: fixed; /* Sit on top of the settings_page content */
+    position: fixed; /* Sit on top of the settingsPage content */
     top: 0;
     left: 0;
     right: 0;
@@ -1302,5 +1302,9 @@ div.log-button-container {
 
     .article__top_bar {
         margin-top: 20px;
+    }
+
+    .commentary__block__wrapper {
+        width: 90%;
     }
 }

@@ -1,45 +1,43 @@
-import ArticleView from "./article_view.js";
+import OpenedArticleView from "./opened_article_view.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
-import {IncompleteArticleData} from "../../common/types";
+import {FullArticleData} from "../../common/types";
 
-export type ArticleComponentEventBus = {
+export type OpenedArticleEventBus = {
     goToCategoryFeed: (category: string) => void,
-    goToAuthorFeed: (login: string) => void,
-    openArticle: (id: number) => void,
+    goToAuthorFeed: (author: string) => void,
     openTagPage: (tag: string) => void,
 }
-
 /**
  * View_model-компонент соответсвующего View
- * @class Article
+ * @class OpenedArticle
  */
-export default class Article extends BasicComponent {
-    view: ArticleView;
+export default class OpenedArticle extends BasicComponent {
+    view: OpenedArticleView;
     /**
      * Универсальный компонент заголовка
      */
     constructor() {
         super();
-        this.view = new ArticleView();
+        this.view = new OpenedArticleView();
     }
 
     /**
      * Перерисовка подконтрольного элемента
-     * @param {IncompleteArticleData} article
+     * @param {FullArticleData} article
      * @return {HTMLElement}
      */
-    async render(article: IncompleteArticleData): Promise<HTMLElement> {
+    async render(article: FullArticleData) {
         await super.render();
         this.root = await this.view.render(article);
         return this.root;
     }
 
-    async subscribe(eventBus: ArticleComponentEventBus): Promise<void> {
+    async subscribe(eventBus: OpenedArticleEventBus) {
         await super.subscribe();
-        const avatar: HTMLElement = this.root.querySelector('.article__profile_picture')!;
+        const avatar = this.root.querySelector('.article__profile_picture')!;
 
-        if (this.view.category !== "") {
-            const categoryLink: HTMLElement = this.root.querySelector('.article__category')!;
+        if (this.view.category !== ""){
+            const categoryLink = this.root.querySelector('.article__category')!;
 
             categoryLink.addEventListener('click', () => {
                 eventBus.goToCategoryFeed(this.view.category!);
@@ -47,21 +45,16 @@ export default class Article extends BasicComponent {
             avatar.addEventListener('click', () => {
                 eventBus.goToCategoryFeed(this.view.category!);
             });
-        } else {
+        }else{
             avatar.addEventListener('click', () => {
-                eventBus.goToAuthorFeed(this.view.publisher!);
+                eventBus.goToCategoryFeed(this.view.category!);
             });
         }
 
-        const author_link: HTMLElement = this.root.querySelector('.article__author')!;
-        author_link.addEventListener('click', () => {
+        const authorLink = this.root.querySelector('.article__author')!;
+        authorLink.addEventListener('click', () => {
             eventBus.goToAuthorFeed(this.view.publisher!);
-        });
-
-        const titleLink: HTMLElement = this.root.querySelector('.article__title')!;
-        titleLink.addEventListener('click', () => {
-            eventBus.openArticle(this.view.id!);
-        });
+        })
 
         this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
             tagDiv.addEventListener('click', () => {

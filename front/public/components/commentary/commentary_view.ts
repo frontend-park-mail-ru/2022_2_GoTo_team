@@ -1,5 +1,5 @@
 import "../tmpl/commentary.tmpl.js";
-import BasicComponentView from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basic_component_view.js";
 import {CommentaryData} from "../../common/types";
 
 /**

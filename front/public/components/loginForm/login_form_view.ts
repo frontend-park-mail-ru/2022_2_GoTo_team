@@ -1,17 +1,18 @@
 import BasicComponentView from "../_basicComponent/basic_component_view.js";
-import "../tmpl/navbar.tmpl.js";
+import "../tmpl/login_form.tmpl.js";
 
 /**
- * @class NavbarView
+ * @class LoginFormView
  */
-export default class NavbarView extends BasicComponentView {
+export default class LoginFormView extends BasicComponentView {
+
     /**
      * @return {HTMLElement}
      */
-    async render(eventBus?: object) {
+    async render(): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-        wrapper.innerHTML = Handlebars.templates['navbar.html']({});
+        wrapper.innerHTML = Handlebars.templates["login_form.html"]({});
         return wrapper.querySelector('div')!;
     }
 }

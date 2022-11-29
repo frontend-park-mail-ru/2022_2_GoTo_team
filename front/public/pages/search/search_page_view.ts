@@ -1,8 +1,8 @@
 import PageView from "../_basic/page_view.js";
 import Navbar from "../../components/navbar/navbar.js";
 import {FullSearchData} from "../../common/types";
-import SearchHeader from "../../components/search_header/search_header.js";
-import AdvancedSearchSidebar from "../../components/advanced_search/advanced_search_sidebar.js";
+import SearchHeader from "../../components/searchHeader/search_header.js";
+import AdvancedSearchSidebar from "../../components/advancedSearch/advanced_search_sidebar.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
