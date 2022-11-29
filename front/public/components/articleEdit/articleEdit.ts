@@ -1,4 +1,4 @@
-import ArticleEditView from "./article_edit_view.js";
+import ArticleEditView from "./articleEditView.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {Requests} from "../../modules/requests.js";
 import {EditArticleData, FullArticleData, Listener, RequestAnswer} from "../../common/types";
@@ -11,25 +11,17 @@ export type ArticleEditEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class ArticleEdit
  */
 export default class ArticleEdit extends BasicComponent {
     view: ArticleEditView;
 
-    /**
-     * Универсальный компонент заголовка
-     */
     constructor() {
         super();
         this.view = new ArticleEditView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {FullArticleData} articleData
-     * @return {HTMLElement}
-     */
     async render(articleData?: FullArticleData): Promise<HTMLElement> {
         await super.render();
         const categoriesPromise: Promise<RequestAnswer> = Requests.getCategories();

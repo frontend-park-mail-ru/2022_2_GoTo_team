@@ -3,7 +3,7 @@ import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {ArticleEditEventBus} from "../../components/articleEdit/article_edit";
+import {ArticleEditEventBus} from "../../components/articleEdit/articleEdit.js";
 import {URIChanger} from "../../modules/uriChanger.js";
 
 /**

@@ -1,5 +1,5 @@
 import BasicComponentView from "../_basicComponent/basic_component_view.js";
-import "../tmpl/article_edit.tmpl.js";
+import "../tmpl/articleEdit.tmpl.js";
 import {EditArticleData} from "../../common/types";
 
 /**
@@ -9,16 +9,11 @@ export default class ArticleEditView extends BasicComponentView {
     id: number | undefined;
     update: boolean | undefined;
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {EditArticleData} editData
-     * @return {HTMLElement}
-     */
     async render(editData: EditArticleData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         if (editData.article !== undefined) {
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-            wrapper.innerHTML = Handlebars.templates['article_edit.html']({
+            wrapper.innerHTML = Handlebars.templates['articleEdit.html']({
                 title: editData.article.title,
                 description: editData.article.description,
                 allTags: editData.tags,
@@ -33,7 +28,7 @@ export default class ArticleEditView extends BasicComponentView {
             this.update = true;
         }else{
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-            wrapper.innerHTML = Handlebars.templates['article_edit.html']({
+            wrapper.innerHTML = Handlebars.templates['articleEdit.html']({
                 update: false,
                 categories: editData.categories,
                 allTags: editData.tags,

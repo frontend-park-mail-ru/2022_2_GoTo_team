@@ -1,6 +1,6 @@
 import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
-import ArticleEdit from "../../components/articleEdit/article_edit.js";
+import ArticleEdit from "../../components/articleEdit/articleEdit.js";
 import {FullArticleData} from "../../common/types";
 
 /**
