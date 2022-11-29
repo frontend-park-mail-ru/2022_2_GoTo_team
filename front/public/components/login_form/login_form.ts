@@ -1,5 +1,5 @@
 import LoginFormView from "./login_form_view.js";
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import {Listener} from "../../common/types";
 
 export type LoginFormEventBus = {

@@ -1,5 +1,5 @@
 import CategoryFeedHeaderView from "./category_feed_header_view.js";
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import {CategoryData} from "../../common/types";
 
 export type CategoryFeedHeaderEventBus = {

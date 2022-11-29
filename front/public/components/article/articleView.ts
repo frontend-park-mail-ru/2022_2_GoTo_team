@@ -1,5 +1,5 @@
 import "../tmpl/article.tmpl.js";
-import BasicComponentView from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import {IncompleteArticleData} from "../../common/types";
 
 const covers = [
@@ -18,10 +18,8 @@ export default class ArticleView extends BasicComponentView {
 
     /**
      * Перерисовка подконтрольного элемента
-     * @param {ArticleData} article
-     * @return {HTMLElement}
      */
-    async render(article: IncompleteArticleData): Promise<HTMLElement> {
+    render(article: IncompleteArticleData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['article.html']({

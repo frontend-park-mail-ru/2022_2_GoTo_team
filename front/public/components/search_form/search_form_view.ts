@@ -1,4 +1,4 @@
-import BasicComponentView from "../_basic_component/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView";
 import "../tmpl/search_form.tmpl.js";
 
 /**
@@ -10,7 +10,7 @@ export default class SearchFormView extends BasicComponentView {
      * Перерисовка подконтрольного элемента
      * @return {HTMLElement}
      */
-    async render(): Promise<HTMLElement> {
+    render(): HTMLElement {
         const wrapper = document.createElement('div');
 
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.

@@ -1,5 +1,5 @@
-import BasicComponentView from "../_basic_component/basic_component_view.js";
-import "../tmpl/article_edit.tmpl.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
+import "../tmpl/articleEdit.tmpl.js";
 import {EditArticleData} from "../../common/types";
 
 /**
@@ -11,10 +11,8 @@ export default class ArticleEditView extends BasicComponentView {
 
     /**
      * Перерисовка подконтрольного элемента
-     * @param {EditArticleData} editData
-     * @return {HTMLElement}
      */
-    async render(editData: EditArticleData): Promise<HTMLElement> {
+    render(editData: EditArticleData): HTMLElement {
         const wrapper = document.createElement('div');
         if (editData.article !== undefined) {
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.

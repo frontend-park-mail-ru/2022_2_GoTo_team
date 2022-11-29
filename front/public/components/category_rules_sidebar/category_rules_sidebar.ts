@@ -1,4 +1,4 @@
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import {RulesData} from "../../common/types";
 import CategoryRulesSidebarView from "./category_rules_sidebar_view.js";
 

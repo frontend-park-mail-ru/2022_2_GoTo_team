@@ -1,5 +1,5 @@
 import SettingsView from "./settings_view.js";
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import {Listener, UserData} from "../../common/types";
 
 export type SettingsEventBus = {

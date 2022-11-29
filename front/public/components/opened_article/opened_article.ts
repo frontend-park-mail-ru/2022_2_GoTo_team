@@ -1,5 +1,5 @@
 import OpenedArticleView from "./opened_article_view.js";
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import {FullArticleData} from "../../common/types";
 
 export type OpenedArticleEventBus = {

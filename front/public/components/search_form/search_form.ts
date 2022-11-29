@@ -1,4 +1,4 @@
-import BasicComponent from "../_basic_component/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent";
 import SearchFormView from "./search_form_view.js";
 
 export type SearchFormEventBus = {
