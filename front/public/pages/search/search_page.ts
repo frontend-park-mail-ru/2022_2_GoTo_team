@@ -32,8 +32,15 @@ export default class SearchPage extends Page {
      */
     async render(data: FullSearchData): Promise<void> {
         data.primary.request = decodeURIComponent(data.primary.request);
-        if (typeof data.advanced.author !== 'undefined'){
+        if (data.advanced.author !== undefined){
             data.advanced.author = decodeURIComponent(data.advanced.author);
+        }
+        if (data.advanced.tags !== undefined){
+            const tags: string[] = [];
+            data.advanced.tags.forEach((tag) => {
+                tags.push(decodeURIComponent(tag))
+            })
+            data.advanced.tags = tags;
         }
         await this.view.render(data);
 
