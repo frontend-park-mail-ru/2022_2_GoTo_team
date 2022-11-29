@@ -1,5 +1,5 @@
 import BasicComponent from "../_basicComponent/basic_component.js";
-import OverlayView from "./overlay_view.js";
+import OverlayView from "./overlayView.js";
 
 export type OverlayEventBus = {
 }
