@@ -1,4 +1,4 @@
-import OpenedArticleView from "./opened_article_view.js";
+import OpenedArticleView from "./openedArticleView.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {FullArticleData} from "../../common/types";
 
@@ -7,25 +7,19 @@ export type OpenedArticleEventBus = {
     goToAuthorFeed: (author: string) => void,
     openTagPage: (tag: string) => void,
 }
+
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class OpenedArticle
  */
 export default class OpenedArticle extends BasicComponent {
     view: OpenedArticleView;
-    /**
-     * Универсальный компонент заголовка
-     */
+
     constructor() {
         super();
         this.view = new OpenedArticleView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {FullArticleData} article
-     * @return {HTMLElement}
-     */
     async render(article: FullArticleData) {
         await super.render();
         this.root = await this.view.render(article);

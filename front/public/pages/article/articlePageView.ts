@@ -1,6 +1,6 @@
 import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
-import OpenedArticle from "../../components/openedArticle/opened_article.js";
+import OpenedArticle from "../../components/openedArticle/openedArticle.js";
 import {CommentaryData, FullArticleData} from "../../common/types";
 import CommentaryForm from "../../components/commentaryForm/commentary_form.js";
 import {CommentaryParent} from "../../common/consts.js";

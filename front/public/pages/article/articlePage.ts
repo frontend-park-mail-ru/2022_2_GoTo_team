@@ -2,7 +2,7 @@ import ArticlePageView from "./articlePageView.js";
 import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import {OpenedArticleEventBus} from "../../components/openedArticle/opened_article";
+import {OpenedArticleEventBus} from "../../components/openedArticle/openedArticle.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {CommentaryFormEventBus} from "../../components/commentaryForm/commentary_form";
@@ -16,19 +16,11 @@ import {CommentaryParent} from "../../common/consts.js";
 export default class ArticlePage extends Page {
     view: ArticlePageView;
 
-    /**
-     * Страница содержит главный компонент
-     * @param {HTMLElement} root
-     */
     constructor(root: HTMLElement) {
         super(root);
         this.view = new ArticlePageView(root);
     }
 
-    /**
-     * Отобразить подконтрольную страницу.
-     * Должен быть вызван render() для обновления.
-     */
     async render(articleId: number) {
         const article = await Requests.getArticle(articleId);
         await this.view.render(article);
@@ -82,9 +74,6 @@ export default class ArticlePage extends Page {
         Events.updateAuth();
     }
 
-    /**
-     * Подписка на связанные события
-     */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
             goToHotFeed: URIChanger.feedPage,
