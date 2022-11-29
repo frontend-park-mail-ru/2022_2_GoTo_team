@@ -1,4 +1,4 @@
-import SettingsView from "./settings_view.js";
+import SettingsView from "./settingsView.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {Listener, UserData} from "../../common/types";
 
@@ -12,31 +12,23 @@ export type SettingsEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class Settings
  */
 export default class Settings extends BasicComponent {
     view: SettingsView;
-    /**
-     * Универсальный компонент заголовка
-     */
+
     constructor() {
         super();
         this.view = new SettingsView();
     }
-    /**
-     * Перерисовка подконтрольного элемента
-     * @return {HTMLElement}
-     */
+
     async render(userData: UserData) {
         await super.render();
         this.root = await this.view.render(userData);
         return this.root;
     }
 
-    /**
-     * Подписка на связанные события
-     */
     async subscribe(eventBus: SettingsEventBus) {
         const saveButton = document.getElementById('save')!;
         saveButton.addEventListener('click', eventBus.saveProfile);
