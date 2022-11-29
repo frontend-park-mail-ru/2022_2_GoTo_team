@@ -1,4 +1,4 @@
-import LoginFormView from "./login_form_view.js";
+import LoginFormView from "./loginFormView.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {Listener} from "../../common/types";
 
@@ -11,34 +11,23 @@ export type LoginFormEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class LoginForm
  */
 export default class LoginForm extends BasicComponent {
     view: LoginFormView;
-    /**
-     * Универсальный компонент заголовка
-     */
+
     constructor() {
         super();
         this.view = new LoginFormView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @return {HTMLElement}
-     */
     async render(): Promise<HTMLElement> {
         await super.render();
         this.root = await this.view.render();
         return this.root;
     }
 
-    /**
-     * Подписка на связанные события
-     * @param {LoginFormEventBus} eventBus
-     * @property {function?} closeForm
-     */
     async subscribe(eventBus: LoginFormEventBus) {
         await super.subscribe()
         const submit_button = document.getElementById("login_form__submit_button")!;

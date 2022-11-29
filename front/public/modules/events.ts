@@ -1,5 +1,5 @@
 import Overlay, {OverlayEventBus} from "../components/overlay/overlay.js";
-import LoginForm, {LoginFormEventBus} from "../components/loginForm/login_form.js";
+import LoginForm, {LoginFormEventBus} from "../components/loginForm/loginForm.js";
 import RegistrationForm, {RegistrationFormEventBus} from "../components/registrationForm/registrationForm.js";
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
