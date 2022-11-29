@@ -1,5 +1,5 @@
 import ArticleEditView from "./articleEditView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Requests} from "../../modules/requests.js";
 import {EditArticleData, FullArticleData, Listener, RequestAnswer} from "../../common/types";
 
@@ -23,7 +23,6 @@ export default class ArticleEdit extends BasicComponent {
     }
 
     async render(articleData?: FullArticleData): Promise<HTMLElement> {
-        await super.render();
         const categoriesPromise: Promise<RequestAnswer> = Requests.getCategories();
         const tagsPromise: Promise<RequestAnswer> = Requests.getTags();
 
@@ -39,8 +38,7 @@ export default class ArticleEdit extends BasicComponent {
         return this.root;
     }
 
-    async subscribe(eventBus: ArticleEditEventBus) {
-        await super.subscribe();
+    subscribe(eventBus: ArticleEditEventBus) {
         const submitButton = this.root.querySelector('.article_edit__save_button')!;
 
         this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {

@@ -1,4 +1,4 @@
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Listener} from "../../common/types";
 import OtherMenuView from "./otherMenuView.js";
 
@@ -18,14 +18,13 @@ export default class OtherMenu extends BasicComponent {
         this.view = new OtherMenuView();
     }
 
-    async render() {
-        await super.render();
-        this.root = await this.view.render();
+    render(): HTMLElement {
+        super.render();
+        this.root = this.view.render();
         return this.root;
     }
 
-    async subscribe(eventBus: OtherMenuEventBus) {
-        await super.subscribe();
+   subscribe(eventBus: OtherMenuEventBus) {
 
         const newArticleButton = document.getElementById('other_menu__new_article_button')!;
         newArticleButton.addEventListener('click', () => {

@@ -1,5 +1,5 @@
 import LoginFormView from "./loginFormView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Listener} from "../../common/types";
 
 export type LoginFormEventBus = {
@@ -22,14 +22,12 @@ export default class LoginForm extends BasicComponent {
         this.view = new LoginFormView();
     }
 
-    async render(): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render();
+    render(): HTMLElement {
+        this.root = this.view.render();
         return this.root;
     }
 
-    async subscribe(eventBus: LoginFormEventBus) {
-        await super.subscribe()
+    subscribe(eventBus: LoginFormEventBus) {
         const submit_button = document.getElementById("login_form__submit_button")!;
         submit_button.addEventListener('click', eventBus.submit);
 

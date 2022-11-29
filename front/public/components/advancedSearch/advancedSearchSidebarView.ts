@@ -1,5 +1,5 @@
 import "../tmpl/advancedSearchSidebar.tmpl.js";
-import BasicComponentView from "../_basicComponent/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import {AdvSearchData} from "../../common/types";
 
 export type AdvSearchFormData = {
@@ -11,7 +11,7 @@ export type AdvSearchFormData = {
  */
 export default class AdvancedSearchSidebarView extends BasicComponentView {
 
-    async render(data: AdvSearchFormData): Promise<HTMLElement> {
+    render(data: AdvSearchFormData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['advancedSearchSidebar.html']({

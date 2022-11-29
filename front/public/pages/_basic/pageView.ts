@@ -2,7 +2,7 @@
  * View для соответсвующих страниц
  * @class PageView
  */
-import BasicComponent from "../../components/_basicComponent/basic_component.js";
+import BasicComponent from "../../components/_basicComponent/basicComponent";
 
 export default class PageView {
     children: Map<string, BasicComponent>;

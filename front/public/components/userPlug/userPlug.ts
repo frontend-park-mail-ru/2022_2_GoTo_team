@@ -1,5 +1,5 @@
 import UserPlugView from "./userPlugView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Listener, UserPlugData} from "../../common/types";
 
 export type UserPlugEventBus = {
@@ -19,9 +19,8 @@ export default class UserPlug extends BasicComponent {
         this.view = new UserPlugView();
     }
 
-    async render(userData?: UserPlugData) {
-        await super.render();
-        this.root = await this.view.render(userData);
+    render(userData?: UserPlugData): HTMLElement {
+        this.root = this.view.render(userData);
         return this.root;
     }
 

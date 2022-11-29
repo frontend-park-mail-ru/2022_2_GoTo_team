@@ -1,8 +1,7 @@
-import BaseComponentView from './basic_component_view.js';
-import BasicComponentView from "./basic_component_view.js";
+import BasicComponentView from "./basicComponentView.js";
 
 /**
- * [Интерфейс] View_model для View
+ * [Интерфейс] ViewModel для View
  * @class BasicComponent
  */
 export default class BasicComponent {
@@ -14,20 +13,19 @@ export default class BasicComponent {
      */
     constructor() {
         this.root = document.createElement('div');
-        this.view = new BaseComponentView();
+        this.view = new BasicComponentView();
     }
 
     /**
      * Перерисовка подконтрольного элемента
-     * @return {HTMLElement}
      */
-    async render(parameters?: object): Promise<HTMLElement> {
+    render(parameters?: object): HTMLElement | Promise<HTMLElement> {
         return document.createElement('div');
     }
 
     /**
      * Подписка на связанные события
      */
-    async subscribe(eventBus?: object) {
+    subscribe(eventBus?: object): void {
     }
 }

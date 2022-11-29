@@ -1,4 +1,4 @@
-import BasicComponentView from "../_basicComponent/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
 
 /**
  * @class OverlayView
@@ -7,7 +7,7 @@ export default class OverlayView extends BasicComponentView {
     /**
      * @return {HTMLElement}
      */
-    async render() {
+    render(): HTMLElement {
         const overlay = document.createElement('div');
         overlay.classList.add('overlay');
         overlay.id = 'overlay';

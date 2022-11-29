@@ -1,4 +1,4 @@
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {AdvSearchData, RequestAnswer} from "../../common/types";
 import AdvancedSearchSidebarView, {AdvSearchFormData} from "./advancedSearchSidebarView.js";
 import {Requests} from "../../modules/requests.js";
@@ -23,7 +23,6 @@ export default class AdvancedSearchSidebar extends BasicComponent {
     }
 
     async render(data?: AdvSearchData): Promise<HTMLElement> {
-        await super.render();
         const tagsRequest: RequestAnswer = await Requests.getTags();
         let tags: string[] = [];
 
@@ -43,9 +42,7 @@ export default class AdvancedSearchSidebar extends BasicComponent {
         return this.root;
     }
 
-    async subscribe(eventBus: AdvancedSearchSidebarEventBus): Promise<void> {
-        await super.subscribe();
-
+    subscribe(eventBus: AdvancedSearchSidebarEventBus): void {
         this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {
             form.addEventListener('focusout', () => {
                 if (!form.textContent!.replace(' ', '').length) {

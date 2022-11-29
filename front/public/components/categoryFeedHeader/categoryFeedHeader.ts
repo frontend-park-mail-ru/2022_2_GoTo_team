@@ -1,5 +1,5 @@
 import CategoryFeedHeaderView from "./categoryFeedHeaderView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {CategoryData} from "../../common/types";
 
 export type CategoryFeedHeaderEventBus = {
@@ -18,9 +18,8 @@ export default class CategoryFeedHeader extends BasicComponent {
         this.view = new CategoryFeedHeaderView();
     }
 
-    async render(categoryData: CategoryData): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render(categoryData);
+    render(categoryData: CategoryData): HTMLElement {
+        this.root = this.view.render(categoryData);
         return this.root;
     }
 

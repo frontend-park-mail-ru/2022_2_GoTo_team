@@ -1,4 +1,4 @@
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {CommentaryData} from "../../common/types";
 import CommentaryView from "./commentaryView.js";
 
@@ -20,15 +20,13 @@ export default class Commentary extends BasicComponent {
         this.view = new CommentaryView();
     }
 
-    async render(commentary: CommentaryData): Promise<HTMLElement> {
-        await super.render();
+    render(commentary: CommentaryData): HTMLElement {
         this.data = commentary;
-        this.root = await this.view.render(commentary);
+        this.root = this.view.render(commentary);
         return this.root;
     }
 
-    async subscribe(eventBus: CommentaryComponentEventBus): Promise<void> {
-        await super.subscribe();
+    subscribe(eventBus: CommentaryComponentEventBus) {
         const avatar: HTMLElement = this.root.querySelector('.commentary__profile_picture')!;
 
         avatar.addEventListener('click', () => {

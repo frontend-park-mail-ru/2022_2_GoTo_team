@@ -1,4 +1,4 @@
-import BasicComponentView from "../_basicComponent/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import "../tmpl/openedArticle.tmpl.js";
 import {FullArticleData} from "../../common/types";
 
@@ -15,7 +15,7 @@ export default class OpenedArticleView extends BasicComponentView {
     category: string | undefined;
     publisher: string | undefined;
 
-    async render(article: FullArticleData): Promise<HTMLElement> {
+    render(article: FullArticleData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['openedArticle.html']({

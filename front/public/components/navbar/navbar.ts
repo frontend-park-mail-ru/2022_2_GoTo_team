@@ -1,5 +1,5 @@
 import NavbarView from "./navbarView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Listener} from "../../common/types";
 
 export type NavbarEventBus = {
@@ -23,9 +23,8 @@ export default class Navbar extends BasicComponent {
         this.view = new NavbarView();
     }
 
-    async render() {
-        await super.render();
-        this.root = await this.view.render();
+    render(): HTMLElement {
+        this.root = this.view.render();
         return this.root;
     }
 

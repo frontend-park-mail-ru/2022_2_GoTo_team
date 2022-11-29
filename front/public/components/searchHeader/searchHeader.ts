@@ -1,4 +1,4 @@
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {SearchData} from "../../common/types";
 import SearchHeaderView from "./searchHeaderView.js";
 
@@ -18,9 +18,9 @@ export default class SearchHeader extends BasicComponent {
         this.view = new SearchHeaderView();
     }
 
-    async render(searchData: SearchData): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render(searchData);
+   render(searchData: SearchData): HTMLElement {
+        super.render();
+        this.root = this.view.render(searchData);
         return this.root;
     }
 

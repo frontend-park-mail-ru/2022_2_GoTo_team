@@ -1,4 +1,4 @@
-import BasicComponentView from "../_basicComponent/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import "../tmpl/categoryFeedHeader.tmpl.js";
 import {CategoryData} from "../../common/types";
 
@@ -7,7 +7,7 @@ import {CategoryData} from "../../common/types";
  */
 export default class CategoryFeedHeaderView extends BasicComponentView {
 
-    async render(categoryData: CategoryData): Promise<HTMLElement> {
+    render(categoryData: CategoryData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['categoryFeedHeader.html']({

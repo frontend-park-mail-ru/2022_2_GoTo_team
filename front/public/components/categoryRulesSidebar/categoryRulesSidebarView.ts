@@ -1,5 +1,5 @@
 import "../tmpl/categoryRulesSidebar.tmpl.js";
-import BasicComponentView from "../_basicComponent/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import {RulesData} from "../../common/types";
 
 /**
@@ -7,7 +7,7 @@ import {RulesData} from "../../common/types";
  */
 export default class CategoryRulesSidebarView extends BasicComponentView {
 
-    async render(rules: RulesData): Promise<HTMLElement> {
+    render(rules: RulesData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['categoryRulesSidebar.html']({});

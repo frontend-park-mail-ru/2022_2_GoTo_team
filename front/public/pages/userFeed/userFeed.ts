@@ -35,11 +35,9 @@ export default class UserFeed extends Page {
             };
 
             const header = new UserFeedHeader();
-            header.render(userData).then(() => {
-                header.subscribe(eventBus);
-                this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
-            });
-
+            header.render(userData);
+            header.subscribe(eventBus);
+            this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
         });
 
         Requests.getUserArticles(login).then((articles) => {

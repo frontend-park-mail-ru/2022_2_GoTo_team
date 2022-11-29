@@ -1,5 +1,5 @@
 import SettingsView from "./settingsView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Listener, UserData} from "../../common/types";
 
 export type SettingsEventBus = {
@@ -23,13 +23,12 @@ export default class Settings extends BasicComponent {
         this.view = new SettingsView();
     }
 
-    async render(userData: UserData) {
-        await super.render();
-        this.root = await this.view.render(userData);
+    render(userData: UserData): HTMLElement {
+        this.root = this.view.render(userData);
         return this.root;
     }
 
-    async subscribe(eventBus: SettingsEventBus) {
+    subscribe(eventBus: SettingsEventBus) {
         const saveButton = document.getElementById('save')!;
         saveButton.addEventListener('click', eventBus.saveProfile);
 

@@ -14,7 +14,7 @@ import {
     UserData,
     UserPlugData
 } from "../common/types";
-import BasicComponent from "../components/_basicComponent/basic_component.js";
+import BasicComponent from "../components/_basicComponent/basicComponent.js";
 import {CommentaryParent, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/otherMenu.js";
 import SearchForm from "../components/searchForm/searchForm.js";
@@ -23,6 +23,7 @@ import {PageLoaders} from "./pageLoaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentaryForm.js";
 import AdvancedSearchSidebar from "../components/advancedSearch/advancedSearchSidebar.js";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
+import UserFeed from "../pages/userFeed/userFeed";
 
 
 export class Events {
@@ -140,9 +141,9 @@ export class Events {
 
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
-                if(location.hash === ''){
+                if (location.hash === '') {
                     PageLoaders.feedPage();
-                }else{
+                } else {
                     URIChanger.rootPage();
                 }
             } else {
@@ -196,9 +197,9 @@ export class Events {
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
-                if(location.hash === ''){
+                if (location.hash === '') {
                     PageLoaders.feedPage();
-                }else{
+                } else {
                     URIChanger.rootPage();
                 }
             } else {
@@ -471,7 +472,6 @@ export class Events {
 
         const profileButton = document.getElementById("navbar__auth_button")!;
         const userPlug = new UserPlug();
-        let promise: Promise<HTMLElement>;
 
         if (Events.#hasSession()) {
             const response = await Requests.getSessionInfo()
@@ -480,21 +480,18 @@ export class Events {
                     username: response.response.username,
                     avatarUrl: "",
                 }
-                promise = userPlug.render(userData);
+                userPlug.render(userData);
             } else {
-                promise = userPlug.render();
+                userPlug.render();
             }
-            promise.then(() => {
-                profileButton.innerHTML = '';
-                profileButton.appendChild(userPlug.root);
-                userPlug.subscribe(eventBus);
-            })
+            profileButton.innerHTML = '';
+            profileButton.appendChild(userPlug.root);
+            userPlug.subscribe(eventBus);
         } else {
-            userPlug.render().then(() => {
-                profileButton.innerHTML = '';
-                profileButton.appendChild(userPlug.root);
-                userPlug.subscribe(eventBus);
-            })
+            userPlug.render();
+            profileButton.innerHTML = '';
+            profileButton.appendChild(userPlug.root);
+            userPlug.subscribe(eventBus);
         }
     }
 
@@ -516,10 +513,9 @@ export class Events {
         Events.#closeNavbarMenu();
 
         const root = document.getElementById('root')!;
-        controller.render().then(() => {
-            root.appendChild(controller.root);
-            controller.subscribe(eventBus);
-        });
+        controller.render();
+        root.appendChild(controller.root);
+        controller.subscribe(eventBus);
     }
 
     /**
@@ -974,17 +970,17 @@ export class Events {
         const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
         const searchButton = document.getElementById("navbar__search")!;
         const form = new SearchForm();
-        form.render().then(() => {
-            wrapper.append(form.root);
-            searchButton.removeEventListener('click', Events.showSearchForm);
-            searchButton.addEventListener('click', Events.closeSearchForm);
-            const area = form.root.querySelector('.navbar__search_form')!;
-            area.addEventListener('keypress', (event) => {
-                if ((event as KeyboardEvent).key === 'Enter' || (event as KeyboardEvent).keyCode === 13) {
-                    Events.searchFormListener();
-                }
-            });
+        form.render();
+        wrapper.append(form.root);
+        searchButton.removeEventListener('click', Events.showSearchForm);
+        searchButton.addEventListener('click', Events.closeSearchForm);
+        const area = form.root.querySelector('.navbar__search_form')!;
+        area.addEventListener('keypress', (event) => {
+            if ((event as KeyboardEvent).key === 'Enter' || (event as KeyboardEvent).keyCode === 13) {
+                Events.searchFormListener();
+            }
         });
+
     }
 
     static closeSearchForm() {
@@ -1016,7 +1012,7 @@ export class Events {
         }
 
         Requests.commentaryCreate(commentaryDate).then((result) => {
-            if (!result){
+            if (!result) {
                 alert("Для отправки комментариев нужно авторизироваться");
             }
             Events.rerenderCommentaries(form.article);
@@ -1167,7 +1163,7 @@ export class Events {
      */
     static addCommentaryFormToComment(parent: Commentary): void {
         const potentialForm = parent.root.querySelector('.commentary_form');
-        if (potentialForm !== null){
+        if (potentialForm !== null) {
             potentialForm.parentNode!.removeChild(potentialForm);
             return;
         }
@@ -1180,20 +1176,20 @@ export class Events {
             rating: 0,
             content: ""
         }
-        form.render(commentaryData).then(() => {
-            const eventBus: CommentaryFormEventBus = {
-                commentaryCreate: Events.createCommentary,
-            }
-            form.subscribe(eventBus);
-            const parentReplyContainer = parent.root.querySelector('.commentary__reply_box')!
-            parentReplyContainer.insertBefore(form.root, parentReplyContainer.firstChild);
-        });
+        form.render(commentaryData);
+        const eventBus: CommentaryFormEventBus = {
+            commentaryCreate: Events.createCommentary,
+        }
+        form.subscribe(eventBus);
+        const parentReplyContainer = parent.root.querySelector('.commentary__reply_box')!
+        parentReplyContainer.insertBefore(form.root, parentReplyContainer.firstChild);
+
     }
 
     /**
      * @param {int} articleId
      */
-    static rerenderCommentaries(articleId: number){
+    static rerenderCommentaries(articleId: number) {
         Requests.getCommentaries(articleId).then(async (commentaries) => {
             const renderedCommentaries: Commentary[] = [];
             for (const commentaryData of commentaries) {
@@ -1231,11 +1227,11 @@ export class Events {
                 }
             }
 
-            while (commentariesToCommentaries.length > 0){
+            while (commentariesToCommentaries.length > 0) {
                 const buf = commentariesToCommentaries;
-                for (const comment of buf){
-                    for (const addedCommentary of addedCommentaries){
-                        if (addedCommentary.data!.id === comment.data!.parentId){
+                for (const comment of buf) {
+                    for (const addedCommentary of addedCommentaries) {
+                        if (addedCommentary.data!.id === comment.data!.parentId) {
                             addToComment(addedCommentary, comment);
                             addedCommentaries.push(comment);
                             const index = commentariesToCommentaries.indexOf(comment);

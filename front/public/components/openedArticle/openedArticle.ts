@@ -1,5 +1,5 @@
 import OpenedArticleView from "./openedArticleView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {FullArticleData} from "../../common/types";
 
 export type OpenedArticleEventBus = {
@@ -20,14 +20,13 @@ export default class OpenedArticle extends BasicComponent {
         this.view = new OpenedArticleView();
     }
 
-    async render(article: FullArticleData) {
-        await super.render();
-        this.root = await this.view.render(article);
+    render(article: FullArticleData): HTMLElement {
+        super.render();
+        this.root = this.view.render(article);
         return this.root;
     }
 
-    async subscribe(eventBus: OpenedArticleEventBus) {
-        await super.subscribe();
+    subscribe(eventBus: OpenedArticleEventBus) {
         const avatar = this.root.querySelector('.article__profile_picture')!;
 
         if (this.view.category !== ""){

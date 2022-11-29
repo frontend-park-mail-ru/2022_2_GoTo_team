@@ -1,4 +1,4 @@
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import SearchFormView from "./searchFormView.js";
 
 export type SearchFormEventBus = {
@@ -6,7 +6,7 @@ export type SearchFormEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class SearchForm
  */
 export default class SearchForm extends BasicComponent {
@@ -17,9 +17,8 @@ export default class SearchForm extends BasicComponent {
         this.view = new SearchFormView();
     }
 
-    async render(): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render();
+    render(): HTMLElement {
+        this.root = this.view.render();
         return this.root;
     }
 

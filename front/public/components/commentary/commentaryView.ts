@@ -1,5 +1,5 @@
 import "../tmpl/commentary.tmpl.js";
-import BasicComponentView from "../_basicComponent/basic_component_view.js";
+import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import {CommentaryData} from "../../common/types";
 
 /**
@@ -8,7 +8,7 @@ import {CommentaryData} from "../../common/types";
 export default class CommentaryView extends BasicComponentView {
     publisher: string | undefined;
 
-    async render(commentary: CommentaryData): Promise<HTMLElement> {
+    render(commentary: CommentaryData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['commentary.html']({

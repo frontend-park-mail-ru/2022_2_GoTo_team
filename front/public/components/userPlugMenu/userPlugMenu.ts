@@ -1,4 +1,4 @@
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import UserPlugMenuView from "./userPlugMenuView.js";
 import {Listener} from "../../common/types";
 

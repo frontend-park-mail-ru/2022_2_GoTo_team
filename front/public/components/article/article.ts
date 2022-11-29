@@ -1,5 +1,5 @@
 import ArticleView from "./articleView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {IncompleteArticleData} from "../../common/types";
 
 export type ArticleComponentEventBus = {

@@ -1,5 +1,5 @@
 import UserFeedHeaderView from "./userFeedHeaderView.js";
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {UserHeaderData} from "../../common/types";
 
 export type UserFeedHeaderEventBus = {
@@ -18,15 +18,11 @@ export default class UserFeedHeader extends BasicComponent {
         this.view = new UserFeedHeaderView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     */
-    async render(userData: UserHeaderData): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render(userData);
+    render(userData: UserHeaderData): HTMLElement {
+        this.root = this.view.render(userData);
         return this.root;
     }
 
-    async subscribe(eventBus: UserFeedHeaderEventBus) {
+    subscribe(eventBus: UserFeedHeaderEventBus) {
     }
 };

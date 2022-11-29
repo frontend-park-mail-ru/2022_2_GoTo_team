@@ -1,4 +1,4 @@
-import BasicComponent from "../_basicComponent/basic_component.js";
+import BasicComponent from "../_basicComponent/basicComponent.js";
 import {CommentaryData} from "../../common/types";
 import CommentaryFormView from "./commentaryFormView.js";
 import {CommentaryParent} from "../../common/consts.js";
@@ -25,9 +25,8 @@ export default class CommentaryForm extends BasicComponent {
         this.parentType = CommentaryParent.article;
     }
 
-    async render(commentaryData: CommentaryData): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render(commentaryData);
+    render(commentaryData: CommentaryData): HTMLElement {
+        this.root = this.view.render(commentaryData);
         this.parent = commentaryData.parentId;
         this.article = commentaryData.article;
         this.parentType = commentaryData.parentType;

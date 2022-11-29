@@ -37,10 +37,9 @@ export default class CategoryFeed extends Page {
             const eventBus: CategoryFeedHeaderEventBus = {};
 
             const header = new CategoryFeedHeader();
-            header.render(categoryData).then(() => {
-                header.subscribe(eventBus);
-                this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
-            });
+            header.render(categoryData);
+            header.subscribe(eventBus);
+            this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
         });
 
         Requests.getCategoryArticles(category).then((articles) => {

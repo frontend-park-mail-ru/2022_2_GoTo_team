@@ -3,9 +3,9 @@
  */
 export default class BasicComponentView {
     /**
-     * @return {HTMLElement}
+     * Отрисовка компонента
      */
-    async render(parameters?: object): Promise<HTMLElement> {
+    render(parameters?: object): HTMLElement {
         return document.createElement('div');
     }
 }
