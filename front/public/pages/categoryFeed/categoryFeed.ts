@@ -5,7 +5,7 @@ import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import CategoryFeedHeader, {
     CategoryFeedHeaderEventBus
-} from "../../components/categoryFeedHeader/category_feed_header.js";
+} from "../../components/categoryFeedHeader/categoryFeedHeader.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
 
