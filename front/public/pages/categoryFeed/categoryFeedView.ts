@@ -1,6 +1,6 @@
 import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
-import CategoryRulesSidebar from "../../components/categoryRulesSidebar/category_rules_sidebar.js";
+import CategoryRulesSidebar from "../../components/categoryRulesSidebar/categoryRulesSidebar.js";
 import {RulesData} from "../../common/types";
 
 /**
