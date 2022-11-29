@@ -21,7 +21,7 @@ import SearchForm from "../components/searchForm/searchForm.js";
 import {URIChanger} from "./uriChanger.js";
 import {PageLoaders} from "./pageLoaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentaryForm.js";
-import AdvancedSearchSidebar from "../components/advancedSearch/advanced_search_sidebar.js";
+import AdvancedSearchSidebar from "../components/advancedSearch/advancedSearchSidebar.js";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
 
 

@@ -1,6 +1,6 @@
 import BasicComponent from "../_basicComponent/basic_component.js";
-import {AdvSearchData, Listener, RequestAnswer} from "../../common/types";
-import AdvancedSearchSidebarView, {AdvSearchFormData} from "./advanced_search_sidebar_view.js";
+import {AdvSearchData, RequestAnswer} from "../../common/types";
+import AdvancedSearchSidebarView, {AdvSearchFormData} from "./advancedSearchSidebarView.js";
 import {Requests} from "../../modules/requests.js";
 
 export type AdvancedSearchSidebarEventBus = {
@@ -9,27 +9,19 @@ export type AdvancedSearchSidebarEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class AdvancedSearchSidebar
  */
 export default class AdvancedSearchSidebar extends BasicComponent {
     view: AdvancedSearchSidebarView;
     tags: string[];
 
-    /**
-     * Универсальный компонент заголовка
-     */
     constructor() {
         super();
         this.tags = [];
         this.view = new AdvancedSearchSidebarView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {AdvSearchData} data
-     * @return {HTMLElement}
-     */
     async render(data?: AdvSearchData): Promise<HTMLElement> {
         await super.render();
         const tagsRequest: RequestAnswer = await Requests.getTags();
