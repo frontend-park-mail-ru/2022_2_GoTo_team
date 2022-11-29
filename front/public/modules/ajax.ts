@@ -43,7 +43,6 @@ export class Ajax {
             url.search = new URLSearchParams({...params.data}).toString();
         }
 
-
         const fetchParams: object = {
             method: params.method,
             body: params.method == REQUEST_TYPE.POST ? JSON.stringify(params.data) : null,
