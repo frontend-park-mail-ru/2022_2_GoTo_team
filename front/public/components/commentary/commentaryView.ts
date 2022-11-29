@@ -8,11 +8,6 @@ import {CommentaryData} from "../../common/types";
 export default class CommentaryView extends BasicComponentView {
     publisher: string | undefined;
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {CommentaryData} commentary
-     * @return {HTMLElement}
-     */
     async render(commentary: CommentaryData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.

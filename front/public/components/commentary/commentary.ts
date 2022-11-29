@@ -1,6 +1,6 @@
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {CommentaryData} from "../../common/types";
-import CommentaryView from "./commentary_view.js";
+import CommentaryView from "./commentaryView.js";
 
 export type CommentaryComponentEventBus = {
     goToAuthorFeed: (login: string) => void,
@@ -8,26 +8,18 @@ export type CommentaryComponentEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class Commentary
  */
 export default class Commentary extends BasicComponent {
     view: CommentaryView;
     data: CommentaryData | undefined;
 
-    /**
-     * Универсальный компонент заголовка
-     */
     constructor() {
         super();
         this.view = new CommentaryView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {CommentaryData} commentary
-     * @return {HTMLElement}
-     */
     async render(commentary: CommentaryData): Promise<HTMLElement> {
         await super.render();
         this.data = commentary;
