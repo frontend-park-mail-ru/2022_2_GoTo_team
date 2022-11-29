@@ -4,7 +4,7 @@ import Page from "../_basic/page.js";
 import Settings, {SettingsEventBus} from "../../components/settings/settings.js";
 import {Requests} from "../../modules/requests.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {URIChanger} from "../../modules/uri_changer.js";
+import {URIChanger} from "../../modules/uriChanger.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц

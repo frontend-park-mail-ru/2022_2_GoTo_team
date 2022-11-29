@@ -4,7 +4,7 @@ import Article, {ArticleComponentEventBus} from "../../components/article/articl
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {URIChanger} from "../../modules/uri_changer.js";
+import {URIChanger} from "../../modules/uriChanger.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц

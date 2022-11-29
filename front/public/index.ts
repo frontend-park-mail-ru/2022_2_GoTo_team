@@ -1,6 +1,6 @@
 /* global Handlebars */
 
-import {PageLoaders} from "./modules/page_loaders.js";
+import {PageLoaders} from "./modules/pageLoaders.js";
 import Router from "./modules/router.js";
 import {API} from "./common/consts.js";
 import {FullSearchData, SearchData} from "./common/types";

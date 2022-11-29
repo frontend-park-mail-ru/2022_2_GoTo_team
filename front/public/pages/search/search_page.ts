@@ -5,7 +5,7 @@ import {FullSearchData} from "../../common/types";
 import SearchPageView from "./search_page_view.js";
 import {SearchHeaderEventBus} from "../../components/searchHeader/search_header";
 import {AdvancedSearchSidebarEventBus} from "../../components/advancedSearch/advanced_search_sidebar";
-import {URIChanger} from "../../modules/uri_changer.js";
+import {URIChanger} from "../../modules/uriChanger.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {Helpers} from "../../modules/helpers.js";

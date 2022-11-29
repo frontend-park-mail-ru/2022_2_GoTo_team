@@ -4,7 +4,7 @@ import {NavbarEventBus} from "../../components/navbar/navbar";
 import {SearchData} from "../../common/types";
 import {SearchHeaderEventBus} from "../../components/searchHeader/search_header";
 import {AdvancedSearchSidebarEventBus} from "../../components/advancedSearch/advanced_search_sidebar";
-import {URIChanger} from "../../modules/uri_changer.js";
+import {URIChanger} from "../../modules/uriChanger.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import SearchTagPageView from "./search_tag_page_view.js";

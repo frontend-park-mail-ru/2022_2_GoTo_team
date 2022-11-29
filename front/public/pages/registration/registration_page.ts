@@ -1,7 +1,7 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import RegistrationPageView from "./registration_page_view.js";
-import {PageLoaders} from "../../modules/page_loaders.js";
+import {PageLoaders} from "../../modules/pageLoaders.js";
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class  RegistrationPage

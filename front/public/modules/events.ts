@@ -18,8 +18,8 @@ import BasicComponent from "../components/_basicComponent/basic_component.js";
 import {CommentaryParent, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/other_menu.js";
 import SearchForm from "../components/searchForm/search_form.js";
-import {URIChanger} from "./uri_changer.js";
-import {PageLoaders} from "./page_loaders.js";
+import {URIChanger} from "./uriChanger.js";
+import {PageLoaders} from "./pageLoaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentary_form.js";
 import AdvancedSearchSidebar from "../components/advancedSearch/advanced_search_sidebar.js";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";

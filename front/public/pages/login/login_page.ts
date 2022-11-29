@@ -1,9 +1,9 @@
 import {Events} from "../../modules/events.js";
 import LoginPageView from "./login_page_view.js";
 import Page from "../_basic/page.js";
-import {PageLoaders} from "../../modules/page_loaders.js";
+import {PageLoaders} from "../../modules/pageLoaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {URIChanger} from "../../modules/uri_changer.js";
+import {URIChanger} from "../../modules/uriChanger.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц

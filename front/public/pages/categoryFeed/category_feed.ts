@@ -7,7 +7,7 @@ import CategoryFeedHeader, {
     CategoryFeedHeaderEventBus
 } from "../../components/categoryFeedHeader/category_feed_header.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {URIChanger} from "../../modules/uri_changer.js";
+import {URIChanger} from "../../modules/uriChanger.js";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
