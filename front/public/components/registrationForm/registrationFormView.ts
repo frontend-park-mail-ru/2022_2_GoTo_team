@@ -1,17 +1,15 @@
 import BasicComponentView from "../_basicComponent/basic_component_view.js";
-import "../tmpl/registration_form.tmpl.js";
+import "../tmpl/registrationForm.tmpl.js";
 
 /**
  * @class RegistrationFormView
  */
 export default class RegistrationFormView extends BasicComponentView {
-    /**
-     * @return {HTMLElement}
-     */
+
     async render(): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-        wrapper.innerHTML = Handlebars.templates["registration_form.html"]({});
+        wrapper.innerHTML = Handlebars.templates["registrationForm.html"]({});
         return wrapper.querySelector('div')!;
     }
 }

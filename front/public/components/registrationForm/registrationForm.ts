@@ -1,5 +1,5 @@
 import BasicComponent from "../_basicComponent/basic_component.js";
-import RegistrationFormView from "./registration_form_view.js";
+import RegistrationFormView from "./registrationFormView.js";
 import {Listener} from "../../common/types";
 
 export type RegistrationFormEventBus = {
@@ -20,28 +20,17 @@ export type RegistrationFormEventBus = {
 export default class RegistrationForm extends BasicComponent {
     view: RegistrationFormView;
 
-    /**
-     * Универсальный компонент заголовка
-     */
     constructor() {
         super();
         this.view = new RegistrationFormView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @return {HTMLElement}
-     */
     async render() {
         await super.render();
         this.root = await this.view.render();
         return this.root;
     }
 
-    /**
-     * Подписка на связанные события
-     * @param {RegistrationFormEventBus} eventBus
-     */
     async subscribe(eventBus: RegistrationFormEventBus) {
         await super.subscribe();
         const submitButton = document.getElementById("registration_form__submit_button")!;
