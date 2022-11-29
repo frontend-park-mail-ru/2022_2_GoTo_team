@@ -3,7 +3,7 @@ import LoginForm, {LoginFormEventBus} from "../components/loginForm/login_form.j
 import RegistrationForm, {RegistrationFormEventBus} from "../components/registrationForm/registration_form.js";
 import {Validators} from "./validators.js";
 import {Requests} from "./requests.js";
-import UserPlug, {UserPlugEventBus} from "../components/userPlug/user_plug.js";
+import UserPlug, {UserPlugEventBus} from "../components/userPlug/userPlug.js";
 import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/userPlugMenu.js";
 import {
     CommentaryData,
