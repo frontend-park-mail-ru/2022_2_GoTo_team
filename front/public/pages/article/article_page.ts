@@ -33,6 +33,7 @@ export default class ArticlePage extends Page {
         const article = await Requests.getArticle(articleId);
         await this.view.render(article);
         Requests.getCommentaries(articleId).then(async (commentaries) => {
+            console.log(commentaries);
             const renderedCommentaries: Commentary[] = [];
             for (const commentaryData of commentaries) {
                 const commentary = new Commentary();

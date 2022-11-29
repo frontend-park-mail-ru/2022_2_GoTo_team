@@ -364,7 +364,6 @@ body {
 
 .article__cover {
     width: 100%;
-    height: 265px;
     background-color: var(--main);
 }
 

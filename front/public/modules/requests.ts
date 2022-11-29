@@ -65,7 +65,7 @@ export class Requests {
                             login: rawArticle.publisher.login,
                             username: rawArticle.publisher.username,
                         },
-                        coverImgPath: "",
+                        coverImgPath: rawArticle.cover_img_path,
                     }
                     articles.push(article);
                 });
@@ -240,7 +240,7 @@ export class Requests {
                             login: rawArticle.publisher.login,
                             username: rawArticle.publisher.username,
                         },
-                        coverImgPath: "",
+                        coverImgPath: rawArticle.cover_img_path,
                     }
                     articles.push(article);
                 });
@@ -296,7 +296,7 @@ export class Requests {
                             login: rawArticle.publisher.login,
                             username: rawArticle.publisher.username,
                         },
-                        coverImgPath: "",
+                        coverImgPath: rawArticle.cover_img_path,
                     }
                     articles.push(article);
                 });
@@ -328,7 +328,7 @@ export class Requests {
                     login: result.response.publisher.login,
                     username: result.response.publisher.username,
                 },
-                coverImgPath: "",
+                coverImgPath: result.response.cover_img_path,
                 content: result.response.content,
             }
             return article;

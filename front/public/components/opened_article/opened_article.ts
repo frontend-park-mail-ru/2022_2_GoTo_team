@@ -27,7 +27,7 @@ export default class OpenedArticle extends BasicComponent {
      * @return {HTMLElement}
      */
     async render(article: FullArticleData) {
-        await super.render();
+        console.log(article.content);
         this.root = await this.view.render(article);
         return this.root;
     }

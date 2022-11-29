@@ -37,7 +37,11 @@
     </div>
     <img class="article__cover" src="{{picture}}">
     <div class="article__wrapper article__content horizontal_center_div">
-        {{content}}
+        {{#each content}}
+        <p>
+        {{this}}
+        </p>
+        {{/each}}
     </div>
     <div class="article__wrapper">
         <div class="article__bottom_bar">

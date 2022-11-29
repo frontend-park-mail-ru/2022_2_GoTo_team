@@ -23,6 +23,7 @@ export default class ArticleView extends BasicComponentView {
      */
     async render(article: IncompleteArticleData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
+        console.log(article.coverImgPath);
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['article.html']({
             title: article.title,
