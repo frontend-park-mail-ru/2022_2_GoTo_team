@@ -16,11 +16,6 @@ export default class ArticleView extends BasicComponentView {
     id: number | undefined;
     publisher: string | undefined;
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {ArticleData} article
-     * @return {HTMLElement}
-     */
     async render(article: IncompleteArticleData): Promise<HTMLElement> {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
@@ -32,7 +27,7 @@ export default class ArticleView extends BasicComponentView {
             rating: article.rating,
             comments: article.comments,
             publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
-            picture: article.coverImgPath !== '' && typeof article.coverImgPath !== 'undefined' ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
+            picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
         });
 
         this.publisher = article.publisher.login;

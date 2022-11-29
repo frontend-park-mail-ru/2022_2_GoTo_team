@@ -1,4 +1,4 @@
-import ArticleView from "./article_view.js";
+import ArticleView from "./articleView.js";
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {IncompleteArticleData} from "../../common/types";
 
@@ -10,24 +10,17 @@ export type ArticleComponentEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class Article
  */
 export default class Article extends BasicComponent {
     view: ArticleView;
-    /**
-     * Универсальный компонент заголовка
-     */
+
     constructor() {
         super();
         this.view = new ArticleView();
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {IncompleteArticleData} article
-     * @return {HTMLElement}
-     */
     async render(article: IncompleteArticleData): Promise<HTMLElement> {
         await super.render();
         this.root = await this.view.render(article);
