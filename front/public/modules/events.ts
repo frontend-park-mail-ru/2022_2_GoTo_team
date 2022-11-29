@@ -16,7 +16,7 @@ import {
 } from "../common/types";
 import BasicComponent from "../components/_basicComponent/basic_component.js";
 import {CommentaryParent, ResponseErrors} from "../common/consts.js"
-import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/other_menu.js";
+import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/otherMenu";
 import SearchForm from "../components/searchForm/searchForm.js";
 import {URIChanger} from "./uriChanger.js";
 import {PageLoaders} from "./pageLoaders.js";
