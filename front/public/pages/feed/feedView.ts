@@ -8,16 +8,10 @@ import Navbar from "../../components/navbar/navbar.js";
 export default class FeedView extends PageView {
     mainContentElement: HTMLElement | undefined;
 
-    /**
-     * @param {HTMLElement} root
-     */
     constructor(root: HTMLElement) {
         super(root);
     }
 
-    /**
-     * Перерисовать главную страницу
-     */
     async render() {
         await super.render();
         const navbar = new Navbar();

@@ -5,7 +5,7 @@ import Page from "../_basic/page.js";
 import {OpenedArticleEventBus} from "../../components/openedArticle/openedArticle.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
-import {CommentaryFormEventBus} from "../../components/commentaryForm/commentary_form";
+import {CommentaryFormEventBus} from "../../components/commentaryForm/commentaryForm.js";
 import Commentary, {CommentaryComponentEventBus} from "../../components/commentary/commentary.js";
 import {CommentaryParent} from "../../common/consts.js";
 

@@ -1,6 +1,6 @@
 import BasicComponent from "../_basicComponent/basic_component.js";
 import {CommentaryData} from "../../common/types";
-import CommentaryFormView from "./commentary_form_view.js";
+import CommentaryFormView from "./commentaryFormView.js";
 import {CommentaryParent} from "../../common/consts.js";
 
 export type CommentaryFormEventBus = {
@@ -8,7 +8,7 @@ export type CommentaryFormEventBus = {
 }
 
 /**
- * View_model-компонент соответсвующего View
+ * ViewModel-компонент соответсвующего View
  * @class CommentaryForm
  */
 export default class CommentaryForm extends BasicComponent {
@@ -17,9 +17,6 @@ export default class CommentaryForm extends BasicComponent {
     parent: number;
     article: number;
 
-    /**
-     * Универсальный компонент заголовка
-     */
     constructor() {
         super();
         this.view = new CommentaryFormView();
@@ -28,11 +25,6 @@ export default class CommentaryForm extends BasicComponent {
         this.parentType = CommentaryParent.article;
     }
 
-    /**
-     * Перерисовка подконтрольного элемента
-     * @param {CommentaryData} commentaryData
-     * @return {HTMLElement}
-     */
     async render(commentaryData: CommentaryData): Promise<HTMLElement> {
         await super.render();
         this.root = await this.view.render(commentaryData);
@@ -44,7 +36,6 @@ export default class CommentaryForm extends BasicComponent {
 
     async subscribe(eventBus: CommentaryFormEventBus) {
         await super.subscribe();
-
         this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {
             form.addEventListener('focusout', () => {
                 if (!form.textContent!.replace(' ', '').length) {
