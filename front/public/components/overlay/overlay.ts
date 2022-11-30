@@ -22,7 +22,6 @@ export default class Overlay extends BasicComponent {
         return this.root;
     }
 
-    async subscribe(eventBus: OverlayEventBus) {
-        await super.subscribe();
+    subscribe(eventBus: OverlayEventBus) {
     }
 }

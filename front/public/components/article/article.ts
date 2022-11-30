@@ -32,7 +32,6 @@ export default class Article extends BasicComponent {
 
         if (this.view.category !== "") {
             const categoryLink: HTMLElement = this.root.querySelector('.article__category')!;
-
             subscription = {
                 element: categoryLink,
                 event: 'click',
