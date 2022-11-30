@@ -113,5 +113,5 @@ export type FullSearchData = {
 export type Subscription = {
     element: Element,
     event: string,
-    listener: () => {},
+    listener: () => void,
 }

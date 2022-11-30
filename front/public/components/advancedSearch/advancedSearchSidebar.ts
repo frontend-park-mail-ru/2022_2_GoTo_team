@@ -1,5 +1,5 @@
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {AdvSearchData, RequestAnswer} from "../../common/types";
+import {AdvSearchData, RequestAnswer, Subscription} from "../../common/types";
 import AdvancedSearchSidebarView, {AdvSearchFormData} from "./advancedSearchSidebarView.js";
 import {Requests} from "../../modules/requests.js";
 
@@ -43,40 +43,61 @@ export default class AdvancedSearchSidebar extends BasicComponent {
     }
 
     subscribe(eventBus: AdvancedSearchSidebarEventBus): void {
+        let subscription: Subscription;
         this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {
-            form.addEventListener('focusout', () => {
-                if (!form.textContent!.replace(' ', '').length) {
-                    form.innerHTML = '';
-                }
-            });
+            subscription = {
+                element: form,
+                event: 'focusout',
+                listener: () => {
+                    if (!form.textContent!.replace(' ', '').length) {
+                        form.innerHTML = '';
+                    }
+                },
+            }
+            this._subscribeEvent(subscription);
         });
 
         const addButton = this.root.querySelector('.advanced_search__sidebar__add_tag')!;
-        addButton.addEventListener('click', () => {
-            eventBus.addTag(this);
-        });
+        subscription = {
+            element: addButton,
+            event: 'click',
+            listener: () => {
+                eventBus.addTag(this);
+            },
+        }
+        this._subscribeEvent(subscription);
 
         const submit = this.root.querySelector('.advanced_search__sidebar__apply')!;
-        submit.addEventListener('click', () => {
-            eventBus.submit(this);
-        });
+        subscription = {
+            element: submit,
+            event: 'click',
+            listener: () => {
+                eventBus.submit(this);
+            },
+        }
+        this._subscribeEvent(subscription);
 
         this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
-            tagDiv.addEventListener('click', () => {
-                /*
-                const index = this.tags.indexOf(tagDiv.innerHTML);
-                if (index > -1) {
-                    this.tags.splice(index, 1);
-                }
-                if (this.tags.length == 0) {
+            subscription = {
+                element: tagDiv,
+                event: 'click',
+                listener: () => {
+                    /*
+                    const index = this.tags.indexOf(tagDiv.innerHTML);
+                    if (index > -1) {
+                        this.tags.splice(index, 1);
+                    }
+                    if (this.tags.length == 0) {
+                        tagDiv.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
+                    }else{
+                        tagDiv.parentNode!.removeChild(tagDiv);
+                    }
+                     */
+                    this.tags = [];
                     tagDiv.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
-                }else{
-                    tagDiv.parentNode!.removeChild(tagDiv);
-                }
-                 */
-                this.tags = [];
-                tagDiv.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
-            })
+                },
+            }
+            this._subscribeEvent(subscription);
         });
     }
 }
