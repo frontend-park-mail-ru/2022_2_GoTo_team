@@ -1,5 +1,5 @@
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {CommentaryData} from "../../common/types";
+import {CommentaryData, Subscription} from "../../common/types";
 import CommentaryView from "./commentaryView.js";
 
 export type CommentaryComponentEventBus = {
@@ -27,20 +27,36 @@ export default class Commentary extends BasicComponent {
     }
 
     subscribe(eventBus: CommentaryComponentEventBus) {
+        let subscription: Subscription;
         const avatar: HTMLElement = this.root.querySelector('.commentary__profile_picture')!;
 
-        avatar.addEventListener('click', () => {
-            eventBus.goToAuthorFeed(this.view.publisher!);
-        });
+        subscription = {
+            element: avatar,
+            event: 'click',
+            listener: () => {
+                eventBus.goToAuthorFeed(this.view.publisher!);
+            },
+        }
+        this._subscribeEvent(subscription);
 
-        const author_link: HTMLElement = this.root.querySelector('.commentary__author')!;
-        author_link.addEventListener('click', () => {
-            eventBus.goToAuthorFeed(this.view.publisher!);
-        });
+        const authorLink: HTMLElement = this.root.querySelector('.commentary__author')!;
+        subscription = {
+            element: authorLink,
+            event: 'click',
+            listener: () => {
+                eventBus.goToAuthorFeed(this.view.publisher!);
+            },
+        }
+        this._subscribeEvent(subscription);
 
-        const answer_button: HTMLElement = this.root.querySelector('.commentary__answer_button')!;
-        answer_button.addEventListener('click', () => {
-            eventBus.showAnswerForm(this);
-        });
+        const answerButton: HTMLElement = this.root.querySelector('.commentary__answer_button')!;
+        subscription = {
+            element: answerButton,
+            event: 'click',
+            listener: () => {
+                eventBus.showAnswerForm(this);
+            },
+        }
+        this._subscribeEvent(subscription);
     }
 };

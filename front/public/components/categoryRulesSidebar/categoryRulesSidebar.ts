@@ -17,13 +17,12 @@ export default class CategoryRulesSidebar extends BasicComponent {
         this.view = new CategoryRulesSidebarView();
     }
 
-    async render(rulesData: RulesData): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render(rulesData);
+    render(rulesData: RulesData): HTMLElement {
+        super.render();
+        this.root = this.view.render(rulesData);
         return this.root;
     }
 
-    async subscribe(eventBus: CategoryRulesSidebarEventBus): Promise<void> {
-        await super.subscribe();
+    subscribe(eventBus: CategoryRulesSidebarEventBus): void {
     }
 };
