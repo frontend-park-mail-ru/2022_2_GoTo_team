@@ -1,6 +1,6 @@
 import LoginFormView from "./loginFormView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {Listener} from "../../common/types";
+import {Listener, Subscription} from "../../common/types";
 
 export type LoginFormEventBus = {
     submit: Listener,
@@ -28,24 +28,50 @@ export default class LoginForm extends BasicComponent {
     }
 
     subscribe(eventBus: LoginFormEventBus) {
-        const submit_button = document.getElementById("login_form__submit_button")!;
-        submit_button.addEventListener('click', eventBus.submit);
+        let subscription: Subscription;
+        const submitButton = document.getElementById("login_form__submit_button")!;
+        subscription = {
+            element: submitButton,
+            event: 'click',
+            listener: eventBus.submit,
+        }
+        this._subscribeEvent(subscription);
 
-        const reg_button = document.getElementById("login_form__signup_button")!;
-        reg_button.addEventListener('click', eventBus.goToRegistration);
+        const regButton = document.getElementById("login_form__signup_button")!;
+        subscription = {
+            element: regButton,
+            event: 'click',
+            listener: eventBus.goToRegistration,
+        }
+        this._subscribeEvent(subscription);
 
-        const email_form = document.getElementById("login_form__email_login")!;
-        email_form.addEventListener('focusout', eventBus.emailValidation);
+        const emailForm = document.getElementById("login_form__email_login")!;
+        subscription = {
+            element: emailForm,
+            event: 'focusout',
+            listener: eventBus.emailValidation,
+        }
+        this._subscribeEvent(subscription);
 
-        const password_form = document.getElementById("login_form__password")!;
-        password_form.addEventListener('focusout', eventBus.passwordValidation);
+        const passwordForm = document.getElementById("login_form__password")!;
+        subscription = {
+            element: passwordForm,
+            event: 'focusout',
+            listener: eventBus.passwordValidation,
+        }
+        this._subscribeEvent(subscription);
 
 
-        const close_button = document.getElementById("login_form__cross")!;
+        const closeButton = document.getElementById("login_form__cross")!;
         if (typeof eventBus.closeForm !== 'undefined') {
-            close_button.addEventListener('click', eventBus.closeForm);
+            subscription = {
+                element: closeButton,
+                event: 'click',
+                listener: eventBus.closeForm,
+            }
+            this._subscribeEvent(subscription);
         } else {
-            this.root.removeChild(close_button);
+            this.root.removeChild(closeButton);
         }
     }
 };
