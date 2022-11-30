@@ -57,10 +57,9 @@ export default class SearchTagPage extends Page {
                     this.view.mainContentElement!.innerHTML = '';
                     articles.forEach((article) => {
                         const articleView = new Article();
-                        articleView.render(article).then(() => {
-                            articleView.subscribe(articleEventBus);
-                            this.view.mainContentElement!.appendChild(articleView.root);
-                        });
+                        articleView.render(article)
+                        articleView.subscribe(articleEventBus);
+                        this.view.mainContentElement!.appendChild(articleView.root);
                     })
                 }
             }

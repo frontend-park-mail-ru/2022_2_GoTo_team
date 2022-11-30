@@ -33,7 +33,9 @@ export default class Page {
      */
     destroy() {
         this.view.children.forEach((value) => {
-            value.destroy();
+            try{
+                value.destroy();
+            }catch (e) {}
         })
     }
 }

@@ -1,6 +1,6 @@
 import ArticleView from "./articleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {IncompleteArticleData} from "../../common/types";
+import {IncompleteArticleData, Subscription} from "../../common/types";
 
 export type ArticleComponentEventBus = {
     goToCategoryFeed: (category: string) => void,
@@ -21,45 +21,76 @@ export default class Article extends BasicComponent {
         this.view = new ArticleView();
     }
 
-    async render(article: IncompleteArticleData): Promise<HTMLElement> {
-        await super.render();
-        this.root = await this.view.render(article);
+    render(article: IncompleteArticleData): HTMLElement {
+        this.root =this.view.render(article);
         return this.root;
     }
 
     async subscribe(eventBus: ArticleComponentEventBus): Promise<void> {
+        let subscription: Subscription;
         await super.subscribe();
         const avatar: HTMLElement = this.root.querySelector('.article__profile_picture')!;
 
         if (this.view.category !== "") {
             const categoryLink: HTMLElement = this.root.querySelector('.article__category')!;
 
-            categoryLink.addEventListener('click', () => {
-                eventBus.goToCategoryFeed(this.view.category!);
-            });
-            avatar.addEventListener('click', () => {
-                eventBus.goToCategoryFeed(this.view.category!);
-            });
+            subscription = {
+                element: categoryLink,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToCategoryFeed(this.view.category!);
+                },
+            }
+            this._subscribeEvent(subscription);
+
+            subscription = {
+                element: avatar,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToCategoryFeed(this.view.category!);
+                },
+            }
+            this._subscribeEvent(subscription);
         } else {
-            avatar.addEventListener('click', () => {
-                eventBus.goToAuthorFeed(this.view.publisher!);
-            });
+            subscription = {
+                element: avatar,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToAuthorFeed(this.view.publisher!);
+                },
+            }
+            this._subscribeEvent(subscription);
         }
 
-        const author_link: HTMLElement = this.root.querySelector('.article__author')!;
-        author_link.addEventListener('click', () => {
-            eventBus.goToAuthorFeed(this.view.publisher!);
-        });
+        const authorLink: HTMLElement = this.root.querySelector('.article__author')!;
+        subscription = {
+            element: authorLink,
+            event: 'click',
+            listener: () => {
+                eventBus.goToAuthorFeed(this.view.publisher!);
+            },
+        }
+        this._subscribeEvent(subscription);
 
         const titleLink: HTMLElement = this.root.querySelector('.article__title')!;
-        titleLink.addEventListener('click', () => {
-            eventBus.openArticle(this.view.id!);
-        });
+        subscription = {
+            element: titleLink,
+            event: 'click',
+            listener: () => {
+                eventBus.openArticle(this.view.id!);
+            },
+        }
+        this._subscribeEvent(subscription);
 
         this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
-            tagDiv.addEventListener('click', () => {
-                eventBus.openTagPage(tagDiv.innerHTML);
-            })
+            subscription = {
+                element: tagDiv,
+                event: 'click',
+                listener: () => {
+                    eventBus.openTagPage(tagDiv.innerHTML);
+                },
+            }
+            this._subscribeEvent(subscription);
         })
     }
 };

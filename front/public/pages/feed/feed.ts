@@ -34,10 +34,9 @@ export default class Feed extends Page{
                 this.view.mainContentElement!.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
-                    articleView.render(article).then(() => {
-                        this.view.mainContentElement!.appendChild(articleView.root);
-                        articleView.subscribe(articleEventBus);
-                    });
+                    articleView.render(article)
+                    this.view.mainContentElement!.appendChild(articleView.root);
+                    articleView.subscribe(articleEventBus);
                 })
             }
         });
