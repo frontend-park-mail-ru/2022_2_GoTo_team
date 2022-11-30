@@ -1,0 +1,23 @@
+<div class="commentary">
+    <div class="commentary__header">
+        {{#if publisher_avatar}}
+        <img class="commentary__profile_picture" src="{{publisher_avatar_url}}">
+        {{else}}
+        <img class="commentary__profile_picture" src="static/img/user_icon.jpg">
+        {{/if}}
+        <div class="commentary__author" id="commentary__author">{{publisher}}</div>
+        <div class="commentary__posting_time">{{time}}</div>
+        <div class="commentary__rating">
+            <svg>
+                <use xlink:href="icons.svg#arrow_down"></use>
+            </svg>
+            <div class="article__rating__count">{{rating}}</div>
+            <svg>
+                <use xlink:href="icons.svg#arrow_up"></use>
+            </svg>
+        </div>
+    </div>
+    <div class="commentary__content">{{content}}</div>
+    <div class="link commentary__answer_button">Ответить</div>
+    <div class="commentary__reply_box div_width_available"></div>
+</div>

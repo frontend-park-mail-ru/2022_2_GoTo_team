@@ -1,0 +1,46 @@
+<div class="article_edit">
+    <select class="select_menu">
+        <option value="">Без категории</option>
+        {{#each categories}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <div class="row flex-wrapper">
+        <select class="select_menu tag_selector">
+            <option value="">Выбрать тег</option>
+            {{#each allTags}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <div class="button accent_button article_edit__add_tag vertical_center_div">Добавить тег</div>
+        <div class="row article_edit__tags_row">
+            {{#if tags}}
+            {{#each tags}}
+            <div class="article__tag">{{this}}</div>
+            {{/each}}
+            {{else}}
+            <div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>
+            {{/if}}
+        </div>
+    </div>
+    <div>
+        <div contenteditable="true" class="div_textarea article_edit__title div_width_available" role="textbox" id="title"
+             placeholder="Заголовок">{{title}}</div>
+        <div contenteditable="true" class="div_textarea article_edit__description div_width_available" role="textbox"
+             placeholder="Описание">{{description}}</div>
+        <div contenteditable="true" class="div_textarea article_edit__content div_width_available" role="textbox" id="description"
+             placeholder="Наполнение">{{content}}</div>
+    </div>
+    <div class="article_edit__footer row">
+        {{#if update}}
+        <div class="button accent_button article_edit__save_button">Сохранить</div>
+        <div class="button negative_non_accent_button article_edit__delete_button">
+            <svg>
+                <use xlink:href="icons.svg#trash_bin"></use>
+            </svg>
+        </div>
+        {{else}}
+        <div class="button accent_button article_edit__save_button">Опубликовать</div>
+        {{/if}}
+    </div>
+</div>
