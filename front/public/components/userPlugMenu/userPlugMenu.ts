@@ -1,6 +1,6 @@
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import UserPlugMenuView from "./userPlugMenuView.js";
-import {Listener} from "../../common/types";
+import {Listener, Subscription} from "../../common/types";
 
 export type UserPlugMenuEventBus = {
     goToSettings: Listener,
@@ -25,11 +25,22 @@ export default class UserPlugMenu extends BasicComponent {
     }
 
     subscribe(eventBus: UserPlugMenuEventBus) {
+        let subscription: Subscription;
 
         const profileButton = document.getElementById('profile_menu__profile_button')!;
-        profileButton.addEventListener('click', eventBus.goToSettings);
+        subscription = {
+            element: profileButton,
+            event: 'click',
+            listener: eventBus.goToSettings,
+        }
+        this._subscribeEvent(subscription);
 
         const exitButton = document.getElementById('profile_menu__unauthorize_button')!;
-        exitButton.addEventListener('click', eventBus.unauthorize);
+        subscription = {
+            element: exitButton,
+            event: 'click',
+            listener: eventBus.unauthorize,
+        }
+        this._subscribeEvent(subscription);
     }
 }
