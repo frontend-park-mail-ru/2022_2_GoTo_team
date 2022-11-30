@@ -25,11 +25,11 @@ router
         }
         openedPage = PageLoaders.settingsPage();
     })
-    .add(API.articlePage, (id: number) => {
+    .add(API.articlePage, (id: number, comments: string) => {
         if (openedPage !== undefined){
             openedPage.destroy();
         }
-        openedPage = PageLoaders.articlePage(id);
+        openedPage = PageLoaders.articlePage(id, comments !== undefined);
     })
     .add(API.categoryPage, (name: string) => {
         if (openedPage !== undefined){

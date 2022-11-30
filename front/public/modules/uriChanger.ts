@@ -34,8 +34,8 @@ export class URIChanger {
     /**
      * Перемещает на страницу просмотра статьи
      */
-    static articlePage(articleId: number) {
-        Events.setLocation(APIStrings.articlePage(articleId));
+    static articlePage(articleId: number, comments: boolean) {
+        Events.setLocation(APIStrings.articlePage(articleId, comments));
     }
 
     /**

@@ -21,10 +21,10 @@ export default class ArticlePage extends Page {
         this.view = new ArticlePageView(root);
     }
 
-    async render(articleId: number) {
-        const article = await Requests.getArticle(articleId);
+    async render(data: { articleId: number, toComments: boolean }) {
+        const article = await Requests.getArticle(data.articleId);
         await this.view.render(article);
-        Requests.getCommentaries(articleId).then(async (commentaries) => {
+        Requests.getCommentaries(data.articleId).then(async (commentaries) => {
             const renderedCommentaries: Commentary[] = [];
             for (const commentaryData of commentaries) {
                 const commentary = new Commentary();
@@ -72,6 +72,9 @@ export default class ArticlePage extends Page {
             }
         })
         Events.updateAuth();
+        if (data.toComments){
+            Events.scrollToComments();
+        }
     }
 
     async subscribe() {
@@ -88,6 +91,7 @@ export default class ArticlePage extends Page {
             goToCategoryFeed: Events.goToCategoryFeed,
             goToAuthorFeed: Events.goToAuthorFeed,
             openTagPage: URIChanger.searchByTagPage,
+            scrollToComments: Events.scrollToComments,
         }
 
         const commentaryFormEventBus: CommentaryFormEventBus = {

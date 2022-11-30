@@ -633,8 +633,13 @@ export class Events {
     /**
      * Отрисовка страницы просмотра статьи
      */
-    static openArticle(articleId: number): void {
-        URIChanger.articlePage(articleId);
+    static openArticle(articleId: number, comments?: boolean): void {
+        if(comments === undefined){
+            URIChanger.articlePage(articleId, false);
+        }else{
+            URIChanger.articlePage(articleId, comments);
+        }
+
     }
 
     /**
@@ -1247,5 +1252,17 @@ export class Events {
                 element.innerHTML = "" + commentaryCount;
             })
         })
+    }
+
+    /**
+     * Отматывает до комментариев, когда на странице статьи
+     */
+    static scrollToComments(){
+        const comments = document.querySelector('.commentary__block__wrapper')!;
+        const y = comments.getBoundingClientRect().top + window.scrollY;
+        window.scroll({
+            top: y,
+            behavior: 'smooth'
+        });
     }
 }

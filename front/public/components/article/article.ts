@@ -5,7 +5,7 @@ import {IncompleteArticleData, Subscription} from "../../common/types";
 export type ArticleComponentEventBus = {
     goToCategoryFeed: (category: string) => void,
     goToAuthorFeed: (login: string) => void,
-    openArticle: (id: number) => void,
+    openArticle: (id: number, comments: boolean) => void,
     openTagPage: (tag: string) => void,
 }
 
@@ -75,7 +75,7 @@ export default class Article extends BasicComponent {
             element: titleLink,
             event: 'click',
             listener: () => {
-                eventBus.openArticle(this.view.id!);
+                eventBus.openArticle(this.view.id!, false);
             },
         }
         this._subscribeEvent(subscription);
@@ -90,5 +90,15 @@ export default class Article extends BasicComponent {
             }
             this._subscribeEvent(subscription);
         })
+
+        const comments: HTMLElement = this.root.querySelector('.article__comments_count')!;
+        subscription = {
+            element: comments,
+            event: 'click',
+            listener: () => {
+                eventBus.openArticle(this.view.id!, true);
+            },
+        }
+        this._subscribeEvent(subscription);
     }
 };

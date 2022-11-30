@@ -72,9 +72,9 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static articlePage(articleId: number): Page {
+    static articlePage(articleId: number, comments: boolean): Page {
         const page = new ArticlePage(root);
-        page.render(articleId).then(() => {
+        page.render({articleId: articleId, toComments: comments}).then(() => {
             page.subscribe();
         });
         return page;
