@@ -1,6 +1,6 @@
 import OpenedArticleView from "./openedArticleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {FullArticleData} from "../../common/types";
+import {FullArticleData, Subscription} from "../../common/types";
 
 export type OpenedArticleEventBus = {
     goToCategoryFeed: (category: string) => void,
@@ -27,32 +27,58 @@ export default class OpenedArticle extends BasicComponent {
     }
 
     subscribe(eventBus: OpenedArticleEventBus) {
+        let subscription: Subscription;
         const avatar = this.root.querySelector('.article__profile_picture')!;
 
         if (this.view.category !== ""){
             const categoryLink = this.root.querySelector('.article__category')!;
+            subscription = {
+                element: categoryLink,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToCategoryFeed(this.view.category!);
+                },
+            }
+            this._subscribeEvent(subscription);
 
-            categoryLink.addEventListener('click', () => {
-                eventBus.goToCategoryFeed(this.view.category!);
-            });
-            avatar.addEventListener('click', () => {
-                eventBus.goToCategoryFeed(this.view.category!);
-            });
+            subscription = {
+                element: avatar,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToCategoryFeed(this.view.category!);
+                },
+            }
+            this._subscribeEvent(subscription);
         }else{
-            avatar.addEventListener('click', () => {
-                eventBus.goToCategoryFeed(this.view.category!);
-            });
+            subscription = {
+                element: avatar,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToAuthorFeed(this.view.publisher!);
+                },
+            }
+            this._subscribeEvent(subscription);
         }
 
         const authorLink = this.root.querySelector('.article__author')!;
-        authorLink.addEventListener('click', () => {
-            eventBus.goToAuthorFeed(this.view.publisher!);
-        })
+        subscription = {
+            element: authorLink,
+            event: 'click',
+            listener: () => {
+                eventBus.goToAuthorFeed(this.view.publisher!);
+            },
+        }
+        this._subscribeEvent(subscription);
 
         this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
-            tagDiv.addEventListener('click', () => {
-                eventBus.openTagPage(tagDiv.innerHTML);
-            })
+            subscription = {
+                element: tagDiv,
+                event: 'click',
+                listener: () => {
+                    eventBus.openTagPage(tagDiv.innerHTML);
+                },
+            }
+            this._subscribeEvent(subscription);
         })
     }
 };
