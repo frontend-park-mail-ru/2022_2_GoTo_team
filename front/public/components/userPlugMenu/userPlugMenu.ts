@@ -19,14 +19,12 @@ export default class UserPlugMenu extends BasicComponent {
         this.view = new UserPlugMenuView();
     }
 
-    async render() {
-        await super.render();
-        this.root = await this.view.render();
+    render() {
+        this.root = this.view.render();
         return this.root;
     }
 
-    async subscribe(eventBus: UserPlugMenuEventBus) {
-        await super.subscribe();
+    subscribe(eventBus: UserPlugMenuEventBus) {
 
         const profileButton = document.getElementById('profile_menu__profile_button')!;
         profileButton.addEventListener('click', eventBus.goToSettings);
