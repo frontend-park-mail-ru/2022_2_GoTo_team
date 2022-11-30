@@ -1,6 +1,6 @@
 import UserPlugView from "./userPlugView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {Listener, UserPlugData} from "../../common/types";
+import {Listener, Subscription, UserPlugData} from "../../common/types";
 
 export type UserPlugEventBus = {
     authedListener: Listener,
@@ -24,12 +24,22 @@ export default class UserPlug extends BasicComponent {
         return this.root;
     }
 
-    async subscribe(eventBus: UserPlugEventBus) {
-        await super.subscribe();
+    subscribe(eventBus: UserPlugEventBus) {
+        let subscription: Subscription;
         if (this.view.authed){
-            this.root.addEventListener('click', eventBus.authedListener);
+            subscription = {
+                element: this.root,
+                event: 'click',
+                listener: eventBus.authedListener,
+            }
+            this._subscribeEvent(subscription);
         }else{
-            this.root.addEventListener('click', eventBus.unauthedListener);
+            subscription = {
+                element: this.root,
+                event: 'click',
+                listener: eventBus.unauthedListener,
+            }
+            this._subscribeEvent(subscription);
         }
     }
 };
