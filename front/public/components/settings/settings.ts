@@ -1,6 +1,6 @@
 import SettingsView from "./settingsView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {Listener, UserData} from "../../common/types";
+import {Listener, Subscription, UserData} from "../../common/types";
 
 export type SettingsEventBus = {
     saveProfile: Listener,
@@ -29,23 +29,55 @@ export default class Settings extends BasicComponent {
     }
 
     subscribe(eventBus: SettingsEventBus) {
+        let subscription: Subscription;
         const saveButton = document.getElementById('save')!;
-        saveButton.addEventListener('click', eventBus.saveProfile);
+        subscription = {
+            element: saveButton,
+            event: 'click',
+            listener: eventBus.saveProfile,
+        }
+        this._subscribeEvent(subscription);
 
         const emailForm = document.getElementById("settings__email")!;
-        emailForm.addEventListener('focusout', eventBus.emailValidation);
+        subscription = {
+            element: emailForm,
+            event: 'focusout',
+            listener: eventBus.emailValidation,
+        }
+        this._subscribeEvent(subscription);
 
         const loginForm = document.getElementById("settings__login")!;
-        loginForm.addEventListener('focusout', eventBus.loginValidation);
+        subscription = {
+            element: loginForm,
+            event: 'focusout',
+            listener: eventBus.loginValidation,
+        }
+        this._subscribeEvent(subscription);
 
         const usernameForm = document.getElementById("settings__nickname")!;
-        usernameForm.addEventListener('focusout', eventBus.usernameValidation);
+        subscription = {
+            element: usernameForm,
+            event: 'focusout',
+            listener: eventBus.usernameValidation,
+        }
+        this._subscribeEvent(subscription);
 
         const passwordForm = document.getElementById("settings__password")!;
-        passwordForm.addEventListener('focusout', eventBus.passwordValidation);
-        passwordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
+        subscription = {
+            element: passwordForm,
+            event: 'focusout',
+            listener: eventBus.passwordValidation,
+        }
+        this._subscribeEvent(subscription);
+        subscription.listener = eventBus.repeatPasswordValidation;
+        this._subscribeEvent(subscription);
 
         const repeatPasswordForm = document.getElementById("settings__repeat_password")!;
-        repeatPasswordForm.addEventListener('focusout', eventBus.repeatPasswordValidation);
+        subscription = {
+            element: repeatPasswordForm,
+            event: 'focusout',
+            listener: eventBus.repeatPasswordValidation,
+        }
+        this._subscribeEvent(subscription);
     }
 };

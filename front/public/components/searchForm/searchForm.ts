@@ -23,7 +23,7 @@ export default class SearchForm extends BasicComponent {
         return this.root;
     }
 
-    async subscribe(eventBus: SearchFormEventBus) {
+    subscribe(eventBus: SearchFormEventBus) {
         let subscription: Subscription;
         const input = this.root.querySelector('.navbar__search_form')! as HTMLFormElement;
         subscription = {

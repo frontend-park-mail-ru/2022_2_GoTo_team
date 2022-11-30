@@ -24,6 +24,6 @@ export default class SearchHeader extends BasicComponent {
         return this.root;
     }
 
-    async subscribe(eventBus: SearchHeaderEventBus) {
+    subscribe(eventBus: SearchHeaderEventBus) {
     }
 };
