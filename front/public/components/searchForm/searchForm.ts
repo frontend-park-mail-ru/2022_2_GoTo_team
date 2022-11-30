@@ -1,5 +1,6 @@
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import SearchFormView from "./searchFormView.js";
+import {Subscription} from "../../common/types";
 
 export type SearchFormEventBus = {
     search: (request: string) => void,
@@ -23,12 +24,18 @@ export default class SearchForm extends BasicComponent {
     }
 
     async subscribe(eventBus: SearchFormEventBus) {
-        await super.subscribe();
+        let subscription: Subscription;
         const input = this.root.querySelector('.navbar__search_form')! as HTMLFormElement;
-        input.addEventListener('keyup', function (e) {
+        subscription = {
+            element: input,
+            event: 'keyup',
+            // @ts-ignore
+            listener: (e: KeyboardEvent) => {
             if (e.key === 'Enter' || e.keyCode === 13) {
                 eventBus.search(input.value);
             }
-        });
+        },
+        }
+        this._subscribeEvent(subscription);
     }
 };
