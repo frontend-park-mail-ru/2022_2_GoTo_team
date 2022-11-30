@@ -26,9 +26,8 @@ export default class Article extends BasicComponent {
         return this.root;
     }
 
-    async subscribe(eventBus: ArticleComponentEventBus): Promise<void> {
+    subscribe(eventBus: ArticleComponentEventBus): void {
         let subscription: Subscription;
-        await super.subscribe();
         const avatar: HTMLElement = this.root.querySelector('.article__profile_picture')!;
 
         if (this.view.category !== "") {

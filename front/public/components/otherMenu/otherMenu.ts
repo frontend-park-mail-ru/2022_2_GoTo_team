@@ -1,5 +1,5 @@
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {Listener} from "../../common/types";
+import {Listener, Subscription} from "../../common/types";
 import OtherMenuView from "./otherMenuView.js";
 
 export type OtherMenuEventBus = {
@@ -24,11 +24,16 @@ export default class OtherMenu extends BasicComponent {
         return this.root;
     }
 
-   subscribe(eventBus: OtherMenuEventBus) {
-
+    subscribe(eventBus: OtherMenuEventBus) {
+        let subscription: Subscription;
         const newArticleButton = document.getElementById('other_menu__new_article_button')!;
-        newArticleButton.addEventListener('click', () => {
-            eventBus.newArticle();
-        });
+        subscription = {
+            element: newArticleButton,
+            event: 'click',
+            listener: () => {
+                eventBus.newArticle();
+            },
+        }
+        this._subscribeEvent(subscription);
     }
 }
