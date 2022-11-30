@@ -109,3 +109,9 @@ export type FullSearchData = {
     primary: SearchData,
     advanced: AdvSearchData,
 }
+
+export type Subscription = {
+    element: Element,
+    event: string,
+    listener: () => {},
+}

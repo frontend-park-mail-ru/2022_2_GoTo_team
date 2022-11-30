@@ -25,6 +25,15 @@ export default class Page {
     /**
      * Подписка на связанные события
      */
-    async subscribe() {
+    subscribe() {
+    }
+
+    /**
+     * Отписка от событий
+     */
+    destroy() {
+        this.view.children.forEach((value) => {
+            value.destroy();
+        })
     }
 }

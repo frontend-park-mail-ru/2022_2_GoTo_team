@@ -20,8 +20,7 @@ export default class RegistrationPage extends Page{
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    // @ts-ignore
-    render() {
+    async render() {
         this.view.render();
         Events.updateAuth();
     }

@@ -1,4 +1,5 @@
 import BasicComponentView from "./basicComponentView.js";
+import {Subscription} from "../../common/types";
 
 /**
  * [Интерфейс] ViewModel для View
@@ -7,6 +8,7 @@ import BasicComponentView from "./basicComponentView.js";
 export default class BasicComponent {
     root: HTMLElement;
     view: BasicComponentView;
+    subscriptions: Subscription[];
 
     /**
      * Конструктор
@@ -14,6 +16,7 @@ export default class BasicComponent {
     constructor() {
         this.root = document.createElement('div');
         this.view = new BasicComponentView();
+        this.subscriptions = [];
     }
 
     /**
@@ -27,5 +30,29 @@ export default class BasicComponent {
      * Подписка на связанные события
      */
     subscribe(eventBus?: object): void {
+    }
+
+    /**
+     * Подписка на событие
+     */
+    _subscribeEvent(subscription: Subscription){
+        subscription.element.addEventListener(subscription.event, subscription.listener);
+        this.subscriptions.push(subscription);
+    }
+
+    /**
+     * Отписка от события
+     */
+    #unsubscribeEvent(subscription: Subscription){
+        subscription.element.removeEventListener(subscription.event, subscription.listener);
+    }
+
+    /**
+     * Отписка от событий
+     */
+    destroy(){
+        this.subscriptions.forEach((subscription) => {
+            this.#unsubscribeEvent(subscription);
+        })
     }
 }

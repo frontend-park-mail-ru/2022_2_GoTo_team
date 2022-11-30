@@ -1,6 +1,6 @@
 import NavbarView from "./navbarView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {Listener} from "../../common/types";
+import {Listener, Subscription} from "../../common/types";
 
 export type NavbarEventBus = {
     goToHotFeed: Listener,
@@ -29,13 +29,20 @@ export default class Navbar extends BasicComponent {
     }
 
     async subscribe(eventBus: NavbarEventBus) {
+        let subscription: Subscription;
         const logo = this.root.querySelector('.navbar__logo')!;
         logo.addEventListener('click', eventBus.goToHotFeed);
 
         const popular = this.root.querySelectorAll('.navbar__button')[0];
+        subscription = {
+            element: popular,
+            event: 'click',
+            listener: eventBus.goToHotFeed,
+        }
+        this._subscribeEvent(subscription);
         ///const newFeed = this.root.querySelectorAll('.navbar__button')[1];
         //const subscribeFeed = this.root.querySelectorAll('.navbar__button')[2];
-        popular.addEventListener('click', eventBus.goToHotFeed);
+        //popular.addEventListener('click', eventBus.goToHotFeed);
         //newFeed.addEventListener('click', eventBus.goToNewFeed);
         //subscribeFeed.addEventListener('click', eventBus.goToSubscribeFeed);
 
@@ -47,9 +54,19 @@ export default class Navbar extends BasicComponent {
         */
 
         const otherMenuButton = this.root.querySelectorAll('.navbar__button')[1];
-        otherMenuButton.addEventListener('click', eventBus.goToNewArticle);
+        subscription = {
+            element: otherMenuButton,
+            event: 'click',
+            listener: eventBus.goToNewArticle,
+        }
+        this._subscribeEvent(subscription);
 
         const searchButton = this.root.querySelectorAll('.navbar__button')[3];
-        searchButton.addEventListener('click', eventBus.openSearch);
+        subscription = {
+            element: searchButton,
+            event: 'click',
+            listener: eventBus.openSearch,
+        }
+        this._subscribeEvent(subscription);
     }
 }

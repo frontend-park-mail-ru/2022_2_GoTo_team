@@ -4,34 +4,61 @@ import {PageLoaders} from "./modules/pageLoaders.js";
 import Router from "./modules/router.js";
 import {API} from "./common/consts.js";
 import {FullSearchData, SearchData} from "./common/types";
+import Page from "./pages/_basic/page";
 
 const router = new Router({
     root: ''
 });
 
+let openedPage: Page;
+
 router
     .add(API.feedPage, () => {
-        PageLoaders.feedPage();
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.feedPage();
     })
     .add(API.settingsPage, () => {
-        PageLoaders.settingsPage();
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.settingsPage();
     })
     .add(API.articlePage, (id: number) => {
-        PageLoaders.articlePage(id);
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.articlePage(id);
     })
     .add(API.categoryPage, (name: string) => {
-        PageLoaders.categoryFeedPage(name);
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.categoryFeedPage(name);
     })
     .add(API.authorPage, (login: string) => {
-        PageLoaders.userFeedPage(login);
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.userFeedPage(login);
     })
     .add(API.newArticlePage, () => {
-        PageLoaders.editArticle();
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.editArticle();
     })
     .add(API.articleEditPage, (id: number) => {
-        PageLoaders.editArticle(id);
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.editArticle(id);
     })
     .add(API.searchPage, (request: string, ...params: string[]) => {
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
         const searchData : FullSearchData = {
             primary: {
                 request: request,
@@ -41,14 +68,20 @@ router
                 tags: params[3]?.split(','),
             }
         }
-        PageLoaders.searchPage(searchData);
+        openedPage = PageLoaders.searchPage(searchData);
     })
     .add(API.searchByTagPage, (tag: string) => {
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
         const searchData: SearchData = {
             request: tag,
         }
-        PageLoaders.searchByTagPage(searchData);
+        openedPage = PageLoaders.searchByTagPage(searchData);
     })
     .add(API.root, () => {
-        PageLoaders.feedPage();
+        if (openedPage !== undefined){
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.feedPage();
     });
