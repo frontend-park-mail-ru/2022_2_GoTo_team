@@ -6,13 +6,13 @@
         {{/each}}
     </select>
     <div class="row flex-wrapper">
-        <div class="button accent_button article_edit__add_tag">Добавить тег</div>
         <select class="select_menu tag_selector">
             <option value="">Выбрать тег</option>
             {{#each allTags}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
+        <div class="button accent_button article_edit__add_tag vertical_center_div">Добавить тег</div>
         <div class="row article_edit__tags_row">
             {{#if tags}}
             {{#each tags}}

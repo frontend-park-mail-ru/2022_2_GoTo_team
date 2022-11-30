@@ -1,7 +1,7 @@
 import ArticleEditView from "./articleEditView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Requests} from "../../modules/requests.js";
-import {EditArticleData, FullArticleData, Listener, RequestAnswer} from "../../common/types";
+import {EditArticleData, FullArticleData, Listener, RequestAnswer, Subscription} from "../../common/types";
 
 export type ArticleEditEventBus = {
     articleUpdate: (id: number) => void,
@@ -39,30 +39,56 @@ export default class ArticleEdit extends BasicComponent {
     }
 
     subscribe(eventBus: ArticleEditEventBus) {
+        let subscription: Subscription;
         const submitButton = this.root.querySelector('.article_edit__save_button')!;
 
         this.root.querySelectorAll('.div_textarea').forEach((form: Element) => {
-            form.addEventListener('focusout', () => {
-                if (!form.textContent!.replace(' ', '').length) {
-                    form.innerHTML = '';
-                }
-            });
+            subscription = {
+                element: form,
+                event: 'focusout',
+                listener: () => {
+                    if (!form.textContent!.replace(' ', '').length) {
+                        form.innerHTML = '';
+                    }
+                },
+            }
+            this._subscribeEvent(subscription);
         });
 
         if (this.view.update) {
-            submitButton.addEventListener('click', () => {
-                eventBus.articleUpdate(this.view.id!);
-            });
+            subscription = {
+                element: submitButton,
+                event: 'click',
+                listener: () => {
+                    eventBus.articleUpdate(this.view.id!);
+                },
+            }
+            this._subscribeEvent(subscription);
 
             const deleteButton = this.root.getElementsByClassName('article_edit__delete_button')[0];
-            deleteButton.addEventListener('click', () => {
-                eventBus.articleRemove(this.view.id!);
-            });
+            subscription = {
+                element: deleteButton,
+                event: 'click',
+                listener: () => {
+                    eventBus.articleRemove(this.view.id!);
+                },
+            }
+            this._subscribeEvent(subscription);
         } else {
-            submitButton.addEventListener('click', eventBus.articleCreate);
+            subscription = {
+                element: submitButton,
+                event: 'click',
+                listener: eventBus.articleCreate,
+            }
+            this._subscribeEvent(subscription);
         }
 
         const addTagButton = this.root.querySelector('.article_edit__add_tag')!;
-        addTagButton.addEventListener('click', eventBus.tagAdd);
+        subscription = {
+            element: addTagButton,
+            event: 'click',
+            listener: eventBus.tagAdd,
+        }
+        this._subscribeEvent(subscription);
     }
 };

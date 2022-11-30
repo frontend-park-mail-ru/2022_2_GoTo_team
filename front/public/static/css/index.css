@@ -899,6 +899,7 @@ div.log-button-container {
 
 .article_edit__content {
     margin-bottom: 55px;
+    min-height: 200px;
 }
 
 .article_edit__footer {
@@ -1125,8 +1126,9 @@ div.log-button-container {
     width: fit-content;
     font-size: 15px;
     padding: 5px;
-    border-radius: 20px;
+    border-radius: 10px;
     margin: 5px;
+    height: fit-content;
 }
 
 .article_edit__tags_row {
