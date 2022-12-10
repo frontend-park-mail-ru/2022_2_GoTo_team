@@ -27,6 +27,7 @@ export default class SearchPage extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(data: FullSearchData): Promise<void> {
+        Events.scrollUp();
         data.primary.request = decodeURIComponent(data.primary.request);
         if (data.advanced.author !== undefined){
             data.advanced.author = decodeURIComponent(data.advanced.author);

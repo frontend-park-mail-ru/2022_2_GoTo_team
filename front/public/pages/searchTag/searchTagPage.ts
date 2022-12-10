@@ -31,6 +31,7 @@ export default class SearchTagPage extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(data: SearchData): Promise<void> {
+        Events.scrollUp();
         const tag = decodeURIComponent(data.request);
         data.request = 'Поиск по тегу \"' + tag + '\"';
         await this.view.render(data);

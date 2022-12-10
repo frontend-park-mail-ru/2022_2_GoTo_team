@@ -22,6 +22,7 @@ export default class Feed extends Page{
      * Отобразить подконтрольную страницу.
      */
     async render() {
+        Events.scrollUp();
         const articleEventBus : ArticleComponentEventBus = {
             goToAuthorFeed: Events.goToAuthorFeed,
             goToCategoryFeed: Events.goToCategoryFeed,

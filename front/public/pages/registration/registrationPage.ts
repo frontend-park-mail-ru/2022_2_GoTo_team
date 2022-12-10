@@ -21,6 +21,7 @@ export default class RegistrationPage extends Page{
      * Должен быть вызван render() для обновления.
      */
     async render() {
+        Events.scrollUp();
         this.view.render();
         Events.updateAuth();
     }

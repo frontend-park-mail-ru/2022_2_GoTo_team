@@ -22,6 +22,7 @@ export default class ArticlePage extends Page {
     }
 
     async render(data: { articleId: number, toComments: boolean }) {
+        Events.scrollUp();
         const article = await Requests.getArticle(data.articleId);
         await this.view.render(article);
         Requests.getCommentaries(data.articleId).then(async (commentaries) => {

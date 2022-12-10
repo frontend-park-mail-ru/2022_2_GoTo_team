@@ -29,6 +29,7 @@ export default class CategoryFeed extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(category: string): Promise<void> {
+        Events.scrollUp();
         await this.view.render();
 
         category = decodeURIComponent(category);

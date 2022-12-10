@@ -25,6 +25,7 @@ export default class ArticleEditPage extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(articleId?: number) {
+        Events.scrollUp();
         if (typeof articleId !== 'undefined'){
             const article = await Requests.getArticle(articleId);
             await this.view.render(article);

@@ -23,6 +23,7 @@ export default class SettingsPage extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render() {
+        Events.scrollUp();
         const authCheck = await Requests.getSessionInfo();
         if (authCheck.status === 401) {
             alert("Вы не авторизованы");

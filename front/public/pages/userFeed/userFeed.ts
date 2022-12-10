@@ -28,6 +28,7 @@ export default class UserFeed extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render(login: string) {
+        Events.scrollUp();
         await this.view.render();
 
         Requests.userHeaderInfo(login).then((userData) => {
