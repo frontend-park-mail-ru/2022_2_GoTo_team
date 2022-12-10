@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run preProcess && PORT=8081 DEBUG=server node front/server",
-    "preProcess": "npm run build && npm run tmpl && npm run webpack-build",
-    "build": "tsc --build",
+    "preProcess": "npm run build:ts && npm run build:scss && npm run tmpl && npm run webpack-build",
+    "build:ts": "tsc --build",
     "tmpl": "front/templating.sh",
+    "build:scss": "node-sass --output-style compressed front/public/static/css/index.scss > front/public/static/css/index.css",
     "webpack-build": "cd ./front && NODE_ENV='development' webpack",
     "demon": "npm run preProcess && forever start front/server/index.js",
     "lint": "npx eslint . --ext .js",
@@ -37,6 +38,7 @@
     "forever": "^4.0.3",
     "handlebars": "^4.7.7",
     "morgan": "^1.10.0",
+    "node-sass": "^8.0.0",
     "typescript": "^4.9.3"
   },
   "devDependencies": {

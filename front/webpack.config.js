@@ -25,7 +25,6 @@ module.exports = {
                     filename: 'img/[name][ext][query]',
                 },
             },
-            { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] },
             {
                 test: /\.(js)$/,
                 loader: 'babel-loader',
