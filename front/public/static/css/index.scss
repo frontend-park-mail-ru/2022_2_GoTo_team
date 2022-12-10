@@ -16,6 +16,12 @@ body {
     flex-flow: column;
 }
 
+.disabled {
+    user-select: none;
+    pointer-events: none;
+    overflow: hidden;
+}
+
 .div_width_available {
     width: -moz-available !important;
     width: -webkit-fill-available !important;
@@ -1084,6 +1090,32 @@ div.log-button-container {
 
 .commentary__block__wrapper{
     width: 75%;
+}
+
+.alert_prompt{
+    min-width: 100px;
+    width: fit-content;
+    height: fit-content;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 25px;
+    box-shadow: 0 0 10px 10px rgba(0,0,0,0.25);
+    user-select: none;
+    pointer-events: all;
+    &__content {
+        user-select: text;
+        width: fit-content;
+        max-width: 400px;
+        font-size: 25px;
+        word-wrap: anywhere;
+    }
+    div.button {
+        font-size: 25px;
+        width: fit-content;
+        padding: 5px 20px;
+    }
 }
 
 @media screen and (max-device-width: 420px) {

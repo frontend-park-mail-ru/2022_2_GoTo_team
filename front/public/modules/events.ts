@@ -23,7 +23,8 @@ import {PageLoaders} from "./pageLoaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentaryForm.js";
 import AdvancedSearchSidebar from "../components/advancedSearch/advancedSearchSidebar.js";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
-import UserFeed from "../pages/userFeed/userFeed";
+import {AlertMessageData} from "../components/alertMessage/alertMessageView";
+import AlertMessage, {AlertMessageEventBus} from "../components/alertMessage/alertMessage";
 
 
 export class Events {
@@ -634,9 +635,9 @@ export class Events {
      * Отрисовка страницы просмотра статьи
      */
     static openArticle(articleId: number, comments?: boolean): void {
-        if(comments === undefined){
+        if (comments === undefined) {
             URIChanger.articlePage(articleId, false);
-        }else{
+        } else {
             URIChanger.articlePage(articleId, comments);
         }
 
@@ -959,7 +960,7 @@ export class Events {
     static newArticlePageListener() {
         Requests.getSessionInfo().then((result) => {
             if (result.status === 401) {
-                alert("Для создания статьи нужно авторизироваться");
+                Events.openAlertMessage("Для создания статьи нужно авторизироваться");
                 return;
             }
 
@@ -1018,7 +1019,7 @@ export class Events {
 
         Requests.commentaryCreate(commentaryDate).then((result) => {
             if (!result) {
-                alert("Для отправки комментариев нужно авторизироваться");
+                Events.openAlertMessage("Для отправки комментариев нужно авторизироваться");
             }
             Events.rerenderCommentaries(form.article);
         });
@@ -1257,12 +1258,45 @@ export class Events {
     /**
      * Отматывает до комментариев, когда на странице статьи
      */
-    static scrollToComments(){
+    static scrollToComments() {
         const comments = document.querySelector('.commentary__block__wrapper')!;
         const y = comments.getBoundingClientRect().top + window.scrollY;
         window.scroll({
             top: y,
             behavior: 'smooth'
         });
+    }
+
+    /**
+     * Открывает alert сообщение
+     */
+    static openAlertMessage(message: string, buttonValue?: string) {
+        const body = document.querySelector("body")!;
+
+        const data: AlertMessageData = {
+            message: message,
+            buttonValue: buttonValue,
+        }
+
+        const eventBus: AlertMessageEventBus = {
+            okEvent: Events.closeAlertMessage,
+        }
+
+        const alertMessage = new AlertMessage();
+        alertMessage.render(data);
+        alertMessage.subscribe(eventBus);
+
+        body.classList.add("disabled");
+        body.appendChild(alertMessage.root);
+    }
+
+    /**
+     * Закрывает alert сообщение
+     */
+    static closeAlertMessage() {
+        const body = document.querySelector("body")!;
+        body.classList.remove("disabled");
+        const message = body.querySelector(".alert_prompt")!;
+        body.removeChild(message);
     }
 }

@@ -1,6 +1,7 @@
 import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import "../tmpl/userFeedHeader.tmpl.js";
 import {UserHeaderData} from "../../common/types";
+import {Helpers} from "../../modules/helpers.js";
 
 /**
  * @class UserFeedHeaderView
@@ -13,8 +14,7 @@ export default class UserFeedHeaderView extends BasicComponentView {
         wrapper.innerHTML = Handlebars.templates['userFeedHeader.html']({
             username: userData.username,
             login: userData.login,
-            rating: userData.rating,
-            subscribers: userData.subscribers,
+            subscribers: userData.subscribers + " " + Helpers.numWord(userData.subscribers, ["подписался", "подписалось", "подписалось"]),
             registration_date: userData.registration_date,
         });
         return wrapper.querySelector('div')!;
