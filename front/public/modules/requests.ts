@@ -43,7 +43,6 @@ const ajax = new Ajax();
 export class Requests {
     /**
      * Запрашивает статьи
-     * @return {Promise} Promise с массивом статей
      */
     static getArticles(): Promise<IncompleteArticleData[]> {
         return ajax.get({
@@ -76,8 +75,6 @@ export class Requests {
 
     /**
      * Авторизация
-     * @param {UserLoginData} userData
-     * @return {Promise} Promise со статусом запроса
      */
     static login(userData: UserLoginData): Promise<RequestAnswer> {
         const params: requestParams = {
@@ -116,8 +113,6 @@ export class Requests {
 
     /**
      * Регистрация
-     * @param {UserRegistrationData} userData
-     * @return {Promise} Promise со статусом запроса
      */
     static signup(userData: UserRegistrationData): Promise<RequestAnswer> {
         const params: requestParams = {
@@ -165,7 +160,6 @@ export class Requests {
 
     /**
      * Получение информации пользователя по куке
-     * @return {Promise} Promise со статусом и никнеймом
      */
     static getSessionInfo(): Promise<RequestAnswer> {
         return ajax.get({
@@ -215,7 +209,6 @@ export class Requests {
 
     /**
      * Запрашивает статьи автора
-     * @return {Promise} Promise с массивом статей
      */
     static getUserArticles(login: string): Promise<IncompleteArticleData[]> {
         return ajax.get({
@@ -271,7 +264,6 @@ export class Requests {
 
     /**
      * Запрашивает статьи автора
-     * @return {Promise} Promise с массивом статей
      */
     static getCategoryArticles(category: string): Promise<IncompleteArticleData[]> {
         return ajax.get({

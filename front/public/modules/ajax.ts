@@ -8,6 +8,8 @@ const REQUEST_TYPE = {
     POST: 'POST'
 };
 
+const csrfHeader = "CSRFHeader";
+
 export type requestParams = {
     url: string;
     data?: object;
@@ -15,6 +17,17 @@ export type requestParams = {
 };
 
 export class Ajax {
+    #csrf :string;
+    constructor() {
+        this.#csrf = "";
+    }
+
+    /**
+     * Устанавливает CSRF-токен
+     */
+    setCsrf(csrf:string){
+        this.#csrf = csrf;
+    }
     get(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.GET;
@@ -43,7 +56,7 @@ export class Ajax {
             url.search = new URLSearchParams({...params.data}).toString();
         }
 
-        const fetchParams: object = {
+        let fetchParams: object = {
             method: params.method,
             body: params.method == REQUEST_TYPE.POST ? JSON.stringify(params.data) : null,
             headers: {
@@ -52,6 +65,11 @@ export class Ajax {
             mode: 'cors',
             credentials: 'include',
         };
+
+        if (this.#csrf !== ''){
+            // @ts-ignore
+            fetchParams.headers[csrfHeader] = this.#csrf;
+        }
 
         let status: number = 0;
 
