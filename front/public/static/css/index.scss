@@ -1,34 +1,10 @@
 @import "colors.scss";
+@import "general.scss";
 
 body {
     margin: 0;
     font-size: 28px;
     font-family: Arial, Helvetica, sans-serif;
-}
-
-.row {
-    display: flex;
-    flex-flow: row;
-}
-
-.column {
-    display: flex;
-    flex-flow: column;
-}
-
-.disabled {
-    user-select: none;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.div_width_available {
-    width: -moz-available !important;
-    width: -webkit-fill-available !important;
-}
-
-.flex-wrapper {
-    flex-wrap: wrap;
 }
 
 .navbar {
@@ -54,16 +30,6 @@ body {
     height: available;
     width: 100%;
     display: flex;
-}
-
-.button {
-    display: block;
-    margin: 5px 5px 5px 5px;
-    cursor: pointer;
-    box-sizing: border-box;
-    &:active {
-        transform: translateY(2px);
-    };
 }
 
 .navbar__button {
@@ -95,16 +61,6 @@ body {
 
 .navbar__button_bar__right_block {
     margin-left: auto;
-}
-
-.box {
-    background: $light;
-    border-radius: 14px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: -moz-available;
-    width: -webkit-fill-available;
-    height: fit-content;
-    max-width: 100%;
 }
 
 .navbar_menu {
@@ -506,74 +462,6 @@ body {
     };
 }
 
-.horizontal_center_div {
-    margin-right: auto !important;
-    margin-left: auto !important;
-}
-
-.vertical_center_div {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-}
-
-.accent_button {
-    background: $main;
-    color: $light;
-    border-radius: 10px;
-    width: 200px;
-    padding: 10px 0 10px 0;
-    border: 3px solid $main;
-    &:hover {
-        background: $darken-main;
-        border: 3px solid $darken-main;
-    };
-}
-
-.non_accent_button {
-    background: $light;
-    border-radius: 10px;
-    border: 3px solid rgba(104, 11, 197, 0.75);
-    width: 200px;
-    padding: 10px 0 10px 0;
-    text-align: center;
-    &:hover {
-        background: $main;
-        color: $light;
-        border: 3px solid $main;
-    };
-}
-
-.negative_accent_button {
-    background: $negative;
-    color: $light;
-    fill: $light;
-    border-radius: 10px;
-    width: 200px;
-    padding: 10px 0 10px 0;
-    border: 3px solid $negative;
-    &:hover {
-        background: $dark-negative;
-        border: 3px solid $dark-negative;
-    };
-}
-
-.negative_non_accent_button {
-    color: $negative;
-    fill: $negative;
-    background: $light;
-    border-radius: 10px;
-    border: 3px solid $negative;
-    width: 200px;
-    padding: 10px 0 10px 0;
-    text-align: center;
-    &:hover {
-        background: $negative;
-        color: $light;
-        fill: $light;
-        border: 3px solid $negative;
-    };
-}
-
 div.log-button-container {
     margin: 20px 0 10px 0;
     display: flex;
@@ -607,6 +495,8 @@ div.log-button-container {
     background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
+    user-select: none;
+    pointer-events: all;
 }
 
 .overlay__center {
@@ -678,14 +568,6 @@ div.log-button-container {
 
 .settings__avatar_row_input {
     display: none;
-}
-
-.link {
-    color: $main;
-    cursor: pointer;
-    &:hover {
-        color: $negative;
-    };
 }
 
 .settings__avatar_link {
@@ -816,30 +698,6 @@ div.log-button-container {
     padding: 10px 0;
     width: 75%;
     word-wrap: anywhere;
-}
-
-.div_textarea {
-    width: 100%;
-    /*border: $slight-dark 1px solid;*/
-    outline: none;
-    resize: none;
-    font-size: 16px;
-    margin: 6px;
-    padding: 7px;
-    border-radius: 15px;
-    word-wrap: anywhere;
-    cursor: text;
-    background: $textarea-background;
-    &:focus {
-        background: $focus-textarea-background;
-    };
-    &[placeholder]:empty:before {
-        content: attr(placeholder);
-        color: $ligther-text;
-    };
-    &[placeholder]:empty:focus:before {
-        content: ' ';
-    };
 }
 
 .article_edit__title {
@@ -1118,7 +976,11 @@ div.log-button-container {
     }
 }
 
-@media screen and (max-device-width: 420px) {
+.button_row{
+    gap: 5px;
+}
+
+@media screen and (max-device-width: $mobileMinPx) {
     .root {
         grid-template-columns: 0fr 6fr 0fr;
         margin-top: 80px;
@@ -1235,10 +1097,6 @@ div.log-button-container {
 
     .article__comments_count {
         padding: 8px 3px 8px 3px;
-    }
-
-    .div_textarea {
-        padding: 16px;
     }
 
     .article_edit__add_tag {

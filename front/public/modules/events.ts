@@ -8,7 +8,7 @@ import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/use
 import {
     CommentaryData,
     FullArticleData,
-    FullSearchData,
+    FullSearchData, Listener,
     RequestAnswer,
     SearchData,
     UserData,
@@ -25,6 +25,8 @@ import AdvancedSearchSidebar from "../components/advancedSearch/advancedSearchSi
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
 import {AlertMessageData} from "../components/alertMessage/alertMessageView";
 import AlertMessage, {AlertMessageEventBus} from "../components/alertMessage/alertMessage";
+import {ConfirmMessageData} from "../components/confirmMessage/confirmMessageView";
+import ConfirmMessage, {ConfirmMessageEventBus} from "../components/confirmMessage/confirmMessage";
 
 
 export class Events {
@@ -48,6 +50,20 @@ export class Events {
     }
 
     /**
+     * Отслючает скролл
+     */
+    static disableScroll(){
+        document.querySelector('body')!.style.overflow = 'hidden';
+    }
+
+    /**
+     * Отслючает скролл
+     */
+    static enableScroll(){
+        document.querySelector('body')!.style.overflow = '';
+    }
+
+    /**
      * Отрисовывает оверлей
      */
     static async openOverlay(): Promise<void> {
@@ -59,6 +75,7 @@ export class Events {
         const root = document.getElementById('root')!;
         root.appendChild(overlay.root);
         await overlay.subscribe(eventBus);
+        Events.disableScroll();
     }
 
     /**
@@ -67,6 +84,7 @@ export class Events {
     static #closeOverlay(): void {
         const overlay = document.getElementById('overlay');
         if (overlay !== null) {
+            Events.enableScroll();
             overlay.parentNode!.removeChild(overlay);
         }
     }
@@ -1256,6 +1274,16 @@ export class Events {
     }
 
     /**
+     * Отматывает наверх страницы
+     */
+    static scrollUp() {
+        const comments = document.querySelector('.commentary__block__wrapper')!;
+        window.scroll({
+            top: 0,
+        });
+    }
+
+    /**
      * Отматывает до комментариев, когда на странице статьи
      */
     static scrollToComments() {
@@ -1270,7 +1298,7 @@ export class Events {
     /**
      * Открывает alert сообщение
      */
-    static openAlertMessage(message: string, buttonValue?: string) {
+    static openAlertMessage(message: string, buttonValue?: string, alertListener?: Listener) {
         const body = document.querySelector("body")!;
 
         const data: AlertMessageData = {
@@ -1278,8 +1306,12 @@ export class Events {
             buttonValue: buttonValue,
         }
 
+        if (alertListener === undefined) alertListener = () => {};
         const eventBus: AlertMessageEventBus = {
-            okEvent: Events.closeAlertMessage,
+            okEvent: () => {
+                Events.closeAlertMessage();
+                alertListener!();
+            },
         }
 
         const alertMessage = new AlertMessage();
@@ -1294,6 +1326,48 @@ export class Events {
      * Закрывает alert сообщение
      */
     static closeAlertMessage() {
+        const body = document.querySelector("body")!;
+        body.classList.remove("disabled");
+        const message = body.querySelector(".alert_prompt")!;
+        body.removeChild(message);
+    }
+
+    /**
+     * Открывает alert сообщение
+     */
+    static openConfirmMessage(message: string, okListener: Listener, cancelListener: Listener, values?: {
+        positiveValue?: string, negativeValue?: string,
+    }) {
+        const body = document.querySelector("body")!;
+
+        const data: ConfirmMessageData = {
+            message: message,
+            values: values,
+        }
+
+        const eventBus: ConfirmMessageEventBus = {
+            okEvent: () => {
+                Events.closeConfirmMessage();
+                okListener();
+            },
+            cancelEvent: () => {
+                Events.closeConfirmMessage();
+                cancelListener();
+            }
+        }
+
+        const confirmMessage = new ConfirmMessage();
+        confirmMessage.render(data);
+        confirmMessage.subscribe(eventBus);
+
+        body.classList.add("disabled");
+        body.appendChild(confirmMessage.root);
+    }
+
+    /**
+     * Закрывает confirm сообщение
+     */
+    static closeConfirmMessage() {
         const body = document.querySelector("body")!;
         body.classList.remove("disabled");
         const message = body.querySelector(".alert_prompt")!;
