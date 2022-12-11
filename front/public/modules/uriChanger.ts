@@ -49,7 +49,7 @@ export class URIChanger {
      * Перемещает на редактирования/создания статьи
      */
     static editArticle(articleId?: number) {
-        if (typeof articleId === 'undefined') {
+        if (articleId === undefined) {
             Events.setLocation(APIStrings.newArticlePage());
         } else {
             Events.setLocation(APIStrings.articleEditPage(articleId));

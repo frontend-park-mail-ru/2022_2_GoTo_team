@@ -28,6 +28,7 @@ export default class ArticleView extends BasicComponentView {
             comments: article.comments,
             publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
             picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
+            author: article.publisher.login === window.sessionStorage.getItem('login'),
         });
 
         this.publisher = article.publisher.login;

@@ -93,6 +93,7 @@ export default class ArticlePage extends Page {
             goToAuthorFeed: Events.goToAuthorFeed,
             openTagPage: URIChanger.searchByTagPage,
             scrollToComments: Events.scrollToComments,
+            editArticle: Events.editArticleListener,
         }
 
         const commentaryFormEventBus: CommentaryFormEventBus = {

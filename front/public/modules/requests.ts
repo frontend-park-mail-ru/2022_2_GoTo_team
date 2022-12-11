@@ -162,14 +162,28 @@ export class Requests {
      * Получение информации пользователя по куке
      */
     static getSessionInfo(): Promise<RequestAnswer> {
+        if (window.sessionStorage.getItem('login') !== null){
+            const answer: RequestAnswer = {
+                response: {
+                    username: window.sessionStorage.getItem('username'),
+                    login: window.sessionStorage.getItem('login'),
+                    avatar: window.sessionStorage.getItem('avatar'),
+                },
+                status: 200,
+            }
+            return new Promise( () => {return answer});
+        }
         return ajax.get({
             url: config.hrefs.sessionInfo,
         }).then((response) => {
             let result = response!;
             const userData: UserPlugData = {
                 username: response!.response.username,
-                avatarUrl: "",
+                avatarUrl: response!.response.avatar_img_path,
             }
+            window.sessionStorage.setItem('username', response!.response.username);
+            window.sessionStorage.setItem('login', "");
+            window.sessionStorage.setItem('avatar', response!.response.avatar_img_path);
             result.response = userData;
             return result;
         });

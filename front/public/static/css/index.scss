@@ -980,6 +980,27 @@ div.log-button-container {
     gap: 5px;
 }
 
+.article__edit_button {
+    display: flex;
+    float: left;
+    font-family: 'Roboto', serif;
+    font-style: normal;
+    font-size: 14px;
+    padding: 13px 3px 8px 3px;
+    margin: 0 5px;
+    line-height: 17px;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        color: $main;
+        fill: $main;
+    };
+    svg {
+        width: 20px;
+        height: 20px;
+    };
+}
+
 @media screen and (max-device-width: $mobileMinPx) {
     .root {
         grid-template-columns: 0fr 6fr 0fr;
@@ -1079,11 +1100,10 @@ div.log-button-container {
 
     .article__comments_count{
         font-size: 25px;
-    }
-
-    .article__comments_count svg {
-        width: 34px;
-        height: 34px;
+        svg {
+            width: 34px;
+            height: 34px;
+        }
     }
 
     .article__rating__count {

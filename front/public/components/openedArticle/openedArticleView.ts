@@ -14,6 +14,7 @@ const covers = [
 export default class OpenedArticleView extends BasicComponentView {
     category: string | undefined;
     publisher: string | undefined;
+    id: number | undefined;
 
     render(article: FullArticleData): HTMLElement {
         const wrapper = document.createElement('div');
@@ -28,9 +29,11 @@ export default class OpenedArticleView extends BasicComponentView {
             publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
             content: article.content.split('\n'),
             picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
+            author: article.publisher.login !== window.sessionStorage.getItem('login'),
         });
         this.publisher = article.publisher.login;
         this.category = article.category;
+        this.id = article.id;
         return wrapper.querySelector('div')!;
     }
 }

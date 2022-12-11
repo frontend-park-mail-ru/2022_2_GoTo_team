@@ -30,6 +30,13 @@
                     <use xlink:href="icons.svg#comments"/>
                 </svg>
             </div>
+            {{#if author}}
+            <div class="article__edit_button" title="Редактирвоать статью">
+                <svg>
+                    <use xlink:href="icons.svg#edit_article_pen"></use>
+                </svg>
+            </div>
+            {{/if}}
             <div class="article__rating">
                 <svg>
                     <use xlink:href="icons.svg#arrow_down"/>
@@ -51,13 +58,20 @@
     </div>
     <div class="article__wrapper">
         <div class="article__bottom_bar">
-            <div class="article__comments_count">
+            <div class="article__comments_count" title="К комментариям">
                 <div class="article__comments_count__count">{{comments}}</div>
                 <svg>
                     <use xlink:href="icons.svg#comments"/>
                 </svg>
             </div>
-            <div class="article__rating">
+            {{#if author}}
+            <div class="article__edit_button" title="Редактирвоать статью">
+                <svg>
+                    <use xlink:href="icons.svg#edit_article_pen"></use>
+                </svg>
+            </div>
+            {{/if}}
+            <div class="article__rating vertical_center_div">
                 <svg>
                     <use xlink:href="icons.svg#arrow_down"/>
                 </svg>

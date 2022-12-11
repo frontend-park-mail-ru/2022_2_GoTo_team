@@ -7,6 +7,7 @@ export type OpenedArticleEventBus = {
     goToAuthorFeed: (author: string) => void,
     openTagPage: (tag: string) => void,
     scrollToComments: () => void,
+    editArticle: (id: number) => void,
 }
 
 /**
@@ -87,6 +88,17 @@ export default class OpenedArticle extends BasicComponent {
                 element: comments,
                 event: 'click',
                 listener: eventBus.scrollToComments,
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.article__edit_button').forEach((edit) => {
+            subscription = {
+                element: edit,
+                event: 'click',
+                listener: () => {
+                    eventBus.editArticle(this.view.id!);
+                },
             }
             this._subscribeEvent(subscription);
         });

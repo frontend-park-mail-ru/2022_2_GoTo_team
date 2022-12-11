@@ -986,6 +986,10 @@ export class Events {
         });
     }
 
+    static editArticleListener(id: number){
+        URIChanger.editArticle(id);
+    }
+
     static setLocation(uri: string) {
         location.hash = uri;
     }

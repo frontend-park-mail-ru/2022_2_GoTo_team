@@ -24,6 +24,7 @@ export default class ArticleEditView extends BasicComponentView {
                 update: true,
                 categories: editData.categories,
             });
+            (wrapper.querySelector(".select_menu") as HTMLSelectElement).value = editData.article.category;
             this.id = editData.article.id;
             this.update = true;
         }else{
