@@ -2,7 +2,7 @@ import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
     CategoryData, CommentaryData, FullArticleData, FullSearchData,
-    IncompleteArticleData,
+    IncompleteArticleData, LikeData,
     RequestAnswer, UserData,
     UserHeaderData,
     UserLoginData,
@@ -35,6 +35,8 @@ const config = {
         searchPage: '/search',
         searchTagPage: '/search/tag',
         tagList: '/tag/list',
+        articleLike: 'article/like',
+        commentaryLike: 'commentary/like',
     }
 }
 
@@ -633,6 +635,40 @@ export class Requests {
                 commentaries.push(commentary);
             });
             return commentaries;
+        });
+    }
+
+    /**
+     * Запрос лайка статьи
+     */
+    static articeleLike(data: LikeData): Promise<Boolean> {
+        let params = {
+            url: config.hrefs.articleLike,
+            data: {
+                id: data.id,
+                sign: data.sign,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Запрос лайка комментария
+     */
+    static commentaryLike(data: LikeData): Promise<Boolean> {
+        let params = {
+            url: config.hrefs.commentaryLike,
+            data: {
+                id: data.id,
+                sign: data.sign,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
         });
     }
 }

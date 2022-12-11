@@ -115,3 +115,8 @@ export type Subscription = {
     event: string,
     listener: EventListenerOrEventListenerObject
 }
+
+export type LikeData = {
+    id: number,
+    sign: number,
+}
