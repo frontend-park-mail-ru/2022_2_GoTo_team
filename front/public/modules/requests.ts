@@ -414,7 +414,7 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
-            return response!.status == 200;
+            return response!.status === 200;
         });
     }
 

@@ -52,14 +52,14 @@ export class Events {
     /**
      * Отслючает скролл
      */
-    static disableScroll(){
+    static disableScroll() {
         document.querySelector('body')!.style.overflow = 'hidden';
     }
 
     /**
      * Отслючает скролл
      */
-    static enableScroll(){
+    static enableScroll() {
         document.querySelector('body')!.style.overflow = '';
     }
 
@@ -850,6 +850,22 @@ export class Events {
     /**
      * Удаление статьи по id
      */
+    static articleRemoveListener(articleId: number): void {
+        Events.openConfirmMessage("Удалить статью?", () => {
+            Events.articleRemove(articleId).then((result) => {
+                if (result) {
+                    URIChanger.feedPage();
+                } else {
+                    Events.openAlertMessage("Удаление не удалось");
+                }
+            });
+
+        }, () => {});
+    }
+
+    /**
+     * Удаление статьи по id
+     */
     static articleRemove(articleId: number): Promise<boolean> {
         return Requests.articleRemove(articleId);
     }
@@ -986,7 +1002,7 @@ export class Events {
         });
     }
 
-    static editArticleListener(id: number){
+    static editArticleListener(id: number) {
         URIChanger.editArticle(id);
     }
 
@@ -1310,7 +1326,8 @@ export class Events {
             buttonValue: buttonValue,
         }
 
-        if (alertListener === undefined) alertListener = () => {};
+        if (alertListener === undefined) alertListener = () => {
+        };
         const eventBus: AlertMessageEventBus = {
             okEvent: () => {
                 Events.closeAlertMessage();

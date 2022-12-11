@@ -6,7 +6,7 @@ import {EditArticleData, FullArticleData, Listener, RequestAnswer, Subscription}
 export type ArticleEditEventBus = {
     articleUpdate: (id: number) => void,
     articleCreate: Listener,
-    articleRemove: (id: number) => Promise<boolean>,
+    articleRemove: (id: number) => void,
     tagAdd: () => void,
 }
 

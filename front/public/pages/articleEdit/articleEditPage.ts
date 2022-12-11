@@ -51,7 +51,7 @@ export default class ArticleEditPage extends Page {
 
         const articleEventBus: ArticleEditEventBus = {
             articleCreate: Events.articleCreateListener,
-            articleRemove: Events.articleRemove,
+            articleRemove: Events.articleRemoveListener,
             articleUpdate: Events.articleUpdateListener,
             tagAdd: Events.addArticleTagListener,
         }
