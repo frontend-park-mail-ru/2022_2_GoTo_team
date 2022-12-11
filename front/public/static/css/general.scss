@@ -1,4 +1,4 @@
-$mobileMinPx: 420px;
+@import "variables.scss";
 
 .row {
   display: flex;
@@ -147,10 +147,4 @@ $mobileMinPx: 420px;
   &[placeholder]:empty:focus:before {
     content: ' ';
   };
-}
-
-@media screen and (max-device-width: $mobileMinPx){
-  .div_textarea {
-    padding: 16px;
-  }
 }

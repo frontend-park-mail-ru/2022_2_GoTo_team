@@ -1,0 +1,160 @@
+@import "variables.scss";
+
+@media screen and (max-device-width: $mobileMinPx) {
+  .root {
+    grid-template-columns: 0fr 6fr 0fr;
+    margin-top: 80px;
+  }
+
+  .navbar {
+    height: 80px;
+    grid-template-columns: 0.5fr 2fr 0.5fr 160px;
+  }
+
+  .navbar__button {
+    font-size: 25px;
+    line-height: 75px;
+  }
+
+  .navbar__button_right svg {
+    width: 36px;
+    height: 36px;
+    margin: 22px 10px;
+  }
+
+  .navbar__logo {
+    width: 115px;
+    height: 60px;
+    border-radius: 24px;
+    margin: 7px 0 7px 10px;
+    line-height: 46px;
+    border: 5px solid $light;
+    font-size: 36px;
+  }
+
+  .navbar__logo:hover {
+    background: $slight-dark;
+    border-radius: 24px;
+    border: 5px solid $slight-dark;
+  }
+
+  .navbar__logo:active {
+    background: $main;
+    color: $light;
+    border-radius: 24px;
+    border: 5px solid $light;
+  }
+
+  .navbar__search_form__wrapper {
+    height: 80px;
+  }
+
+  .navbar__search_form {
+    width: 90%;
+    height: 35px;
+    margin: 10px 0 10px 0;
+  }
+
+  .navbar__profile_block div {
+    font-size: 30px;
+  }
+
+  .navbar__profile_block svg {
+    display: none;
+  }
+
+  .navbar__profile_block__nickname {
+    display: none;
+  }
+
+  .navbar__profile_block__profile_picture {
+    width: 54px;
+    height: 54px;
+    margin: 14px 10px 14px 10px;
+  }
+
+  .user_plug_menu {
+    width: 170px;
+    top: 80px;
+  }
+
+  .navbar_menu__element {
+    font-size: 25px;
+    padding: 18px;
+  }
+
+  .article__category {
+    font-size: 26px;
+    line-height: 24px;
+  }
+
+  .article__author {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .article__tag {
+    font-size: 18px;
+  }
+
+  .article__comments_count{
+    font-size: 25px;
+    svg {
+      width: 34px;
+      height: 34px;
+    }
+  }
+
+  .article__rating__count {
+    font-size: 25px;
+  }
+
+  .article__rating svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .article__comments_count {
+    padding: 8px 3px 8px 3px;
+  }
+
+  .article_edit__add_tag {
+    font-size: 20px;
+    line-height: 40px;
+    border-radius: 25px;
+  }
+
+  .select_menu {
+    font-size: 18px;
+  }
+
+  .article_edit__save_button {
+    font-size: 30px;
+    border-radius: 25px;
+  }
+
+  .article_edit__footer {
+    bottom: 24px;
+  }
+
+  .article_edit div, select {
+    margin: 10px;
+  }
+
+  .article__profile_picture {
+    width: 50px;
+    height: 50px;
+  }
+
+  .article__description {
+    margin: 10px 0;
+  }
+
+  .article__top_bar {
+    margin-top: 20px;
+  }
+
+  .commentary__block__wrapper {
+    width: 90%;
+  }
+}
