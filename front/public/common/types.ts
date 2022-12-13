@@ -62,6 +62,7 @@ export type UserHeaderData = {
     rating: number,
     subscribers: number,
     registration_date: string,
+    subscribed: boolean,
 }
 
 export type UserPlugData = {

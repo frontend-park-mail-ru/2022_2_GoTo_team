@@ -491,10 +491,8 @@ export class Events {
 
         const profileButton = document.getElementById("navbar__auth_button")!;
         const userPlug = new UserPlug();
-        console.log(Events.#hasSession());
         if (Events.#hasSession()) {
             const response = await Requests.getSessionInfo();
-            console.log(response);
             if (response.status === 200) {
                 const userData: UserPlugData = {
                     username: response.response.username === "" ? response.response.login : response.response.username,
@@ -1154,8 +1152,6 @@ export class Events {
                 tags: tags,
             }
         }
-
-        console.log(data);
         URIChanger.searchPage(data);
     }
 

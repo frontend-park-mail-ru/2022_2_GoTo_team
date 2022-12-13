@@ -7,7 +7,8 @@ import {Helpers} from "../../modules/helpers.js";
  * @class UserFeedHeaderView
  */
 export default class UserFeedHeaderView extends BasicComponentView {
-
+    subscribed: boolean | undefined;
+    login: string | undefined;
     render(userData: UserHeaderData): HTMLElement {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
@@ -17,6 +18,18 @@ export default class UserFeedHeaderView extends BasicComponentView {
             subscribers: userData.subscribers + " " + Helpers.numWord(userData.subscribers, ["подписался", "подписалось", "подписалось"]),
             registration_date: userData.registration_date,
         });
+
+        this.login = userData.login;
+
+        const subButton = wrapper.querySelector('.feed_page__header__subscribe_button')!;
+        this.subscribed = userData.subscribed;
+        if (this.subscribed){
+            // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+            subButton.innerHTML = Handlebars.templates['subscribedButton.html']({});
+        }else{
+            // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+            subButton.innerHTML = Handlebars.templates['subscribeButton.html']({});
+        }
         return wrapper.querySelector('div')!;
     }
 }

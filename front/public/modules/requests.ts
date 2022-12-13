@@ -225,6 +225,7 @@ export class Requests {
                 rating: result.response.rating,
                 subscribers: result.response.subscribers_count,
                 registration_date: result.response.registration_date,
+                subscribed: result.response.subscribed,
             };
             return userData;
         });

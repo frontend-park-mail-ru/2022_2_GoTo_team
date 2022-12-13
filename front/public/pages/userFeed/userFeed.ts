@@ -33,6 +33,8 @@ export default class UserFeed extends Page {
 
         Requests.userHeaderInfo(login).then((userData) => {
             const eventBus: UserFeedHeaderEventBus = {
+                subscribe: Events.userSubscribeListener,
+                unsubscribe: Events.userUnsubscribeListener,
             };
 
             const header = new UserFeedHeader();
