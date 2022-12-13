@@ -158,7 +158,8 @@ body {
     margin-left: auto;
     position: relative;
     padding: 0 10px 0 10px;
-    max-width: 220px;
+    max-width: -moz-available;
+    max-width: -webkit-fill-available;
     width: fit-content;
     div {
         float: left;
@@ -862,8 +863,8 @@ div.log-button-container {
 }
 
 .navbar__profile_block__nickname {
-    max-width: 60px;
-    word-break: break-word;
+    max-width: 80%;
+    word-break: break-all;
 }
 
 .navbar__search_form__wrapper {
@@ -873,7 +874,8 @@ div.log-button-container {
 }
 
 .navbar__search_form {
-    width: 85%;
+    width: -moz-available;
+    width: -webkit-fill-available;
     background: $slight-darken-main;
     color: $light;
     border: 3px solid $slight-darken-main;
@@ -886,6 +888,19 @@ div.log-button-container {
         content: attr(placeholder);
         color: $light;
     };
+    &__button{
+        margin-left: -45px;
+        margin-top: 11px;
+        svg {
+            width: 24px;
+            height: 24px;
+            @include svgColor(darken($light, 20%));
+            cursor: pointer;
+            &:hover{
+                @include svgColor(darken($slight-dark, 20%));
+            }
+        }
+    }
 }
 
 .center_with_bigger_sidebar {

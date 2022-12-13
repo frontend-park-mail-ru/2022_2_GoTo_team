@@ -1421,4 +1421,12 @@ export class Events {
             return result;
         })
     }
+
+    /**
+     * Открытие страницы расширенного поиска
+     */
+    static openAdvSearchListener(){
+        const data: SearchData = {};
+        URIChanger.searchPage(data);
+    }
 }

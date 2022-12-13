@@ -100,6 +100,7 @@ export default class SearchPage extends Page {
             //goToSubscribeFeed: URIChanger.feedPage,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: Events.newArticlePageListener,
+            openAdvSearch: Events.openAdvSearchListener,
             search: Events.searchFormListener,
         }
 

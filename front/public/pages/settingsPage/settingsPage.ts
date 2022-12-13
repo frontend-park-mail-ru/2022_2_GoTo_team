@@ -52,6 +52,7 @@ export default class SettingsPage extends Page {
             //goToSubscribeFeed: URIChanger.feedPage,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: Events.newArticlePageListener,
+            openAdvSearch: Events.openAdvSearchListener,
             search: Events.searchFormListener,
         }
 

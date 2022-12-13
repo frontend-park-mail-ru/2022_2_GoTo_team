@@ -84,7 +84,7 @@ export default class ArticlePage extends Page {
             //goToNewFeed: URIChanger.feedPage,
             //goToSubscribeFeed: URIChanger.feedPage,
             goToNewArticle: Events.newArticlePageListener,
-            //openOtherMenu: Events.showOtherMenuListener,
+            openAdvSearch: Events.openAdvSearchListener,
             search: Events.searchFormListener,
         }
 
