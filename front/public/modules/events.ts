@@ -17,7 +17,6 @@ import {
 import BasicComponent from "../components/_basicComponent/basicComponent.js";
 import {CommentaryParent, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/otherMenu.js";
-import SearchForm from "../components/searchForm/searchForm.js";
 import {URIChanger} from "./uriChanger.js";
 import {PageLoaders} from "./pageLoaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentaryForm.js";
@@ -1008,31 +1007,6 @@ export class Events {
 
     static setLocation(uri: string) {
         location.hash = uri;
-    }
-
-    static showSearchForm() {
-        const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
-        const searchButton = document.getElementById("navbar__search")!;
-        const form = new SearchForm();
-        form.render();
-        wrapper.append(form.root);
-        searchButton.removeEventListener('click', Events.showSearchForm);
-        searchButton.addEventListener('click', Events.closeSearchForm);
-        const area = form.root.querySelector('.navbar__search_form')!;
-        area.addEventListener('keypress', (event) => {
-            if ((event as KeyboardEvent).key === 'Enter' || (event as KeyboardEvent).keyCode === 13) {
-                Events.searchFormListener();
-            }
-        });
-
-    }
-
-    static closeSearchForm() {
-        const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
-        wrapper.innerHTML = '';
-        const searchButton = document.getElementById("navbar__search")!;
-        searchButton.removeEventListener('click', Events.closeSearchForm);
-        searchButton.addEventListener('click', Events.showSearchForm);
     }
 
     static createCommentary(form: CommentaryForm) {
