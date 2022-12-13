@@ -41,7 +41,7 @@ export default class LoginPage extends Page {
             //goToNewArticle: PageLoaders.editArticle,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: URIChanger.editArticle,
-            openSearch: Events.showSearchForm,
+            search: Events.searchFormListener,
         }
 
         this.view.children.get('navbar')!.subscribe(navbarEventBus);

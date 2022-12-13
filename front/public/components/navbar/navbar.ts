@@ -8,7 +8,7 @@ export type NavbarEventBus = {
     //goToSubscribeFeed: Listener,
     goToNewArticle: Listener,
     //openOtherMenu: Listener,
-    openSearch: Listener,
+    search: (request: string) => void,
 }
 
 /**
@@ -61,11 +61,16 @@ export default class Navbar extends BasicComponent {
         }
         this._subscribeEvent(subscription);
 
-        const searchButton = this.root.querySelectorAll('.navbar__button')[3];
+        const input = this.root.querySelector('.navbar__search_form')! as HTMLFormElement;
         subscription = {
-            element: searchButton,
-            event: 'click',
-            listener: eventBus.openSearch,
+            element: input,
+            event: 'keyup',
+            // @ts-ignore
+            listener: (e: KeyboardEvent) => {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    eventBus.search(input.value);
+                }
+            },
         }
         this._subscribeEvent(subscription);
     }

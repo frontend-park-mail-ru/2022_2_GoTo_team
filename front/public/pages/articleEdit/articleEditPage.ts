@@ -45,7 +45,7 @@ export default class ArticleEditPage extends Page {
             //goToSubscribeFeed: URIChanger.feedPage,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: Events.newArticlePageListener,
-            openSearch: Events.showSearchForm,
+            search: Events.searchFormListener,
         }
         this.view.children.get('navbar')!.subscribe(navbarEventBus);
 
