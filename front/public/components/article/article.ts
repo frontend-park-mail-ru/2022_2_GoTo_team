@@ -50,6 +50,16 @@ export default class Article extends BasicComponent {
                 },
             }
             this._subscribeEvent(subscription);
+
+            const authorLink: HTMLElement = this.root.querySelector('.article__author')!;
+            subscription = {
+                element: authorLink,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToAuthorFeed(this.view.publisher!);
+                },
+            }
+            this._subscribeEvent(subscription);
         } else {
             subscription = {
                 element: avatar,
@@ -59,17 +69,18 @@ export default class Article extends BasicComponent {
                 },
             }
             this._subscribeEvent(subscription);
+            const authorLink: HTMLElement = this.root.querySelector('.article__category')!;
+            subscription = {
+                element: authorLink,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToAuthorFeed(this.view.publisher!);
+                },
+            }
+            this._subscribeEvent(subscription);
         }
 
-        const authorLink: HTMLElement = this.root.querySelector('.article__author')!;
-        subscription = {
-            element: authorLink,
-            event: 'click',
-            listener: () => {
-                eventBus.goToAuthorFeed(this.view.publisher!);
-            },
-        }
-        this._subscribeEvent(subscription);
+
 
         const titleLink: HTMLElement = this.root.querySelector('.article__title')!;
         subscription = {

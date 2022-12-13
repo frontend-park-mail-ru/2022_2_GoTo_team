@@ -46,12 +46,12 @@ export default class Navbar extends BasicComponent {
         //newFeed.addEventListener('click', eventBus.goToNewFeed);
         //subscribeFeed.addEventListener('click', eventBus.goToSubscribeFeed);
 
-        /*
-        const newArticle = this.root.querySelectorAll('.navbar__button')[3];
+
+        const newArticle = this.root.querySelectorAll('.navbar__button')[1];
         newArticle.addEventListener('click', () => {
             eventBus.goToNewArticle();
         });
-        */
+
 
         const searchButton = this.root.querySelector('.navbar__search_form__button')!;
         subscription = {

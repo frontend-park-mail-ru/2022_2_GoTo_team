@@ -51,6 +51,16 @@ export default class OpenedArticle extends BasicComponent {
                 },
             }
             this._subscribeEvent(subscription);
+
+            const authorLink = this.root.querySelector('.article__author')!;
+            subscription = {
+                element: authorLink,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToAuthorFeed(this.view.publisher!);
+                },
+            }
+            this._subscribeEvent(subscription);
         }else{
             subscription = {
                 element: avatar,
@@ -60,17 +70,17 @@ export default class OpenedArticle extends BasicComponent {
                 },
             }
             this._subscribeEvent(subscription);
-        }
 
-        const authorLink = this.root.querySelector('.article__author')!;
-        subscription = {
-            element: authorLink,
-            event: 'click',
-            listener: () => {
-                eventBus.goToAuthorFeed(this.view.publisher!);
-            },
+            const authorLink = this.root.querySelector('.article__category')!;
+            subscription = {
+                element: authorLink,
+                event: 'click',
+                listener: () => {
+                    eventBus.goToAuthorFeed(this.view.publisher!);
+                },
+            }
+            this._subscribeEvent(subscription);
         }
-        this._subscribeEvent(subscription);
 
         this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
             subscription = {

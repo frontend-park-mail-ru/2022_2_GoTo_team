@@ -544,6 +544,7 @@ export class Events {
         const eventBus: UserPlugMenuEventBus = {
             goToSettings: URIChanger.settingsPage,
             unauthorize: Events.profileMenuUnauthorizeListener,
+            authorPage: URIChanger.userFeedPage,
         }
         Events.#openNavbarMenu(new UserPlugMenu(), eventBus);
     }
