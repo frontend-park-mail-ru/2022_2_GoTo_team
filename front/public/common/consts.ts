@@ -1,3 +1,5 @@
+import {SearchData} from "./types";
+
 export const ResponseErrors = {
     emailInvalid: "invalid email",
     loginInvalid: "invalid login",
@@ -21,8 +23,7 @@ export const API = {
     authorPage: /author\/(.+)$/,
     newArticlePage: /new_article$/,
     articleEditPage: /article\/([0-9]+)\/edit$/,
-    searchPage: /search\/([^\/]+)(\/publisher\/([^\/]+))?(\/tags\/(.+))?$/,
-    searchByTagPage: /search\/tag\/([^\/]+)$/,
+    searchPage: /search(\/([^\/]+))?(\/publisher\/([^\/]+))?(\/tags\/(.+))?$/,
 }
 
 export const APIStrings = {
@@ -39,16 +40,20 @@ export const APIStrings = {
     authorPage: (login: string) => {return '/author/' + login},
     newArticlePage: () => {return '/new_article'},
     articleEditPage: (id: number) => {return '/article/' + id + '/edit/'},
-    searchPage: (request: string, author?: string, tags?: string[]) => {
-        let uri = '/search/' + request;
+    searchPage: (searchData: SearchData) => {
+        let uri = '/search';
 
-        if (typeof author !== 'undefined'){
-            uri += '/publisher/' + author;
+        if (typeof searchData.request !== 'undefined'){
+            uri += '/' + searchData.request;
         }
 
-        if (typeof tags !== 'undefined'){
+        if (typeof searchData.author !== 'undefined'){
+            uri += '/publisher/' + searchData.author;
+        }
+
+        if (typeof searchData.tags !== 'undefined'){
             uri += '/tags/'
-            tags.forEach((tag) => {
+            searchData.tags.forEach((tag) => {
                 uri += tag + ',';
             });
             uri = uri.slice(0, -1);
@@ -56,7 +61,6 @@ export const APIStrings = {
 
         return uri;
     },
-    searchByTagPage: (tag: string) => {return '/search/tag/' + tag;}
 }
 
 export const CommentaryParent = {

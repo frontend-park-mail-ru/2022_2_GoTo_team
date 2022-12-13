@@ -1,8 +1,7 @@
 import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
-import {FullSearchData} from "../../common/types";
+import {SearchHeaderData} from "../../common/types";
 import SearchHeader from "../../components/searchHeader/searchHeader.js";
-import AdvancedSearchSidebar from "../../components/advancedSearch/advancedSearchSidebar.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
@@ -19,7 +18,7 @@ export default class SearchPageView extends PageView {
     /**
      * Перерисовать главную страницу
      */
-    async render(data: FullSearchData) {
+    async render(data: SearchHeaderData) {
         super.render();
         const navbar = new Navbar();
         await navbar.render();
@@ -49,13 +48,8 @@ export default class SearchPageView extends PageView {
         content.appendChild(this.mainContentElement);
 
         const header = new SearchHeader();
-        await header.render(data.primary)
+        await header.render(data)
         center.insertBefore(header.root, center.children[0]);
         this.children.set('header', header);
-
-        const sidebar = new AdvancedSearchSidebar();
-        await sidebar.render(data.advanced);
-        this.children.set('sidebar', sidebar);
-        content.appendChild(sidebar.root);
     }
 }

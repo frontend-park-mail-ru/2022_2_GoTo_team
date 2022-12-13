@@ -1,10 +1,9 @@
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
-import {FullSearchData} from "../../common/types";
+import {RequestAnswer, SearchData, SearchHeaderData} from "../../common/types";
 import SearchPageView from "./searchPageView.js";
 import {SearchHeaderEventBus} from "../../components/searchHeader/searchHeader.js";
-import {AdvancedSearchSidebarEventBus} from "../../components/advancedSearch/advancedSearchSidebar.js";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
@@ -26,20 +25,36 @@ export default class SearchPage extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(data: FullSearchData): Promise<void> {
+    async render(data: SearchData): Promise<void> {
         Events.scrollUp();
-        data.primary.request = decodeURIComponent(data.primary.request);
-        if (data.advanced.author !== undefined){
-            data.advanced.author = decodeURIComponent(data.advanced.author);
+        if ( data.request !== undefined){
+            data.request = decodeURIComponent(data.request);
         }
-        if (data.advanced.tags !== undefined){
+
+        if (data.author !== undefined){
+            data.author = decodeURIComponent(data.author);
+        }
+
+        if (data.tags !== undefined){
             const tags: string[] = [];
-            data.advanced.tags.forEach((tag) => {
+            data.tags.forEach((tag) => {
                 tags.push(decodeURIComponent(tag))
             })
-            data.advanced.tags = tags;
+            data.tags = tags;
         }
-        await this.view.render(data);
+
+        const tagsRequest: RequestAnswer = await Requests.getTags();
+        let tagList: string[] = [];
+
+        if (tagsRequest.status == 200) {
+            tagList = tagsRequest.response.tags;
+        }
+
+        const headerData: SearchHeaderData = {
+            searchData: data,
+            tagList: tagList,
+        }
+        await this.view.render(headerData);
 
         Requests.search(data).then((articles) => {
             const articleEventBus: ArticleComponentEventBus = {
@@ -90,13 +105,10 @@ export default class SearchPage extends Page {
 
         this.view.children.get('navbar')!.subscribe(navbarEventBus);
 
-        const headerEventBus: SearchHeaderEventBus = {};
-        this.view.children.get('header')!.subscribe(headerEventBus);
-
-        const sidebarEventBus: AdvancedSearchSidebarEventBus = {
+        const headerEventBus: SearchHeaderEventBus = {
             addTag: Events.addSearchedTagListener,
-            submit: Events.submitAdvSearchListener,
+            submit: Events.submitSearchHeaderListener,
         };
-        this.view.children.get('sidebar')!.subscribe(sidebarEventBus);
+        this.view.children.get('header')!.subscribe(headerEventBus);
     }
 }

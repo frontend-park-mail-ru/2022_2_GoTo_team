@@ -8,7 +8,7 @@ import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/use
 import {
     CommentaryData,
     FullArticleData,
-    FullSearchData, Listener,
+    Listener,
     RequestAnswer,
     SearchData,
     UserData,
@@ -20,12 +20,12 @@ import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/otherMenu.js
 import {URIChanger} from "./uriChanger.js";
 import {PageLoaders} from "./pageLoaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentaryForm.js";
-import AdvancedSearchSidebar from "../components/advancedSearch/advancedSearchSidebar.js";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
 import {AlertMessageData} from "../components/alertMessage/alertMessageView";
 import AlertMessage, {AlertMessageEventBus} from "../components/alertMessage/alertMessage";
 import {ConfirmMessageData} from "../components/confirmMessage/confirmMessageView";
 import ConfirmMessage, {ConfirmMessageEventBus} from "../components/confirmMessage/confirmMessage";
+import SearchHeader from "../components/searchHeader/searchHeader";
 
 
 export class Events {
@@ -1053,7 +1053,7 @@ export class Events {
     /**
      * Обработчик добавления тега к списку тегов на странице поиска
      */
-    static addSearchedTagListener(form: AdvancedSearchSidebar): void {
+    static addSearchedTagListener(form: SearchHeader): void {
         const tagsForm = form.root.querySelector('.select_menu')! as HTMLSelectElement;
         const newTagString: string = tagsForm.value;
 
@@ -1109,22 +1109,18 @@ export class Events {
     /**
      * Обработчик подтверждения в панели расширенного поиска
      */
-    static submitAdvSearchListener(form: AdvancedSearchSidebar) {
-        const request = document.querySelector(".feed_page__header__name")!.innerHTML;
+    static submitSearchHeaderListener(form: SearchHeader) {
+        let request: string | undefined | null = document.querySelector(".search_header__title")?.textContent;
+        request = request === '' || request == null ? undefined : request.trim();
 
-        let login: string | undefined = form.root.querySelector(".advanced_search__author_textarea")!.textContent!;
-        login = login !== '' ? login : undefined;
+        let login: string | undefined | null = form.root.querySelector(".search_header__author")?.textContent;
+        login = login === '' || login == null ? undefined : login.trim();
 
         const tags = form.tags.length !== 0 ? form.tags : undefined;
-
-        let data: FullSearchData = {
-            primary: {
-                request: request,
-            },
-            advanced: {
-                author: login,
-                tags: tags,
-            }
+        let data: SearchData = {
+            request: request,
+            author: login,
+            tags: tags,
         }
         URIChanger.searchPage(data);
     }
@@ -1378,7 +1374,7 @@ export class Events {
             }
             return true;
         }).then((result) => {
-            if (result){
+            if (result) {
                 return Requests.categorySubscribe(category).then((result) => {
                     if (!result) {
                         Events.openAlertMessage("Не удалось подписаться");

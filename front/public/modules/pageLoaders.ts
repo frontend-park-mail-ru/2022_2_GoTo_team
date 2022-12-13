@@ -6,9 +6,8 @@ import CategoryFeed from "../pages/categoryFeed/categoryFeed.js";
 import ArticlePage from "../pages/article/articlePage.js";
 import SettingsPage from "../pages/settingsPage/settingsPage.js";
 import ArticleEditPage from "../pages/articleEdit/articleEditPage.js";
-import {FullSearchData, SearchData} from "../common/types";
+import {SearchData} from "../common/types";
 import SearchPage from "../pages/search/searchPage.js";
-import SearchTagPage from "../pages/searchTag/searchTagPage.js";
 import Page from "../pages/_basic/page";
 
 const root = document.getElementsByTagName('body')[0];
@@ -105,19 +104,8 @@ export class PageLoaders {
     /**
      * Отрисовывает поиск
      */
-    static searchPage(searchData: FullSearchData): Page {
+    static searchPage(searchData: SearchData): Page {
         const page = new SearchPage(root)
-        page.render(searchData).then(() => {
-            page.subscribe();
-        });
-        return page;
-    }
-
-    /**
-     * Отрисовывает поиск по тегу
-     */
-    static searchByTagPage(searchData: SearchData): Page {
-        const page = new SearchTagPage(root)
         page.render(searchData).then(() => {
             page.subscribe();
         });

@@ -99,18 +99,16 @@ export type RulesData = {
 }
 
 export type SearchData = {
-    request: string,
-}
-
-export type AdvSearchData = {
+    request?: string,
     author?: string,
     tags?: string[],
 }
 
-export type FullSearchData = {
-    primary: SearchData,
-    advanced: AdvSearchData,
+export type SearchHeaderData = {
+    searchData: SearchData,
+    tagList: string[],
 }
+
 
 export type Subscription = {
     element: Element,

@@ -1,6 +1,6 @@
 import {Events} from "./events.js";
 import {APIStrings} from "../common/consts.js";
-import {FullSearchData, SearchData} from "../common/types";
+import {SearchData} from "../common/types";
 
 export class URIChanger {
     /**
@@ -59,27 +59,19 @@ export class URIChanger {
     /**
      * Перемещает на поиск
      */
-    static searchPage(data: FullSearchData | SearchData) {
-        let searchData: FullSearchData | undefined;
-        // @ts-ignore
-        if (typeof data.primary === 'undefined') {
-            searchData = {
-                primary: data as SearchData,
-                advanced: {}
-            }
-        } else {
-            searchData = data as FullSearchData;
-        }
-        console.log(searchData)
+    static searchPage(data: SearchData) {
         Events.setLocation(
-            APIStrings.searchPage(searchData!.primary.request,
-                searchData!.advanced.author, searchData!.advanced.tags));
+            APIStrings.searchPage(data));
     }
 
     /**
      * Перемещает на поиск
      */
     static searchByTagPage(tag: string) {
-        Events.setLocation(APIStrings.searchByTagPage(tag));
+        const data: SearchData = {
+            tags: [tag],
+        }
+        Events.setLocation(
+            APIStrings.searchPage(data));
     }
 }

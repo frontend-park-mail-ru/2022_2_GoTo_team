@@ -3,7 +3,7 @@
 import {PageLoaders} from "./modules/pageLoaders.js";
 import Router from "./modules/router.js";
 import {API} from "./common/consts.js";
-import {FullSearchData, SearchData} from "./common/types";
+import {SearchData} from "./common/types";
 import Page from "./pages/_basic/page";
 
 const router = new Router({
@@ -55,29 +55,17 @@ router
         }
         openedPage = PageLoaders.editArticle(id);
     })
-    .add(API.searchPage, (request: string, ...params: string[]) => {
+    .add(API.searchPage, (...params: string[]) => {
         if (openedPage !== undefined){
             openedPage.destroy();
         }
-        const searchData : FullSearchData = {
-            primary: {
-                request: request,
-            },
-            advanced: {
-                author: params[1],
-                tags: params[3]?.split(','),
+
+        const searchData : SearchData = {
+                request: params[1],
+                author: params[3],
+                tags: params[5]?.split(','),
             }
-        }
         openedPage = PageLoaders.searchPage(searchData);
-    })
-    .add(API.searchByTagPage, (tag: string) => {
-        if (openedPage !== undefined){
-            openedPage.destroy();
-        }
-        const searchData: SearchData = {
-            request: tag,
-        }
-        openedPage = PageLoaders.searchByTagPage(searchData);
     })
     .add(API.root, () => {
         if (openedPage !== undefined){

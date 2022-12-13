@@ -1,9 +1,9 @@
 import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
-    CategoryData, CommentaryData, FullArticleData, FullSearchData,
+    CategoryData, CommentaryData, FullArticleData,
     IncompleteArticleData, LikeData,
-    RequestAnswer, UserData,
+    RequestAnswer, SearchData, UserData,
     UserHeaderData,
     UserLoginData,
     UserPlugData,
@@ -531,13 +531,13 @@ export class Requests {
     /**
      * Запрос поиска
      */
-    static search(searchData: FullSearchData): Promise<IncompleteArticleData[]> {
+    static search(searchData: SearchData): Promise<IncompleteArticleData[]> {
         let params = {
             url: config.hrefs.searchPage,
             data: {
-                substringToSearch: searchData.primary.request,
-                author: searchData.advanced.author,
-                tag: searchData.advanced.tags,
+                substringToSearch: searchData.request,
+                author: searchData.author,
+                tag: searchData.tags,
             },
         }
 
