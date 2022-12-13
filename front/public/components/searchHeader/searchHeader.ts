@@ -45,7 +45,7 @@ export default class SearchHeader extends BasicComponent {
             this._subscribeEvent(subscription);
         });
 
-        const addButton = this.root.querySelector('.advanced_search__sidebar__add_tag')!;
+        const addButton = this.root.querySelector('.advanced_search__add_tag')!;
         subscription = {
             element: addButton,
             event: 'click',
@@ -55,7 +55,7 @@ export default class SearchHeader extends BasicComponent {
         }
         this._subscribeEvent(subscription);
 
-        const submit = this.root.querySelector('.advanced_search__sidebar__apply')!;
+        const submit = this.root.querySelector('.advanced_search__apply')!;
         subscription = {
             element: submit,
             event: 'click',

@@ -1,6 +1,6 @@
 <div class="box feed_page__header column">
     <div contenteditable="true"
-         class="div_textarea advanced_search_textarea div_width_available advanced_search__author_textarea search_header__title"
+         class="div_textarea advanced_search_textarea div_width_available search_header__title"
          role="textbox" id="title"
          placeholder="Поиск">{{request}}</div>
     <div class="right_side_bar__content">
@@ -8,11 +8,11 @@
     </div>
     {{#if author}}
     <div contenteditable="true"
-         class="div_textarea advanced_search_textarea div_width_available advanced_search__author_textarea search_header__author"
+         class="div_textarea advanced_search_textarea div_width_available search_header__author"
          placeholder="Логин автора">{{author}}</div>
     {{else}}
     <div contenteditable="true"
-         class="div_textarea advanced_search_textarea div_width_available advanced_search__author_textarea search_header__author"
+         class="div_textarea advanced_search_textarea div_width_available search_header__author"
          placeholder="Логин автора"></div>
     {{/if}}
     <div class="right_side_bar__content">
@@ -25,7 +25,7 @@
             <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
-        <div class="button accent_button advanced_search__sidebar__add_tag">Добавить тег</div>
+        <div class="button accent_button advanced_search__add_tag">Добавить тег</div>
     </div>
     <div class="row advanced_search__sidebar__tags">
         {{#if tags}}
@@ -37,7 +37,7 @@
         {{/if}}
     </div>
     <div class="row">
-        <div class="button accent_button advanced_search__sidebar__apply">Применить</div>
+        <div class="button accent_button advanced_search__apply">Применить</div>
     </div>
     <div class="feed_page__header__subscribers">Результатов не найдено</div>
 </div>
