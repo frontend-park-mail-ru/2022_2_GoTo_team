@@ -491,12 +491,13 @@ export class Events {
 
         const profileButton = document.getElementById("navbar__auth_button")!;
         const userPlug = new UserPlug();
-
+        console.log(Events.#hasSession());
         if (Events.#hasSession()) {
-            const response = await Requests.getSessionInfo()
+            const response = await Requests.getSessionInfo();
+            console.log(response);
             if (response.status === 200) {
                 const userData: UserPlugData = {
-                    username: response.response.username,
+                    username: response.response.username === "" ? response.response.login : response.response.username,
                     avatarUrl: "",
                 }
                 userPlug.render(userData);
@@ -860,7 +861,8 @@ export class Events {
                 }
             });
 
-        }, () => {});
+        }, () => {
+        });
     }
 
     /**
@@ -1393,5 +1395,64 @@ export class Events {
         body.classList.remove("disabled");
         const message = body.querySelector(".alert_prompt")!;
         body.removeChild(message);
+    }
+
+    /**
+     * Подписка на категорию
+     */
+    static categorySubscribeListener(category: string): Promise<boolean> {
+        return Requests.getSessionInfo().then((result) => {
+            if (result.status === 401) {
+                Events.openAlertMessage("Для подписки нужно авторизироваться");
+                return false;
+            }
+            return true;
+        }).then((result) => {
+            if (result){
+                return Requests.categorySubscribe(category).then((result) => {
+                    if (!result) {
+                        Events.openAlertMessage("Не удалось подписаться");
+                    }
+                    return result;
+                });
+            }
+            return false;
+        })
+    }
+
+    /**
+     * Подписка на пользователя
+     */
+    static userSubscribeListener(login: string): Promise<boolean> {
+        return Requests.userSubscribe(login).then((result) => {
+            if (!result) {
+                Events.openAlertMessage("Не удалось подписаться");
+            }
+            return result;
+        })
+    }
+
+    /**
+     * Отписка от категории
+     */
+    static categoryUnsubscribeListener(category: string): Promise<boolean> {
+        return Requests.categoryUnsubscribe(category).then((result) => {
+            if (!result) {
+                Events.openAlertMessage("Не удалось отписаться");
+            }
+            return result;
+        })
+    }
+
+    /**
+     * Отписка от пользователя
+     */
+    static userUnsubscribeListener(login: string): Promise<boolean> {
+        return Requests.userUnsubscribe(login).then((result) => {
+            if (!result) {
+                Events.openAlertMessage("Не удалось отписаться");
+            }
+            return result;
+        })
     }
 }

@@ -35,8 +35,12 @@ const config = {
         searchPage: '/search',
         searchTagPage: '/search/tag',
         tagList: '/tag/list',
-        articleLike: 'article/like',
-        commentaryLike: 'commentary/like',
+        articleLike: '/article/like',
+        commentaryLike: '/commentary/like',
+        subscribeUser: '/user/subscribe',
+        subscribeCategory: '/category/subscribe',
+        unsubscribeUser: '/user/unsubscribe',
+        unsubscribeCategory: '/category/unsubscribe',
     }
 }
 
@@ -164,7 +168,7 @@ export class Requests {
      * Получение информации пользователя по куке
      */
     static getSessionInfo(): Promise<RequestAnswer> {
-        if (window.sessionStorage.getItem('login') !== null){
+        if (window.sessionStorage.getItem('login') !== null ){
             const answer: RequestAnswer = {
                 response: {
                     username: window.sessionStorage.getItem('username'),
@@ -172,8 +176,8 @@ export class Requests {
                     avatar: window.sessionStorage.getItem('avatar'),
                 },
                 status: 200,
-            }
-            return new Promise( () => {return answer});
+            };
+            return Promise.resolve(answer);
         }
         return ajax.get({
             url: config.hrefs.sessionInfo,
@@ -183,9 +187,11 @@ export class Requests {
                 username: response!.response.username,
                 avatarUrl: response!.response.avatar_img_path,
             }
-            window.sessionStorage.setItem('username', response!.response.username);
-            window.sessionStorage.setItem('login', "");
-            window.sessionStorage.setItem('avatar', response!.response.avatar_img_path);
+            if (response!.status === 200) {
+                window.sessionStorage.setItem('username', response!.response.username);
+                window.sessionStorage.setItem('login', response!.response.login);
+                window.sessionStorage.setItem('avatar', response!.response.avatar_img_path);
+            }
             result.response = userData;
             return result;
         });
@@ -197,7 +203,8 @@ export class Requests {
     static removeSession(): void {
         ajax.post({
             url: config.hrefs.sessionRemove,
-        });
+        })
+        window.sessionStorage.clear();
     }
 
 
@@ -273,6 +280,7 @@ export class Requests {
                 name: result.response.category_name,
                 description: result.response.description,
                 subscribers: result.response.subscribers_count,
+                subscribed: result.response.subscribed,
             };
             return categoryData;
         });
@@ -664,6 +672,70 @@ export class Requests {
             data: {
                 id: data.id,
                 sign: data.sign,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Подписка на категорию
+     */
+    static categorySubscribe(category: string): Promise<boolean> {
+        let params = {
+            url: config.hrefs.subscribeCategory,
+            data: {
+                category_name: category,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Подписка на пользователя
+     */
+    static userSubscribe(login: string): Promise<boolean> {
+        let params = {
+            url: config.hrefs.subscribeUser,
+            data: {
+                author_login: login,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Отписка от категории
+     */
+    static categoryUnsubscribe(category: string): Promise<boolean> {
+        let params = {
+            url: config.hrefs.unsubscribeCategory,
+            data: {
+                category_name: category,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Отписка от пользователя
+     */
+    static userUnsubscribe(login: string): Promise<boolean> {
+        let params = {
+            url: config.hrefs.unsubscribeUser,
+            data: {
+                author_login: login,
             },
         }
 

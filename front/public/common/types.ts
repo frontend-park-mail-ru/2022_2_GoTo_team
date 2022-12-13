@@ -45,6 +45,7 @@ export type CategoryData = {
     name: string,
     description: string,
     subscribers: number,
+    subscribed: boolean,
 }
 
 export type UserData = {

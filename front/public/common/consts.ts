@@ -7,6 +7,11 @@ export const ResponseErrors = {
     wrongAuth: "wrong email or password",
 }
 
+export const SubscribeErrors = {
+    notAuth: "no auth",
+    something: "something happened",
+}
+
 export const API = {
     root: '',
     feedPage: /feed$/,

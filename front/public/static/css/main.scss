@@ -999,3 +999,35 @@ div.log-button-container {
         height: 20px;
     };
 }
+
+.feed_page__header__subscribe_button{
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 14px;
+    width: fit-content;
+    height: fit-content;
+    margin-left: auto;
+}
+
+.feed_page__header__subscribed{
+    min-width: 130px;
+    padding: 5px 10px 5px 5px;
+    gap: 5px;
+    svg{
+        width: 20px;
+        height: 20px;
+        @include svgColor($main);
+    }
+}
+
+.feed_page__header__unsubscribe{
+    min-width: 130px;
+    padding: 5px 10px 5px 5px;
+    gap: 5px;
+    svg{
+        width: 12px;
+        height: 12px;
+        padding: 4px;
+        @include svgColor($negative);
+    }
+}

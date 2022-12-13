@@ -95,5 +95,8 @@
 		s6.037,1.211,8.237,3.412l15.73,15.731c4.544,4.542,4.544,11.933,0.001,16.475l-12.924,12.924c-1.69,1.691-4.433,1.691-6.125,0
 		l-26.081-26.082c-1.691-1.691-1.691-4.434,0-6.125L945.762,815.434z"/>
         </symbol>
+        <symbol id="ok" viewBox="0 0 24 24" aria-labelledby="okIconTitle" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <polyline points="4 13 9 18 20 7"/>
+        </symbol>
     </defs>
 </svg>

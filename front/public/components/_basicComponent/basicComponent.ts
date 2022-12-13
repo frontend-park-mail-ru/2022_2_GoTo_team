@@ -43,8 +43,13 @@ export default class BasicComponent {
     /**
      * Отписка от события
      */
-    #unsubscribeEvent(subscription: Subscription){
+    _unsubscribeEvent(subscription: Subscription){
         subscription.element.removeEventListener(subscription.event, subscription.listener);
+        const index = this.subscriptions.indexOf(subscription);
+        if (index > -1) {
+            this.subscriptions.splice(index, 1);
+        }
+
     }
 
     /**
@@ -52,7 +57,7 @@ export default class BasicComponent {
      */
     destroy(){
         this.subscriptions.forEach((subscription) => {
-            this.#unsubscribeEvent(subscription);
+            this._unsubscribeEvent(subscription);
         })
     }
 }

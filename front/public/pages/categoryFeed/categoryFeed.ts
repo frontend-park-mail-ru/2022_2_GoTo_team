@@ -35,7 +35,10 @@ export default class CategoryFeed extends Page {
         category = decodeURIComponent(category);
 
         Requests.categoryHeaderInfo(category).then((categoryData) => {
-            const eventBus: CategoryFeedHeaderEventBus = {};
+            const eventBus: CategoryFeedHeaderEventBus = {
+                subscribe: Events.categorySubscribeListener,
+                unsubscribe: Events.categoryUnsubscribeListener,
+            };
 
             const header = new CategoryFeedHeader();
             header.render(categoryData);

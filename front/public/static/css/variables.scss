@@ -22,3 +22,9 @@ $focused-background: darken($light, 1%);
 $textarea-background: darken($light, 4%);
 /*$focus-textarea-background: #f1f1f1;*/
 $focus-textarea-background: darken($textarea-background, 3%);
+
+@mixin svgColor($color){
+  fill: $color;
+  color: $color;
+  stroke: $color;
+}

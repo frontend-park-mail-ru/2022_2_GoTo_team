@@ -87,6 +87,9 @@ export class Ajax {
                     status: status,
                     response: response,
                 }
+                if (status === 401) {
+                    window.sessionStorage.clear();
+                }
                 return result;
             })
             .catch((error) => {
