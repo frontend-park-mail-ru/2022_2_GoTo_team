@@ -7,6 +7,7 @@ export type ArticleComponentEventBus = {
     goToAuthorFeed: (login: string) => void,
     openArticle: (id: number, comments: boolean) => void,
     openTagPage: (tag: string) => void,
+    editArticle: (id: number) => void,
 }
 
 /**
@@ -100,5 +101,16 @@ export default class Article extends BasicComponent {
             },
         }
         this._subscribeEvent(subscription);
+
+        this.root.querySelectorAll('.article__edit_button').forEach((edit) => {
+            subscription = {
+                element: edit,
+                event: 'click',
+                listener: () => {
+                    eventBus.editArticle(this.view.id!);
+                },
+            }
+            this._subscribeEvent(subscription);
+        });
     }
 };

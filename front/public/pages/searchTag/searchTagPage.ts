@@ -42,6 +42,7 @@ export default class SearchTagPage extends Page {
                     goToCategoryFeed: Events.goToCategoryFeed,
                     openArticle: URIChanger.articlePage,
                     openTagPage: URIChanger.searchByTagPage,
+                    editArticle: Events.editArticleListener,
                 }
 
                 let foundNumString: string;

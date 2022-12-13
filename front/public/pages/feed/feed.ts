@@ -28,6 +28,7 @@ export default class Feed extends Page{
             goToCategoryFeed: Events.goToCategoryFeed,
             openArticle: URIChanger.articlePage,
             openTagPage: URIChanger.searchByTagPage,
+            editArticle: Events.editArticleListener,
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {

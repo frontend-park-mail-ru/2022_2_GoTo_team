@@ -49,6 +49,7 @@ export default class UserFeed extends Page {
                 goToCategoryFeed: Events.goToCategoryFeed,
                 openArticle: URIChanger.articlePage,
                 openTagPage: URIChanger.searchByTagPage,
+                editArticle: Events.editArticleListener,
             }
 
             if (articles && Array.isArray(articles)) {
