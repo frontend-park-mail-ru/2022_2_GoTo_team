@@ -56,36 +56,40 @@ export default class SearchPage extends Page {
         }
         await this.view.render(headerData);
 
-        Requests.search(data).then((articles) => {
-            const articleEventBus: ArticleComponentEventBus = {
-                goToAuthorFeed: Events.goToAuthorFeed,
-                goToCategoryFeed: Events.goToCategoryFeed,
-                openArticle: URIChanger.articlePage,
-                openTagPage: URIChanger.searchByTagPage,
-                editArticle: Events.editArticleListener,
-            }
+        console.log(data);
 
-            let foundNumString: string;
-            if (articles.length === 0){
-                foundNumString = "Результатов не найдено";
-            }else{
-                foundNumString = Helpers.numWord(articles.length,
-                    ["Найдена", "Найдено", "Найдено"]) + ' ' + articles.length + ' ' + Helpers.numWord(articles.length,
-                    ["статья", "статьи", "статей"]);
-            }
-            document.querySelector('.feed_page__header__subscribers')!.innerHTML = foundNumString;
+        if(!(data.request === undefined && data.author === undefined && data.tags === undefined)) {
+            Requests.search(data).then((articles) => {
+                const articleEventBus: ArticleComponentEventBus = {
+                    goToAuthorFeed: Events.goToAuthorFeed,
+                    goToCategoryFeed: Events.goToCategoryFeed,
+                    openArticle: URIChanger.articlePage,
+                    openTagPage: URIChanger.searchByTagPage,
+                    editArticle: Events.editArticleListener,
+                }
+
+                let foundNumString: string;
+                if (articles.length === 0) {
+                    foundNumString = "Результатов не найдено";
+                } else {
+                    foundNumString = Helpers.numWord(articles.length,
+                        ["Найдена", "Найдено", "Найдено"]) + ' ' + articles.length + ' ' + Helpers.numWord(articles.length,
+                        ["статья", "статьи", "статей"]);
+                }
+                document.querySelector('.feed_page__header__subscribers')!.innerHTML = foundNumString;
 
 
-            if (articles && Array.isArray(articles)) {
-                this.view.mainContentElement!.innerHTML = '';
-                articles.forEach((article) => {
-                    const articleView = new Article();
-                    articleView.render(article)
-                    articleView.subscribe(articleEventBus);
-                    this.view.mainContentElement!.appendChild(articleView.root);
-                })
-            }
-        });
+                if (articles && Array.isArray(articles)) {
+                    this.view.mainContentElement!.innerHTML = '';
+                    articles.forEach((article) => {
+                        const articleView = new Article();
+                        articleView.render(article)
+                        articleView.subscribe(articleEventBus);
+                        this.view.mainContentElement!.appendChild(articleView.root);
+                    })
+                }
+            });
+        }
 
         Events.updateAuth();
     }

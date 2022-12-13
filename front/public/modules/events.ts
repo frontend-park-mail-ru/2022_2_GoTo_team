@@ -1426,7 +1426,10 @@ export class Events {
      * Открытие страницы расширенного поиска
      */
     static openAdvSearchListener(){
-        const data: SearchData = {};
+        const form = document.querySelector(".navbar__search_form")! as HTMLFormElement;
+        const data: SearchData = {
+            request: form.value.trim().length === 0 ? undefined : form.value.trim(),
+        };
         URIChanger.searchPage(data);
     }
 }
