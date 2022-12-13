@@ -38,14 +38,10 @@ export default class SearchPageView extends PageView {
         this.center = center;
         this.root.appendChild(center);
 
-        const content = document.createElement('div');
-        content.classList.add('center_with_bigger_sidebar');
-        center.appendChild(content);
-
         const mainContentElement = document.createElement('div');
         mainContentElement.classList.add('feed');
         this.mainContentElement = mainContentElement;
-        content.appendChild(this.mainContentElement);
+        center.appendChild(this.mainContentElement);
 
         const header = new SearchHeader();
         await header.render(data)
