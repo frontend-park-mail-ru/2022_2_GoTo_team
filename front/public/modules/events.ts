@@ -83,7 +83,6 @@ export class Events {
     static #closeOverlay(): void {
         const overlay = document.getElementById('overlay');
         if (overlay !== null) {
-            Events.enableScroll();
             overlay.parentNode!.removeChild(overlay);
         }
     }
@@ -159,6 +158,7 @@ export class Events {
 
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
+                Events.enableScroll();
                 if (location.hash === '') {
                     PageLoaders.feedPage();
                 } else {
@@ -215,6 +215,7 @@ export class Events {
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
+                Events.enableScroll();
                 if (location.hash === '') {
                     PageLoaders.feedPage();
                 } else {
