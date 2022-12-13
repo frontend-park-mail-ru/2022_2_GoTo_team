@@ -85,6 +85,7 @@ export class Events {
         if (overlay !== null) {
             overlay.parentNode!.removeChild(overlay);
         }
+        Events.enableScroll();
     }
 
     /**
@@ -239,10 +240,10 @@ export class Events {
                                 Events.#makeInvalid(emailForm, "Неверный формат email");
                                 break;
                             case ResponseErrors.loginInvalid:
-                                Events.#makeInvalid(loginForm, "Неверный формат логина");
+                                Events.#makeInvalid(loginForm, "Логин должен начинаться с латинской буквы, может содержать только латинские буквы и цифры и должен быть не короче 3-х символов");
                                 break;
                             case ResponseErrors.passwordInvalid:
-                                Events.#makeInvalid(passwordForm, "Неверный формат пароля");
+                                Events.#makeInvalid(passwordForm, "Пароль может содержать только латинские буквы, цифры и спецсимволы !@#$%^&*, а также должен быть не короче 4 символов");
                                 break;
                         }
                         break;
@@ -383,7 +384,7 @@ export class Events {
             return true;
         }
         if (!Validators.validateLogin(login)) {
-            Events.#makeInvalid(loginForm, "Неправильный формат логина");
+            Events.#makeInvalid(loginForm, "Логин должен начинаться с латинской буквы, может содержать только латинские буквы и цифры и должен быть не короче 3-х символов");
             return false;
         }
         Events.#makeValid(loginForm);
@@ -424,7 +425,7 @@ export class Events {
         }
 
         if (!Validators.validatePassword(password)) {
-            Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
+            Events.#makeInvalid(passwordForm, "Пароль может содержать только латинские буквы, цифры и спецсимволы !@#$%^&*, а также должен быть не короче 4 символов");
             return false;
         }
 
@@ -1426,7 +1427,7 @@ export class Events {
     /**
      * Открытие страницы расширенного поиска
      */
-    static openAdvSearchListener(){
+    static openAdvSearchListener() {
         const form = document.querySelector(".navbar__search_form")! as HTMLFormElement;
         const data: SearchData = {
             request: form.value.trim().length === 0 ? undefined : form.value.trim(),
