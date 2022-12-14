@@ -53,6 +53,10 @@ export default class CategoryFeedHeader extends BasicComponent {
                     if (result){
                         this._unsubscribeEvent(subscribeSubscription);
                         this._subscribeEvent(unsubscribeSubscription);
+                        this._subscribeEvent(subscribedHoverSubscription);
+                        this._subscribeEvent(subscribedUnhoverSubscription);
+                        // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+                        subButton.innerHTML = Handlebars.templates['unsubscribeButton.html']({});
                     }
                 });
             },
@@ -65,7 +69,11 @@ export default class CategoryFeedHeader extends BasicComponent {
                 eventBus.unsubscribe(this.view.category!).then((result) => {
                     if (result){
                         this._unsubscribeEvent(unsubscribeSubscription);
+                        this._unsubscribeEvent(subscribedHoverSubscription);
+                        this._unsubscribeEvent(subscribedUnhoverSubscription)
                         this._subscribeEvent(subscribeSubscription);
+                        // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+                        subButton.innerHTML = Handlebars.templates['subscribeButton.html']({});
                     }
                 });
             },
