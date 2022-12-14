@@ -1,6 +1,7 @@
 import UserFeedHeaderView from "./userFeedHeaderView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Subscription, UserHeaderData} from "../../common/types";
+import {Helpers} from "../../modules/helpers";
 
 export type UserFeedHeaderEventBus = {
     subscribe: (login: string) => Promise<boolean>,
@@ -36,7 +37,6 @@ export default class UserFeedHeader extends BasicComponent {
             },
         }
 
-
         const subscribedUnhoverSubscription = {
             element: subButton,
             event: 'mouseleave',
@@ -45,6 +45,7 @@ export default class UserFeedHeader extends BasicComponent {
                 subButton.innerHTML = Handlebars.templates['subscribedButton.html']({});
             },
         }
+
         const subscribeSubscription = {
             element: subButton,
             event: 'click',
@@ -53,6 +54,10 @@ export default class UserFeedHeader extends BasicComponent {
                     if (result){
                         this._unsubscribeEvent(subscribeSubscription);
                         this._subscribeEvent(unsubscribeSubscription);
+                        this._subscribeEvent(subscribedHoverSubscription);
+                        this._subscribeEvent(subscribedUnhoverSubscription);
+                        // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+                        subButton.innerHTML = Handlebars.templates['unsubscribeButton.html']({});
                     }
                 });
             },
@@ -65,7 +70,11 @@ export default class UserFeedHeader extends BasicComponent {
                 eventBus.unsubscribe(this.view.login!).then((result) => {
                     if (result){
                         this._unsubscribeEvent(unsubscribeSubscription);
+                        this._unsubscribeEvent(subscribedHoverSubscription);
+                        this._unsubscribeEvent(subscribedUnhoverSubscription)
                         this._subscribeEvent(subscribeSubscription);
+                        // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+                        subButton.innerHTML = Handlebars.templates['subscribeButton.html']({});
                     }
                 });
             },

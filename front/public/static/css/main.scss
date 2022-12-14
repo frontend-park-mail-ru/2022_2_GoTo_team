@@ -674,12 +674,15 @@ div.log-button-container {
 }
 
 .feed_page__header__subscribe {
-  font-size: 15px;
-  padding: 5px;
+  padding: 5px 10px;
+  border: 0;
   border-radius: 14px;
   width: fit-content;
   height: fit-content;
-  margin-left: auto;
+  margin: 0;
+  &:hover{
+    border: 0;
+  }
 }
 
 .feed_page__header__name {
@@ -1101,7 +1104,7 @@ div.log-button-container {
 }
 
 .feed_page__header__subscribe_button {
-  font-size: 15px;
+  font-size: 18px;
   padding: 5px;
   border-radius: 14px;
   width: fit-content;

@@ -704,7 +704,7 @@ export class Requests {
         let params = {
             url: config.hrefs.subscribeUser,
             data: {
-                author_login: login,
+                login: login,
             },
         }
 
@@ -736,7 +736,7 @@ export class Requests {
         let params = {
             url: config.hrefs.unsubscribeUser,
             data: {
-                author_login: login,
+                login: login,
             },
         }
 
