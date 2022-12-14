@@ -49,20 +49,6 @@ export class Events {
     }
 
     /**
-     * Отслючает скролл
-     */
-    static disableScroll() {
-        document.querySelector('body')!.style.overflow = 'hidden';
-    }
-
-    /**
-     * Отслючает скролл
-     */
-    static enableScroll() {
-        document.querySelector('body')!.style.overflow = '';
-    }
-
-    /**
      * Отрисовывает оверлей
      */
     static async openOverlay(): Promise<void> {
@@ -74,7 +60,6 @@ export class Events {
         const root = document.getElementById('root')!;
         root.appendChild(overlay.root);
         await overlay.subscribe(eventBus);
-        Events.disableScroll();
     }
 
     /**
@@ -85,7 +70,6 @@ export class Events {
         if (overlay !== null) {
             overlay.parentNode!.removeChild(overlay);
         }
-        Events.enableScroll();
     }
 
     /**
@@ -159,7 +143,6 @@ export class Events {
 
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
-                Events.enableScroll();
                 if (location.hash === '') {
                     PageLoaders.feedPage();
                 } else {
@@ -216,7 +199,6 @@ export class Events {
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
-                Events.enableScroll();
                 if (location.hash === '') {
                     PageLoaders.feedPage();
                 } else {

@@ -330,10 +330,12 @@ body {
 .article__tagbox {
   margin: 10px;
   height: fit-content;
-  width: 50%;
+  width: -moz-available;
+  width: -webkit-fill-available;;
   display: flex;
   align-content: flex-start;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .article__tag {
@@ -923,7 +925,7 @@ div.log-button-container {
 }
 
 .commentary_form__footer {
-  height: 40px;
+  height: fit-content;
 }
 
 .commentary_form__save_button {
