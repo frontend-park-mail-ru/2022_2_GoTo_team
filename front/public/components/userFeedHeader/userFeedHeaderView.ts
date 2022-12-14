@@ -23,12 +23,14 @@ export default class UserFeedHeaderView extends BasicComponentView {
 
         const subButton = wrapper.querySelector('.feed_page__header__subscribe_button')!;
         this.subscribed = userData.subscribed;
-        if (this.subscribed){
-            // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-            subButton.innerHTML = Handlebars.templates['subscribedButton.html']({});
-        }else{
-            // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
-            subButton.innerHTML = Handlebars.templates['subscribeButton.html']({});
+        if (userData.login !== window.sessionStorage.getItem('login')){
+            if (this.subscribed){
+                // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+                subButton.innerHTML = Handlebars.templates['subscribedButton.html']({});
+            }else{
+                // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
+                subButton.innerHTML = Handlebars.templates['subscribeButton.html']({});
+            }
         }
         return wrapper.querySelector('div')!;
     }
