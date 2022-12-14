@@ -643,7 +643,7 @@ export class Requests {
                 }
                 commentaries.push(commentary);
             });
-            return commentaries;
+            return commentaries.reverse();
         });
     }
 

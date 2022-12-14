@@ -25,53 +25,7 @@ export default class ArticlePage extends Page {
         Events.scrollUp();
         const article = await Requests.getArticle(data.articleId);
         await this.view.render(article);
-        Requests.getCommentaries(data.articleId).then(async (commentaries) => {
-            const renderedCommentaries: Commentary[] = [];
-            for (const commentaryData of commentaries) {
-                const commentary = new Commentary();
-                await commentary.render(commentaryData);
-                const eventBus: CommentaryComponentEventBus = {
-                    goToAuthorFeed: URIChanger.userFeedPage,
-                    showAnswerForm: Events.addCommentaryFormToComment,
-                }
-                commentary.subscribe(eventBus);
-                renderedCommentaries.push(commentary);
-            }
-
-            const addToComment = (parent: Commentary, child: Commentary) => {
-                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
-                wrapper.appendChild(child.root);
-            }
-
-            const addedCommentaries: Commentary[] = [];
-            const commentariesToCommentaries: Commentary[] = [];
-            for (const renderedCommentary of renderedCommentaries) {
-                if (renderedCommentary.data!.parentType === CommentaryParent.article) {
-                    // @ts-ignore
-                    this.view.children.get('commentary container').appendChild(renderedCommentary.root);
-                    addedCommentaries.push(renderedCommentary);
-                } else {
-                    commentariesToCommentaries.push(renderedCommentary);
-
-                }
-            }
-
-            while (commentariesToCommentaries.length > 0){
-                const buf = commentariesToCommentaries;
-                for (const comment of buf){
-                    for (const addedCommentary of addedCommentaries){
-                        if (addedCommentary.data!.id === comment.data!.parentId){
-                            addToComment(addedCommentary, comment);
-                            addedCommentaries.push(comment);
-                            const index = commentariesToCommentaries.indexOf(comment);
-                            if (index > -1) {
-                                commentariesToCommentaries.splice(index, 1);
-                            }
-                        }
-                    }
-                }
-            }
-        })
+        Events.rerenderCommentaries(data.articleId);
         Events.updateAuth();
         if (data.toComments){
             Events.scrollToComments();

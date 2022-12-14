@@ -14,10 +14,12 @@ export type CommentaryComponentEventBus = {
 export default class Commentary extends BasicComponent {
     view: CommentaryView;
     data: CommentaryData | undefined;
+    level: number;
 
     constructor() {
         super();
         this.view = new CommentaryView();
+        this.level = 0;
     }
 
     render(commentary: CommentaryData): HTMLElement {

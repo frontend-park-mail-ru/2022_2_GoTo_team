@@ -1218,17 +1218,27 @@ export class Events {
                 renderedCommentaries.push(commentary);
             }
 
-            const addToComment = (parent: Commentary, child: Commentary) => {
-                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
-                wrapper.appendChild(child.root);
-            }
-
             const container = document.querySelector('.commentary__block__wrapper')!;
             const form = container.querySelector('.commentary_form')!;
             form.querySelector('.commentary_form__content')!.innerHTML = '';
             container.innerHTML = '';
             container.appendChild(form);
 
+
+            const addToComment = (parent: Commentary, child: Commentary) => {
+                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
+                if (parent.level < 12){
+                    wrapper.appendChild(child.root);
+                    return;
+                }
+                let nextLevelWrapper = wrapper.querySelector('.commentary__new_level');
+                if (nextLevelWrapper === null){
+                    nextLevelWrapper = document.createElement('div');
+                    nextLevelWrapper.classList.add('commentary__new_level');
+                    wrapper.appendChild(nextLevelWrapper);
+                }
+                nextLevelWrapper.appendChild(child.root);
+            }
 
             const addedCommentaries: Commentary[] = [];
             const commentariesToCommentaries: Commentary[] = [];
@@ -1238,16 +1248,19 @@ export class Events {
                     addedCommentaries.push(renderedCommentary);
                 } else {
                     commentariesToCommentaries.push(renderedCommentary);
-
                 }
             }
 
-            while (commentariesToCommentaries.length > 0) {
+            while (commentariesToCommentaries.length > 0){
                 const buf = commentariesToCommentaries;
-                for (const comment of buf) {
-                    for (const addedCommentary of addedCommentaries) {
-                        if (addedCommentary.data!.id === comment.data!.parentId) {
+                for (const comment of buf){
+                    for (const addedCommentary of addedCommentaries){
+                        if (addedCommentary.data!.id === comment.data!.parentId){
                             addToComment(addedCommentary, comment);
+                            comment.level = addedCommentary.level + 1;
+                            if (comment.level > 12) {
+                                comment.level = 4;
+                            }
                             addedCommentaries.push(comment);
                             const index = commentariesToCommentaries.indexOf(comment);
                             if (index > -1) {
