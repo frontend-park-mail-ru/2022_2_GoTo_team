@@ -10,7 +10,7 @@ import {
     UserRegistrationData
 } from "../common/types";
 
-import {CommentaryParent, ResponseErrors} from "../common/consts.js"
+import {categoryCoverFolder, CommentaryParent, ResponseErrors} from "../common/consts.js"
 
 const config = {
     hrefs: {
@@ -71,6 +71,7 @@ export class Requests {
                             username: rawArticle.publisher.username,
                         },
                         coverImgPath: rawArticle.cover_img_path,
+                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
                     }
                     articles.push(article);
                 });
@@ -258,6 +259,7 @@ export class Requests {
                             username: rawArticle.publisher.username,
                         },
                         coverImgPath: rawArticle.cover_img_path,
+                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
                     }
                     articles.push(article);
                 });
@@ -314,6 +316,7 @@ export class Requests {
                             username: rawArticle.publisher.username,
                         },
                         coverImgPath: rawArticle.cover_img_path,
+                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
                     }
                     articles.push(article);
                 });
@@ -559,6 +562,7 @@ export class Requests {
                             username: rawArticle.publisher.username,
                         },
                         coverImgPath: rawArticle.cover_img_path,
+                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
                     }
                     articles.push(article);
                 });
@@ -596,6 +600,7 @@ export class Requests {
                             username: rawArticle.publisher.username,
                         },
                         coverImgPath: rawArticle.cover_img_path,
+                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
                     }
                     articles.push(article);
                 });

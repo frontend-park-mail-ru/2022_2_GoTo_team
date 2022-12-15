@@ -67,3 +67,32 @@ export const CommentaryParent = {
     article: "article",
     commentary: "commentary",
 }
+
+//костыль т.к. на беке пока нет поля с аватарками категорий в бд.
+//TODO: Добавить в бд поле и избавиться от этого убожества
+export const categoryCoverFolder = (categoryName: string): string => {
+    switch (categoryName){
+        case 'Финансы':
+            return 'finances';
+        case 'Право':
+            return 'right';
+        case 'Соцсети':
+            return 'socMedia';
+        case 'Политика':
+            return 'politics';
+        case 'Маркетинг':
+            return 'marketing';
+        case 'Видео':
+            return 'video';
+        case 'Программирование':
+            return 'programming';
+        case 'Сервисы':
+            return 'services';
+        case 'Карьера':
+            return 'career';
+        case 'Вопросы':
+            return 'questions';
+        default:
+            return '';
+    }
+}

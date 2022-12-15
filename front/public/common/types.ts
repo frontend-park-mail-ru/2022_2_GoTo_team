@@ -19,6 +19,7 @@ export type IncompleteArticleData = {
     comments: number,
     publisher: publisher,
     coverImgPath: string,
+    avatarImgPath: string,
 };
 
 export type FullArticleData = {
