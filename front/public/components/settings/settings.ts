@@ -9,6 +9,7 @@ export type SettingsEventBus = {
     usernameValidation: Listener,
     passwordValidation: Listener,
     repeatPasswordValidation: Listener,
+    tooBigAlert: Listener,
 }
 
 /**
@@ -77,6 +78,29 @@ export default class Settings extends BasicComponent {
             element: repeatPasswordForm,
             event: 'focusout',
             listener: eventBus.repeatPasswordValidation,
+        }
+        this._subscribeEvent(subscription);
+
+        const inputImageForm = this.root.querySelector("#avatar_upload")! as HTMLInputElement;
+        let loadedFile: File;
+        subscription = {
+            element: inputImageForm,
+            event: 'change',
+            listener: (e) => {
+                const image = this.root.querySelector('.settings__avatar_row_avatar__image')!;
+                console.log(inputImageForm.files![0].size);
+                if(inputImageForm.files![0].size > 4 * 1024 * 1024){
+                    eventBus.tooBigAlert();
+                    let dataTransfer = new DataTransfer();
+                    if (loadedFile !== undefined){
+                        dataTransfer.items.add(loadedFile);
+                    }
+                    inputImageForm.files = dataTransfer.files;
+                    return;
+                }
+                image.setAttribute('src', URL.createObjectURL(inputImageForm.files![0]));
+                loadedFile = inputImageForm.files![0];
+            },
         }
         this._subscribeEvent(subscription);
     }

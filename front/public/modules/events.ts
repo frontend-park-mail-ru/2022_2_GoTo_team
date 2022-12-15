@@ -1471,4 +1471,11 @@ export class Events {
         body.classList.add("disabled");
         body.appendChild(sharingBox.root);
     }
+
+    /**
+     * Сообщает, что аватарка слишком тяжёлая
+     */
+    static tooBigProfilePicture() {
+        Events.openAlertMessage('Размер аватарки не должен превышать 4Мб');
+    }
 }

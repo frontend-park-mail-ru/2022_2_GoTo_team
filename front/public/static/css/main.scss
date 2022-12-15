@@ -633,6 +633,10 @@ div.log-button-container {
 .settings__avatar_row_avatar {
   width: 125px;
   height: 125px;
+  &__image{
+    width: 125px;
+    height: 125px;
+  }
 }
 
 .settings__avatar_row_input {

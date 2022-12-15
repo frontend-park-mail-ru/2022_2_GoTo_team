@@ -65,6 +65,7 @@ export default class SettingsPage extends Page {
             repeatPasswordValidation: Events.passwordRepeatValidateListenerSettings,
             usernameValidation: Events.usernameValidateListenerSettings,
             saveProfile: Events.saveProfileListener,
+            tooBigAlert: Events.tooBigProfilePicture,
         }
         this.view.children.get('form')!.subscribe(settingsEventBus);
     }
