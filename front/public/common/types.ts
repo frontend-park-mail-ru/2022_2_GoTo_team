@@ -127,3 +127,8 @@ export type LikeData = {
 export type SharingData = {
     url: string,
 }
+
+export type ImgPostData = {
+    url: string,
+    body: any,
+}

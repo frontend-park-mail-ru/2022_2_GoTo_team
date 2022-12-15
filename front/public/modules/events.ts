@@ -745,6 +745,12 @@ export class Events {
             }
         })
 
+        const image = document.getElementById('avatar_upload')! as HTMLInputElement;
+        console.log(image.files);
+        if (image.files!.length > 0){
+            Requests.sendProfilePicture(image.files![0]);
+        }
+
     }
 
     /**

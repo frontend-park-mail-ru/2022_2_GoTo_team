@@ -1,7 +1,7 @@
 import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
-    CategoryData, CommentaryData, FullArticleData,
+    CategoryData, CommentaryData, FullArticleData, ImgPostData,
     IncompleteArticleData, LikeData,
     RequestAnswer, SearchData, UserData,
     UserHeaderData,
@@ -41,6 +41,7 @@ const config = {
         subscribeCategory: '/category/subscribe',
         unsubscribeUser: '/user/unsubscribe',
         unsubscribeCategory: '/category/unsubscribe',
+        sendProfilePicture: '/file/upload/profile/photo'
     }
 }
 
@@ -748,6 +749,20 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Отправляет аватарку пользователя
+     */
+    static sendProfilePicture(image: File): Promise<boolean> {
+        let params: ImgPostData = {
+            url: config.hrefs.sendProfilePicture,
+            body: image,
+        }
+
+        return ajax.postFile(params).then((response) => {
             return response!.status == 200;
         });
     }
