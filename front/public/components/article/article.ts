@@ -1,6 +1,7 @@
 import ArticleView from "./articleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import {IncompleteArticleData, Subscription} from "../../common/types";
+import {APIStrings} from "../../common/consts";
 
 export type ArticleComponentEventBus = {
     goToCategoryFeed: (category: string) => void,
@@ -8,6 +9,7 @@ export type ArticleComponentEventBus = {
     openArticle: (id: number, comments: boolean) => void,
     openTagPage: (tag: string) => void,
     editArticle: (id: number) => void,
+    shareListener: (url: string) => void,
 }
 
 /**
@@ -123,5 +125,15 @@ export default class Article extends BasicComponent {
             }
             this._subscribeEvent(subscription);
         });
+
+        const shareButton: HTMLElement = this.root.querySelector('.article__share_button')!;
+        subscription = {
+            element: shareButton,
+            event: 'click',
+            listener: () => {
+                eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
+            },
+        }
+        this._subscribeEvent(subscription);
     }
 };

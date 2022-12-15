@@ -66,6 +66,7 @@ export default class SearchPage extends Page {
                     openArticle: URIChanger.articlePage,
                     openTagPage: URIChanger.searchByTagPage,
                     editArticle: Events.editArticleListener,
+                    shareListener: Events.openShareBox,
                 }
 
                 let foundNumString: string;

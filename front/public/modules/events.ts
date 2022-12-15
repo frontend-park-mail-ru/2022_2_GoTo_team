@@ -26,6 +26,7 @@ import AlertMessage, {AlertMessageEventBus} from "../components/alertMessage/ale
 import {ConfirmMessageData} from "../components/confirmMessage/confirmMessageView";
 import ConfirmMessage, {ConfirmMessageEventBus} from "../components/confirmMessage/confirmMessage";
 import SearchHeader from "../components/searchHeader/searchHeader";
+import SharingBox, {SharingBoxEventBus} from "../components/sharingBox/sharingBox";
 
 
 export class Events {
@@ -1431,5 +1432,37 @@ export class Events {
             request: form.value.trim().length === 0 ? undefined : form.value.trim(),
         };
         URIChanger.searchPage(data);
+    }
+
+    /**
+     * Закрывает окно шеринга
+     */
+    static closeShareBox() {
+        const body = document.querySelector("body")!;
+        body.classList.remove("disabled");
+        const shareBox = body.querySelector(".share_alert")!;
+        body.removeChild(shareBox);
+    }
+
+    /**
+     * Открывает окно шеринга
+     */
+    static openShareBox(url: string) {
+        const body = document.querySelector("body")!;
+
+        const eventBus: SharingBoxEventBus = {
+            close: Events.closeShareBox,
+        }
+
+        const data: ShareData = {
+            url: url,
+        }
+
+        const sharingBox = new SharingBox();
+        sharingBox.render(data);
+        sharingBox.subscribe(eventBus);
+
+        body.classList.add("disabled");
+        body.appendChild(sharingBox.root);
     }
 }

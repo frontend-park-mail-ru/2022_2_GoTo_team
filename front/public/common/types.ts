@@ -123,3 +123,7 @@ export type LikeData = {
     id: number,
     sign: number,
 }
+
+export type SharingData = {
+    url: string,
+}

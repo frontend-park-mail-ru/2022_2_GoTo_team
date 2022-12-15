@@ -50,6 +50,7 @@ export default class UserFeed extends Page {
                 openArticle: URIChanger.articlePage,
                 openTagPage: URIChanger.searchByTagPage,
                 editArticle: Events.editArticleListener,
+                shareListener: Events.openShareBox,
             }
 
             if (articles && Array.isArray(articles)) {

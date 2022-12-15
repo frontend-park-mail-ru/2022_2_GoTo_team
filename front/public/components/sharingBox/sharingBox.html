@@ -1,0 +1,21 @@
+<div class="box share_alert">
+    <div class="share_alert__content horizontal_center_div">Поделиться</div>
+    <div class="row share_alert__shares_variants">
+        <a href="http://vk.com/share.php?url={{url}}" target="_blank"
+           class="share_alert__share_variant column">
+            <img src="./static/img/shareLogo/vk.png" class="share_alert__share_variant__logo horizontal_center_div">
+            <div class="share_alert__share_variant__title">ВКонтакте</div>
+        </a>
+        <a href="https://t.me/share/url?url={{url}}" target="_blank"
+           class="share_alert__share_variant column">
+            <img src="./static/img/shareLogo/telegram.png" class="share_alert__share_variant__logo horizontal_center_div">
+            <div class="share_alert__share_variant__title">Telegram</div>
+        </a>
+    </div>
+    <div class="row share_alert__link_row">
+        <input class="form share_alert__form vertical_center_div" value="{{url}}"
+               readonly>
+        <div class="button accent_button share_alert__copy_button">Копировать</div>
+    </div>
+    <div class="button accent_button horizontal_center_div share_alert__close_button">Закрыть</div>
+</div>
