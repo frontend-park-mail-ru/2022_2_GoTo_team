@@ -284,6 +284,7 @@ export class Requests {
                 description: result.response.description,
                 subscribers: result.response.subscribers_count,
                 subscribed: result.response.subscribed,
+                avatarImgPath: categoryCoverFolder(result.response.category_name),
             };
             return categoryData;
         });
@@ -350,6 +351,7 @@ export class Requests {
                 },
                 coverImgPath: result.response.cover_img_path,
                 content: result.response.content,
+                avatarImgPath: result.response.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(result.response.category),
             }
             return article;
         });

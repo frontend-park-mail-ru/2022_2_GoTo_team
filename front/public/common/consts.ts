@@ -71,28 +71,42 @@ export const CommentaryParent = {
 //костыль т.к. на беке пока нет поля с аватарками категорий в бд.
 //TODO: Добавить в бд поле и избавиться от этого убожества
 export const categoryCoverFolder = (categoryName: string): string => {
+    let path = '/static/img/category/';
     switch (categoryName){
         case 'Финансы':
-            return 'finances';
+            path += 'finances';
+            break;
         case 'Право':
-            return 'right';
+            path += 'right';
+            break;
         case 'Соцсети':
-            return 'socMedia';
+            path += 'socMedia';
+            break;
         case 'Политика':
-            return 'politics';
+            path += 'politics';
+            break;
         case 'Маркетинг':
-            return 'marketing';
+            path += 'marketing';
+            break;
         case 'Видео':
-            return 'video';
+            path += 'video';
+            break;
         case 'Программирование':
-            return 'programming';
+            path += 'programming';
+            break;
         case 'Сервисы':
-            return 'services';
+            path += 'services';
+            break;
         case 'Карьера':
-            return 'career';
+            path += 'career';
+            break;
         case 'Вопросы':
-            return 'questions';
+            path += 'questions';
+            break;
         default:
-            return '';
+            path += '';
+            break;
     }
+    path += '/cover.jpg';
+    return path;
 }

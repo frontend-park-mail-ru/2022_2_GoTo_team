@@ -30,6 +30,7 @@ export default class OpenedArticleView extends BasicComponentView {
             content: article.content.split('\n'),
             picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
             author: article.publisher.login === window.sessionStorage.getItem('login'),
+            avatar: article.avatarImgPath,
         });
         this.publisher = article.publisher.login;
         this.category = article.category;

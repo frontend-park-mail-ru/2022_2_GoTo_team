@@ -244,16 +244,15 @@ body {
 }
 
 .article__profile_picture {
-  border: 1px solid $light;
   border-radius: 5px;
   width: 34px;
   height: 34px;
   margin: auto 0 auto 5px;
   box-sizing: border-box;
   cursor: pointer;
-
+  outline: 1px solid lighten($main, 30%);
   &:hover {
-    border: 1px solid $main;
+    outline: 1.5px solid $main;
   }
 ;
 }
@@ -851,11 +850,10 @@ div.log-button-container {
   margin: auto 5px auto 5px;
   box-sizing: border-box;
   cursor: pointer;
-
+  outline: 1px solid lighten($main, 30%);
   &:hover {
-    border: 1px solid $main;
+    outline: 1.5px solid $main;
   }
-;
 }
 
 .commentary__author {

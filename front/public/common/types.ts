@@ -34,6 +34,7 @@ export type FullArticleData = {
     coAuthor?: publisher,
     coverImgPath: string,
     content: string,
+    avatarImgPath: string,
 }
 
 export type EditArticleData = {
@@ -47,6 +48,7 @@ export type CategoryData = {
     description: string,
     subscribers: number,
     subscribed: boolean,
+    avatarImgPath: string,
 }
 
 export type UserData = {

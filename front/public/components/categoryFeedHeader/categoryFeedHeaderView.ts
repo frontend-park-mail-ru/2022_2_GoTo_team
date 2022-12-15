@@ -18,6 +18,7 @@ export default class CategoryFeedHeaderView extends BasicComponentView {
             name: categoryData.name,
             description: categoryData.description,
             subscribers: categoryData.subscribers,
+            avatar: categoryData.avatarImgPath,
         });
 
         this.category = categoryData.name;

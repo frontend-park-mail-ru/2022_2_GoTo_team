@@ -800,6 +800,7 @@ export class Events {
             content: contentForm.textContent ? contentForm.textContent : "",
             coverImgPath: "",
             publisher: {login: "", username: ""},
+            avatarImgPath: '',
         };
 
         Events.articleCreate(articleData);
@@ -825,6 +826,7 @@ export class Events {
             content: contentForm.textContent ? contentForm.textContent : "",
             coverImgPath: "",
             publisher: {login: "", username: ""},
+            avatarImgPath: '',
         };
 
         Events.articleUpdate(articleData);
