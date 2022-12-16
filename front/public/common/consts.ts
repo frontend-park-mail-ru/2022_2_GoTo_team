@@ -23,7 +23,7 @@ export const SubscribeErrors = {
 }
 
 export const API = {
-    root: '',
+    root: /^$/,
     feedPage: /feed$/,
     settingsPage: /settings$/,
     articlePage: /article\/([0-9]+)(\?comments)?$/,

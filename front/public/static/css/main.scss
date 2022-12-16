@@ -229,12 +229,14 @@ body {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
   height: fit-content;
-  &__share_button{
+
+  &__share_button {
     margin: 0 5px;
     cursor: pointer;
     stroke: $text;
     height: fit-content;
     width: fit-content;
+
     &:hover {
       color: $main;
       fill: $main;
@@ -268,6 +270,7 @@ body {
   box-sizing: border-box;
   cursor: pointer;
   outline: 1px solid lighten($main, 30%);
+
   &:hover {
     outline: 1.5px solid $main;
   }
@@ -633,7 +636,8 @@ div.log-button-container {
 .settings__avatar_row_avatar {
   width: 125px;
   height: 125px;
-  &__image{
+
+  &__image {
     width: 125px;
     height: 125px;
   }
@@ -702,8 +706,9 @@ div.log-button-container {
   width: fit-content;
   height: fit-content;
   margin: 0;
-  box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
-  &:hover{
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  &:hover {
     border: 0;
   }
 }
@@ -872,6 +877,7 @@ div.log-button-container {
   box-sizing: border-box;
   cursor: pointer;
   outline: 1px solid lighten($main, 30%);
+
   &:hover {
     outline: 1.5px solid $main;
   }
@@ -956,10 +962,11 @@ div.log-button-container {
   margin: 0 0 0 auto;
 }
 
-.commentary__new_level{
+.commentary__new_level {
   background: $light;
   margin-left: -110px;
   border-left: $main 2px solid;
+
   &:before {
     content: " ";
     display: block;
@@ -969,6 +976,7 @@ div.log-button-container {
     border-left: 2px solid #680BC5;
     margin-left: 8px;
   }
+
   &:after {
     content: " ";
     display: block;
@@ -1182,7 +1190,7 @@ div.log-button-container {
   }
 }
 
-.share_alert{
+.share_alert {
   max-width: 30%;
   min-width: 100px;
   width: fit-content;
@@ -1204,15 +1212,15 @@ div.log-button-container {
     word-wrap: anywhere;
   }
 
-  &__link_row{
+  &__link_row {
   }
 
-  &__form{
+  &__form {
     margin: 0;
     height: fit-content;
   }
 
-  &__share_variant{
+  &__share_variant {
     width: fit-content;
     height: fit-content;
     display: flex;
@@ -1220,28 +1228,32 @@ div.log-button-container {
     border-radius: 10px;
     padding: 5px;
     gap: 7px;
-    &:hover{
+
+    &:hover {
       background: $slight-dark;
     }
-    &__logo{
+
+    &__logo {
       width: 45px;
       height: 45px;
       border-radius: 50%;
     }
-    &__title{
+
+    &__title {
       font-size: 12px;
       color: $text;
     }
   }
 
-  &__copy_button{
+  &__copy_button {
     font-size: 15px;
     width: fit-content;
     height: fit-content;
     border-radius: 15px;
     padding: 5px;
   }
-  &__close_button{
+
+  &__close_button {
     font-size: 25px;
     width: fit-content;
     height: fit-content;
@@ -1249,9 +1261,36 @@ div.log-button-container {
   }
 }
 
-.share_alert__copied{
+.share_alert__copied {
   width: fit-content;
   margin-left: auto;
   margin-top: 0;
   display: none;
+}
+
+.error_page {
+  display: grid;
+  margin-top: 60px;
+  width: 100%;
+  height: calc(100% - 60px);
+  grid-template-columns: 1fr 2fr 0.5fr;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+  }
+
+  &__message {
+    color: $main;
+    font-size: 30px;
+    height: fit-content;
+    &__line {
+      margin: 5px 0;
+    }
+  }
+
+  &__image {
+    width: 500px;
+  }
 }

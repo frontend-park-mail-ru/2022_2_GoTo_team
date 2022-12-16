@@ -30,7 +30,6 @@ router
         if (openedPage !== undefined){
             openedPage.destroy();
         }
-        console.log(comments);
         openedPage = PageLoaders.articlePage(id, comments !== undefined);
     })
     .add(API.categoryPage, (name: string) => {
@@ -74,4 +73,9 @@ router
             openedPage.destroy();
         }
         openedPage = PageLoaders.feedPage();
-    });
+    }).add('', () => {
+    if (openedPage !== undefined){
+        openedPage.destroy();
+    }
+    openedPage = PageLoaders.error404();
+});

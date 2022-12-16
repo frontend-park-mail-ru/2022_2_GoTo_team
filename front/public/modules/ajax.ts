@@ -17,7 +17,11 @@ export type requestParams = {
 export class Ajax {
     #csrf :string;
     constructor() {
-        this.#csrf = "";
+        if (window.sessionStorage.getItem('token') !== null) {
+            this.#csrf = window.sessionStorage.getItem('token')!;
+        }else{
+            this.#csrf = "";
+        }
     }
 
     /**
@@ -25,7 +29,9 @@ export class Ajax {
      */
     setCsrf(csrf:string){
         this.#csrf = csrf;
+        window.sessionStorage.setItem('token', csrf);
     }
+
     get(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.GET;

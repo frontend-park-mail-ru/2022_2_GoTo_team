@@ -9,6 +9,7 @@ import ArticleEditPage from "../pages/articleEdit/articleEditPage.js";
 import {SearchData} from "../common/types";
 import SearchPage from "../pages/search/searchPage.js";
 import Page from "../pages/_basic/page";
+import Page404 from "../pages/page404/page404";
 
 const root = document.getElementsByTagName('body')[0];
 
@@ -107,6 +108,17 @@ export class PageLoaders {
     static searchPage(searchData: SearchData): Page {
         const page = new SearchPage(root)
         page.render(searchData).then(() => {
+            page.subscribe();
+        });
+        return page;
+    }
+
+    /**
+     * Отрисовывает страницу ошибки 404
+     */
+    static error404(): Page {
+        const page = new Page404(root);
+        page.render().then(() => {
             page.subscribe();
         });
         return page;
