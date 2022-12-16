@@ -6,7 +6,7 @@ const REQUEST_TYPE = {
     POST: 'POST'
 };
 
-const csrfHeader = "CSRFHeader";
+const csrfHeader = "X-XSRF-Token";
 
 export type requestParams = {
     url: string;
@@ -15,21 +15,7 @@ export type requestParams = {
 };
 
 export class Ajax {
-    #csrf :string;
     constructor() {
-        if (window.sessionStorage.getItem('token') !== null) {
-            this.#csrf = window.sessionStorage.getItem('token')!;
-        }else{
-            this.#csrf = "";
-        }
-    }
-
-    /**
-     * Устанавливает CSRF-токен
-     */
-    setCsrf(csrf:string){
-        this.#csrf = csrf;
-        window.sessionStorage.setItem('token', csrf);
     }
 
     get(params: requestParams): Promise<void | RequestAnswer> {
@@ -70,9 +56,9 @@ export class Ajax {
             credentials: 'include',
         };
 
-        if (this.#csrf !== ''){
+        if (this.#getCsrfCookie() !== null){
             // @ts-ignore
-            fetchParams.headers[csrfHeader] = this.#csrf;
+            fetchParams.headers[csrfHeader] = this.#getCsrfCookie();
         }
 
         let status: number = 0;
@@ -112,10 +98,16 @@ export class Ajax {
             method: REQUEST_TYPE.POST,
             credentials: 'include',
             // https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
-            // headers: {
+            headers: {
             //   'Content-Type': 'multipart/form-data',
-            // },
+            },
         };
+
+        if (this.#getCsrfCookie() !== null){
+            // @ts-ignore
+            fetchParams.headers[csrfHeader] = this.#getCsrfCookie();
+        }
+
 
         let status = 0;
         return fetch(url, fetchParams)
@@ -133,5 +125,18 @@ export class Ajax {
             .catch((error) => {
                 console.warn(error);
             });
+    }
+
+    #getCsrfCookie(){
+        let cookieArr = document.cookie.split(";");
+
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if ('_csrf' === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+
+        return null;
     }
 }
