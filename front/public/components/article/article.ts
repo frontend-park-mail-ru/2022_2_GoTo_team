@@ -1,7 +1,8 @@
 import ArticleView from "./articleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import {IncompleteArticleData, Subscription} from "../../common/types";
-import {APIStrings} from "../../common/consts";
+import {APIStrings, categoryCoverFolder} from "../../common/consts";
+import {Requests} from "../../modules/requests";
 
 export type ArticleComponentEventBus = {
     goToCategoryFeed: (category: string) => void,

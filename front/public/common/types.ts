@@ -56,7 +56,7 @@ export type UserData = {
     login?: string,
     username: string,
     password?: string,
-    avatar_link?: string,
+    avatarUrl?: string,
 }
 
 export type UserHeaderData = {
@@ -66,6 +66,7 @@ export type UserHeaderData = {
     subscribers: number,
     registration_date: string,
     subscribed: boolean,
+    avatarUrl: string,
 }
 
 export type UserPlugData = {

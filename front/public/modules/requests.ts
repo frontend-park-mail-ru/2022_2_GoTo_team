@@ -41,7 +41,8 @@ const config = {
         subscribeCategory: '/category/subscribe',
         unsubscribeUser: '/user/unsubscribe',
         unsubscribeCategory: '/category/unsubscribe',
-        sendProfilePicture: '/file/upload/profile/photo'
+        sendProfilePicture: '/file/upload/profile/photo',
+        getAvatar: '/user/avatar',
     }
 }
 
@@ -56,28 +57,31 @@ export class Requests {
             url: config.hrefs.articles,
         }).then((response) => {
             const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
+            const articles: Promise<IncompleteArticleData>[] = [];
+            if (result.response.articles) {
                 result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
-                    }
-                    articles.push(article);
+                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
+                    articles.push(avatar.then((avatar): IncompleteArticleData => {
+                        const article: IncompleteArticleData = {
+                            id: rawArticle.id,
+                            title: rawArticle.title,
+                            description: rawArticle.description,
+                            tags: rawArticle.tags,
+                            category: rawArticle.category,
+                            rating: rawArticle.rating,
+                            comments: rawArticle.comments,
+                            publisher: {
+                                login: rawArticle.publisher.login,
+                                username: rawArticle.publisher.username,
+                            },
+                            coverImgPath: rawArticle.cover_img_path,
+                            avatarImgPath: avatar,
+                        }
+                        return article;
+                    }));
                 });
             }
-            return articles;
+            return Promise.all(articles);
         });
     }
 
@@ -170,15 +174,23 @@ export class Requests {
      * Получение информации пользователя по куке
      */
     static getSessionInfo(): Promise<RequestAnswer> {
-        if (window.sessionStorage.getItem('login') !== null ){
+        if (window.sessionStorage.getItem('login') !== null) {
             const answer: RequestAnswer = {
                 response: {
-                    username: window.sessionStorage.getItem('username'),
-                    login: window.sessionStorage.getItem('login'),
-                    avatar: window.sessionStorage.getItem('avatar'),
+                    username: window.sessionStorage.getItem('username') === '' ? window.sessionStorage.getItem('login') : window.sessionStorage.getItem('username'),
+                    avatarUrl: window.sessionStorage.getItem('avatar'),
                 },
                 status: 200,
             };
+            ajax.get({
+                url: config.hrefs.sessionInfo,
+            }).then((response) => {
+                if (response!.status === 200) {
+                    window.sessionStorage.setItem('username', response!.response.username);
+                    window.sessionStorage.setItem('login', response!.response.login);
+                    window.sessionStorage.setItem('avatar', response!.response.avatar_img_path);
+                }
+            });
             return Promise.resolve(answer);
         }
         return ajax.get({
@@ -221,15 +233,18 @@ export class Requests {
             }
         }).then((response) => {
             const result = response!;
-            const userData: UserHeaderData = {
-                username: result.response.username,
-                login: login,
-                rating: result.response.rating,
-                subscribers: result.response.subscribers_count,
-                registration_date: result.response.registration_date,
-                subscribed: result.response.subscribed,
-            };
-            return userData;
+            return Requests.getProfilePicture(login).then((avatar) => {
+                const userData: UserHeaderData = {
+                    username: result.response.username,
+                    login: login,
+                    rating: result.response.rating,
+                    subscribers: result.response.subscribers_count,
+                    registration_date: result.response.registration_date,
+                    subscribed: result.response.subscribed,
+                    avatarUrl: avatar,
+                };
+                return userData;
+            })
         });
     }
 
@@ -244,28 +259,31 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
+            const articles: Promise<IncompleteArticleData>[] = [];
+            if (result.response.articles) {
                 result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
-                    }
-                    articles.push(article);
+                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
+                    articles.push(avatar.then((avatar): IncompleteArticleData => {
+                        const article: IncompleteArticleData = {
+                            id: rawArticle.id,
+                            title: rawArticle.title,
+                            description: rawArticle.description,
+                            tags: rawArticle.tags,
+                            category: rawArticle.category,
+                            rating: rawArticle.rating,
+                            comments: rawArticle.comments,
+                            publisher: {
+                                login: rawArticle.publisher.login,
+                                username: rawArticle.publisher.username,
+                            },
+                            coverImgPath: rawArticle.cover_img_path,
+                            avatarImgPath: avatar,
+                        }
+                        return article;
+                    }));
                 });
             }
-            return articles;
+            return Promise.all(articles);
         });
     }
 
@@ -302,28 +320,31 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
+            const articles: Promise<IncompleteArticleData>[] = [];
+            if (result.response.articles) {
                 result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
-                    }
-                    articles.push(article);
+                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
+                    articles.push(avatar.then((avatar): IncompleteArticleData => {
+                        const article: IncompleteArticleData = {
+                            id: rawArticle.id,
+                            title: rawArticle.title,
+                            description: rawArticle.description,
+                            tags: rawArticle.tags,
+                            category: rawArticle.category,
+                            rating: rawArticle.rating,
+                            comments: rawArticle.comments,
+                            publisher: {
+                                login: rawArticle.publisher.login,
+                                username: rawArticle.publisher.username,
+                            },
+                            coverImgPath: rawArticle.cover_img_path,
+                            avatarImgPath: avatar,
+                        }
+                        return article;
+                    }));
                 });
             }
-            return articles;
+            return Promise.all(articles);
         });
     }
 
@@ -366,12 +387,13 @@ export class Requests {
             url: config.hrefs.profile,
         }).then((response) => {
             const result = response!;
-            return {
+            const data: UserData = {
                 email: result.response.email,
                 login: result.response.login,
                 username: result.response.username,
-                avatarLink: result.response.avatar_img_path,
-            };
+                avatarUrl: result.response.avatar_img_path,
+            }
+            return data;
         });
     }
 
@@ -386,7 +408,7 @@ export class Requests {
                 login: userData.login,
                 username: userData.username,
                 password: userData.password ? userData.password : "",
-                avatarImgPath: userData.avatar_link ? userData.avatar_link : "",
+                avatar_img_path: userData.avatarUrl ? userData.avatarUrl : "",
             },
         }
 
@@ -549,68 +571,34 @@ export class Requests {
 
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
+            const articles: Promise<IncompleteArticleData>[] = [];
+            if (result.response.articles) {
                 result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
-                    }
-                    articles.push(article);
+                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
+                    articles.push(avatar.then((avatar): IncompleteArticleData => {
+                        const article: IncompleteArticleData = {
+                            id: rawArticle.id,
+                            title: rawArticle.title,
+                            description: rawArticle.description,
+                            tags: rawArticle.tags,
+                            category: rawArticle.category,
+                            rating: rawArticle.rating,
+                            comments: rawArticle.comments,
+                            publisher: {
+                                login: rawArticle.publisher.login,
+                                username: rawArticle.publisher.username,
+                            },
+                            coverImgPath: rawArticle.cover_img_path,
+                            avatarImgPath: avatar,
+                        }
+                        return article;
+                    }));
                 });
             }
-            return articles;
+            return Promise.all(articles);
         });
     }
 
-    /**
-     * Запрос поиска
-     */
-    static searchByTag(tag: string): Promise<IncompleteArticleData[]> {
-        let params = {
-            url: config.hrefs.searchTagPage,
-            data: {
-                tag: tag,
-            },
-        }
-
-        return ajax.get(params).then((response) => {
-            const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                        avatarImgPath: rawArticle.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(rawArticle.category),
-                    }
-                    articles.push(article);
-                });
-            }
-            return articles;
-        });
-    }
 
     /**
      * Запрос комментариев статьи
@@ -636,12 +624,12 @@ export class Requests {
                 },
                 rating: number,
                 content: string,
-           }) => {
+            }) => {
                 const commentary: CommentaryData = {
                     article: rawCommentary.article_id,
                     id: rawCommentary.comment_id,
-                    parentId: rawCommentary.comment_for_comment_id === ''? +rawCommentary.article_id : +rawCommentary.comment_for_comment_id,
-                    parentType: rawCommentary.comment_for_comment_id === ''? CommentaryParent.article : CommentaryParent.commentary,
+                    parentId: rawCommentary.comment_for_comment_id === '' ? +rawCommentary.article_id : +rawCommentary.comment_for_comment_id,
+                    parentType: rawCommentary.comment_for_comment_id === '' ? CommentaryParent.article : CommentaryParent.commentary,
                     publisher: {
                         username: rawCommentary.publisher.username,
                         login: rawCommentary.publisher.login,
@@ -764,6 +752,22 @@ export class Requests {
 
         return ajax.postFile(params).then((response) => {
             return response!.status == 200;
+        });
+    }
+
+    /**
+     * Получение пути к аватару по логину
+     */
+    static getProfilePicture(login: string): Promise<string> {
+        let params = {
+            url: config.hrefs.getAvatar,
+            data: {
+                login: login,
+            },
+        }
+
+        return ajax.get(params).then((response) => {
+            return response!.response.avatar_img_path;
         });
     }
 }

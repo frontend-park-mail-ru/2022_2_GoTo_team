@@ -480,7 +480,7 @@ export class Events {
             if (response.status === 200) {
                 const userData: UserPlugData = {
                     username: response.response.username === "" ? response.response.login : response.response.username,
-                    avatarUrl: "",
+                    avatarUrl: response.response.avatarUrl,
                 }
                 userPlug.render(userData);
             } else {
@@ -746,7 +746,6 @@ export class Events {
         })
 
         const image = document.getElementById('avatar_upload')! as HTMLInputElement;
-        console.log(image.files);
         if (image.files!.length > 0){
             Requests.sendProfilePicture(image.files![0]);
         }
