@@ -233,6 +233,9 @@ export class Requests {
             }
         }).then((response) => {
             const result = response!;
+            if (result.status !== 200) {
+                throw result.status;
+            }
             return Requests.getProfilePicture(login).then((avatar) => {
                 const userData: UserHeaderData = {
                     username: result.response.username,

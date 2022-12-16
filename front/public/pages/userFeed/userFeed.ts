@@ -6,6 +6,7 @@ import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
+import {UserHeaderData} from "../../common/types";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -27,24 +28,22 @@ export default class UserFeed extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(login: string) {
+    async render(userData: UserHeaderData) {
         Events.scrollUp();
         await this.view.render();
 
-        Requests.userHeaderInfo(login).then((userData) => {
-            const eventBus: UserFeedHeaderEventBus = {
-                subscribe: Events.userSubscribeListener,
-                unsubscribe: Events.userUnsubscribeListener,
-            };
+        const eventBus: UserFeedHeaderEventBus = {
+            subscribe: Events.userSubscribeListener,
+            unsubscribe: Events.userUnsubscribeListener,
+        };
 
-            const header = new UserFeedHeader();
-            header.render(userData);
-            header.subscribe(eventBus);
-            this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
-        });
+        const header = new UserFeedHeader();
+        header.render(userData);
+        header.subscribe(eventBus);
+        this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
 
-        Requests.getUserArticles(login).then((articles) => {
-            const articleEventBus : ArticleComponentEventBus = {
+        Requests.getUserArticles(userData.login).then((articles) => {
+            const articleEventBus: ArticleComponentEventBus = {
                 goToAuthorFeed: Events.goToAuthorFeed,
                 goToCategoryFeed: Events.goToCategoryFeed,
                 openArticle: URIChanger.articlePage,

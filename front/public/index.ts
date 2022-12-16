@@ -57,7 +57,13 @@ router
         if (openedPage !== undefined) {
             openedPage.destroy();
         }
-        openedPage = PageLoaders.userFeedPage(login);
+        Requests.userHeaderInfo(login).then((userData) => {
+            openedPage = PageLoaders.userFeedPage(userData);
+        }).catch((error) => {
+            if (error === 404){
+                openedPage = PageLoaders.error404();
+            }
+        });
     })
     .add(API.newArticlePage, () => {
         if (openedPage !== undefined) {
