@@ -35,7 +35,7 @@ router
         Requests.getArticle(id).then((article) => {
             openedPage = PageLoaders.articlePage(article, comments !== undefined);
         }).catch((error) => {
-            if (error === 404){
+            if (error === 404) {
                 openedPage = PageLoaders.error404();
             }
         });
@@ -48,7 +48,7 @@ router
         Requests.categoryHeaderInfo(decodeURIComponent(name)).then((categoryData) => {
             openedPage = PageLoaders.categoryFeedPage(categoryData);
         }).catch((error) => {
-            if (error === 404){
+            if (error === 404) {
                 openedPage = PageLoaders.error404();
             }
         });
@@ -60,7 +60,7 @@ router
         Requests.userHeaderInfo(login).then((userData) => {
             openedPage = PageLoaders.userFeedPage(userData);
         }).catch((error) => {
-            if (error === 404){
+            if (error === 404) {
                 openedPage = PageLoaders.error404();
             }
         });
@@ -75,7 +75,13 @@ router
         if (openedPage !== undefined) {
             openedPage.destroy();
         }
-        openedPage = PageLoaders.editArticle(id);
+        Requests.getArticle(id).then((article) => {
+            openedPage = PageLoaders.editArticle(article);
+        }).catch((error) => {
+            if (error === 404) {
+                openedPage = PageLoaders.error404();
+            }
+        });
     })
     .add(API.searchPage, (...params: string[]) => {
         if (openedPage !== undefined) {
@@ -94,9 +100,10 @@ router
             openedPage.destroy();
         }
         openedPage = PageLoaders.feedPage();
-    }).add('', () => {
-    if (openedPage !== undefined) {
-        openedPage.destroy();
-    }
-    openedPage = PageLoaders.error404();
-});
+    })
+    .add('', () => {
+        if (openedPage !== undefined) {
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.error404();
+    });

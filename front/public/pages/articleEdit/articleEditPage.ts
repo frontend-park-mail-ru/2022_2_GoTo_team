@@ -5,6 +5,7 @@ import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {ArticleEditEventBus} from "../../components/articleEdit/articleEdit.js";
 import {URIChanger} from "../../modules/uriChanger.js";
+import {FullArticleData} from "../../common/types";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -24,10 +25,9 @@ export default class ArticleEditPage extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(articleId?: number) {
+    async render(article?: FullArticleData) {
         Events.scrollUp();
-        if (typeof articleId !== 'undefined'){
-            const article = await Requests.getArticle(articleId);
+        if (article !== undefined){
             await this.view.render(article);
         }else{
             await this.view.render();

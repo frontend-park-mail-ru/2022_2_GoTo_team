@@ -94,9 +94,9 @@ export class PageLoaders {
     /**
      * Отрисовывает редактирования/создания статьи
      */
-    static editArticle(articleId?: number): Page {
+    static editArticle(article?: FullArticleData): Page {
         const page = new ArticleEditPage(root)
-        page.render(articleId).then(() => {
+        page.render(article).then(() => {
             page.subscribe();
         });
         return page;
