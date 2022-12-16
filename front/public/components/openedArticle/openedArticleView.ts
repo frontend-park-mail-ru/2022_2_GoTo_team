@@ -3,9 +3,9 @@ import "../tmpl/openedArticle.tmpl.js";
 import {FullArticleData} from "../../common/types";
 
 const covers = [
-    "static/img/article_cover_1.jpg",
-    "static/img/article_cover_2.jpg",
-    "static/img/article_cover_3.jpg",
+    "/static/img/article_cover_1.jpg",
+    "/static/img/article_cover_2.jpg",
+    "/static/img/article_cover_3.jpg",
 ]
 
 /**

@@ -3,9 +3,9 @@ import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import {IncompleteArticleData} from "../../common/types";
 
 const covers = [
-    "static/img/article_cover_1.jpg",
-    "static/img/article_cover_2.jpg",
-    "static/img/article_cover_3.jpg",
+    "/static/img/article_cover_1.jpg",
+    "/static/img/article_cover_2.jpg",
+    "/static/img/article_cover_3.jpg",
 ]
 
 /**
@@ -20,6 +20,7 @@ export default class ArticleView extends BasicComponentView {
         const wrapper = document.createElement('div');
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['article.html']({
+            baseUrl: this.baseUrl,
             title: article.title,
             description: article.description,
             tags: article.tags,

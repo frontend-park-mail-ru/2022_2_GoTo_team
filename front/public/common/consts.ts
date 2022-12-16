@@ -1,5 +1,13 @@
 import {SearchData} from "./types";
 
+export const BaseUrl = 'http://127.0.0.1';
+//export const BaseUrl = 'http://95.163.213.142';
+
+export const BackendUrl = BaseUrl + ':8080';
+export const FrontUrl = BaseUrl + ':8081';
+
+export const APIurl = BackendUrl + '/api/v1';
+
 export const ResponseErrors = {
     emailInvalid: "invalid email",
     loginInvalid: "invalid login",

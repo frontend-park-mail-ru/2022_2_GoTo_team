@@ -7,6 +7,7 @@ import {SearchData} from "./common/types";
 import Page from "./pages/_basic/page";
 
 const router = new Router({
+    mode: 'history',
     root: ''
 });
 
@@ -29,6 +30,7 @@ router
         if (openedPage !== undefined){
             openedPage.destroy();
         }
+        console.log(comments);
         openedPage = PageLoaders.articlePage(id, comments !== undefined);
     })
     .add(API.categoryPage, (name: string) => {

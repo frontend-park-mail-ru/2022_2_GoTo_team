@@ -1,5 +1,4 @@
-import {Events} from "./events.js";
-import {APIStrings} from "../common/consts.js";
+import {APIStrings, FrontUrl} from "../common/consts.js";
 import {SearchData} from "../common/types";
 
 export class URIChanger {
@@ -7,42 +6,42 @@ export class URIChanger {
      * Перемещает на страницу популярных страниц
      */
     static rootPage() {
-        Events.setLocation(APIStrings.root());
+        window.history.pushState(null, '', FrontUrl + APIStrings.root());
     }
 
     /**
      * Перемещает на страницу популярных страниц
      */
     static feedPage() {
-        Events.setLocation(APIStrings.feedPage());
+        window.history.pushState(null, '', FrontUrl + APIStrings.feedPage());
     }
 
     /**
      * Перемещает на страницу автора
      */
     static userFeedPage(login: string) {
-        Events.setLocation(APIStrings.authorPage(login));
+        window.history.pushState(null, '', FrontUrl + APIStrings.authorPage(login));
     }
 
     /**
      * Перемещает на страницу автора
      */
     static categoryFeedPage(category: string) {
-        Events.setLocation(APIStrings.categoryPage(category));
+        window.history.pushState(null, '', FrontUrl + APIStrings.categoryPage(category));
     }
 
     /**
      * Перемещает на страницу просмотра статьи
      */
     static articlePage(articleId: number, comments: boolean) {
-        Events.setLocation(APIStrings.articlePage(articleId, comments));
+        window.history.pushState(null, '', FrontUrl + APIStrings.articlePage(articleId, comments));
     }
 
     /**
      * Перемещает на страницу профиля
      */
     static settingsPage() {
-        Events.setLocation(APIStrings.settingsPage());
+        window.history.pushState(null, '', FrontUrl + APIStrings.settingsPage());
     }
 
     /**
@@ -50,9 +49,9 @@ export class URIChanger {
      */
     static editArticle(articleId?: number) {
         if (articleId === undefined) {
-            Events.setLocation(APIStrings.newArticlePage());
+            window.history.pushState(null, '', FrontUrl + APIStrings.newArticlePage());
         } else {
-            Events.setLocation(APIStrings.articleEditPage(articleId));
+            window.history.pushState(null, '', FrontUrl + APIStrings.articleEditPage(articleId));
         }
     }
 
@@ -60,8 +59,7 @@ export class URIChanger {
      * Перемещает на поиск
      */
     static searchPage(data: SearchData) {
-        Events.setLocation(
-            APIStrings.searchPage(data));
+        window.history.pushState(null, '', FrontUrl + APIStrings.searchPage(data));
     }
 
     /**
@@ -71,7 +69,6 @@ export class URIChanger {
         const data: SearchData = {
             tags: [tag],
         }
-        Events.setLocation(
-            APIStrings.searchPage(data));
+        window.history.pushState(null, '', FrontUrl + APIStrings.searchPage(data));
     }
 }

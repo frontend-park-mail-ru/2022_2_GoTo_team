@@ -2,9 +2,12 @@ export default class Router {
     routes: { path: RegExp | string, handler: any }[] = [];
     root: string = '/';
     #current: string;
+    mode: 'history' | 'hash';
 
     constructor(options: any) {
         if (options.root) this.root = options.root;
+        this.mode = 'history';
+        if (options.mode) this.mode = options.mode;
         this.#current = '/';
         this.listen();
     }
@@ -36,8 +39,14 @@ export default class Router {
 
     getFragment = () => {
         let fragment = '';
-        const match = window.location.href.match(/#(.*)$/);
-        fragment = match ? match[1] : '';
+        if (this.mode === 'history') {
+            fragment = this.clearSlashes(decodeURI(window.location.pathname + window.location.search));
+            //fragment = fragment.replace(/\?(.*)$/, '');
+            fragment = this.root !== '/' ? fragment.replace(this.root, '') : fragment;
+        } else {
+            const match = window.location.href.match(/#(.*)$/);
+            fragment = match ? match[1] : '';
+        }
         return this.clearSlashes(fragment);
     };
 
