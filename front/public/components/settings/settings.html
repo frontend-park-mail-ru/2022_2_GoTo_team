@@ -17,11 +17,12 @@
             <input autocomplete="new-password" id="settings__repeat_password" type="password" class="form"
                    placeholder="Повторите новый пароль">
             <div class="settings__avatar_row">
-                <label for="avatar_upload">
+                <label for="avatar_upload" class="row">
                     <img class="box settings__avatar_row_avatar__image button" src="{{avatar_link}}">
                     <input type="file" class="settings__avatar_row_input" id="avatar_upload" accept="image/*">
+                    <span id="change_avatar"
+                          class="link vertical_center_div settings__avatar_link">Сменить аватар</span>
                 </label>
-                <div id="change_avatar" class="link vertical_center_div settings__avatar_link">Сменить аватар</div>
             </div>
         </div>
         <input class="accent_button button" type="button" value="Сохранить" id="save">
