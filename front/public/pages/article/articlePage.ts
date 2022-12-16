@@ -32,6 +32,7 @@ export default class ArticlePage extends Page {
 
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
+            goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
             //goToSubscribeFeed: URIChanger.feedPage,

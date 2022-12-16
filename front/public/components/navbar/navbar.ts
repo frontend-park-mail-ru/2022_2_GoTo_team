@@ -3,6 +3,7 @@ import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Listener, Subscription} from "../../common/types";
 
 export type NavbarEventBus = {
+    goToRoot: Listener,
     goToHotFeed: Listener,
     //goToNewFeed: Listener,
     //goToSubscribeFeed: Listener,
@@ -31,7 +32,7 @@ export default class Navbar extends BasicComponent {
     async subscribe(eventBus: NavbarEventBus) {
         let subscription: Subscription;
         const logo = this.root.querySelector('.navbar__logo')!;
-        logo.addEventListener('click', eventBus.goToHotFeed);
+        logo.addEventListener('click', eventBus.goToRoot);
 
         const popular = this.root.querySelectorAll('.navbar__button')[0];
         subscription = {

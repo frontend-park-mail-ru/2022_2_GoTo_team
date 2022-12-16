@@ -45,7 +45,13 @@ router
         if (openedPage !== undefined) {
             openedPage.destroy();
         }
-        openedPage = PageLoaders.categoryFeedPage(name);
+        Requests.categoryHeaderInfo(decodeURIComponent(name)).then((categoryData) => {
+            openedPage = PageLoaders.categoryFeedPage(categoryData);
+        }).catch((error) => {
+            if (error === 404){
+                openedPage = PageLoaders.error404();
+            }
+        });
     })
     .add(API.authorPage, (login: string) => {
         if (openedPage !== undefined) {

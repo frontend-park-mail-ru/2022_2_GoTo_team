@@ -100,6 +100,7 @@ export default class SearchPage extends Page {
      */
     async subscribe(): Promise<void> {
         const navbarEventBus: NavbarEventBus = {
+            goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
             //goToSubscribeFeed: URIChanger.feedPage,

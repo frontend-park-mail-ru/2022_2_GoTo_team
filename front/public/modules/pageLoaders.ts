@@ -6,7 +6,7 @@ import CategoryFeed from "../pages/categoryFeed/categoryFeed.js";
 import ArticlePage from "../pages/article/articlePage.js";
 import SettingsPage from "../pages/settingsPage/settingsPage.js";
 import ArticleEditPage from "../pages/articleEdit/articleEditPage.js";
-import {FullArticleData, SearchData} from "../common/types";
+import {CategoryData, FullArticleData, SearchData} from "../common/types";
 import SearchPage from "../pages/search/searchPage.js";
 import Page from "../pages/_basic/page";
 import Page404 from "../pages/page404/page404";
@@ -61,9 +61,9 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу автора
      */
-    static categoryFeedPage(category: string): Page {
+    static categoryFeedPage(categoryData: CategoryData): Page {
         const page = new CategoryFeed(root);
-        page.render(category).then(() => {
+        page.render(categoryData).then(() => {
             page.subscribe();
         });
         return page;

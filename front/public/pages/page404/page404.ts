@@ -35,7 +35,8 @@ export default class Page404 extends Page {
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
-            goToHotFeed: PageLoaders.feedPage,
+            goToRoot: URIChanger.rootPage,
+            goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: PageLoaders.feedPage,
             //goToSubscribeFeed: PageLoaders.feedPage,
             //goToNewArticle: PageLoaders.editArticle,

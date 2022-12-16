@@ -8,6 +8,7 @@ import CategoryFeedHeader, {
 } from "../../components/categoryFeedHeader/categoryFeedHeader.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
+import {CategoryData} from "../../common/types";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -28,25 +29,21 @@ export default class CategoryFeed extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(category: string): Promise<void> {
+    async render(categoryData: CategoryData): Promise<void> {
         Events.scrollUp();
         await this.view.render();
 
-        category = decodeURIComponent(category);
+        const eventBus: CategoryFeedHeaderEventBus = {
+            subscribe: Events.categorySubscribeListener,
+            unsubscribe: Events.categoryUnsubscribeListener,
+        };
 
-        Requests.categoryHeaderInfo(category).then((categoryData) => {
-            const eventBus: CategoryFeedHeaderEventBus = {
-                subscribe: Events.categorySubscribeListener,
-                unsubscribe: Events.categoryUnsubscribeListener,
-            };
+        const header = new CategoryFeedHeader();
+        header.render(categoryData);
+        header.subscribe(eventBus);
+        this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
 
-            const header = new CategoryFeedHeader();
-            header.render(categoryData);
-            header.subscribe(eventBus);
-            this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
-        });
-
-        Requests.getCategoryArticles(category).then((articles) => {
+        Requests.getCategoryArticles(categoryData.name).then((articles) => {
             const articleEventBus: ArticleComponentEventBus = {
                 goToAuthorFeed: Events.goToAuthorFeed,
                 goToCategoryFeed: Events.goToCategoryFeed,
@@ -75,6 +72,7 @@ export default class CategoryFeed extends Page {
      */
     async subscribe(): Promise<void> {
         const navbarEventBus: NavbarEventBus = {
+            goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
             //goToSubscribeFeed: URIChanger.feedPage,

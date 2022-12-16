@@ -298,6 +298,9 @@ export class Requests {
             }
         }).then((response) => {
             const result = response!;
+            if (result.status !== 200) {
+                throw result.status;
+            }
             const categoryData: CategoryData = {
                 name: result.response.category_name,
                 description: result.response.description,
