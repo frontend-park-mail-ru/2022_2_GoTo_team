@@ -126,14 +126,15 @@ export default class Article extends BasicComponent {
             this._subscribeEvent(subscription);
         });
 
-        const shareButton: HTMLElement = this.root.querySelector('.article__share_button')!;
-        subscription = {
-            element: shareButton,
-            event: 'click',
-            listener: () => {
-                eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
-            },
-        }
-        this._subscribeEvent(subscription);
+        this.root.querySelectorAll('.article__share_button').forEach((shareButton) => {
+            subscription = {
+                element: shareButton,
+                event: 'click',
+                listener: () => {
+                    eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
+                },
+            }
+            this._subscribeEvent(subscription);
+        });
     }
 };

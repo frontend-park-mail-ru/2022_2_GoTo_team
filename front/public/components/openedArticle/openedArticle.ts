@@ -1,6 +1,7 @@
 import OpenedArticleView from "./openedArticleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import {FullArticleData, Subscription} from "../../common/types";
+import {APIStrings} from "../../common/consts";
 
 export type OpenedArticleEventBus = {
     goToCategoryFeed: (category: string) => void,
@@ -8,6 +9,7 @@ export type OpenedArticleEventBus = {
     openTagPage: (tag: string) => void,
     scrollToComments: () => void,
     editArticle: (id: number) => void,
+    shareListener: (url: string) => void,
 }
 
 /**
@@ -108,6 +110,17 @@ export default class OpenedArticle extends BasicComponent {
                 event: 'click',
                 listener: () => {
                     eventBus.editArticle(this.view.id!);
+                },
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.article__share_button').forEach((shareButton) => {
+            subscription = {
+                element: shareButton,
+                event: 'click',
+                listener: () => {
+                    eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
                 },
             }
             this._subscribeEvent(subscription);

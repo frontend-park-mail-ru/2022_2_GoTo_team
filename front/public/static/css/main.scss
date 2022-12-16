@@ -1219,6 +1219,7 @@ div.log-button-container {
     text-decoration: none;
     border-radius: 10px;
     padding: 5px;
+    gap: 7px;
     &:hover{
       background: $slight-dark;
     }
@@ -1244,6 +1245,13 @@ div.log-button-container {
     font-size: 25px;
     width: fit-content;
     height: fit-content;
-    padding: 10px;
+    padding: 5px 10px;
   }
+}
+
+.share_alert__copied{
+  width: fit-content;
+  margin-left: auto;
+  margin-top: 0;
+  display: none;
 }

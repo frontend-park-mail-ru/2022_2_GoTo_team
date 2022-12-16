@@ -46,6 +46,7 @@ export default class ArticlePage extends Page {
             openTagPage: URIChanger.searchByTagPage,
             scrollToComments: Events.scrollToComments,
             editArticle: Events.editArticleListener,
+            shareListener: Events.openShareBox,
         }
 
         const commentaryFormEventBus: CommentaryFormEventBus = {

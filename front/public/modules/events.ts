@@ -10,7 +10,7 @@ import {
     FullArticleData,
     Listener,
     RequestAnswer,
-    SearchData,
+    SearchData, SharingData,
     UserData,
     UserPlugData
 } from "../common/types";
@@ -1460,7 +1460,7 @@ export class Events {
             close: Events.closeShareBox,
         }
 
-        const data: ShareData = {
+        const data: SharingData = {
             url: url,
         }
 
