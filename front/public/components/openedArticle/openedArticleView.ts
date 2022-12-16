@@ -25,6 +25,7 @@ export default class OpenedArticleView extends BasicComponentView {
             tags: article.tags,
             category: article.category,
             rating: article.rating,
+            rating_sign: article.rating > 0 ? 1 :( article.rating < 0 ? -1 : 0),
             comments: article.comments,
             publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
             content: article.content.split('\n'),

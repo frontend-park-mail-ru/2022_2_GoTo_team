@@ -26,7 +26,7 @@ export default class Article extends BasicComponent {
     }
 
     render(article: IncompleteArticleData): HTMLElement {
-        this.root =this.view.render(article);
+        this.root = this.view.render(article);
         return this.root;
     }
 
@@ -84,7 +84,6 @@ export default class Article extends BasicComponent {
         }
 
 
-
         const titleLink: HTMLElement = this.root.querySelector('.article__title')!;
         subscription = {
             element: titleLink,
@@ -134,6 +133,18 @@ export default class Article extends BasicComponent {
                 listener: () => {
                     eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
                 },
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.rating').forEach((rating) => {
+            subscription = {
+                element: rating,
+                event: 'DOMSubtreeModified',
+                listener: () => {
+                    const value = parseInt(rating.innerHTML);
+                    rating.setAttribute('data-sign', value > 0 ? '1' :(value < 0 ? '-1' : '0'));
+                }
             }
             this._subscribeEvent(subscription);
         });

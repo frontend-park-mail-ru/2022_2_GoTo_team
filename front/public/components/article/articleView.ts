@@ -26,13 +26,23 @@ export default class ArticleView extends BasicComponentView {
             tags: article.tags,
             category: article.category,
             rating: article.rating,
+            rating_sign: article.rating > 0 ? 1 : (article.rating < 0 ? -1 : 0),
             comments: article.comments,
             publisher: article.publisher.username !== '' ? article.publisher.username : article.publisher.login,
             picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
             author: article.publisher.login === window.sessionStorage.getItem('login'),
             avatar: article.avatarImgPath,
         });
-
+        /*
+                const ratingCount = wrapper.querySelector('.article__rating__count')!
+                if (article.rating > 0) {
+                    ratingCount.classList.add('rating_positive');
+                }else{
+                    if (article.rating < 0) {
+                        ratingCount.classList.add('rating_negative');
+                    }
+                }
+        */
         this.publisher = article.publisher.login;
         this.category = article.category;
         this.id = article.id;

@@ -34,7 +34,7 @@ export default class OpenedArticle extends BasicComponent {
         let subscription: Subscription;
         const avatar = this.root.querySelector('.article__profile_picture')!;
 
-        if (this.view.category !== ""){
+        if (this.view.category !== "") {
             const categoryLink = this.root.querySelector('.article__category')!;
             subscription = {
                 element: categoryLink,
@@ -63,7 +63,7 @@ export default class OpenedArticle extends BasicComponent {
                 },
             }
             this._subscribeEvent(subscription);
-        }else{
+        } else {
             subscription = {
                 element: avatar,
                 event: 'click',
@@ -122,6 +122,18 @@ export default class OpenedArticle extends BasicComponent {
                 listener: () => {
                     eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
                 },
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.rating').forEach((rating) => {
+            subscription = {
+                element: rating,
+                event: 'DOMSubtreeModified',
+                listener: () => {
+                    const value = parseInt(rating.innerHTML);
+                    rating.setAttribute('data-sign', value > 0 ? '1' : (value < 0 ? '-1' : '0'));
+                }
             }
             this._subscribeEvent(subscription);
         });

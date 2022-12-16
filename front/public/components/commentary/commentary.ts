@@ -60,5 +60,17 @@ export default class Commentary extends BasicComponent {
             },
         }
         this._subscribeEvent(subscription);
+
+        this.root.querySelectorAll('.rating').forEach((rating) => {
+            subscription = {
+                element: rating,
+                event: 'DOMSubtreeModified',
+                listener: () => {
+                    const value = parseInt(rating.innerHTML);
+                    rating.setAttribute('data-sign', value > 0 ? '1' :(value < 0 ? '-1' : '0'));
+                }
+            }
+            this._subscribeEvent(subscription);
+        });
     }
 };

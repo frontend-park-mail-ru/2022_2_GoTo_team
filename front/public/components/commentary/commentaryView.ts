@@ -13,6 +13,7 @@ export default class CommentaryView extends BasicComponentView {
         // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
         wrapper.innerHTML = Handlebars.templates['commentary.html']({
             rating: commentary.rating,
+            rating_sign: commentary.rating > 0 ? 1 : (commentary.rating < 0 ? -1 : 0),
             publisher: commentary.publisher!.username !== "" ? commentary.publisher!.username : commentary.publisher!.login,
             publisher_avatar_url: commentary.publisher!.avatar,
             content: commentary.content,
