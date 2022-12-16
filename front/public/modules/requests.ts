@@ -368,23 +368,26 @@ export class Requests {
             if (result.status !== 200) {
                 throw result.status;
             }
-            const article: FullArticleData = {
-                id: result.response.id,
-                title: result.response.title,
-                description: result.response.description,
-                tags: result.response.tags,
-                category: result.response.category,
-                rating: result.response.rating,
-                comments: result.response.comments,
-                publisher: {
-                    login: result.response.publisher.login,
-                    username: result.response.publisher.username,
-                },
-                coverImgPath: result.response.cover_img_path,
-                content: result.response.content,
-                avatarImgPath: result.response.category === "" ? '/static/img/user_icon.jpg' : categoryCoverFolder(result.response.category),
-            }
-            return article;
+            const avatar: Promise<string> = result.response.category === "" ? Requests.getProfilePicture(result.response.publisher.login) : Promise.resolve(categoryCoverFolder(result.response.category));
+            return avatar.then((avatar) => {
+                const article: FullArticleData = {
+                    id: result.response.id,
+                    title: result.response.title,
+                    description: result.response.description,
+                    tags: result.response.tags,
+                    category: result.response.category,
+                    rating: result.response.rating,
+                    comments: result.response.comments,
+                    publisher: {
+                        login: result.response.publisher.login,
+                        username: result.response.publisher.username,
+                    },
+                    coverImgPath: result.response.cover_img_path,
+                    content: result.response.content,
+                    avatarImgPath: avatar,
+                }
+                return article;
+            })
         });
     }
 
@@ -622,7 +625,7 @@ export class Requests {
 
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
-            const commentaries: CommentaryData[] = [];
+            const commentaries: Promise<CommentaryData>[] = [];
             result.response.commentaries.forEach((rawCommentary: {
                 comment_id: number,
                 article_id: number,
@@ -634,28 +637,32 @@ export class Requests {
                 rating: number,
                 content: string,
             }) => {
-                const commentary: CommentaryData = {
-                    article: rawCommentary.article_id,
-                    id: rawCommentary.comment_id,
-                    parentId: rawCommentary.comment_for_comment_id === '' ? +rawCommentary.article_id : +rawCommentary.comment_for_comment_id,
-                    parentType: rawCommentary.comment_for_comment_id === '' ? CommentaryParent.article : CommentaryParent.commentary,
-                    publisher: {
-                        username: rawCommentary.publisher.username,
-                        login: rawCommentary.publisher.login,
-                    },
-                    rating: rawCommentary.rating,
-                    content: rawCommentary.content
-                }
-                commentaries.push(commentary);
+                const avatar: Promise<string> = Requests.getProfilePicture(rawCommentary.publisher.login);
+                commentaries.push(avatar.then((avatar) => {
+                    const commentary: CommentaryData = {
+                        article: rawCommentary.article_id,
+                        id: rawCommentary.comment_id,
+                        parentId: rawCommentary.comment_for_comment_id === '' ? +rawCommentary.article_id : +rawCommentary.comment_for_comment_id,
+                        parentType: rawCommentary.comment_for_comment_id === '' ? CommentaryParent.article : CommentaryParent.commentary,
+                        publisher: {
+                            username: rawCommentary.publisher.username,
+                            login: rawCommentary.publisher.login,
+                            avatar: avatar,
+                        },
+                        rating: rawCommentary.rating,
+                        content: rawCommentary.content
+                    }
+                    return commentary;
+                }))
             });
-            return commentaries.reverse();
+            return Promise.all(commentaries.reverse());
         });
     }
 
     /**
      * Запрос лайка статьи
      */
-    static articeleLike(data: LikeData): Promise<Boolean> {
+    static articleLike(data: LikeData): Promise<Boolean> {
         let params = {
             url: config.hrefs.articleLike,
             data: {

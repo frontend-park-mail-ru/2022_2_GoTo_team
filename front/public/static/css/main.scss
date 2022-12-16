@@ -263,6 +263,7 @@ body {
 }
 
 .article__profile_picture {
+  border: 1px solid $light;
   border-radius: 5px;
   width: 34px;
   height: 34px;
@@ -270,6 +271,7 @@ body {
   box-sizing: border-box;
   cursor: pointer;
   outline: 1px solid lighten($main, 30%);
+
 
   &:hover {
     outline: 1.5px solid $main;
