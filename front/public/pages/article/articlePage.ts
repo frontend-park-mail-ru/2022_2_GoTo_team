@@ -6,6 +6,7 @@ import {OpenedArticleEventBus} from "../../components/openedArticle/openedArticl
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {CommentaryFormEventBus} from "../../components/commentaryForm/commentaryForm.js";
+import {FullArticleData} from "../../common/types";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -19,11 +20,10 @@ export default class ArticlePage extends Page {
         this.view = new ArticlePageView(root);
     }
 
-    async render(data: { articleId: number, toComments: boolean }) {
+    async render(data: { article: FullArticleData, toComments: boolean }) {
         Events.scrollUp();
-        const article = await Requests.getArticle(data.articleId);
-        await this.view.render(article);
-        Events.rerenderCommentaries(data.articleId);
+        await this.view.render(data.article);
+        Events.rerenderCommentaries(data.article.id);
         Events.updateAuth();
         if (data.toComments){
             Events.scrollToComments();

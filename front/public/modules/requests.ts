@@ -359,6 +359,9 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
+            if (result.status !== 200) {
+                throw result.status;
+            }
             const article: FullArticleData = {
                 id: result.response.id,
                 title: result.response.title,

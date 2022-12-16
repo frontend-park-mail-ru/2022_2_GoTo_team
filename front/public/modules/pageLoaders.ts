@@ -6,7 +6,7 @@ import CategoryFeed from "../pages/categoryFeed/categoryFeed.js";
 import ArticlePage from "../pages/article/articlePage.js";
 import SettingsPage from "../pages/settingsPage/settingsPage.js";
 import ArticleEditPage from "../pages/articleEdit/articleEditPage.js";
-import {SearchData} from "../common/types";
+import {FullArticleData, SearchData} from "../common/types";
 import SearchPage from "../pages/search/searchPage.js";
 import Page from "../pages/_basic/page";
 import Page404 from "../pages/page404/page404";
@@ -72,9 +72,9 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static articlePage(articleId: number, comments: boolean): Page {
+    static articlePage(article: FullArticleData, comments: boolean): Page {
         const page = new ArticlePage(root);
-        page.render({articleId: articleId, toComments: comments}).then(() => {
+        page.render({article: article, toComments: comments}).then(() => {
             page.subscribe();
         });
         return page;

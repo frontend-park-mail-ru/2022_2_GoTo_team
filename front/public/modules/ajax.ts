@@ -79,6 +79,7 @@ export class Ajax {
 
         const response = fetch(url, fetchParams)
             .then((response) => {
+                console.log(response.headers.get('X-XSRF-Token'));
                 status = response.status;
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1){
