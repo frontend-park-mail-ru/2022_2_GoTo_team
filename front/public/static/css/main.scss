@@ -1303,3 +1303,15 @@ div.log-button-container {
     width: 500px;
   }
 }
+
+.like{
+  &[data-pressed="true"] {
+    @include svgColor($positive);
+  }
+}
+
+.dislike{
+  &[data-pressed="true"] {
+    @include svgColor($negative);
+  }
+}

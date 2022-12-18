@@ -62,76 +62,90 @@ export default class Commentary extends BasicComponent {
         }
         this._subscribeEvent(subscription);
 
-        this.root.querySelectorAll('.rating').forEach((rating) => {
-            subscription = {
-                element: rating,
-                event: 'DOMSubtreeModified',
-                listener: () => {
-                    const value = parseInt(rating.innerHTML);
-                    rating.setAttribute('data-sign', value > 0 ? '1' :(value < 0 ? '-1' : '0'));
-                }
+        const rating = this.root.querySelector('.rating')!;
+        subscription = {
+            element: rating,
+            event: 'DOMSubtreeModified',
+            listener: () => {
+                const value = parseInt(rating.innerHTML);
+                rating.setAttribute('data-sign', value > 0 ? '1' : (value < 0 ? '-1' : '0'));
             }
-            this._subscribeEvent(subscription);
-        });
+        }
+        this._subscribeEvent(subscription);
 
-        this.root.querySelectorAll('.dislike').forEach((button) => {
-            subscription = {
-                element: button,
-                event: 'click',
-                listener: () => {
-                    const rating = this.root.querySelectorAll('.rating')!;
-                    let likeData: LikeData;
-                    if (rating[0].getAttribute('data-sign') === '-1'){
-                        likeData = {
-                            id: this.data!.id!,
-                            sign: 0,
-                        }
-                    }else{
-                        likeData= {
-                            id: this.data!.id!,
-                            sign: -1,
-                        }
-                    }
-                    eventBus.likeListener(likeData).then((response) => {
-                        if (response.success){
-                            rating.forEach((element) => {
-                                element.innerHTML = response.rating.toString();
-                            })
-                        }
-                    })
-                }
-            }
-            this._subscribeEvent(subscription);
-        });
 
-        this.root.querySelectorAll('.like').forEach((button) => {
-            subscription = {
-                element: button,
-                event: 'click',
-                listener: () => {
-                    const rating = this.root.querySelectorAll('.rating')!;
-                    let likeData: LikeData;
-                    if (rating[0].getAttribute('data-sign') === '-1'){
-                        likeData = {
-                            id: this.data!.id!,
-                            sign: 0,
-                        }
-                    }else{
-                        likeData= {
-                            id: this.data!.id!,
-                            sign: 1,
-                        }
+        const dislikeButton = this.root.querySelector('.dislike')!;
+        const likeButton = this.root.querySelector('.like')!;
+        subscription = {
+            element: dislikeButton,
+            event: 'click',
+            listener: () => {
+                const rating = this.root.querySelectorAll('.rating')!;
+                let likeData: LikeData;
+                if (dislikeButton.getAttribute('data-pressed') === 'true') {
+                    likeData = {
+                        id: this.data!.id!,
+                        sign: 0,
                     }
-                    eventBus.likeListener(likeData).then((response) => {
-                        if (response.success){
-                            rating.forEach((element) => {
-                                element.innerHTML = response.rating.toString();
-                            })
-                        }
-                    })
+                } else {
+                    likeData = {
+                        id: this.data!.id!,
+                        sign: -1,
+                    }
                 }
+                eventBus.likeListener(likeData).then((response) => {
+                    if (response.success) {
+                        rating.forEach((element) => {
+                            element.innerHTML = response.rating.toString();
+                        })
+
+                        if (likeData.sign === -1) {
+                            dislikeButton.setAttribute('data-pressed', 'true');
+                        } else {
+                            dislikeButton.setAttribute('data-pressed', 'false');
+                        }
+
+                        likeButton.setAttribute('data-pressed', 'false');
+                    }
+                })
             }
-            this._subscribeEvent(subscription);
-        });
+        }
+        this._subscribeEvent(subscription);
+
+        subscription = {
+            element: likeButton,
+            event: 'click',
+            listener: () => {
+                const rating = this.root.querySelectorAll('.rating')!;
+                let likeData: LikeData;
+                if (likeButton.getAttribute('data-pressed') === 'true') {
+                    likeData = {
+                        id: this.data!.id!,
+                        sign: 0,
+                    }
+                } else {
+                    likeData = {
+                        id: this.data!.id!,
+                        sign: 1,
+                    }
+                }
+                eventBus.likeListener(likeData).then((response) => {
+                    if (response.success) {
+                        rating.forEach((element) => {
+                            element.innerHTML = response.rating.toString();
+                        })
+
+                        if (likeData.sign === 1) {
+                            likeButton.setAttribute('data-pressed', 'true');
+                        } else {
+                            likeButton.setAttribute('data-pressed', 'false');
+                        }
+
+                        dislikeButton.setAttribute('data-pressed', 'false');
+                    }
+                })
+            }
+        }
+        this._subscribeEvent(subscription);
     }
 };

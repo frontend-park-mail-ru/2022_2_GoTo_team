@@ -145,7 +145,7 @@ export default class Article extends BasicComponent {
                 event: 'DOMSubtreeModified',
                 listener: () => {
                     const value = parseInt(rating.innerHTML);
-                    rating.setAttribute('data-sign', value > 0 ? '1' :(value < 0 ? '-1' : '0'));
+                    rating.setAttribute('data-sign', value > 0 ? '1' : (value < 0 ? '-1' : '0'));
                 }
             }
             this._subscribeEvent(subscription);
@@ -158,22 +158,32 @@ export default class Article extends BasicComponent {
                 listener: () => {
                     const rating = this.root.querySelectorAll('.rating')!;
                     let likeData: LikeData;
-                    if (rating[0].getAttribute('data-sign') === '-1'){
+                    if (button.getAttribute('data-pressed') === 'true') {
                         likeData = {
                             id: this.view.id!,
                             sign: 0,
                         }
-                    }else{
-                        likeData= {
+                    } else {
+                        likeData = {
                             id: this.view.id!,
                             sign: -1,
                         }
                     }
                     eventBus.likeListener(likeData).then((response) => {
-                        if (response.success){
+                        if (response.success) {
                             rating.forEach((element) => {
                                 element.innerHTML = response.rating.toString();
-                            })
+                            });
+                            this.root.querySelectorAll('.dislike').forEach((button) => {
+                                if (likeData.sign === -1) {
+                                    button.setAttribute('data-pressed', 'true');
+                                }else{
+                                    button.setAttribute('data-pressed', 'false');
+                                }
+                            });
+                            this.root.querySelectorAll('.like').forEach((button) => {
+                                button.setAttribute('data-pressed', 'false');
+                            });
                         }
                     })
                 }
@@ -188,22 +198,32 @@ export default class Article extends BasicComponent {
                 listener: () => {
                     const rating = this.root.querySelectorAll('.rating')!;
                     let likeData: LikeData;
-                    if (rating[0].getAttribute('data-sign') === '-1'){
+                    if (button.getAttribute('data-pressed') === 'true') {
                         likeData = {
                             id: this.view.id!,
                             sign: 0,
                         }
-                    }else{
-                        likeData= {
+                    } else {
+                        likeData = {
                             id: this.view.id!,
                             sign: 1,
                         }
                     }
                     eventBus.likeListener(likeData).then((response) => {
-                        if (response.success){
+                        if (response.success) {
                             rating.forEach((element) => {
                                 element.innerHTML = response.rating.toString();
-                            })
+                            });
+                            this.root.querySelectorAll('.like').forEach((button) => {
+                                if (likeData.sign === 1) {
+                                    button.setAttribute('data-pressed', 'true');
+                                }else{
+                                    button.setAttribute('data-pressed', 'false');
+                                }
+                            });
+                            this.root.querySelectorAll('.dislike').forEach((button) => {
+                                button.setAttribute('data-pressed', 'false');
+                            });
                         }
                     })
                 }
