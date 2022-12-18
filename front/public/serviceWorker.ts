@@ -13,10 +13,6 @@ const cacheUrls = [
     '/icons.svg',
     '/dist/main.bandle.js',
     '/modules/handlebars.js',
-    '/static/css/index.css',
-    '/static/img/404maskot.png',
-    '/static/img/category_icon.jpg',
-    '/static/img/user_icon.jpg',
 ];
 // наименование для нашего хранилища кэша
 // ссылки на кэшируемые файлы
