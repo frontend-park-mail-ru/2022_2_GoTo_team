@@ -1,7 +1,6 @@
+import {Request} from "express";
+
 const cacheName = 've.ru';
-const APIPrefix = '/api/v1/';
-const notifStringLenLimit = 36;
-const notifTextLenLimit = 5 * notifStringLenLimit;
 
 // Только основные файлы, остальные урлы добавляются по мере работы
 const cacheUrls = [
@@ -13,6 +12,10 @@ const cacheUrls = [
     '/static/css/index.css',
     '/static/img/404maskot.png',
 ];
+
+const noCacheUrls = [
+    '/api/v1/subscribes/hasNewSubs',
+]
 self.addEventListener('install', (event) => {
     console.log('SW is installing');
     // задержим обработку события
@@ -34,44 +37,71 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    //@ts-ignore
-    const url = event.request.url.toString();
-    /** online first */
+    /** online */
     if (navigator.onLine) {
-        console.log('SW кеширует', url);
-        //@ts-ignore
-        return fetch(event.request).then((response) => {
-            return caches.open(cacheName).then((cache) => {
-                //@ts-ignore
-                cache.match(event.request).then((cachedResponse) => {
-                    if (cachedResponse === undefined) {
-                        //@ts-ignore
-                        cache.put(event.request, response.clone());
-                    }
-                })
-                return response;
-            });
-        });
+        // @ts-ignore
+        return fromNetwork(event.request);
     }
 
-
-    /** cache first */
+    /** cache */
     //@ts-ignore
     event.respondWith(
-        caches.open(cacheName).then((cache) => {
-            //@ts-ignore
-            return cache.match(event.request).then((cachedResponse) => {
-                console.log('SW выдаёт из кэша', url);
-                // выдаём кэш, если он есть
-                if (cachedResponse) {
-                    console.log(cachedResponse);
-                    return cachedResponse;
-                }
-                console.log('No cached for ', url);
-                //@ts-ignore
-                return fetch(event.request);
-            });
-        })
+        // @ts-ignore
+        fromCache(event.request)
     );
-
 });
+
+/**
+ * Загрузка даных из сети
+ */
+function fromNetwork(request: RequestInfo): Promise<Response> {
+    return fetch(request).then((response) => {
+        Promise.resolve().then(() => {
+            //@ts-ignore
+            const url = request.url.toString();
+            if (shouldCache(url)){
+                console.log('SW кеширует', url);
+                caches.open(cacheName).then((cache) => {
+                    cache.match(request).then((cachedResponse) => {
+                        if (cachedResponse === undefined) {
+                            cache.put(request, response.clone());
+                        }
+                    })
+                });
+            }
+        })
+        return response;
+    });
+}
+
+/**
+ * Загрузка даных из кеша
+ */
+function fromCache(request: RequestInfo): Promise<Response> {
+    return caches.open(cacheName)
+        .then((cache) => {
+            return cache.match(request)
+                .then((cachedResponse) => {
+                    //@ts-ignore
+                    console.log('SW выдаёт из кэша', request.url.toString());
+                    // выдаём кэш, если он есть
+                    if (cachedResponse) {
+                        console.log(cachedResponse);
+                        return cachedResponse;
+                    }
+                    //@ts-ignore
+                    console.log('No cached for ', request.url.toString());
+                    //@ts-ignore
+                    return fetch(request);
+                });
+        })
+}
+
+function shouldCache(url: string): boolean {
+    for (const notCached of noCacheUrls){
+        if (url.includes(notCached)) {
+            return false;
+        }
+    }
+    return true;
+}

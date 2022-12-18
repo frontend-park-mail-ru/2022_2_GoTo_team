@@ -30,14 +30,6 @@ export default class ArticlePage extends Page {
         if (data.toComments){
             Events.scrollToComments();
         }
-
-        const params: NotificationParams = {
-            title: 'Уведка',
-            body: 'Пройти на страницу автора',
-            url: FrontUrl + APIStrings.authorPage(data.article.publisher.login),
-            icon: '/favicon.ico'
-        }
-        NotificationModule.makeNotification(params);
     }
 
     async subscribe() {
