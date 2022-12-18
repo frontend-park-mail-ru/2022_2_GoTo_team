@@ -8,6 +8,8 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 app.use(body.json());
+const https = require('https');
+const fs = require('fs');
 
 const port = process.env.PORT || 8081;
 
@@ -15,6 +17,14 @@ app.get(/.*/, (req: any, res: any) => {
     res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 })
 
-app.listen(port, function () {
+https
+    .createServer(
+        {
+            key: fs.readFileSync(path.resolve(__dirname, 'cert', 'key.pem')),
+            cert: fs.readFileSync(path.resolve(__dirname, 'cert', 'cert.pem')),
+        },
+        app
+    )
+    .listen(port, function () {
     console.log(`Server listening port ${port}`);
 });

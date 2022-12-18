@@ -8,10 +8,13 @@ const notifTextLenLimit = 5 * notifStringLenLimit;
 const cacheUrls = [
     '/',
     '/index.html',
+    '/icons.svg',
     '/dist/main.bandle.js',
     '/modules/handlebars.js',
-    '/feed',
-    '/article/'
+    '/static/css/index.css',
+    '/static/img/404maskot.png',
+    '/static/img/category_icon.jpg',
+    '/static/img/user_icon.jpg',
 ];
 // наименование для нашего хранилища кэша
 // ссылки на кэшируемые файлы
@@ -52,43 +55,41 @@ self.addEventListener('fetch', (event) => {
         }
     }
     */
-    //@ts-ignore
-    caches.match(event.request).then((cachedResponse) => {
-        console.log( url, 'подходит',);
-    }).catch((err) => {
-        console.error('smth went wrong with caches.match: ', err);
-    });
+
     /** online first */
-    if (navigator.onLine === true) {
+    if (navigator.onLine) {
         console.log('SW кеширует', url);
         //@ts-ignore
-        return fetch(event.request);
+        const response = await fetch(event.request);
+        //@ts-ignore
+        cache.match(event.request).then((cachedResponse) => {
+                if (cachedResponse === undefined) {
+                    //@ts-ignore
+                    cache.put(event.request, response.clone());
+                }
+            })
+        return response;
     }
 
 
     /** cache first */
     //@ts-ignore
     event.respondWith(
-        // ищем запрашиваемый ресурс в хранилище кэша
-        caches
+        caches.open(cacheName).then((cache) => {
             //@ts-ignore
-            .match(event.request)
-            .then((cachedResponse) => {
-                console.log('SW выдаёт из кэша', url);
+            const cachedResponse = await cache.match(event.request);
+            console.log('SW выдаёт из кэша', url);
+            // выдаём кэш, если он есть
+            if (cachedResponse) {
                 console.log(cachedResponse);
-                // выдаём кэш, если он есть
-                if (cachedResponse) {
-                    console.log(cachedResponse);
-                    return cachedResponse;
-                }
-                console.log('No cached for ', url);
-                //@ts-ignore
-                return fetch(event.request);
-            })
-            .catch((err) => {
-                console.error('smth went wrong with caches.match: ', err);
-            }),
+                return cachedResponse;
+            }
+            console.log('No cached for ', url);
+            //@ts-ignore
+            return fetch(event.request);
+        })
     );
+
 });
 /*
 // Обработчик для пушей

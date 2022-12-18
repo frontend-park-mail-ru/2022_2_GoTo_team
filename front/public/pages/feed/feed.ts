@@ -33,6 +33,7 @@ export default class Feed extends Page{
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {
+            console.log(articles);
             if (articles && Array.isArray(articles)) {
                 this.view.mainContentElement!.innerHTML = '';
                 articles.forEach((article) => {
