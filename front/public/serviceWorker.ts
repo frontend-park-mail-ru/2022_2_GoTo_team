@@ -1,21 +1,18 @@
-// не используется. Перешли на вебпак
-import {response} from "express";
-
 const cacheName = 've.ru';
 const APIPrefix = '/api/v1/';
 const notifStringLenLimit = 36;
 const notifTextLenLimit = 5 * notifStringLenLimit;
 
-// /dev/createCachedList.js заполняет этот список автоматически
+// Только основные файлы, остальные урлы добавляются по мере работы
 const cacheUrls = [
     '/',
     '/index.html',
     '/icons.svg',
     '/dist/main.bandle.js',
     '/modules/handlebars.js',
+    '/static/css/index.css',
+    '/static/img/404maskot.png',
 ];
-// наименование для нашего хранилища кэша
-// ссылки на кэшируемые файлы
 self.addEventListener('install', (event) => {
     console.log('SW is installing');
     // задержим обработку события
@@ -37,24 +34,8 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-
-    // не кешируем запросы к апи
     //@ts-ignore
     const url = event.request.url.toString();
-    /*
-    if (url.includes(APIPrefix)) {
-        const imgPos = url.indexOf('img/');
-        if (imgPos !== -1) {
-            const img = url.substr(imgPos + 4);
-            if (img === '') {
-                return;
-            }
-        } else {
-            return;
-        }
-    }
-    */
-
     /** online first */
     if (navigator.onLine) {
         console.log('SW кеширует', url);
@@ -94,135 +75,3 @@ self.addEventListener('fetch', (event) => {
     );
 
 });
-self.addEventListener('tralala', (e) => {
-    console.log(e);
-    const options = {
-        icon: '',
-        image: 'logo-for-sharing.png',
-        lang: 'ru-RU',
-        vibrate: [200, 300, 200, 300],
-        body: 'Новое событие под одной из Ваших статей',
-        actions: [
-
-        ],
-    };
-    //@ts-ignore
-    e.waitUntil(
-        //@ts-ignore
-        self.registration.showNotification("Уведомление", options),
-    );
-});
-
-/*
-// Обработчик для пушей
-self.addEventListener('push', (e) => {
-    console.warn('[PushManager]: push event');
-    let title = e.data.title || 'Это Ваш SaberNews!';
-    const options = {
-        icon: 'favicon.ico',
-        image: 'logo-for-sharing.png',
-        lang: 'ru-RU',
-        vibrate: [200, 300, 200, 300],
-        body: 'Новое событие под одной из Ваших статей',
-        actions: [
-            {action: 'explore', title: 'Просмотреть',
-                icon: 'img/icons/comment_hover.svg'},
-            //   {action: 'close', title: 'Close notification',
-            //     icon: 'images/xmark.png'},
-        ],
-    };
-
-    /*
-      0 - для лайков по твоим статьям,
-      1 - для комментов по твоим статьям,
-      2 - для лаков твоих комментов,
-      3 - для ответов на твои комменты
-      // для комментариев и для ответов на комментарии
-      // тип 1
-      data: {
-      articleTitle: string
-      commentText: string
-      articleId: number
-      commentId: number
-      firstName: string
-      lastName: string
-      }
-      // тип 3
-      data: {
-      commentText: string
-      answerText: string
-      commentId: number
-      answerId: number
-      firstName: string
-      lastName: string
-      }
-      // для лайка
-      // тип 0
-      data: {
-      articleId: number
-      articleTitle: string
-      }
-      // тип 2
-      data: {
-      articleId: number
-      commentId: number
-      commentText: string
-      }
-    */
-/*
-    // TODO: url, actions
-    const data = e.data.json()?.data;
-    console.log('[Push Manager]', {'recieved': e.data.json()});
-    switch (e.data.json().type) {
-        case 0: {
-            title = 'У Вашей статьи новый лайк!';
-            options.body = `
-      ${data.articleTitle}
-      `;
-        }
-        case 1: {
-            title = 'У Вашей статьи новый комментарий!';
-            options.body = `
-      ${data.articleTitle.substring(0, notifStringLenLimit)}
-      ${data.firstName} ${data.lastName}:
-      ${data.commentText.substring(0, 3*notifStringLenLimit)}
-      `;
-        }
-        case 2: {
-            title = 'Ваш комментарий кто-то оценил!';
-            options.body = `
-      ${data.commentText.substring(0, notifTextLenLimit)}
-      `;
-        }
-        case 3: {
-            title = 'На Ваш комментарий поступил ответ!';
-            // TODO: fix API ${data.answerText}
-            options.body = `
-      ${data.firstName} ${data.lastName}:
-      ${data.commentText.substring(0, notifTextLenLimit - 30)}
-      `; // 30- примерно столько займет firstName lastName
-        }
-    }
-
-    e.waitUntil(
-        self.registration.showNotification(title, options),
-    );
-});
-
-self.addEventListener('notificationclick', (e) => {
-    // const primaryKey = notification.data.primaryKey;
-    const data = e.data.json()?.data;
-    switch (e.action) {
-        case 'explore': {
-            clients.openWindow(
-                // TODO:
-                // `${appUrlPM}/article/${data.articleId}#comments-id=${commentId}`,
-                `${appUrlPM}/article/${data.articleId}#comments`,
-            );
-        }
-        default: {
-            console.log('[PushManager] unregistered action', e.action);
-        }
-    }
-});
-*/
