@@ -16,6 +16,7 @@ export type IncompleteArticleData = {
     tags: string[],
     category: string,
     rating: number,
+    likeStatus: 1 | 0 | -1
     comments: number,
     publisher: publisher,
     coverImgPath: string,
@@ -122,7 +123,12 @@ export type Subscription = {
 
 export type LikeData = {
     id: number,
-    sign: number,
+    sign: 1 | 0 | -1,
+}
+
+export type LikeResponse = {
+    success: boolean,
+    rating: number
 }
 
 export type SharingData = {

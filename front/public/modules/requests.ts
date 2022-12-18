@@ -2,7 +2,7 @@ import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
     CategoryData, CommentaryData, FullArticleData, ImgPostData,
-    IncompleteArticleData, LikeData,
+    IncompleteArticleData, LikeData, LikeResponse,
     RequestAnswer, SearchData, UserData,
     UserHeaderData,
     UserLoginData,
@@ -69,6 +69,7 @@ export class Requests {
                             tags: rawArticle.tags,
                             category: rawArticle.category,
                             rating: rawArticle.rating,
+                            likeStatus: 0,
                             comments: rawArticle.comments,
                             publisher: {
                                 login: rawArticle.publisher.login,
@@ -274,6 +275,7 @@ export class Requests {
                             tags: rawArticle.tags,
                             category: rawArticle.category,
                             rating: rawArticle.rating,
+                            likeStatus: 0,
                             comments: rawArticle.comments,
                             publisher: {
                                 login: rawArticle.publisher.login,
@@ -338,6 +340,7 @@ export class Requests {
                             tags: rawArticle.tags,
                             category: rawArticle.category,
                             rating: rawArticle.rating,
+                            likeStatus: 0,
                             comments: rawArticle.comments,
                             publisher: {
                                 login: rawArticle.publisher.login,
@@ -595,6 +598,7 @@ export class Requests {
                             tags: rawArticle.tags,
                             category: rawArticle.category,
                             rating: rawArticle.rating,
+                            likeStatus: 0,
                             comments: rawArticle.comments,
                             publisher: {
                                 login: rawArticle.publisher.login,
@@ -656,40 +660,6 @@ export class Requests {
                 }))
             });
             return Promise.all(commentaries.reverse());
-        });
-    }
-
-    /**
-     * Запрос лайка статьи
-     */
-    static articleLike(data: LikeData): Promise<Boolean> {
-        let params = {
-            url: config.hrefs.articleLike,
-            data: {
-                id: data.id,
-                sign: data.sign,
-            },
-        }
-
-        return ajax.post(params).then((response) => {
-            return response!.status == 200;
-        });
-    }
-
-    /**
-     * Запрос лайка комментария
-     */
-    static commentaryLike(data: LikeData): Promise<Boolean> {
-        let params = {
-            url: config.hrefs.commentaryLike,
-            data: {
-                id: data.id,
-                sign: data.sign,
-            },
-        }
-
-        return ajax.post(params).then((response) => {
-            return response!.status == 200;
         });
     }
 
@@ -784,6 +754,35 @@ export class Requests {
 
         return ajax.get(params).then((response) => {
             return response!.response.avatar_img_path;
+        });
+    }
+
+    /**
+     * Получение пути к аватару по логину
+     */
+    static changeArticleLikeStatus(data: LikeData): Promise<LikeResponse> {
+        let params = {
+            url: config.hrefs.articleLike,
+            data: {
+                id: data.id,
+                sign: data.sign,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            console.log(response);
+            if (response!.status == 200){
+                const likeResponse: LikeResponse = {
+                    success: true,
+                    rating: response!.response.rating,
+                }
+                return likeResponse;
+            }
+            const likeResponse: LikeResponse = {
+                success: false,
+                rating: 0,
+            }
+            return likeResponse;
         });
     }
 }

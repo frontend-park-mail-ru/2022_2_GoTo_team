@@ -31,6 +31,7 @@ export default class Feed extends Page{
             openTagPage: URIChanger.searchByTagPage,
             editArticle: Events.editArticleListener,
             shareListener: Events.openShareBox,
+            likeListener: Events.articleLikeListener,
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {

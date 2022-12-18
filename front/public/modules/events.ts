@@ -7,7 +7,7 @@ import UserPlug, {UserPlugEventBus} from "../components/userPlug/userPlug.js";
 import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/userPlugMenu.js";
 import {
     CommentaryData,
-    FullArticleData,
+    FullArticleData, LikeData, LikeResponse,
     Listener,
     RequestAnswer,
     SearchData, SharingData,
@@ -1476,5 +1476,9 @@ export class Events {
      */
     static tooBigProfilePicture() {
         Events.openAlertMessage('Размер аватарки не должен превышать 4Мб');
+    }
+
+    static articleLikeListener(data: LikeData): Promise<LikeResponse> {
+        return Requests.changeArticleLikeStatus(data);
     }
 }

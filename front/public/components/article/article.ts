@@ -1,8 +1,9 @@
 import ArticleView from "./articleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {IncompleteArticleData, Subscription} from "../../common/types";
+import {IncompleteArticleData, LikeData, LikeResponse, Subscription} from "../../common/types";
 import {APIStrings, categoryCoverFolder} from "../../common/consts";
 import {Requests} from "../../modules/requests";
+import {response} from "express";
 
 export type ArticleComponentEventBus = {
     goToCategoryFeed: (category: string) => void,
@@ -11,6 +12,7 @@ export type ArticleComponentEventBus = {
     openTagPage: (tag: string) => void,
     editArticle: (id: number) => void,
     shareListener: (url: string) => void,
+    likeListener: (data: LikeData) => Promise<LikeResponse>,
 }
 
 /**
@@ -144,6 +146,66 @@ export default class Article extends BasicComponent {
                 listener: () => {
                     const value = parseInt(rating.innerHTML);
                     rating.setAttribute('data-sign', value > 0 ? '1' :(value < 0 ? '-1' : '0'));
+                }
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.dislike').forEach((button) => {
+            subscription = {
+                element: button,
+                event: 'click',
+                listener: () => {
+                    const rating = this.root.querySelectorAll('.rating')!;
+                    let likeData: LikeData;
+                    if (rating[0].getAttribute('data-sign') === '-1'){
+                        likeData = {
+                            id: this.view.id!,
+                            sign: 0,
+                        }
+                    }else{
+                        likeData= {
+                            id: this.view.id!,
+                            sign: -1,
+                        }
+                    }
+                    eventBus.likeListener(likeData).then((response) => {
+                        if (response.success){
+                            rating.forEach((element) => {
+                                element.innerHTML = response.rating.toString();
+                            })
+                        }
+                    })
+                }
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.like').forEach((button) => {
+            subscription = {
+                element: button,
+                event: 'click',
+                listener: () => {
+                    const rating = this.root.querySelectorAll('.rating')!;
+                    let likeData: LikeData;
+                    if (rating[0].getAttribute('data-sign') === '-1'){
+                        likeData = {
+                            id: this.view.id!,
+                            sign: 0,
+                        }
+                    }else{
+                        likeData= {
+                            id: this.view.id!,
+                            sign: 1,
+                        }
+                    }
+                    eventBus.likeListener(likeData).then((response) => {
+                        if (response.success){
+                            rating.forEach((element) => {
+                                element.innerHTML = response.rating.toString();
+                            })
+                        }
+                    })
                 }
             }
             this._subscribeEvent(subscription);

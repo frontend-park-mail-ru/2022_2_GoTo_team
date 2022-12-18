@@ -33,16 +33,6 @@ export default class ArticleView extends BasicComponentView {
             author: article.publisher.login === window.sessionStorage.getItem('login'),
             avatar: article.avatarImgPath,
         });
-        /*
-                const ratingCount = wrapper.querySelector('.article__rating__count')!
-                if (article.rating > 0) {
-                    ratingCount.classList.add('rating_positive');
-                }else{
-                    if (article.rating < 0) {
-                        ratingCount.classList.add('rating_negative');
-                    }
-                }
-        */
         this.publisher = article.publisher.login;
         this.category = article.category;
         this.id = article.id;

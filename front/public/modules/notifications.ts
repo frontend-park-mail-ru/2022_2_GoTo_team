@@ -19,4 +19,17 @@ export class NotificationModule{
     static makeNotification(title: string){
         const notification = new Notification('Уведомление');
     }
+
+    static  async longPollSubs() {
+        let response = await fetch("/subscribe");
+
+        if (response.status == 502) {
+            await NotificationModule.longPollSubs();
+        } else if (response.status != 200) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await NotificationModule.longPollSubs();
+        } else {
+            await NotificationModule.longPollSubs();
+        }
+    }
 }
