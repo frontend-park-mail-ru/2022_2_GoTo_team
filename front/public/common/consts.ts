@@ -1,11 +1,15 @@
 import {SearchData} from "./types";
 
-export const BaseUrl = 'https://127.0.0.1';
-//export const BaseUrl = 'https://gototeam.ru';
+const protocol = {
+    http: 'http://',
+    https: 'https://'
+}
+export const BaseUrl = '127.0.0.1';
+//export const BaseUrl = 'gototeam.ru';
 
-export const BackendUrl = BaseUrl + ':8080';
-export const FrontUrl = BaseUrl + ':8081';
-//export const FrontUrl = BaseUrl;
+export const BackendUrl = protocol.http + BaseUrl + ':8080';
+export const FrontUrl = protocol.https + BaseUrl;
+//export const FrontUrl = protocol.https + BaseUrl;
 
 export const APIurl = BackendUrl + '/api/v1';
 

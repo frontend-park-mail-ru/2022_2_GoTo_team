@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run preProcess && PORT=8081 DEBUG=server node front/server",
+    "start": "npm run preProcess && sudo PORT=8081 DEBUG=server node front/server",
     "preProcess": "npm run build:ts && npm run build:scss && npm run tmpl && npm run webpack-build",
     "build:ts": "tsc --build",
     "tmpl": "front/templating.sh",
