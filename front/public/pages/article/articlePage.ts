@@ -48,6 +48,7 @@ export default class ArticlePage extends Page {
             scrollToComments: Events.scrollToComments,
             editArticle: Events.editArticleListener,
             shareListener: Events.openShareBox,
+            likeListener: Events.articleLikeListener,
         }
 
         const commentaryFormEventBus: CommentaryFormEventBus = {

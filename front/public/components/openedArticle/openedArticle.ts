@@ -1,6 +1,6 @@
 import OpenedArticleView from "./openedArticleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {FullArticleData, Subscription} from "../../common/types";
+import {FullArticleData, LikeData, LikeResponse, Subscription} from "../../common/types";
 import {APIStrings} from "../../common/consts";
 
 export type OpenedArticleEventBus = {
@@ -10,6 +10,7 @@ export type OpenedArticleEventBus = {
     scrollToComments: () => void,
     editArticle: (id: number) => void,
     shareListener: (url: string) => void,
+    likeListener: (data: LikeData) => Promise<LikeResponse>,
 }
 
 /**
@@ -133,6 +134,66 @@ export default class OpenedArticle extends BasicComponent {
                 listener: () => {
                     const value = parseInt(rating.innerHTML);
                     rating.setAttribute('data-sign', value > 0 ? '1' : (value < 0 ? '-1' : '0'));
+                }
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.dislike').forEach((button) => {
+            subscription = {
+                element: button,
+                event: 'click',
+                listener: () => {
+                    const rating = this.root.querySelectorAll('.rating')!;
+                    let likeData: LikeData;
+                    if (rating[0].getAttribute('data-sign') === '-1'){
+                        likeData = {
+                            id: this.view.id!,
+                            sign: 0,
+                        }
+                    }else{
+                        likeData= {
+                            id: this.view.id!,
+                            sign: -1,
+                        }
+                    }
+                    eventBus.likeListener(likeData).then((response) => {
+                        if (response.success){
+                            rating.forEach((element) => {
+                                element.innerHTML = response.rating.toString();
+                            })
+                        }
+                    })
+                }
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        this.root.querySelectorAll('.like').forEach((button) => {
+            subscription = {
+                element: button,
+                event: 'click',
+                listener: () => {
+                    const rating = this.root.querySelectorAll('.rating')!;
+                    let likeData: LikeData;
+                    if (rating[0].getAttribute('data-sign') === '-1'){
+                        likeData = {
+                            id: this.view.id!,
+                            sign: 0,
+                        }
+                    }else{
+                        likeData= {
+                            id: this.view.id!,
+                            sign: 1,
+                        }
+                    }
+                    eventBus.likeListener(likeData).then((response) => {
+                        if (response.success){
+                            rating.forEach((element) => {
+                                element.innerHTML = response.rating.toString();
+                            })
+                        }
+                    })
                 }
             }
             this._subscribeEvent(subscription);
