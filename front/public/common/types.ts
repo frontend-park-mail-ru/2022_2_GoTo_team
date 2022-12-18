@@ -139,3 +139,8 @@ export type ImgPostData = {
     url: string,
     body: any,
 }
+
+export type NewSubsResponse = {
+    status: number,
+    ids: number[],
+}

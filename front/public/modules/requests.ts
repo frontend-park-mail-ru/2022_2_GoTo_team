@@ -2,7 +2,7 @@ import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
     CategoryData, CommentaryData, FullArticleData, ImgPostData,
-    IncompleteArticleData, LikeData, LikeResponse,
+    IncompleteArticleData, LikeData, LikeResponse, NewSubsResponse,
     RequestAnswer, SearchData, UserData,
     UserHeaderData,
     UserLoginData,
@@ -751,9 +751,9 @@ export class Requests {
     }
 
     /**
-     *
+     * Запрос id статей из подписок, созданных после указанной
      */
-    static hasNewSubs(lastId: number){
+    static hasNewSubs(lastId: number): Promise<NewSubsResponse>{
         let params = {
             url: config.hrefs.hasNewSubs,
             data: {
@@ -762,7 +762,11 @@ export class Requests {
         }
 
         return ajax.get(params).then((response) => {
-            return response!.response.ids;
+            const result: NewSubsResponse = {
+                status: response!.status,
+                ids: response!.response.ids,
+            }
+            return result
         });
     }
 }

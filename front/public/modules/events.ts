@@ -27,6 +27,7 @@ import {ConfirmMessageData} from "../components/confirmMessage/confirmMessageVie
 import ConfirmMessage, {ConfirmMessageEventBus} from "../components/confirmMessage/confirmMessage";
 import SearchHeader from "../components/searchHeader/searchHeader";
 import SharingBox, {SharingBoxEventBus} from "../components/sharingBox/sharingBox";
+import {NotificationModule} from "./notifications";
 
 
 export class Events {
@@ -144,11 +145,8 @@ export class Events {
 
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
-                if (location.hash === '') {
-                    PageLoaders.feedPage();
-                } else {
-                    URIChanger.rootPage();
-                }
+                NotificationModule.longPollSubs();
+                URIChanger.rootPage();
             } else {
                 const form = document.getElementById("login-form_inputs-wrapper");
                 switch (result.status) {
@@ -746,7 +744,7 @@ export class Events {
         })
 
         const image = document.getElementById('avatar_upload')! as HTMLInputElement;
-        if (image.files!.length > 0){
+        if (image.files!.length > 0) {
             Requests.sendProfilePicture(image.files![0]);
         }
 
@@ -1218,12 +1216,12 @@ export class Events {
 
             const addToComment = (parent: Commentary, child: Commentary) => {
                 const wrapper = parent.root.querySelector('.commentary__reply_box')!;
-                if (parent.level < 12){
+                if (parent.level < 12) {
                     wrapper.appendChild(child.root);
                     return;
                 }
                 let nextLevelWrapper = wrapper.querySelector('.commentary__new_level');
-                if (nextLevelWrapper === null){
+                if (nextLevelWrapper === null) {
                     nextLevelWrapper = document.createElement('div');
                     nextLevelWrapper.classList.add('commentary__new_level');
                     wrapper.appendChild(nextLevelWrapper);
@@ -1242,11 +1240,11 @@ export class Events {
                 }
             }
 
-            while (commentariesToCommentaries.length > 0){
+            while (commentariesToCommentaries.length > 0) {
                 const buf = commentariesToCommentaries;
-                for (const comment of buf){
-                    for (const addedCommentary of addedCommentaries){
-                        if (addedCommentary.data!.id === comment.data!.parentId){
+                for (const comment of buf) {
+                    for (const addedCommentary of addedCommentaries) {
+                        if (addedCommentary.data!.id === comment.data!.parentId) {
                             addToComment(addedCommentary, comment);
                             comment.level = addedCommentary.level + 1;
                             if (comment.level > 12) {

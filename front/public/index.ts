@@ -119,4 +119,8 @@ router
         openedPage = PageLoaders.error404();
     });
 
-NotificationModule.askPermission();
+NotificationModule.askPermission().then(() => {
+    if(window.sessionStorage.getItem('login') !== null){
+        NotificationModule.longPollSubs();
+    }
+});

@@ -1,4 +1,5 @@
 import {Requests} from "./requests";
+import {APIStrings, FrontUrl} from "../common/consts";
 
 export type NotificationParams = {
     title: string,
@@ -7,7 +8,7 @@ export type NotificationParams = {
     icon: string,
 }
 
-export class NotificationModule{
+export class NotificationModule {
     static askPermission() {
         return new Promise(function (resolve, reject) {
             const permissionResult = Notification.requestPermission(function (result) {
@@ -24,9 +25,9 @@ export class NotificationModule{
         });
     }
 
-    static makeNotification(params: NotificationParams){
+    static makeNotification(params: NotificationParams) {
         const options = {
-            body:  params.body,
+            body: params.body,
             icon: params.icon,
         }
         const notification = new Notification(params.title, options);
@@ -36,17 +37,33 @@ export class NotificationModule{
         }
     }
 
-    static  async longPollSubs() {
-        const lastId: number = window.sessionStorage.getItem('lastId') !== null ? parseInt(window.sessionStorage.getItem('lastId')!) : 0;
+    static async longPollSubs() {
+        const lastId: number = window.sessionStorage.getItem('lastSubId') !== null ? parseInt(window.sessionStorage.getItem('lastSubId')!) : 0;
         let response = await Requests.hasNewSubs(lastId);
 
         if (response.status == 502) {
             await NotificationModule.longPollSubs();
-        } else if (response.status != 200) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            await NotificationModule.longPollSubs();
+        } else if (response.status !== 200) {
+            if (response.status !== 401) {
+                await new Promise(resolve => setTimeout(resolve, 5000));
+                await NotificationModule.longPollSubs();
+            }
         } else {
+            for (const id of response.ids){
+                NotificationModule.#makeNewSubNotification(id);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
             await NotificationModule.longPollSubs();
         }
+    }
+
+    static #makeNewSubNotification(id: number){
+        const params: NotificationParams = {
+            title: 've.ru',
+            body: 'У вас в подписках новая статья!',
+            url: APIStrings.articlePage(id, false),
+            icon: '/favicon.ico',
+        }
+        NotificationModule.makeNotification(params);
     }
 }
