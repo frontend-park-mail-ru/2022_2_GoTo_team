@@ -49,6 +49,40 @@ const config = {
 const ajax = new Ajax();
 
 export class Requests {
+
+    /**
+     * Преобразует статьи из запроса в массив IncompleteArticleData
+     * @param {any[]} rawArticles т.к. вытаскивается из запроса тип "может быть любым"
+     */
+    static #parseIncompleteArticles(rawArticles: any[]): Promise<IncompleteArticleData[]>{
+        const articles: Promise<IncompleteArticleData>[] = [];
+        if (rawArticles) {
+            rawArticles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
+                articles.push(avatar.then((avatar): IncompleteArticleData => {
+                    const article: IncompleteArticleData = {
+                        id: rawArticle.id,
+                        title: rawArticle.title,
+                        description: rawArticle.description,
+                        tags: rawArticle.tags,
+                        category: rawArticle.category,
+                        rating: rawArticle.rating,
+                        likeStatus: 0,
+                        comments: rawArticle.comments,
+                        publisher: {
+                            login: rawArticle.publisher.login,
+                            username: rawArticle.publisher.username,
+                        },
+                        coverImgPath: rawArticle.cover_img_path,
+                        avatarImgPath: avatar,
+                    }
+                    return article;
+                }));
+            });
+        }
+        return Promise.all(articles);
+    }
+
     /**
      * Запрашивает статьи
      */
@@ -57,32 +91,7 @@ export class Requests {
             url: config.hrefs.articles,
         }).then((response) => {
             const result: RequestAnswer = response!;
-            const articles: Promise<IncompleteArticleData>[] = [];
-            if (result.response.articles) {
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
-                    articles.push(avatar.then((avatar): IncompleteArticleData => {
-                        const article: IncompleteArticleData = {
-                            id: rawArticle.id,
-                            title: rawArticle.title,
-                            description: rawArticle.description,
-                            tags: rawArticle.tags,
-                            category: rawArticle.category,
-                            rating: rawArticle.rating,
-                            likeStatus: 0,
-                            comments: rawArticle.comments,
-                            publisher: {
-                                login: rawArticle.publisher.login,
-                                username: rawArticle.publisher.username,
-                            },
-                            coverImgPath: rawArticle.cover_img_path,
-                            avatarImgPath: avatar,
-                        }
-                        return article;
-                    }));
-                });
-            }
-            return Promise.all(articles);
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
@@ -263,32 +272,7 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
-            const articles: Promise<IncompleteArticleData>[] = [];
-            if (result.response.articles) {
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
-                    articles.push(avatar.then((avatar): IncompleteArticleData => {
-                        const article: IncompleteArticleData = {
-                            id: rawArticle.id,
-                            title: rawArticle.title,
-                            description: rawArticle.description,
-                            tags: rawArticle.tags,
-                            category: rawArticle.category,
-                            rating: rawArticle.rating,
-                            likeStatus: 0,
-                            comments: rawArticle.comments,
-                            publisher: {
-                                login: rawArticle.publisher.login,
-                                username: rawArticle.publisher.username,
-                            },
-                            coverImgPath: rawArticle.cover_img_path,
-                            avatarImgPath: avatar,
-                        }
-                        return article;
-                    }));
-                });
-            }
-            return Promise.all(articles);
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
@@ -328,32 +312,7 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
-            const articles: Promise<IncompleteArticleData>[] = [];
-            if (result.response.articles) {
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
-                    articles.push(avatar.then((avatar): IncompleteArticleData => {
-                        const article: IncompleteArticleData = {
-                            id: rawArticle.id,
-                            title: rawArticle.title,
-                            description: rawArticle.description,
-                            tags: rawArticle.tags,
-                            category: rawArticle.category,
-                            rating: rawArticle.rating,
-                            likeStatus: 0,
-                            comments: rawArticle.comments,
-                            publisher: {
-                                login: rawArticle.publisher.login,
-                                username: rawArticle.publisher.username,
-                            },
-                            coverImgPath: rawArticle.cover_img_path,
-                            avatarImgPath: avatar,
-                        }
-                        return article;
-                    }));
-                });
-            }
-            return Promise.all(articles);
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
@@ -586,32 +545,7 @@ export class Requests {
 
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
-            const articles: Promise<IncompleteArticleData>[] = [];
-            if (result.response.articles) {
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
-                    articles.push(avatar.then((avatar): IncompleteArticleData => {
-                        const article: IncompleteArticleData = {
-                            id: rawArticle.id,
-                            title: rawArticle.title,
-                            description: rawArticle.description,
-                            tags: rawArticle.tags,
-                            category: rawArticle.category,
-                            rating: rawArticle.rating,
-                            likeStatus: 0,
-                            comments: rawArticle.comments,
-                            publisher: {
-                                login: rawArticle.publisher.login,
-                                username: rawArticle.publisher.username,
-                            },
-                            coverImgPath: rawArticle.cover_img_path,
-                            avatarImgPath: avatar,
-                        }
-                        return article;
-                    }));
-                });
-            }
-            return Promise.all(articles);
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
