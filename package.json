@@ -10,7 +10,7 @@
     "tmpl": "front/templating.sh",
     "build:scss": "node-sass --output-style compressed front/public/static/css/index.scss > front/public/static/css/index.css",
     "webpack-build": "cd ./front && NODE_ENV='development' webpack",
-    "demon": "npm run preProcess && forever start front/server/index.js",
+    "demon": "npm run preProcess && sudo forever start front/server/index.js",
     "lint": "npx eslint . --ext .js",
     "stop": "forever stop front/server/index.js ",
     "test": "echo \"Error: no test specified\" && exit 1",
