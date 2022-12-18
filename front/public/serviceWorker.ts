@@ -1,4 +1,6 @@
 // не используется. Перешли на вебпак
+import {response} from "express";
+
 const cacheName = 've.ru';
 const APIPrefix = '/api/v1/';
 const notifStringLenLimit = 36;
@@ -60,15 +62,16 @@ self.addEventListener('fetch', (event) => {
     if (navigator.onLine) {
         console.log('SW кеширует', url);
         //@ts-ignore
-        const response = await fetch(event.request);
-        //@ts-ignore
-        cache.match(event.request).then((cachedResponse) => {
+        return fetch(event.request).then((response) => {
+            //@ts-ignore
+            cache.match(event.request).then((cachedResponse) => {
                 if (cachedResponse === undefined) {
                     //@ts-ignore
                     cache.put(event.request, response.clone());
                 }
             })
-        return response;
+            return response;
+        });
     }
 
 
@@ -77,16 +80,17 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.open(cacheName).then((cache) => {
             //@ts-ignore
-            const cachedResponse = await cache.match(event.request);
-            console.log('SW выдаёт из кэша', url);
-            // выдаём кэш, если он есть
-            if (cachedResponse) {
-                console.log(cachedResponse);
-                return cachedResponse;
-            }
-            console.log('No cached for ', url);
-            //@ts-ignore
-            return fetch(event.request);
+            return cache.match(event.request).then((cachedResponse) => {
+                console.log('SW выдаёт из кэша', url);
+                // выдаём кэш, если он есть
+                if (cachedResponse) {
+                    console.log(cachedResponse);
+                    return cachedResponse;
+                }
+                console.log('No cached for ', url);
+                //@ts-ignore
+                return fetch(event.request);
+            });
         })
     );
 

@@ -2,7 +2,7 @@
 
 import {PageLoaders} from "./modules/pageLoaders.js";
 import Router from "./modules/router.js";
-import {API} from "./common/consts.js";
+import {API, FrontUrl} from "./common/consts.js";
 import {SearchData} from "./common/types";
 import Page from "./pages/_basic/page";
 import {Requests} from "./modules/requests";
@@ -15,11 +15,11 @@ const router = new Router({
 let openedPage: Page;
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/serviceWorker.js', {scope: '/'})
+    navigator.serviceWorker.register(FrontUrl + '/serviceWorker.js', {scope: '/', type: 'module'})
         .then(function (registration) {
             // Registration was successful
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }).catch(function (err) {
+        }).catch((err) => {
         // registration failed :(
         console.log('ServiceWorker registration failed: ', err);
     });
