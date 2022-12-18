@@ -5,6 +5,7 @@ import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
+import NoResults from "../../components/noResults/noResults";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -33,15 +34,19 @@ export default class Feed extends Page{
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {
-            console.log(articles);
-            if (articles && Array.isArray(articles)) {
+            if (articles.length > 0){
                 this.view.mainContentElement!.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
                     articleView.render(article)
-                    this.view.mainContentElement!.appendChild(articleView.root);
                     articleView.subscribe(articleEventBus);
+                    this.view.mainContentElement!.appendChild(articleView.root);
                 })
+            }else{
+                const noResults = new NoResults();
+                noResults.render();
+                this.view.mainContentElement!.innerHTML = '';
+                this.view.mainContentElement!.appendChild(noResults.root);
             }
         });
         Events.updateAuth();
