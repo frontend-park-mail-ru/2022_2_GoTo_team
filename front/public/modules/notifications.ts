@@ -49,7 +49,8 @@ export class NotificationModule {
                 await NotificationModule.longPollSubs();
             }
         } else {
-            for (const id of response.ids){
+            window.sessionStorage.setItem('lastSubId', response.ids[0].toString());
+            for (const id of response.ids.reverse()){
                 NotificationModule.#makeNewSubNotification(id);
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
