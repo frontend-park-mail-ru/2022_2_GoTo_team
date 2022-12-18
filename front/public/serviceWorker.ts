@@ -39,6 +39,7 @@ self.addEventListener('install', (event) => {
             }),
     );
 });
+
 self.addEventListener('fetch', (event) => {
 
     // не кешируем запросы к апи
@@ -63,14 +64,16 @@ self.addEventListener('fetch', (event) => {
         console.log('SW кеширует', url);
         //@ts-ignore
         return fetch(event.request).then((response) => {
-            //@ts-ignore
-            cache.match(event.request).then((cachedResponse) => {
-                if (cachedResponse === undefined) {
-                    //@ts-ignore
-                    cache.put(event.request, response.clone());
-                }
-            })
-            return response;
+            return caches.open(cacheName).then((cache) => {
+                //@ts-ignore
+                cache.match(event.request).then((cachedResponse) => {
+                    if (cachedResponse === undefined) {
+                        //@ts-ignore
+                        cache.put(event.request, response.clone());
+                    }
+                })
+                return response;
+            });
         });
     }
 
@@ -95,6 +98,25 @@ self.addEventListener('fetch', (event) => {
     );
 
 });
+self.addEventListener('tralala', (e) => {
+    console.log(e);
+    const options = {
+        icon: '',
+        image: 'logo-for-sharing.png',
+        lang: 'ru-RU',
+        vibrate: [200, 300, 200, 300],
+        body: 'Новое событие под одной из Ваших статей',
+        actions: [
+
+        ],
+    };
+    //@ts-ignore
+    e.waitUntil(
+        //@ts-ignore
+        self.registration.showNotification("Уведомление", options),
+    );
+});
+
 /*
 // Обработчик для пушей
 self.addEventListener('push', (e) => {

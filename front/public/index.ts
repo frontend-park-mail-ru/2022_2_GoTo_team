@@ -6,6 +6,7 @@ import {API, FrontUrl} from "./common/consts.js";
 import {SearchData} from "./common/types";
 import Page from "./pages/_basic/page";
 import {Requests} from "./modules/requests";
+import {NotificationModule} from "./modules/notifications";
 
 const router = new Router({
     mode: 'history',
@@ -117,3 +118,5 @@ router
         }
         openedPage = PageLoaders.error404();
     });
+
+NotificationModule.askPermission();
