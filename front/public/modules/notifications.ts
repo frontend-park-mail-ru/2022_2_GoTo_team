@@ -1,3 +1,11 @@
+import {Requests} from "./requests";
+
+export type NotificationParams = {
+    title: string,
+    body: string,
+    url: string,
+    icon: string,
+}
 
 export class NotificationModule{
     static askPermission() {
@@ -16,12 +24,21 @@ export class NotificationModule{
         });
     }
 
-    static makeNotification(title: string){
-        const notification = new Notification('Уведомление');
+    static makeNotification(params: NotificationParams){
+        const options = {
+            body:  params.body,
+            icon: params.icon,
+        }
+        const notification = new Notification(params.title, options);
+        notification.onclick = (event) => {
+            event.preventDefault(); // prevent the browser from focusing the Notification's tab
+            window.open(params.url);
+        }
     }
 
     static  async longPollSubs() {
-        let response = await fetch("/subscribe");
+        const lastId: number = window.sessionStorage.getItem('lastId') !== null ? parseInt(window.sessionStorage.getItem('lastId')!) : 0;
+        let response = await Requests.hasNewSubs(lastId);
 
         if (response.status == 502) {
             await NotificationModule.longPollSubs();

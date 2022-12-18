@@ -43,6 +43,7 @@ const config = {
         unsubscribeCategory: '/category/unsubscribe',
         sendProfilePicture: '/file/upload/profile/photo',
         getAvatar: '/user/avatar',
+        hasNewSubs: '/subscribes/hasNewSubs'
     }
 }
 
@@ -746,6 +747,22 @@ export class Requests {
                 rating: 0,
             }
             return likeResponse;
+        });
+    }
+
+    /**
+     *
+     */
+    static hasNewSubs(lastId: number){
+        let params = {
+            url: config.hrefs.hasNewSubs,
+            data: {
+                articleId: lastId,
+            },
+        }
+
+        return ajax.get(params).then((response) => {
+            return response!.response.ids;
         });
     }
 }

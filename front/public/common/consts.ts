@@ -7,7 +7,7 @@ const protocol = {
 export const BaseUrl = '127.0.0.1';
 //export const BaseUrl = 'gototeam.ru';
 
-export const BackendUrl = protocol.http + BaseUrl + ':8080';
+export const BackendUrl = protocol.https + BaseUrl + ':8080';
 //export const BackendUrl = protocol.https + BaseUrl + ':8080';
 export const FrontUrl = protocol.https + BaseUrl;
 //export const FrontUrl = protocol.https + BaseUrl;
