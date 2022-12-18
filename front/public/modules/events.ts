@@ -1203,6 +1203,7 @@ export class Events {
                 const eventBus: CommentaryComponentEventBus = {
                     goToAuthorFeed: URIChanger.userFeedPage,
                     showAnswerForm: Events.addCommentaryFormToComment,
+                    likeListener: Events.commentaryLikeListener,
                 }
                 commentary.subscribe(eventBus);
                 renderedCommentaries.push(commentary);
@@ -1478,7 +1479,17 @@ export class Events {
         Events.openAlertMessage('Размер аватарки не должен превышать 4Мб');
     }
 
+    /**
+     * Действие лайка/дизлайка/их снятия со статьи
+     */
     static articleLikeListener(data: LikeData): Promise<LikeResponse> {
         return Requests.changeArticleLikeStatus(data);
+    }
+
+    /**
+     * Действие лайка/дизлайка/их снятия с комментария
+     */
+    static commentaryLikeListener(data: LikeData): Promise<LikeResponse> {
+        return Requests.changeCommentaryLikeStatus(data);
     }
 }

@@ -692,11 +692,40 @@ export class Requests {
     }
 
     /**
-     * Получение пути к аватару по логину
+     * Запрос лайка/дизлайка/их снятия со статьи
      */
     static changeArticleLikeStatus(data: LikeData): Promise<LikeResponse> {
         let params = {
             url: config.hrefs.articleLike,
+            data: {
+                id: data.id,
+                sign: data.sign,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            console.log(response);
+            if (response!.status == 200){
+                const likeResponse: LikeResponse = {
+                    success: true,
+                    rating: response!.response.rating,
+                }
+                return likeResponse;
+            }
+            const likeResponse: LikeResponse = {
+                success: false,
+                rating: 0,
+            }
+            return likeResponse;
+        });
+    }
+
+    /**
+     * Запрос лайка/дизлайка/их снятия с комментария
+     */
+    static changeCommentaryLikeStatus(data: LikeData): Promise<LikeResponse> {
+        let params = {
+            url: config.hrefs.commentaryLike,
             data: {
                 id: data.id,
                 sign: data.sign,
