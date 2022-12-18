@@ -11,20 +11,26 @@ app.use(body.json());
 const https = require('https');
 const fs = require('fs');
 
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 80;
 
 app.get(/.*/, (req: any, res: any) => {
     res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 })
 
-https
-    .createServer(
-        {
-            key: fs.readFileSync(path.resolve(__dirname, 'cert', 'key.pem')),
-            cert: fs.readFileSync(path.resolve(__dirname, 'cert', 'cert.pem')),
-        },
-        app
-    )
-    .listen(port, function () {
-    console.log(`Server listening port ${port}`);
-});
+try{
+    https
+        .createServer(
+            {
+                key: fs.readFileSync(path.resolve(__dirname, 'cert', 'key.pem')),
+                cert: fs.readFileSync(path.resolve(__dirname, 'cert', 'cert.pem')),
+            },
+            app
+        )
+        .listen(port, function () {
+            console.log(`Server listening port ${port}`);
+        });
+}catch (e) {
+    app.listen(port, function () {
+        console.log(`Server listening port ${port}`);
+    });
+}
