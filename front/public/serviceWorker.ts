@@ -38,7 +38,11 @@ self.addEventListener('fetch', (event) => {
     /** online */
     if (navigator.onLine) {
         // @ts-ignore
-        return fromNetwork(event.request);
+        event.respondWith(
+            // @ts-ignore
+            fromNetwork(event.request)
+        );
+        return;
     }
 
     /** cache */
@@ -57,7 +61,8 @@ function fromNetwork(request: RequestInfo): Promise<Response> {
         Promise.resolve().then(() => {
             //@ts-ignore
             const url = request.url.toString();
-            if (shouldCache(url)){
+            //@ts-ignore
+            if (request.method !== 'POST' && shouldCache(url)){
                 console.log('SW кеширует', url);
                 caches.open(cacheName).then((cache) => {
                     cache.match(request).then((cachedResponse) => {

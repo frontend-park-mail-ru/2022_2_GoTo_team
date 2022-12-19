@@ -147,8 +147,11 @@ export class Events {
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
                 NotificationModule.longPollSubs();
-                Events.#closeOverlay();
-                Events.updateAuth();
+                if (window.location.href === FrontUrl + '/'){
+                    PageLoaders.feedPage();
+                }else{
+                    URIChanger.rootPage();
+                }
             } else {
                 const form = document.getElementById("login-form_inputs-wrapper");
                 switch (result.status) {
@@ -201,8 +204,11 @@ export class Events {
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
                 NotificationModule.longPollSubs();
-                Events.#closeOverlay();
-                Events.updateAuth();
+                if (window.location.href === FrontUrl + '/'){
+                    PageLoaders.feedPage();
+                }else{
+                    URIChanger.rootPage();
+                }
             } else {
                 switch (result.status) {
                     case 409:

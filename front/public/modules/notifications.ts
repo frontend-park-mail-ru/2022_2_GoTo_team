@@ -41,21 +41,23 @@ export class NotificationModule {
         const lastId: number = window.sessionStorage.getItem('lastSubId') !== null ? parseInt(window.sessionStorage.getItem('lastSubId')!) : 0;
         let response = await Requests.hasNewSubs(lastId);
 
-        if (response.status == 502) {
-            await NotificationModule.longPollSubs();
-        } else if (response.status !== 200) {
+        if (response.status !== 200) {
             if (response.status !== 401) {
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                await NotificationModule.longPollSubs();
+                return;
             }
         } else {
-            window.sessionStorage.setItem('lastSubId', response.ids[0].toString());
-            for (const id of response.ids.reverse()){
-                NotificationModule.#makeNewSubNotification(id);
-                await new Promise(resolve => setTimeout(resolve, 1000));
+            if(response.ids.length > 0){
+                window.sessionStorage.setItem('lastSubId', response.ids[0].toString());
+                if (lastId !== 0){
+                    for (const id of response.ids.reverse()){
+                        NotificationModule.#makeNewSubNotification(id);
+                        await new Promise(resolve => setTimeout(resolve, 5000));
+                    }
+                }
             }
-            await NotificationModule.longPollSubs();
         }
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        NotificationModule.longPollSubs();
     }
 
     static #makeNewSubNotification(id: number){
