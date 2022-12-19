@@ -374,11 +374,11 @@ body {
   border: 1px solid rgba(255, 46, 0, 0.2);
   border-radius: 11px;
   cursor: pointer;
-
+  user-select: none;
   &:hover {
     background: $slight-dark;
   }
-;
+
 }
 
 .article__bottom_bar {
@@ -403,17 +403,18 @@ body {
     color: $main;
     fill: $main;
   }
-;
+
 
   svg {
     width: 20px;
     height: 20px;
   }
-;
-}
 
-.article__comments_count__count {
-  margin: 0 3px 0 3px;
+  &__count {
+    margin: 0 3px 0 3px;
+    user-select: none;
+  }
+
 }
 
 .article__rating {
@@ -747,9 +748,17 @@ div.log-button-container {
   margin-top: 10px;
 }
 
+.search_header__count {
+  font-family: 'Arial', serif;
+  padding: 10px 3px;
+  font-size: 16px;
+  margin: 10px;
+}
+
 .rating {
   font-size: 16px;
   color: black;
+
   &[data-sign="1"] {
     color: $positive;
   }
@@ -1061,7 +1070,7 @@ div.log-button-container {
   font-size: 15px;
   padding: 5px;
   border-radius: 10px;
-  margin: 5px 0 5px;
+  margin: 5px;
 }
 
 .advanced_search__apply {
@@ -1074,12 +1083,13 @@ div.log-button-container {
 
 .advanced_search__sidebar__tags {
   flex-wrap: wrap;
-  margin: 5px 0 5px 0;
+  margin: 5px 0 5px 10px;
 }
 
 .advanced_search__sidebar__tags__message {
   font-size: 15px;
   padding: 10px;
+  margin-left: -10px;
 }
 
 .article_edit__add_tag {
@@ -1297,6 +1307,7 @@ div.log-button-container {
     color: $main;
     font-size: 30px;
     height: fit-content;
+
     &__line {
       margin: 5px 0;
     }
@@ -1307,21 +1318,23 @@ div.log-button-container {
   }
 }
 
-.like{
+.like {
   &[data-pressed="true"] {
     @include svgColor($positive);
     cursor: default;
-    &:hover{
+
+    &:hover {
       background: none;
     }
   }
 }
 
-.dislike{
+.dislike {
   &[data-pressed="true"] {
     @include svgColor($negative);
     cursor: default;
-    &:hover{
+
+    &:hover {
       background: none;
     }
   }

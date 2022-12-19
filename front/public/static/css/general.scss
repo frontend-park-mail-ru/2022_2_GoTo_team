@@ -29,6 +29,7 @@
   margin: 5px 5px 5px 5px;
   cursor: pointer;
   box-sizing: border-box;
+  user-select: none;
   &:active {
     transform: translateY(2px);
   };
