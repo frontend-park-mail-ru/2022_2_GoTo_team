@@ -12,7 +12,7 @@ const cacheUrls = [
 ];
 
 const noCacheUrls = [
-    '/api/v1/subscribes/hasNewSubs',
+    '/feed/subscriptions/has-new-articles-from',
 ]
 self.addEventListener('install', (event) => {
     console.log('SW is installing');
