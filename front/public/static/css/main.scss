@@ -439,6 +439,7 @@ body {
 
 .article__rating__count {
   margin: auto 3px auto 3px;
+  user-select: none;
 }
 
 .login_form {
@@ -1307,13 +1308,19 @@ div.log-button-container {
 .like{
   &[data-pressed="true"] {
     @include svgColor($positive);
-    cursor: none;
+    cursor: default;
+    &:hover{
+      background: none;
+    }
   }
 }
 
 .dislike{
   &[data-pressed="true"] {
     @include svgColor($negative);
-    cursor: none;
+    cursor: default;
+    &:hover{
+      background: none;
+    }
   }
 }

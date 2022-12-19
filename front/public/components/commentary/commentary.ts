@@ -83,21 +83,18 @@ export default class Commentary extends BasicComponent {
                 const rating = this.root.querySelector('.rating')!;
                 let likeData: LikeData;
                 if (dislikeButton.getAttribute('data-pressed') === 'true') {
-                    likeData = {
-                        id: this.data!.id!,
-                        sign: 0,
-                    }
-                } else {
-                    likeData = {
-                        id: this.data!.id!,
-                        sign: -1,
-                    }
-                    const preLikeData: LikeData = {
-                        id: this.data!.id!,
-                        sign: 0,
-                    }
-                    await eventBus.likeListener(preLikeData);
+                    return;
                 }
+                likeData = {
+                    id: this.data!.id!,
+                    sign: -1,
+                }
+                const preLikeData: LikeData = {
+                    id: this.data!.id!,
+                    sign: 0,
+                }
+                await eventBus.likeListener(preLikeData);
+
                 eventBus.likeListener(likeData).then((response) => {
                     if (response.success) {
                         rating.innerHTML = response.rating.toString();
@@ -122,21 +119,18 @@ export default class Commentary extends BasicComponent {
                 const rating = this.root.querySelector('.rating')!;
                 let likeData: LikeData;
                 if (likeButton.getAttribute('data-pressed') === 'true') {
-                    likeData = {
-                        id: this.data!.id!,
-                        sign: 0,
-                    }
-                } else {
-                    likeData = {
-                        id: this.data!.id!,
-                        sign: 1,
-                    }
-                    const preLikeData: LikeData = {
-                        id: this.data!.id!,
-                        sign: 0,
-                    }
-                    await eventBus.likeListener(preLikeData);
+                    return;
                 }
+                likeData = {
+                    id: this.data!.id!,
+                    sign: 1,
+                }
+                const preLikeData: LikeData = {
+                    id: this.data!.id!,
+                    sign: 0,
+                }
+                await eventBus.likeListener(preLikeData);
+
                 eventBus.likeListener(likeData).then((response) => {
                     if (response.success) {
                         rating.innerHTML = response.rating.toString();

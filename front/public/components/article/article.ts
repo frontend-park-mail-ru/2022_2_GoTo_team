@@ -199,11 +199,10 @@ export default class Article extends BasicComponent {
                 event: 'click',
                 listener: async () => {
                     const rating = this.root.querySelectorAll('.rating')!;
-                    let likeData: LikeData;
                     if (button.getAttribute('data-pressed') === 'true') {
-                        return
+                        return;
                     }
-                    likeData = {
+                    let likeData: LikeData = {
                         id: this.view.id!,
                         sign: 1,
                     }
