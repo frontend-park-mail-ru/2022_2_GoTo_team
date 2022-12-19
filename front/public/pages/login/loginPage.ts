@@ -38,7 +38,7 @@ export default class LoginPage extends Page {
             goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: PageLoaders.feedPage,
-            //goToSubscribeFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             //goToNewArticle: PageLoaders.editArticle,
             goToNewArticle: URIChanger.editArticle,
             openAdvSearch: Events.openAdvSearchListener,

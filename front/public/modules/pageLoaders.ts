@@ -10,12 +10,13 @@ import {CategoryData, FullArticleData, SearchData, UserHeaderData} from "../comm
 import SearchPage from "../pages/search/searchPage.js";
 import Page from "../pages/_basic/page";
 import Page404 from "../pages/page404/page404";
+import SubscriptionsFeed from "../pages/subscriptionsFeed/subscriptionsFeed";
 
 const root = document.getElementsByTagName('body')[0];
 
 export class PageLoaders {
     /**
-     * Отрисовывает страницу популярных страниц
+     * Отрисовывает страницу популярных статей
      */
     static feedPage(): Page {
         const page = new Feed(root);
@@ -41,6 +42,17 @@ export class PageLoaders {
      */
     static registrationPage(): Page {
         const page = new RegistrationPage(root);
+        page.render().then(() => {
+            page.subscribe();
+        });
+        return page;
+    }
+
+    /**
+     * Отрисовывает страницу подписок
+     */
+    static subscriptionFeedPage(): Page {
+        const page = new SubscriptionsFeed(root);
         page.render().then(() => {
             page.subscribe();
         });

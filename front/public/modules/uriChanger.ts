@@ -17,6 +17,13 @@ export class URIChanger {
     }
 
     /**
+     * Перемещает на страницу подписок
+     */
+    static subscriptionFeedPage() {
+        window.history.pushState(null, '', FrontUrl + APIStrings.subscriptionsPage());
+    }
+
+    /**
      * Перемещает на страницу автора
      */
     static userFeedPage(login: string) {

@@ -84,7 +84,7 @@ export default class UserFeed extends Page {
             goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             goToNewArticle: Events.newArticlePageListener,
             openAdvSearch: Events.openAdvSearchListener,
             search: Events.searchFormListener,

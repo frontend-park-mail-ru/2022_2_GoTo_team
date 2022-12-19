@@ -24,21 +24,17 @@ export default class SettingsPage extends Page {
      */
     async render() {
         Events.scrollUp();
-        const authCheck = await Requests.getSessionInfo();
-        if (authCheck.status === 401) {
-            alert("Вы не авторизованы");
-            URIChanger.feedPage();
-            return;
+        await this.view.render();
+        if (window.sessionStorage.getItem('login') === null){
+            this.view.mainContentElement!.innerHTML = '';
+            Events.openAlertMessage('Вы не авторизованы', 'На главную', URIChanger.rootPage);
+        } else {
+            const userData = await Requests.getProfile();
+            const settingsForm = new Settings();
+            await settingsForm.render(userData);
+            this.view.mainContentElement!.appendChild(settingsForm.root);
+            this.view.children.set('form', settingsForm);
         }
-
-        this.view.render();
-
-        const userData = await Requests.getProfile();
-        const settingsForm = new Settings();
-        await settingsForm.render(userData);
-        this.view.mainContentElement!.appendChild(settingsForm.root);
-        this.view.children.set('form', settingsForm);
-
         Events.updateAuth();
     }
 
@@ -50,7 +46,7 @@ export default class SettingsPage extends Page {
             goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: Events.newArticlePageListener,
             openAdvSearch: Events.openAdvSearchListener,

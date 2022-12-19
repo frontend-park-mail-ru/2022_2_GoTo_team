@@ -7,6 +7,7 @@ import {SearchData} from "./common/types";
 import Page from "./pages/_basic/page";
 import {Requests} from "./modules/requests";
 import {NotificationModule} from "./modules/notifications";
+import {Events} from "./modules/events";
 
 const router = new Router({
     mode: 'history',
@@ -32,6 +33,12 @@ router
             openedPage.destroy();
         }
         openedPage = PageLoaders.feedPage();
+    })
+    .add(API.subscribesFeed, () => {
+        if (openedPage !== undefined) {
+            openedPage.destroy();
+        }
+        openedPage = PageLoaders.subscriptionFeedPage();
     })
     .add(API.settingsPage, () => {
         if (openedPage !== undefined) {

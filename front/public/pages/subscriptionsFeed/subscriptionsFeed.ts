@@ -1,62 +1,45 @@
+import SubscriptionsFeedView from "./subscriptionsFeedView";
+import {Requests} from "../../modules/requests.js"
+import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
-import CategoryFeedView from "./categoryFeedView.js";
-import {Requests} from "../../modules/requests.js";
-import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
-import CategoryFeedHeader, {
-    CategoryFeedHeaderEventBus
-} from "../../components/categoryFeedHeader/categoryFeedHeader.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
-import {CategoryData} from "../../common/types";
 import NoResults from "../../components/noResults/noResults";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
- * @class  CategoryFeed
+ * @class SubscriptionsFeed
  */
-export default class CategoryFeed extends Page {
-    view: CategoryFeedView;
+export default class SubscriptionsFeed extends Page{
+    view: SubscriptionsFeedView;
 
-    /**
-     * Страница содержит главный компонент
-     */
     constructor(root: HTMLElement) {
         super(root);
-        this.view = new CategoryFeedView(root);
+        this.view = new SubscriptionsFeedView(root);
     }
 
     /**
      * Отобразить подконтрольную страницу.
-     * Должен быть вызван render() для обновления.
      */
-    async render(categoryData: CategoryData): Promise<void> {
+    async render() {
         Events.scrollUp();
+        const articleEventBus : ArticleComponentEventBus = {
+            goToAuthorFeed: Events.goToAuthorFeed,
+            goToCategoryFeed: Events.goToCategoryFeed,
+            openArticle: URIChanger.articlePage,
+            openTagPage: URIChanger.searchByTagPage,
+            editArticle: Events.editArticleListener,
+            shareListener: Events.openShareBox,
+            likeListener: Events.articleLikeListener,
+            openLogin: Events.makeLoginOverlayListener,
+        }
         await this.view.render();
-
-        const eventBus: CategoryFeedHeaderEventBus = {
-            subscribe: Events.categorySubscribeListener,
-            unsubscribe: Events.categoryUnsubscribeListener,
-        };
-
-        const header = new CategoryFeedHeader();
-        header.render(categoryData);
-        header.subscribe(eventBus);
-        this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
-
-        Requests.getCategoryArticles(categoryData.name).then((articles) => {
-            const articleEventBus: ArticleComponentEventBus = {
-                goToAuthorFeed: Events.goToAuthorFeed,
-                goToCategoryFeed: Events.goToCategoryFeed,
-                openArticle: URIChanger.articlePage,
-                openTagPage: URIChanger.searchByTagPage,
-                editArticle: Events.editArticleListener,
-                shareListener: Events.openShareBox,
-                likeListener: Events.articleLikeListener,
-                openLogin: Events.makeLoginOverlayListener,
-            }
-
-            if (articles && Array.isArray(articles)) {
+        if (window.sessionStorage.getItem('login') === null){
+            this.view.mainContentElement!.innerHTML = '';
+            Events.openAlertMessage('Вы не авторизованы', 'На главную', URIChanger.rootPage);
+        } else{
+            Requests.getSubscriptionFeed().then((articles) => {
                 if (articles.length > 0){
                     this.view.mainContentElement!.innerHTML = '';
                     articles.forEach((article) => {
@@ -71,8 +54,8 @@ export default class CategoryFeed extends Page {
                     this.view.mainContentElement!.innerHTML = '';
                     this.view.mainContentElement!.appendChild(noResults.root);
                 }
-            }
-        });
+            });
+        }
 
         Events.updateAuth();
     }
@@ -80,7 +63,7 @@ export default class CategoryFeed extends Page {
     /**
      * Подписка на связанные события
      */
-    async subscribe(): Promise<void> {
+    async subscribe() {
         const navbarEventBus: NavbarEventBus = {
             goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,

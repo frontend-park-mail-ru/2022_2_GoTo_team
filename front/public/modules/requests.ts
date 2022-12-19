@@ -43,7 +43,8 @@ const config = {
         unsubscribeCategory: '/category/unsubscribe',
         sendProfilePicture: '/file/upload/profile/photo',
         getAvatar: '/user/avatar',
-        hasNewSubs: '/feed/subscriptions/has-new-articles-from'
+        hasNewSubs: '/feed/subscriptions/has-new-articles-from',
+        subscribesFeed: '/subscribes/feed',
     }
 }
 
@@ -234,6 +235,17 @@ export class Requests {
         window.sessionStorage.clear();
     }
 
+    /**
+     * Запрашивает статьи из подписок
+     */
+    static getSubscriptionFeed(): Promise<IncompleteArticleData[]> {
+        return ajax.get({
+            url: config.hrefs.subscribesFeed,
+        }).then((response) => {
+            const result: RequestAnswer = response!;
+            return Requests.#parseIncompleteArticles(result.response.articles);
+        });
+    }
 
     /**
      * Информация в шапку страницы автора

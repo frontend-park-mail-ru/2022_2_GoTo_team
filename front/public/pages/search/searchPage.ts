@@ -113,7 +113,7 @@ export default class SearchPage extends Page {
             goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: Events.newArticlePageListener,
             openAdvSearch: Events.openAdvSearchListener,

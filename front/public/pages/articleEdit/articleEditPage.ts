@@ -6,12 +6,16 @@ import {NavbarEventBus} from "../../components/navbar/navbar";
 import {ArticleEditEventBus} from "../../components/articleEdit/articleEdit.js";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {FullArticleData} from "../../common/types";
+import SettingsPageView from "../settingsPage/settingsPageView";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
  * @class ArticleEditPage
  */
 export default class ArticleEditPage extends Page {
+
+    view: ArticleEditPageView;
+
     /**
      * Страница содержит главный компонент
      * @param {HTMLElement} root
@@ -32,6 +36,10 @@ export default class ArticleEditPage extends Page {
         }else{
             await this.view.render();
         }
+        if (window.sessionStorage.getItem('login') === null){
+            this.view.mainContentElement!.innerHTML = '';
+            Events.openAlertMessage('Вы не авторизованы', 'На главную', URIChanger.rootPage);
+        }
         Events.updateAuth();
     }
 
@@ -43,7 +51,7 @@ export default class ArticleEditPage extends Page {
             goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: Events.newArticlePageListener,
             openAdvSearch: Events.openAdvSearchListener,

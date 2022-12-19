@@ -39,6 +39,7 @@ body {
   color: $light;
   padding: 0 10px;
   line-height: 55px;
+  text-decoration: none;
 
   &:hover {
     background: $slight-darken-main;
@@ -152,6 +153,7 @@ body {
   border: 2px solid $light;
   box-sizing: border-box;
   user-select: none;
+  text-decoration: none;
 }
 
 .navbar__logo:hover {

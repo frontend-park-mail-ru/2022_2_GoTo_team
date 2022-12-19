@@ -1,30 +1,21 @@
 import PageView from "../_basic/pageView.js";
 import Navbar from "../../components/navbar/navbar.js";
-import ArticleEdit from "../../components/articleEdit/articleEdit.js";
-import {FullArticleData} from "../../common/types";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
- * @class ArticleEditPageView
+ * @class SubscriptionsFeedView
  */
-export default class ArticleEditPageView extends PageView {
+export default class SubscriptionsFeedView extends PageView {
     mainContentElement: HTMLElement | undefined;
 
-    /**
-     * @param {HTMLElement} root
-     */
     constructor(root: HTMLElement) {
         super(root);
     }
 
-    /**
-     * Перерисовать главную страницу
-     */
-    async render(articleData?: FullArticleData) {
-        super.render();
+    async render() {
+        await super.render();
         const navbar = new Navbar();
         await navbar.render();
-        this.children.set('navbar', navbar);
         this.root.appendChild(navbar.root);
 
         const rootEl = document.createElement('div');
@@ -40,13 +31,7 @@ export default class ArticleEditPageView extends PageView {
         this.mainContentElement = mainContentElement;
         this.root.appendChild(this.mainContentElement);
 
-        const editView = new ArticleEdit();
-        await editView.render(articleData);
-        mainContentElement.appendChild(editView.root);
         this.root.appendChild(document.createElement('div'));
-
-
-        this.children.set('edit', editView);
         this.children.set('navbar', navbar);
     }
 }

@@ -8,9 +8,7 @@ export const BaseUrl = '127.0.0.1';
 //export const BaseUrl = 'gototeam.ru';
 
 export const BackendUrl = protocol.https + BaseUrl + ':8080';
-//export const BackendUrl = protocol.https + BaseUrl + ':8080';
 export const FrontUrl = protocol.https + BaseUrl;
-//export const FrontUrl = protocol.https + BaseUrl;
 
 export const APIurl = BackendUrl + '/api/v1';
 
@@ -30,19 +28,21 @@ export const SubscribeErrors = {
 
 export const API = {
     root: /^$/,
-    feedPage: /feed$/,
-    settingsPage: /settings$/,
-    articlePage: /article\/([0-9]+)(\?comments)?$/,
-    categoryPage: /category\/(.+)$/,
-    authorPage: /author\/(.+)$/,
-    newArticlePage: /new_article$/,
-    articleEditPage: /article\/([0-9]+)\/edit$/,
-    searchPage: /search(\/([^\/]+))?(\/publisher\/([^\/]+))?(\/tags\/(.+))?$/,
+    feedPage: /^feed$/,
+    subscribesFeed: /^subscribes\/feed$/,
+    settingsPage: /^settings$/,
+    articlePage: /^article\/([0-9]+)(\?comments)?$/,
+    categoryPage: /^category\/(.+)$/,
+    authorPage: /^author\/(.+)$/,
+    newArticlePage: /^new_article$/,
+    articleEditPage: /^article\/([0-9]+)\/edit$/,
+    searchPage: /^search(\/([^\/]+))?(\/publisher\/([^\/]+))?(\/tags\/(.+))?$/,
 }
 
 export const APIStrings = {
-    root: () => {return ''},
+    root: () => {return '/'},
     feedPage: () => {return '/feed'},
+    subscriptionsPage: () => {return '/subscribes/feed'},
     settingsPage: () => {return '/settings'},
     articlePage: (id: number, comments: boolean) => {
         if (comments){

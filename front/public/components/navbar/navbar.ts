@@ -6,7 +6,7 @@ export type NavbarEventBus = {
     goToRoot: Listener,
     goToHotFeed: Listener,
     //goToNewFeed: Listener,
-    //goToSubscribeFeed: Listener,
+    goToSubscribeFeed: Listener,
     goToNewArticle: Listener,
     openAdvSearch: Listener,
     search: (request: string) => void,
@@ -31,10 +31,16 @@ export default class Navbar extends BasicComponent {
 
     async subscribe(eventBus: NavbarEventBus) {
         let subscription: Subscription;
-        const logo = this.root.querySelector('.navbar__logo')!;
-        logo.addEventListener('click', eventBus.goToRoot);
 
-        const popular = this.root.querySelectorAll('.navbar__button')[0];
+        const logo = this.root.querySelector('.navbar__logo')!;
+        subscription = {
+            element: logo,
+            event: 'click',
+            listener: eventBus.goToRoot,
+        }
+        this._subscribeEvent(subscription);
+
+        const popular = this.root.querySelector('#navbar__popular')!;
         subscription = {
             element: popular,
             event: 'click',
@@ -42,13 +48,19 @@ export default class Navbar extends BasicComponent {
         }
         this._subscribeEvent(subscription);
         ///const newFeed = this.root.querySelectorAll('.navbar__button')[1];
-        //const subscribeFeed = this.root.querySelectorAll('.navbar__button')[2];
+        const subscribeFeed = this.root.querySelector('#navbar__subscribes')!;
+        subscription = {
+            element: subscribeFeed,
+            event: 'click',
+            listener: eventBus.goToSubscribeFeed,
+        }
+        this._subscribeEvent(subscription);
         //popular.addEventListener('click', eventBus.goToHotFeed);
         //newFeed.addEventListener('click', eventBus.goToNewFeed);
         //subscribeFeed.addEventListener('click', eventBus.goToSubscribeFeed);
 
 
-        const newArticle = this.root.querySelectorAll('.navbar__button')[1];
+        const newArticle = this.root.querySelectorAll('.navbar__button')[2];
         newArticle.addEventListener('click', () => {
             eventBus.goToNewArticle();
         });
