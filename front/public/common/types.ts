@@ -129,7 +129,7 @@ export type LikeData = {
 }
 
 export type LikeResponse = {
-    success: boolean,
+    status: number,
     rating: number
 }
 

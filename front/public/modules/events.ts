@@ -1212,6 +1212,7 @@ export class Events {
                     goToAuthorFeed: URIChanger.userFeedPage,
                     showAnswerForm: Events.addCommentaryFormToComment,
                     likeListener: Events.commentaryLikeListener,
+                    openLogin: Events.makeLoginOverlayListener,
                 }
                 commentary.subscribe(eventBus);
                 renderedCommentaries.push(commentary);

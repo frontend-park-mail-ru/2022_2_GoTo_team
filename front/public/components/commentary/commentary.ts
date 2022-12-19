@@ -6,6 +6,7 @@ export type CommentaryComponentEventBus = {
     goToAuthorFeed: (login: string) => void,
     showAnswerForm: (comment: Commentary) => void,
     likeListener: (data: LikeData) => Promise<LikeResponse>,
+    openLogin: () => void,
 }
 
 /**
@@ -96,7 +97,7 @@ export default class Commentary extends BasicComponent {
                 await eventBus.likeListener(preLikeData);
 
                 eventBus.likeListener(likeData).then((response) => {
-                    if (response.success) {
+                    if (response.status === 200) {
                         rating.innerHTML = response.rating.toString();
 
                         if (likeData.sign === -1) {
@@ -106,6 +107,8 @@ export default class Commentary extends BasicComponent {
                         }
 
                         likeButton.setAttribute('data-pressed', 'false');
+                    } else if (response.status === 401) {
+                        eventBus.openLogin();
                     }
                 })
             }
@@ -132,7 +135,7 @@ export default class Commentary extends BasicComponent {
                 await eventBus.likeListener(preLikeData);
 
                 eventBus.likeListener(likeData).then((response) => {
-                    if (response.success) {
+                    if (response.status === 200) {
                         rating.innerHTML = response.rating.toString();
 
                         if (likeData.sign === 1) {
@@ -142,6 +145,8 @@ export default class Commentary extends BasicComponent {
                         }
 
                         dislikeButton.setAttribute('data-pressed', 'false');
+                    } else if (response.status === 401) {
+                        eventBus.openLogin();
                     }
                 })
             }

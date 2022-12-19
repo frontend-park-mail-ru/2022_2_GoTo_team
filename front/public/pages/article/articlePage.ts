@@ -51,6 +51,7 @@ export default class ArticlePage extends Page {
             editArticle: Events.editArticleListener,
             shareListener: Events.openShareBox,
             likeListener: Events.articleLikeListener,
+            openLogin: Events.makeLoginOverlayListener,
         }
 
         const commentaryFormEventBus: CommentaryFormEventBus = {

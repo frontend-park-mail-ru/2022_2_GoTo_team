@@ -13,6 +13,7 @@ export type ArticleComponentEventBus = {
     editArticle: (id: number) => void,
     shareListener: (url: string) => void,
     likeListener: (data: LikeData) => Promise<LikeResponse>,
+    openLogin: () => void;
 }
 
 /**
@@ -172,7 +173,7 @@ export default class Article extends BasicComponent {
                     await eventBus.likeListener(preLikeData);
 
                     eventBus.likeListener(likeData).then((response) => {
-                        if (response.success) {
+                        if (response.status === 200) {
                             rating.forEach((element) => {
                                 element.innerHTML = response.rating.toString();
                             });
@@ -186,6 +187,8 @@ export default class Article extends BasicComponent {
                             this.root.querySelectorAll('.like').forEach((button) => {
                                 button.setAttribute('data-pressed', 'false');
                             });
+                        } else if (response.status === 401) {
+                            eventBus.openLogin();
                         }
                     })
                 }
@@ -213,7 +216,7 @@ export default class Article extends BasicComponent {
                     await eventBus.likeListener(preLikeData);
 
                     eventBus.likeListener(likeData).then((response) => {
-                        if (response.success) {
+                        if (response.status === 200) {
                             rating.forEach((element) => {
                                 element.innerHTML = response.rating.toString();
                             });
@@ -227,6 +230,8 @@ export default class Article extends BasicComponent {
                             this.root.querySelectorAll('.dislike').forEach((button) => {
                                 button.setAttribute('data-pressed', 'false');
                             });
+                        }else if (response.status === 401){
+                            eventBus.openLogin();
                         }
                     })
                 }

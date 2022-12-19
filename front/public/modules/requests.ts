@@ -714,13 +714,13 @@ export class Requests {
         return ajax.post(params).then((response) => {
             if (response!.status == 200){
                 const likeResponse: LikeResponse = {
-                    success: true,
+                    status: response!.status,
                     rating: response!.response.rating,
                 }
                 return likeResponse;
             }
             const likeResponse: LikeResponse = {
-                success: false,
+                status: response!.status,
                 rating: 0,
             }
             return likeResponse;
@@ -742,13 +742,13 @@ export class Requests {
         return ajax.post(params).then((response) => {
             if (response!.status == 200){
                 const likeResponse: LikeResponse = {
-                    success: true,
+                    status: response!.status,
                     rating: response!.response.rating,
                 }
                 return likeResponse;
             }
             const likeResponse: LikeResponse = {
-                success: false,
+                status: response!.status,
                 rating: 0,
             }
             return likeResponse;

@@ -53,6 +53,7 @@ export default class CategoryFeed extends Page {
                 editArticle: Events.editArticleListener,
                 shareListener: Events.openShareBox,
                 likeListener: Events.articleLikeListener,
+                openLogin: Events.makeLoginOverlayListener,
             }
 
             if (articles && Array.isArray(articles)) {

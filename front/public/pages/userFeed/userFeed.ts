@@ -52,6 +52,7 @@ export default class UserFeed extends Page {
                 editArticle: Events.editArticleListener,
                 shareListener: Events.openShareBox,
                 likeListener: Events.articleLikeListener,
+                openLogin: Events.makeLoginOverlayListener,
             }
 
             if (articles && Array.isArray(articles)) {

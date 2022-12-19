@@ -32,6 +32,7 @@ export default class Feed extends Page{
             editArticle: Events.editArticleListener,
             shareListener: Events.openShareBox,
             likeListener: Events.articleLikeListener,
+            openLogin: Events.makeLoginOverlayListener,
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {

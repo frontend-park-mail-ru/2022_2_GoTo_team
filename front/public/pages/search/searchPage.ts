@@ -69,6 +69,7 @@ export default class SearchPage extends Page {
                     editArticle: Events.editArticleListener,
                     shareListener: Events.openShareBox,
                     likeListener: Events.articleLikeListener,
+                    openLogin: Events.makeLoginOverlayListener,
                 }
 
                 let foundNumString: string;
