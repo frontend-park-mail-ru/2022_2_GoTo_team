@@ -43,7 +43,7 @@ const config = {
         unsubscribeCategory: '/category/unsubscribe',
         sendProfilePicture: '/file/upload/profile/photo',
         getAvatar: '/user/avatar',
-        hasNewSubs: '/subscribes/hasNewSubs'
+        hasNewSubs: '/feed/subscriptions/has-new-articles-from'
     }
 }
 
