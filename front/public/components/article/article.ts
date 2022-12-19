@@ -159,21 +159,18 @@ export default class Article extends BasicComponent {
                     const rating = this.root.querySelectorAll('.rating')!;
                     let likeData: LikeData;
                     if (button.getAttribute('data-pressed') === 'true') {
-                        likeData = {
-                            id: this.view.id!,
-                            sign: 0,
-                        }
-                    } else {
-                        likeData = {
-                            id: this.view.id!,
-                            sign: -1,
-                        }
-                        const preLikeData: LikeData = {
-                            id: this.view.id!,
-                            sign: 0,
-                        }
-                        await eventBus.likeListener(preLikeData);
+                        return
                     }
+                    likeData = {
+                        id: this.view.id!,
+                        sign: -1,
+                    }
+                    const preLikeData: LikeData = {
+                        id: this.view.id!,
+                        sign: 0,
+                    }
+                    await eventBus.likeListener(preLikeData);
+
                     eventBus.likeListener(likeData).then((response) => {
                         if (response.success) {
                             rating.forEach((element) => {
@@ -204,21 +201,18 @@ export default class Article extends BasicComponent {
                     const rating = this.root.querySelectorAll('.rating')!;
                     let likeData: LikeData;
                     if (button.getAttribute('data-pressed') === 'true') {
-                        likeData = {
-                            id: this.view.id!,
-                            sign: 0,
-                        }
-                    } else {
-                        likeData = {
-                            id: this.view.id!,
-                            sign: 1,
-                        }
-                        const preLikeData: LikeData = {
-                            id: this.view.id!,
-                            sign: 0,
-                        }
-                        await eventBus.likeListener(preLikeData);
+                        return
                     }
+                    likeData = {
+                        id: this.view.id!,
+                        sign: 1,
+                    }
+                    const preLikeData: LikeData = {
+                        id: this.view.id!,
+                        sign: 0,
+                    }
+                    await eventBus.likeListener(preLikeData);
+
                     eventBus.likeListener(likeData).then((response) => {
                         if (response.success) {
                             rating.forEach((element) => {

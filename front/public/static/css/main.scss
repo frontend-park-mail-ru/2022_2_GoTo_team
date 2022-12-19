@@ -1307,11 +1307,13 @@ div.log-button-container {
 .like{
   &[data-pressed="true"] {
     @include svgColor($positive);
+    cursor: none;
   }
 }
 
 .dislike{
   &[data-pressed="true"] {
     @include svgColor($negative);
+    cursor: none;
   }
 }
