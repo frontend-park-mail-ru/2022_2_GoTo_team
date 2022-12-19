@@ -15,7 +15,7 @@ import {
     UserPlugData
 } from "../common/types";
 import BasicComponent from "../components/_basicComponent/basicComponent.js";
-import {CommentaryParent, ResponseErrors} from "../common/consts.js"
+import {CommentaryParent, FrontUrl, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/otherMenu.js";
 import {URIChanger} from "./uriChanger.js";
 import {PageLoaders} from "./pageLoaders.js";
@@ -28,6 +28,7 @@ import ConfirmMessage, {ConfirmMessageEventBus} from "../components/confirmMessa
 import SearchHeader from "../components/searchHeader/searchHeader";
 import SharingBox, {SharingBoxEventBus} from "../components/sharingBox/sharingBox";
 import {NotificationModule} from "./notifications";
+import Page from "../pages/_basic/page";
 
 
 export class Events {
@@ -146,7 +147,8 @@ export class Events {
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
                 NotificationModule.longPollSubs();
-                URIChanger.rootPage();
+                Events.#closeOverlay();
+                Events.updateAuth();
             } else {
                 const form = document.getElementById("login-form_inputs-wrapper");
                 switch (result.status) {
@@ -198,11 +200,9 @@ export class Events {
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
-                if (location.hash === '') {
-                    PageLoaders.feedPage();
-                } else {
-                    URIChanger.rootPage();
-                }
+                NotificationModule.longPollSubs();
+                Events.#closeOverlay();
+                Events.updateAuth();
             } else {
                 switch (result.status) {
                     case 409:
@@ -801,6 +801,7 @@ export class Events {
             tags: tags,
             comments: 0,
             rating: 0,
+            likeStatus: 0,
             content: contentForm.textContent ? contentForm.textContent : "",
             coverImgPath: "",
             publisher: {login: "", username: ""},
@@ -827,6 +828,7 @@ export class Events {
             tags: [''],
             comments: 0,
             rating: 0,
+            likeStatus: 0,
             content: contentForm.textContent ? contentForm.textContent : "",
             coverImgPath: "",
             publisher: {login: "", username: ""},

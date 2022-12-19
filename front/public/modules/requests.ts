@@ -58,7 +58,9 @@ export class Requests {
     static #parseIncompleteArticles(rawArticles: any[]): Promise<IncompleteArticleData[]>{
         const articles: Promise<IncompleteArticleData>[] = [];
         if (rawArticles) {
-            rawArticles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+            rawArticles.forEach((rawArticle: {
+                liked: 1 | 0 | -1;
+                id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
                 const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
                 articles.push(avatar.then((avatar): IncompleteArticleData => {
                     const article: IncompleteArticleData = {
@@ -68,7 +70,7 @@ export class Requests {
                         tags: rawArticle.tags,
                         category: rawArticle.category,
                         rating: rawArticle.rating,
-                        likeStatus: 0,
+                        likeStatus: rawArticle.liked,
                         comments: rawArticle.comments,
                         publisher: {
                             login: rawArticle.publisher.login,
@@ -340,6 +342,7 @@ export class Requests {
                     tags: result.response.tags,
                     category: result.response.category,
                     rating: result.response.rating,
+                    likeStatus: result.response.liked,
                     comments: result.response.comments,
                     publisher: {
                         login: result.response.publisher.login,
@@ -709,7 +712,6 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
-            console.log(response);
             if (response!.status == 200){
                 const likeResponse: LikeResponse = {
                     success: true,
@@ -738,7 +740,6 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
-            console.log(response);
             if (response!.status == 200){
                 const likeResponse: LikeResponse = {
                     success: true,

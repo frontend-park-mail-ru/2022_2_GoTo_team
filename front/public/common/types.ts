@@ -16,20 +16,21 @@ export type IncompleteArticleData = {
     tags: string[],
     category: string,
     rating: number,
-    likeStatus: 1 | 0 | -1
+    likeStatus: 1 | 0 | -1,
     comments: number,
     publisher: publisher,
     coverImgPath: string,
     avatarImgPath: string,
 };
 
-export type FullArticleData = {
+export type FullArticleData= {
     id: number,
     title: string,
     description: string,
     tags: string[],
     category: string,
     rating: number,
+    likeStatus: 1 | 0 | -1,
     comments: number,
     publisher: publisher,
     coAuthor?: publisher,

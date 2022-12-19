@@ -33,6 +33,22 @@ export default class OpenedArticleView extends BasicComponentView {
             author: article.publisher.login === window.sessionStorage.getItem('login'),
             avatar: article.avatarImgPath,
         });
+
+        switch (article.likeStatus){
+            case 1:
+                const likes = wrapper.querySelectorAll('.like')!;
+                likes.forEach((like) => {
+                    like.setAttribute('data-pressed', 'true');
+                });
+                break;
+            case -1:
+                const dislikes = wrapper.querySelectorAll('.dislike')!;
+                dislikes.forEach((like) => {
+                    like.setAttribute('data-pressed', 'true');
+                });
+                break;
+        }
+
         this.publisher = article.publisher.login;
         this.category = article.category;
         this.id = article.id;

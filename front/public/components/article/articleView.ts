@@ -33,6 +33,18 @@ export default class ArticleView extends BasicComponentView {
             author: article.publisher.login === window.sessionStorage.getItem('login'),
             avatar: article.avatarImgPath,
         });
+
+        switch (article.likeStatus){
+            case 1:
+                const like = wrapper.querySelector('.like')!;
+                like.setAttribute('data-pressed', 'true');
+                break;
+            case -1:
+                const dislike = wrapper.querySelector('.dislike')!;
+                dislike.setAttribute('data-pressed', 'true');
+                break;
+        }
+
         this.publisher = article.publisher.login;
         this.category = article.category;
         this.id = article.id;
