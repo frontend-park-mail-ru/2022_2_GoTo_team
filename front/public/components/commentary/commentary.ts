@@ -79,8 +79,8 @@ export default class Commentary extends BasicComponent {
         subscription = {
             element: dislikeButton,
             event: 'click',
-            listener: () => {
-                const rating = this.root.querySelectorAll('.rating')!;
+            listener: async () => {
+                const rating = this.root.querySelector('.rating')!;
                 let likeData: LikeData;
                 if (dislikeButton.getAttribute('data-pressed') === 'true') {
                     likeData = {
@@ -92,12 +92,15 @@ export default class Commentary extends BasicComponent {
                         id: this.data!.id!,
                         sign: -1,
                     }
+                    const preLikeData: LikeData = {
+                        id: this.data!.id!,
+                        sign: 0,
+                    }
+                    await eventBus.likeListener(preLikeData);
                 }
                 eventBus.likeListener(likeData).then((response) => {
                     if (response.success) {
-                        rating.forEach((element) => {
-                            element.innerHTML = response.rating.toString();
-                        })
+                        rating.innerHTML = response.rating.toString();
 
                         if (likeData.sign === -1) {
                             dislikeButton.setAttribute('data-pressed', 'true');
@@ -115,8 +118,8 @@ export default class Commentary extends BasicComponent {
         subscription = {
             element: likeButton,
             event: 'click',
-            listener: () => {
-                const rating = this.root.querySelectorAll('.rating')!;
+            listener: async () => {
+                const rating = this.root.querySelector('.rating')!;
                 let likeData: LikeData;
                 if (likeButton.getAttribute('data-pressed') === 'true') {
                     likeData = {
@@ -128,12 +131,15 @@ export default class Commentary extends BasicComponent {
                         id: this.data!.id!,
                         sign: 1,
                     }
+                    const preLikeData: LikeData = {
+                        id: this.data!.id!,
+                        sign: 0,
+                    }
+                    await eventBus.likeListener(preLikeData);
                 }
                 eventBus.likeListener(likeData).then((response) => {
                     if (response.success) {
-                        rating.forEach((element) => {
-                            element.innerHTML = response.rating.toString();
-                        })
+                        rating.innerHTML = response.rating.toString();
 
                         if (likeData.sign === 1) {
                             likeButton.setAttribute('data-pressed', 'true');

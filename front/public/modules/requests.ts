@@ -574,10 +574,12 @@ export class Requests {
                     login: string,
                 },
                 rating: number,
+                liked: number,
                 content: string,
             }) => {
                 const avatar: Promise<string> = Requests.getProfilePicture(rawCommentary.publisher.login);
                 commentaries.push(avatar.then((avatar) => {
+
                     const commentary: CommentaryData = {
                         article: rawCommentary.article_id,
                         id: rawCommentary.comment_id,
@@ -589,6 +591,8 @@ export class Requests {
                             avatar: avatar,
                         },
                         rating: rawCommentary.rating,
+                        // @ts-ignore
+                        likeStatus: rawCommentary.liked,
                         content: rawCommentary.content
                     }
                     return commentary;

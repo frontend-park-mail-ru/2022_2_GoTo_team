@@ -1017,6 +1017,7 @@ export class Events {
             parentId: form.parent,
             parentType: form.parentType,
             rating: 0,
+            likeStatus: 0,
             content: content
         }
 
@@ -1177,6 +1178,7 @@ export class Events {
             parentId: parent.data!.id,
             parentType: CommentaryParent.commentary,
             rating: 0,
+            likeStatus: 0,
             content: ""
         }
         form.render(commentaryData);

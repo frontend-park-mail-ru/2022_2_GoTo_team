@@ -155,7 +155,7 @@ export default class Article extends BasicComponent {
             subscription = {
                 element: button,
                 event: 'click',
-                listener: () => {
+                listener: async () => {
                     const rating = this.root.querySelectorAll('.rating')!;
                     let likeData: LikeData;
                     if (button.getAttribute('data-pressed') === 'true') {
@@ -168,6 +168,11 @@ export default class Article extends BasicComponent {
                             id: this.view.id!,
                             sign: -1,
                         }
+                        const preLikeData: LikeData = {
+                            id: this.view.id!,
+                            sign: 0,
+                        }
+                        await eventBus.likeListener(preLikeData);
                     }
                     eventBus.likeListener(likeData).then((response) => {
                         if (response.success) {
@@ -177,7 +182,7 @@ export default class Article extends BasicComponent {
                             this.root.querySelectorAll('.dislike').forEach((button) => {
                                 if (likeData.sign === -1) {
                                     button.setAttribute('data-pressed', 'true');
-                                }else{
+                                } else {
                                     button.setAttribute('data-pressed', 'false');
                                 }
                             });
@@ -195,7 +200,7 @@ export default class Article extends BasicComponent {
             subscription = {
                 element: button,
                 event: 'click',
-                listener: () => {
+                listener: async () => {
                     const rating = this.root.querySelectorAll('.rating')!;
                     let likeData: LikeData;
                     if (button.getAttribute('data-pressed') === 'true') {
@@ -208,6 +213,11 @@ export default class Article extends BasicComponent {
                             id: this.view.id!,
                             sign: 1,
                         }
+                        const preLikeData: LikeData = {
+                            id: this.view.id!,
+                            sign: 0,
+                        }
+                        await eventBus.likeListener(preLikeData);
                     }
                     eventBus.likeListener(likeData).then((response) => {
                         if (response.success) {
@@ -217,7 +227,7 @@ export default class Article extends BasicComponent {
                             this.root.querySelectorAll('.like').forEach((button) => {
                                 if (likeData.sign === 1) {
                                     button.setAttribute('data-pressed', 'true');
-                                }else{
+                                } else {
                                     button.setAttribute('data-pressed', 'false');
                                 }
                             });

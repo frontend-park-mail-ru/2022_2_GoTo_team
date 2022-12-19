@@ -65,6 +65,7 @@ export default class ArticlePageView extends PageView {
             parentId: articleData.id,
             parentType: CommentaryParent.article,
             rating: 0,
+            likeStatus: 0,
             content: ""
         }
         await newCommentary.render(data);

@@ -96,6 +96,7 @@ export type CommentaryData = {
     parentType: string,
     parentId: number,
     rating: number,
+    likeStatus: 1 | 0 | -1
     content: string,
 }
 

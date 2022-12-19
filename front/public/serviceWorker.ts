@@ -1,5 +1,3 @@
-import {Request} from "express";
-
 const cacheName = 've.ru';
 
 // Только основные файлы, остальные урлы добавляются по мере работы
