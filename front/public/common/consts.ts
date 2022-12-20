@@ -6,11 +6,9 @@ const protocol = {
 }
 export const BaseUrl = '127.0.0.1';
 //export const BaseUrl = 'gototeam.ru';
+export const Url = protocol.https + BaseUrl;
 
-export const BackendUrl = protocol.https + BaseUrl + ':8080';
-export const FrontUrl = protocol.https + BaseUrl;
-
-export const APIurl = BackendUrl + '/api/v1';
+export const APIurl = Url + '/api/v1';
 
 export const ResponseErrors = {
     emailInvalid: "invalid email",

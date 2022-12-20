@@ -1,4 +1,4 @@
-import {FrontUrl} from "../../common/consts";
+import {Url} from "../../common/consts";
 
 /**
  * @class BasicComponentView
@@ -10,7 +10,7 @@ export default class BasicComponentView {
      * Конструктор
      */
     constructor() {
-        this.baseUrl = FrontUrl;
+        this.baseUrl = Url;
     }
     /**
      * Отрисовка компонента

@@ -7,8 +7,6 @@ import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {CommentaryFormEventBus} from "../../components/commentaryForm/commentaryForm.js";
 import {FullArticleData} from "../../common/types";
-import {NotificationModule, NotificationParams} from "../../modules/notifications";
-import {APIStrings, FrontUrl} from "../../common/consts";
 
 /**
  * ModalView-контроллер для соответсвующих страниц

@@ -15,7 +15,7 @@ import {
     UserPlugData
 } from "../common/types";
 import BasicComponent from "../components/_basicComponent/basicComponent.js";
-import {CommentaryParent, FrontUrl, ResponseErrors} from "../common/consts.js"
+import {CommentaryParent, Url, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/otherMenu.js";
 import {URIChanger} from "./uriChanger.js";
 import {PageLoaders} from "./pageLoaders.js";
@@ -147,7 +147,7 @@ export class Events {
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
                 NotificationModule.longPollSubs();
-                if (window.location.href === FrontUrl + '/'){
+                if (window.location.href === Url + '/'){
                     PageLoaders.feedPage();
                 }else{
                     URIChanger.rootPage();
@@ -204,7 +204,7 @@ export class Events {
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
                 NotificationModule.longPollSubs();
-                if (window.location.href === FrontUrl + '/'){
+                if (window.location.href === Url + '/'){
                     PageLoaders.feedPage();
                 }else{
                     URIChanger.rootPage();

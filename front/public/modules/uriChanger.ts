@@ -1,4 +1,4 @@
-import {APIStrings, FrontUrl} from "../common/consts.js";
+import {APIStrings, Url} from "../common/consts.js";
 import {SearchData} from "../common/types";
 
 export class URIChanger {
@@ -6,49 +6,49 @@ export class URIChanger {
      * Перемещает на страницу популярных страниц
      */
     static rootPage() {
-        window.history.pushState(null, '', FrontUrl + APIStrings.root());
+        window.history.pushState(null, '', Url + APIStrings.root());
     }
 
     /**
      * Перемещает на страницу популярных страниц
      */
     static feedPage() {
-        window.history.pushState(null, '', FrontUrl + APIStrings.feedPage());
+        window.history.pushState(null, '', Url + APIStrings.feedPage());
     }
 
     /**
      * Перемещает на страницу подписок
      */
     static subscriptionFeedPage() {
-        window.history.pushState(null, '', FrontUrl + APIStrings.subscriptionsPage());
+        window.history.pushState(null, '', Url + APIStrings.subscriptionsPage());
     }
 
     /**
      * Перемещает на страницу автора
      */
     static userFeedPage(login: string) {
-        window.history.pushState(null, '', FrontUrl + APIStrings.authorPage(login));
+        window.history.pushState(null, '', Url + APIStrings.authorPage(login));
     }
 
     /**
      * Перемещает на страницу автора
      */
     static categoryFeedPage(category: string) {
-        window.history.pushState(null, '', FrontUrl + APIStrings.categoryPage(category));
+        window.history.pushState(null, '', Url + APIStrings.categoryPage(category));
     }
 
     /**
      * Перемещает на страницу просмотра статьи
      */
     static articlePage(articleId: number, comments: boolean) {
-        window.history.pushState(null, '', FrontUrl + APIStrings.articlePage(articleId, comments));
+        window.history.pushState(null, '', Url + APIStrings.articlePage(articleId, comments));
     }
 
     /**
      * Перемещает на страницу профиля
      */
     static settingsPage() {
-        window.history.pushState(null, '', FrontUrl + APIStrings.settingsPage());
+        window.history.pushState(null, '', Url + APIStrings.settingsPage());
     }
 
     /**
@@ -56,9 +56,9 @@ export class URIChanger {
      */
     static editArticle(articleId?: number) {
         if (articleId === undefined) {
-            window.history.pushState(null, '', FrontUrl + APIStrings.newArticlePage());
+            window.history.pushState(null, '', Url + APIStrings.newArticlePage());
         } else {
-            window.history.pushState(null, '', FrontUrl + APIStrings.articleEditPage(articleId));
+            window.history.pushState(null, '', Url + APIStrings.articleEditPage(articleId));
         }
     }
 
@@ -66,7 +66,7 @@ export class URIChanger {
      * Перемещает на поиск
      */
     static searchPage(data: SearchData) {
-        window.history.pushState(null, '', FrontUrl + APIStrings.searchPage(data));
+        window.history.pushState(null, '', Url + APIStrings.searchPage(data));
     }
 
     /**
@@ -76,6 +76,6 @@ export class URIChanger {
         const data: SearchData = {
             tags: [tag],
         }
-        window.history.pushState(null, '', FrontUrl + APIStrings.searchPage(data));
+        window.history.pushState(null, '', Url + APIStrings.searchPage(data));
     }
 }

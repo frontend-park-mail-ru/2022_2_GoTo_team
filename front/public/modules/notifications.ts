@@ -1,5 +1,5 @@
 import {Requests} from "./requests";
-import {APIStrings, FrontUrl} from "../common/consts";
+import {APIStrings} from "../common/consts";
 
 export type NotificationParams = {
     title: string,
