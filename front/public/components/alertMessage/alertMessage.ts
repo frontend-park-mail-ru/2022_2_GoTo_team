@@ -24,10 +24,8 @@ export default class AlertMessage extends BasicComponent {
     }
 
     subscribe(eventBus: AlertMessageEventBus): void {
-        let subscription: Subscription;
-
         const okButton = this.root.querySelector('.accent_button')!;
-        subscription = {
+        const subscription = {
             element: okButton,
             event: 'click',
             listener: eventBus.okEvent,

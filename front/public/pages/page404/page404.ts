@@ -1,7 +1,6 @@
 import {Events} from "../../modules/events.js";
 import Page404View from "./page404View";
 import Page from "../_basic/page.js";
-import {PageLoaders} from "../../modules/pageLoaders.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
 

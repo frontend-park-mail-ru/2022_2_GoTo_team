@@ -30,6 +30,7 @@ export default class BasicComponent {
      * Подписка на связанные события
      */
     subscribe(eventBus?: object): void {
+        return;
     }
 
     /**

@@ -34,7 +34,7 @@ export const API = {
     authorPage: /^author\/(.+)$/,
     newArticlePage: /^new_article$/,
     articleEditPage: /^article\/([0-9]+)\/edit$/,
-    searchPage: /^search(\/([^\/]+))?(\/publisher\/([^\/]+))?(\/tags\/(.+))?$/,
+    searchPage: /^search(\/([^/]+))?(\/publisher\/([^/]+))?(\/tags\/(.+))?$/,
 }
 
 export const APIStrings = {
