@@ -55,6 +55,7 @@ export default class ArticlePageView extends PageView {
         this.commentaryContainer = commentaryWrapper;
         this.mainContentElement!.appendChild(commentaryContainer);
         commentaryContainer.appendChild(this.commentaryContainer);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         this.children.set('commentary container', this.commentaryContainer);
 

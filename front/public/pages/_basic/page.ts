@@ -26,6 +26,7 @@ export default class Page {
      * Подписка на связанные события
      */
     subscribe() {
+        return;
     }
 
     /**
@@ -35,7 +36,9 @@ export default class Page {
         this.view.children.forEach((value) => {
             try{
                 value.destroy();
-            }catch (e) {}
+            }catch (e) {
+                return;
+            }
         })
     }
 }
