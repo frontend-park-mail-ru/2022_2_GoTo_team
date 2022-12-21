@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - dev
+      - architecture_vladimir
   pull_request:
     branches:
       - main
