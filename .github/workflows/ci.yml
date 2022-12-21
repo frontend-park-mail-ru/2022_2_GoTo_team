@@ -74,4 +74,5 @@ jobs:
           key: ${{ secrets.SHH_PRIVATE_KEY }}
           source: "build/*"
           target: "/home/ubuntu/deploy"
+          rm: true
           strip_components: 1
