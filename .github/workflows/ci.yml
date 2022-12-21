@@ -58,6 +58,9 @@ jobs:
           path: ./front/public
 
   deploy:
+    only:
+      - master
+      - main
     runs-on: ubuntu-latest
     needs: build
     steps:
