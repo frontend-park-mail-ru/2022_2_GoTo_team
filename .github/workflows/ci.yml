@@ -24,6 +24,9 @@ jobs:
       - name: Install ESLint
         run: npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
+      - name: Install ESLint typescript extension
+        run: npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+
       - name: Run ESLint
         run: npm run lint
 
