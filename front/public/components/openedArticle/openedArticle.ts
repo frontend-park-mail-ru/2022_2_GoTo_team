@@ -146,11 +146,10 @@ export default class OpenedArticle extends BasicComponent {
                 event: 'click',
                 listener: async () => {
                     const rating = this.root.querySelectorAll('.rating')!;
-                    let likeData: LikeData;
                     if (button.getAttribute('data-pressed') === 'true') {
                         return;
                     }
-                    likeData = {
+                    const likeData: LikeData = {
                         id: this.view.id!,
                         sign: -1,
                     }
@@ -190,11 +189,10 @@ export default class OpenedArticle extends BasicComponent {
                 event: 'click',
                 listener: async () => {
                     const rating = this.root.querySelectorAll('.rating')!;
-                    let likeData: LikeData;
                     if (button.getAttribute('data-pressed') === 'true') {
                         return;
                     }
-                    likeData = {
+                    const likeData: LikeData = {
                         id: this.view.id!,
                         sign: 1,
                     }
@@ -228,4 +226,4 @@ export default class OpenedArticle extends BasicComponent {
             this._subscribeEvent(subscription);
         });
     }
-};
+}

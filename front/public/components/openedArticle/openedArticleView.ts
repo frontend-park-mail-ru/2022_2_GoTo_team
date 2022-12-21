@@ -34,15 +34,15 @@ export default class OpenedArticleView extends BasicComponentView {
             avatar: article.avatarImgPath !== '' && article.avatarImgPath !== undefined ? article.avatarImgPath : "/static/img/user_icon.webp",
         });
 
+        const likes = wrapper.querySelectorAll('.like')!;
+        const dislikes = wrapper.querySelectorAll('.dislike')!;
         switch (article.likeStatus){
             case 1:
-                const likes = wrapper.querySelectorAll('.like')!;
                 likes.forEach((like) => {
                     like.setAttribute('data-pressed', 'true');
                 });
                 break;
             case -1:
-                const dislikes = wrapper.querySelectorAll('.dislike')!;
                 dislikes.forEach((like) => {
                     like.setAttribute('data-pressed', 'true');
                 });

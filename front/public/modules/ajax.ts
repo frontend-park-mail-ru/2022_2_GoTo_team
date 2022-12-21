@@ -14,10 +14,15 @@ export type requestParams = {
     method?: string;
 };
 
-export class Ajax {
-    constructor() {
-    }
+type FetchParams = {
+    method: string,
+    body: string | FormData,
+    headers?: HeadersInit,
+    mode?: RequestMode,
+    credentials?: RequestCredentials,
+}
 
+export class Ajax {
     get(params: requestParams): Promise<void | RequestAnswer> {
         const parameters: requestParams = params;
         parameters.method = REQUEST_TYPE.GET;
@@ -34,10 +39,8 @@ export class Ajax {
         const url = new URL(APIurl + (params.url || '/'));
         if (params.data !== undefined){
             Object.keys(params.data).forEach(key => {
-                // @ts-ignore
-                if (params.data[key] === undefined) {
-                    // @ts-ignore
-                    delete params.data[key];
+                if ((params.data as any)[key] === undefined) {
+                    delete (params.data as any)[key];
                 }
             });
         }
@@ -46,38 +49,35 @@ export class Ajax {
             url.search = new URLSearchParams({...params.data}).toString();
         }
 
-        let fetchParams: object = {
+        const requestHeaders: HeadersInit = new Headers();
+        const csrf = this.#getCsrfCookie();
+        if (csrf !== null){
+            requestHeaders.set(csrfHeader, csrf);
+        }
+        requestHeaders.set('Content-Type', 'application/json');
+
+        const fetchParams: object = {
             method: params.method,
             body: params.method == REQUEST_TYPE.POST ? JSON.stringify(params.data) : null,
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: requestHeaders,
             mode: 'cors',
             credentials: 'include',
         };
 
-        if (this.#getCsrfCookie() !== null){
-            // @ts-ignore
-            fetchParams.headers[csrfHeader] = this.#getCsrfCookie();
-        }
-
-        let status: number = 0;
-
         const response = fetch(url, fetchParams)
             .then((response) => {
-                status = response.status;
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1){
-                    return response.json();
+                    return {status: response.status, response: response.json()};
                 }
-                return status;
+                return {status: response.status, response: undefined};
             })
             .then((response) => {
                 const result: RequestAnswer = {
-                    status: status,
-                    response: response,
+                    status: response.status,
+                    response: response.response,
                 }
-                if (status === 401) {
+                if (response.status === 401) {
                     window.sessionStorage.clear();
                 }
                 return result;
@@ -92,22 +92,21 @@ export class Ajax {
         const url = APIurl + (requestParams.url || '/');
         const formData = new FormData();
         formData.append('file', requestParams.body);
-        const fetchParams: object = {
+
+        const requestHeaders: HeadersInit = new Headers();
+        const csrf = this.#getCsrfCookie();
+        if (csrf !== null){
+            requestHeaders.set(csrfHeader, csrf);
+        }
+
+        const fetchParams: FetchParams = {
             body: formData,
             mode: 'cors',
             method: REQUEST_TYPE.POST,
             credentials: 'include',
             // https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
-            headers: {
-            //   'Content-Type': 'multipart/form-data',
-            },
+            headers: requestHeaders,
         };
-
-        if (this.#getCsrfCookie() !== null){
-            // @ts-ignore
-            fetchParams.headers[csrfHeader] = this.#getCsrfCookie();
-        }
-
 
         let status = 0;
         return fetch(url, fetchParams)
@@ -128,10 +127,10 @@ export class Ajax {
     }
 
     #getCsrfCookie(){
-        let cookieArr = document.cookie.split(";");
+        const cookieArr = document.cookie.split(";");
 
         for (let i = 0; i < cookieArr.length; i++) {
-            let cookiePair = cookieArr[i].split("=");
+            const cookiePair = cookieArr[i].split("=");
             if ('_csrf' === cookiePair[0].trim()) {
                 return decodeURIComponent(cookiePair[1]);
             }

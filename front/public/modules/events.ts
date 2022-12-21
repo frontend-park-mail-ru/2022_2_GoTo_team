@@ -147,9 +147,9 @@ export class Events {
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
                 NotificationModule.longPollSubs();
-                if (window.location.href === Url + '/'){
+                if (window.location.href === Url + '/') {
                     PageLoaders.feedPage();
-                }else{
+                } else {
                     URIChanger.rootPage();
                 }
             } else {
@@ -204,12 +204,13 @@ export class Events {
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
                 NotificationModule.longPollSubs();
-                if (window.location.href === Url + '/'){
+                if (window.location.href === Url + '/') {
                     PageLoaders.feedPage();
-                }else{
+                } else {
                     URIChanger.rootPage();
                 }
             } else {
+                const form = document.getElementById("login-form_inputs-wrapper");
                 switch (result.status) {
                     case 409:
                         switch (result.response) {
@@ -235,7 +236,6 @@ export class Events {
                         }
                         break;
                     default:
-                        const form = document.getElementById("login-form_inputs-wrapper");
                         Events.#makeInvalid(form as HTMLFormElement, "Что-то пошло не так");
                 }
             }
@@ -253,7 +253,7 @@ export class Events {
         const siblings = element.parentNode!.childNodes;
 
         const wrongSign = document.createElement('div');
-        wrongSign.innerHTML = `<div class=\"${errorClass}\">${message}</div>`;
+        wrongSign.innerHTML = `<div class="${errorClass}">${message}</div>`;
 
         if (typeof (element as HTMLFormElement).setCustomValidity !== 'undefined') {
             (element as HTMLFormElement).setCustomValidity(message);
@@ -265,7 +265,7 @@ export class Events {
                     element.after(wrongSign);
                     break;
                 }
-                if (!((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class=\"${errorClass}\">`))) {
+                if (!((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class="${errorClass}">`))) {
                     element.after(wrongSign);
                 }
                 break;
@@ -289,7 +289,7 @@ export class Events {
                 if (siblings[i + 1].nodeName === "#text") {
                     break;
                 }
-                if ((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class=\"${errorClass}\">`)) {
+                if ((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class="${errorClass}">`)) {
                     element.parentNode!.removeChild(siblings[i + 1]);
                 }
                 break;
@@ -448,10 +448,10 @@ export class Events {
      * @param {string} name
      */
     static #getCookie(name: string): string | null {
-        let cookieArr = document.cookie.split(";");
+        const cookieArr = document.cookie.split(";");
 
         for (let i = 0; i < cookieArr.length; i++) {
-            let cookiePair = cookieArr[i].split("=");
+            const cookiePair = cookieArr[i].split("=");
             if (name === cookiePair[0].trim()) {
                 return decodeURIComponent(cookiePair[1]);
             }
@@ -464,7 +464,7 @@ export class Events {
      * Проверяет наличие куки сессии
      */
     static #hasSession(): boolean {
-        let session = Events.#getCookie("session_id");
+        const session = Events.#getCookie("session_id");
         return !(session === "" || session === null);
     }
 
@@ -793,7 +793,7 @@ export class Events {
         Events.#makeValid(descriptionForm);
         Events.#makeValid(contentForm);
 
-        let tags: string[] = [];
+        const tags: string[] = [];
         document.querySelectorAll('.article__tag').forEach((tagDiv) => {
             tags.push(tagDiv.innerHTML);
         });
@@ -858,6 +858,7 @@ export class Events {
             });
 
         }, () => {
+            return;
         });
     }
 
@@ -1117,7 +1118,7 @@ export class Events {
         login = login === '' || login == null ? undefined : login.trim();
 
         const tags = form.tags.length !== 0 ? form.tags : undefined;
-        let data: SearchData = {
+        const data: SearchData = {
             request: request,
             author: login,
             tags: tags,
@@ -1132,7 +1133,7 @@ export class Events {
         const tagsForm = document.querySelector('.tag_selector')! as HTMLSelectElement;
         const newTagString: string = tagsForm.value;
 
-        let tags: string[] = [];
+        const tags: string[] = [];
         document.querySelectorAll('.article__tag').forEach((tagDiv) => {
             tags.push(tagDiv.innerHTML);
         });
@@ -1150,7 +1151,7 @@ export class Events {
                 tagsRow.appendChild(newTag);
 
                 newTag.addEventListener('click', () => {
-                    let tags: string[] = [];
+                    const tags: string[] = [];
                     document.querySelectorAll('.article__tag').forEach((tagDiv) => {
                         tags.push(tagDiv.innerHTML);
                     });
@@ -1311,6 +1312,7 @@ export class Events {
         }
 
         if (alertListener === undefined) alertListener = () => {
+            return;
         };
         const eventBus: AlertMessageEventBus = {
             okEvent: () => {

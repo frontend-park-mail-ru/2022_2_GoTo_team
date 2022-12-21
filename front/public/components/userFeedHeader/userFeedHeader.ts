@@ -88,4 +88,4 @@ export default class UserFeedHeader extends BasicComponent {
             this._subscribeEvent(subscribeSubscription);
         }
     }
-};
+}

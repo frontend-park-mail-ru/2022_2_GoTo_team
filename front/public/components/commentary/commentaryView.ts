@@ -20,13 +20,13 @@ export default class CommentaryView extends BasicComponentView {
             time: "",
         });
 
+        const like = wrapper.querySelector('.like')!;
+        const dislike = wrapper.querySelector('.dislike')!;
         switch (commentary.likeStatus){
             case 1:
-                const like = wrapper.querySelector('.like')!;
                 like.setAttribute('data-pressed', 'true');
                 break;
             case -1:
-                const dislike = wrapper.querySelector('.dislike')!;
                 dislike.setAttribute('data-pressed', 'true');
                 break;
         }

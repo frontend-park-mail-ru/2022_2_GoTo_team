@@ -87,4 +87,4 @@ export default class CategoryFeedHeader extends BasicComponent {
             this._subscribeEvent(subscribeSubscription);
         }
     }
-};
+}

@@ -114,7 +114,7 @@ export class Requests {
         };
 
         return ajax.post(params).then((response) => {
-            let result: RequestAnswer = response!;
+            const result: RequestAnswer = response!;
 
             if (result.status === 200) {
                 result.response = "";
@@ -154,7 +154,7 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
-            let result: RequestAnswer = response!;
+            const result: RequestAnswer = response!;
 
             if (result.status === 200) {
                 result.response = "";
@@ -210,7 +210,7 @@ export class Requests {
         return ajax.get({
             url: config.hrefs.sessionInfo,
         }).then((response) => {
-            let result = response!;
+            const result = response!;
             const userData: UserPlugData = {
                 username: response!.response.username,
                 avatarUrl: response!.response.avatar_img_path,
@@ -403,7 +403,7 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
-            let result = response!;
+            const result = response!;
             if (result.status === 200) {
                 result.response = "";
                 return result;
@@ -550,7 +550,7 @@ export class Requests {
      * Запрос поиска
      */
     static search(searchData: SearchData): Promise<IncompleteArticleData[]> {
-        let params = {
+        const params = {
             url: config.hrefs.searchPage,
             data: {
                 substringToSearch: searchData.request,
@@ -570,7 +570,7 @@ export class Requests {
      * Запрос комментариев статьи
      */
     static getCommentaries(articleId: number): Promise<CommentaryData[]> {
-        let params = {
+        const params = {
             url: config.hrefs.commentaryFeed,
             data: {
                 article: articleId,
@@ -589,7 +589,7 @@ export class Requests {
                     login: string,
                 },
                 rating: number,
-                liked: number,
+                liked: -1 | 0 | 1,
                 content: string,
             }) => {
                 const avatar: Promise<string> = Requests.getProfilePicture(rawCommentary.publisher.login);
@@ -606,7 +606,6 @@ export class Requests {
                             avatar: avatar,
                         },
                         rating: rawCommentary.rating,
-                        // @ts-ignore
                         likeStatus: rawCommentary.liked,
                         content: rawCommentary.content
                     }
@@ -621,7 +620,7 @@ export class Requests {
      * Подписка на категорию
      */
     static categorySubscribe(category: string): Promise<boolean> {
-        let params = {
+        const params = {
             url: config.hrefs.subscribeCategory,
             data: {
                 category_name: category,
@@ -637,7 +636,7 @@ export class Requests {
      * Подписка на пользователя
      */
     static userSubscribe(login: string): Promise<boolean> {
-        let params = {
+        const params = {
             url: config.hrefs.subscribeUser,
             data: {
                 login: login,
@@ -653,7 +652,7 @@ export class Requests {
      * Отписка от категории
      */
     static categoryUnsubscribe(category: string): Promise<boolean> {
-        let params = {
+        const params = {
             url: config.hrefs.unsubscribeCategory,
             data: {
                 category_name: category,
@@ -669,7 +668,7 @@ export class Requests {
      * Отписка от пользователя
      */
     static userUnsubscribe(login: string): Promise<boolean> {
-        let params = {
+        const params = {
             url: config.hrefs.unsubscribeUser,
             data: {
                 login: login,
@@ -685,7 +684,7 @@ export class Requests {
      * Отправляет аватарку пользователя
      */
     static sendProfilePicture(image: File): Promise<boolean> {
-        let params: ImgPostData = {
+        const params: ImgPostData = {
             url: config.hrefs.sendProfilePicture,
             body: image,
         }
@@ -699,7 +698,7 @@ export class Requests {
      * Получение пути к аватару по логину
      */
     static getProfilePicture(login: string): Promise<string> {
-        let params = {
+        const params = {
             url: config.hrefs.getAvatar,
             data: {
                 login: login,
@@ -715,7 +714,7 @@ export class Requests {
      * Запрос лайка/дизлайка/их снятия со статьи
      */
     static changeArticleLikeStatus(data: LikeData): Promise<LikeResponse> {
-        let params = {
+        const params = {
             url: config.hrefs.articleLike,
             data: {
                 id: data.id,
@@ -743,7 +742,7 @@ export class Requests {
      * Запрос лайка/дизлайка/их снятия с комментария
      */
     static changeCommentaryLikeStatus(data: LikeData): Promise<LikeResponse> {
-        let params = {
+        const params = {
             url: config.hrefs.commentaryLike,
             data: {
                 id: data.id,
@@ -771,7 +770,7 @@ export class Requests {
      * Запрос id статей из подписок, созданных после указанной
      */
     static hasNewSubs(lastId: number): Promise<NewSubsResponse>{
-        let params = {
+        const params = {
             url: config.hrefs.hasNewSubs,
             data: {
                 articleId: lastId,

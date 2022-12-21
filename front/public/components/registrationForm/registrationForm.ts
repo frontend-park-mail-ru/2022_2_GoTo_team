@@ -106,4 +106,4 @@ export default class RegistrationForm extends BasicComponent {
         }
         this._subscribeEvent(subscription);
     }
-};
+}

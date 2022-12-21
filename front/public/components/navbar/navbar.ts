@@ -78,9 +78,9 @@ export default class Navbar extends BasicComponent {
         subscription = {
             element: input,
             event: 'keyup',
-            // @ts-ignore
-            listener: (e: KeyboardEvent) => {
-                if (e.key === 'Enter' || e.keyCode === 13) {
+            listener: (e: Event) => {
+                const evt = e as KeyboardEvent;
+                if (evt.key === 'Enter' || evt.keyCode === 13) {
                     eventBus.search(input.value);
                 }
             },

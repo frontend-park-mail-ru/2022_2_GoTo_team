@@ -19,5 +19,6 @@ export default class NoResults extends BasicComponent {
     }
 
     subscribe(): void {
+        return;
     }
 }

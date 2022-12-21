@@ -91,7 +91,7 @@ export default class Settings extends BasicComponent {
                 console.log(inputImageForm.files![0].size);
                 if(inputImageForm.files![0].size > 4 * 1024 * 1024){
                     eventBus.tooBigAlert();
-                    let dataTransfer = new DataTransfer();
+                    const dataTransfer = new DataTransfer();
                     if (loadedFile !== undefined){
                         dataTransfer.items.add(loadedFile);
                     }
@@ -104,4 +104,4 @@ export default class Settings extends BasicComponent {
         }
         this._subscribeEvent(subscription);
     }
-};
+}

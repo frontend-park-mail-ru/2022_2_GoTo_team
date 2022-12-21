@@ -39,7 +39,7 @@ export class NotificationModule {
 
     static async longPollSubs() {
         const lastId: number = window.sessionStorage.getItem('lastSubId') !== null ? parseInt(window.sessionStorage.getItem('lastSubId')!) : 0;
-        let response = await Requests.hasNewSubs(lastId);
+        const response = await Requests.hasNewSubs(lastId);
 
         if (response.status !== 200) {
             if (response.status !== 401) {

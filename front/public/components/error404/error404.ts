@@ -19,5 +19,6 @@ export default class Error404 extends BasicComponent {
     }
 
     subscribe(): void {
+        return;
     }
 }

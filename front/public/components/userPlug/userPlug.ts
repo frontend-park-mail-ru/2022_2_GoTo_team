@@ -42,4 +42,4 @@ export default class UserPlug extends BasicComponent {
             this._subscribeEvent(subscription);
         }
     }
-};
+}

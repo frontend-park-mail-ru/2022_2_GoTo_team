@@ -10,28 +10,28 @@ on:
       - main
 
 jobs:
-#  lint:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Install Node
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: 14
-#
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: Install ESLint
-#        run: npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
-#
-#      - name: Install typescript
-#        run: npm install typescript
-#
-#      - name: Install ESLint typescript extension
-#        run: npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
-#
-#      - name: Run ESLint
-#        run: npm run lint
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install ESLint
+        run: npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+
+      - name: Install typescript
+        run: npm install typescript
+
+      - name: Install ESLint typescript extension
+        run: npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+
+      - name: Run ESLint
+        run: npm run lint
 
   build:
     runs-on: ubuntu-latest

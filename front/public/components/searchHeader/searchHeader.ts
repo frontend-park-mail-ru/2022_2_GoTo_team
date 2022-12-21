@@ -88,4 +88,4 @@ export default class SearchHeader extends BasicComponent {
             this._subscribeEvent(subscription);
         });
     }
-};
+}

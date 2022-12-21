@@ -91,4 +91,4 @@ export default class ArticleEdit extends BasicComponent {
         }
         this._subscribeEvent(subscription);
     }
-};
+}

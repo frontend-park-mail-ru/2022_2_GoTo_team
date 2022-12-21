@@ -82,11 +82,10 @@ export default class Commentary extends BasicComponent {
             event: 'click',
             listener: async () => {
                 const rating = this.root.querySelector('.rating')!;
-                let likeData: LikeData;
                 if (dislikeButton.getAttribute('data-pressed') === 'true') {
                     return;
                 }
-                likeData = {
+                const likeData: LikeData = {
                     id: this.data!.id!,
                     sign: -1,
                 }
@@ -120,11 +119,10 @@ export default class Commentary extends BasicComponent {
             event: 'click',
             listener: async () => {
                 const rating = this.root.querySelector('.rating')!;
-                let likeData: LikeData;
                 if (likeButton.getAttribute('data-pressed') === 'true') {
                     return;
                 }
-                likeData = {
+                const likeData: LikeData = {
                     id: this.data!.id!,
                     sign: 1,
                 }
@@ -153,4 +151,4 @@ export default class Commentary extends BasicComponent {
         }
         this._subscribeEvent(subscription);
     }
-};
+}
