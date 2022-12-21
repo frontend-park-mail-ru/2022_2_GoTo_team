@@ -35,7 +35,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Install Node
         uses: actions/setup-node@v1
@@ -58,9 +57,7 @@ jobs:
           path: ./front/public
 
   deploy:
-    only:
-      - master
-      - main
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build
     steps:
