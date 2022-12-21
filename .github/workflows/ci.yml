@@ -57,7 +57,7 @@ jobs:
           path: ./front/public
 
   deploy:
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/architecture_vladimir' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build
     steps:
