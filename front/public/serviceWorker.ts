@@ -8,7 +8,7 @@ const cacheUrls = [
     '/dist/main.bandle.js',
     '/modules/handlebars.js',
     '/static/css/index.css',
-    '/static/img/404maskot.png',
+    '/static/img/404maskot.webp',
 ];
 
 const noCacheUrls = [

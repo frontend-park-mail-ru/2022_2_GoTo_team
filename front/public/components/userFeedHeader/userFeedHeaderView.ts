@@ -17,7 +17,7 @@ export default class UserFeedHeaderView extends BasicComponentView {
             login: userData.login,
             subscribers: userData.subscribers + " " + Helpers.numWord(userData.subscribers, ["подписался", "подписалось", "подписалось"]),
             registration_date: userData.registration_date,
-            avatarUrl: userData.avatarUrl !== '' ? userData.avatarUrl : '/static/img/user_icon.jpg',
+            avatarUrl: userData.avatarUrl !== '' ? userData.avatarUrl : '/static/img/user_icon.webp',
         });
 
         this.login = userData.login;

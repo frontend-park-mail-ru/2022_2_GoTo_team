@@ -3,9 +3,9 @@ import BasicComponentView from "../_basicComponent/basicComponentView.js";
 import {IncompleteArticleData} from "../../common/types";
 
 const covers = [
-    "/static/img/article_cover_1.jpg",
-    "/static/img/article_cover_2.jpg",
-    "/static/img/article_cover_3.jpg",
+    "/static/img/article_cover_1.webp",
+    "/static/img/article_cover_2.webp",
+    "/static/img/article_cover_3.webp",
 ]
 
 /**
@@ -31,7 +31,7 @@ export default class ArticleView extends BasicComponentView {
             publisher: article.publisher.username !== '' ? article.publisher.username : article.publisher.login,
             picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
             author: article.publisher.login === window.sessionStorage.getItem('login'),
-            avatar: article.avatarImgPath !== '' && article.avatarImgPath !== undefined ? article.avatarImgPath : "/static/img/user_icon.jpg",
+            avatar: article.avatarImgPath !== '' && article.avatarImgPath !== undefined ? article.avatarImgPath : "/static/img/user_icon.webp",
         });
 
         switch (article.likeStatus){

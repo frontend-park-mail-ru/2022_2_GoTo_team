@@ -14,7 +14,7 @@ export default class SettingsView extends BasicComponentView {
             email: userData.email,
             login: userData.login,
             username: userData.username,
-            avatarUrl: userData.avatarUrl !== '' && userData.avatarUrl !== undefined ? userData.avatarUrl : "/static/img/user_icon.jpg",
+            avatarUrl: userData.avatarUrl !== '' && userData.avatarUrl !== undefined ? userData.avatarUrl : "/static/img/user_icon.webp",
         });
         return wrapper.querySelector('div')!;
     }

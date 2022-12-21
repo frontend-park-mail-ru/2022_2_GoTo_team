@@ -119,6 +119,6 @@ export const categoryCoverFolder = (categoryName: string): string => {
             path += '';
             break;
     }
-    path += '/cover.jpg';
+    path += '/cover.webp';
     return path;
 }
