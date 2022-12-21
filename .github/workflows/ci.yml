@@ -51,11 +51,11 @@ jobs:
       - name: Build
         run: npm run prestart
 
-#      - name: Upload build result
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: build
-#          path: ./public/dist
+      - name: Upload build result
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: ./public/dist
 
   deploy:
     runs-on: ubuntu-latest
