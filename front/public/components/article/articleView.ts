@@ -31,7 +31,7 @@ export default class ArticleView extends BasicComponentView {
             publisher: article.publisher.username !== '' ? article.publisher.username : article.publisher.login,
             picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
             author: article.publisher.login === window.sessionStorage.getItem('login'),
-            avatar: article.avatarImgPath,
+            avatar: article.avatarImgPath !== '' && article.avatarImgPath !== undefined ? article.avatarImgPath : "/static/img/user_icon.jpg",
         });
 
         switch (article.likeStatus){
