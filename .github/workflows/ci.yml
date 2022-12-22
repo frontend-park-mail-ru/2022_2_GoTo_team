@@ -2,9 +2,6 @@ name: Frontend Build
 
 on:
   push:
-    branches:
-      - master
-      - architecture_vladimir
 
 jobs:
   lint:
