@@ -1,7 +1,7 @@
 import OpenedArticleView from "./openedArticleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {FullArticleData, LikeData, LikeResponse, Subscription} from "../../common/types";
-import {APIStrings} from "../../common/consts";
+import {FullArticleData, LikeData, LikeResponse, SharingData, Subscription} from "../../common/types";
+import {APIStrings, Url} from "../../common/consts";
 
 export type OpenedArticleEventBus = {
     goToCategoryFeed: (category: string) => void,
@@ -9,7 +9,7 @@ export type OpenedArticleEventBus = {
     openTagPage: (tag: string) => void,
     scrollToComments: () => void,
     editArticle: (id: number) => void,
-    shareListener: (url: string) => void,
+    shareListener: (data: SharingData) => void,
     likeListener: (data: LikeData) => Promise<LikeResponse>,
     openLogin: () => void,
 }
@@ -122,7 +122,13 @@ export default class OpenedArticle extends BasicComponent {
                 element: shareButton,
                 event: 'click',
                 listener: () => {
-                    eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
+                    const data: SharingData = {
+                        url: APIStrings.articlePage(this.view.id!, false),
+                        type: "article",
+                        title: this.view.data?.title,
+                        image: this.view.data?.avatarImgPath ? Url + this.view.data?.avatarImgPath : this.view.data?.avatarImgPath,
+                    }
+                    eventBus.shareListener(data);
                 },
             }
             this._subscribeEvent(subscription);

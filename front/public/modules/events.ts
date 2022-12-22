@@ -1471,19 +1471,15 @@ export class Events {
     /**
      * Открывает окно шеринга
      */
-    static openShareBox(url: string) {
+    static openShareBox(shareData: SharingData) {
         const body = document.querySelector("body")!;
 
         const eventBus: SharingBoxEventBus = {
             close: Events.closeShareBox,
         }
 
-        const data: SharingData = {
-            url: url,
-        }
-
         const sharingBox = new SharingBox();
-        sharingBox.render(data);
+        sharingBox.render(shareData);
         sharingBox.subscribe(eventBus);
 
         body.classList.add("disabled");

@@ -15,6 +15,7 @@ export default class ArticleView extends BasicComponentView {
     category: string | undefined;
     id: number | undefined;
     publisher: string | undefined;
+    data: IncompleteArticleData | undefined;
 
     render(article: IncompleteArticleData): HTMLElement {
         const wrapper = document.createElement('div');
@@ -45,6 +46,7 @@ export default class ArticleView extends BasicComponentView {
                 break;
         }
 
+        this.data = article;
         this.publisher = article.publisher.login;
         this.category = article.category;
         this.id = article.id;
