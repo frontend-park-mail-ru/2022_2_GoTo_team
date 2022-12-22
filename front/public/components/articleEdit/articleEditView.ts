@@ -20,7 +20,7 @@ export default class ArticleEditView extends BasicComponentView {
                 tags: editData.article.tags,
                 category: editData.article.category,
                 // publisher: editData.article.publisher.username !== "" ? editData.article.publisher.username : editData.article.publisher.login,
-                content: editData.article.content,
+                content: editData.article.content.split('\n'),
                 update: true,
                 categories: editData.categories,
             });

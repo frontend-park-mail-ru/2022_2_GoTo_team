@@ -830,6 +830,9 @@ export class Events {
         document.querySelectorAll('.article__tag').forEach((tagDiv) => {
             tags.push(tagDiv.innerHTML);
         });
+        console.log(contentForm.innerHTML);
+        const content: string = contentForm.innerHTML.replaceAll('<p>', '').replaceAll('</p>', '\n');
+        console.log(content);
         const articleData: FullArticleData = {
             id: articleId,
             title: titleForm.textContent ? titleForm.textContent : "",
@@ -839,7 +842,7 @@ export class Events {
             comments: 0,
             rating: 0,
             likeStatus: 0,
-            content: contentForm.textContent ? contentForm.textContent : "",
+            content: content,
             coverImgPath: "",
             publisher: {login: "", username: ""},
             avatarImgPath: '',

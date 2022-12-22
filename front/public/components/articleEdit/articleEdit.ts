@@ -53,6 +53,16 @@ export default class ArticleEdit extends BasicComponent {
                 },
             }
             this._subscribeEvent(subscription);
+            subscription = {
+                element: form,
+                event: 'paste',
+                listener: (e: Event) => {
+                    e.preventDefault();
+                    const evt = e as ClipboardEvent;
+                    form.innerHTML += evt.clipboardData!.getData('text');
+                },
+            }
+            this._subscribeEvent(subscription);
         });
 
         if (this.view.update) {
