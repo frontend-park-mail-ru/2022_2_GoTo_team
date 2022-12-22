@@ -7,23 +7,28 @@ import UserPlug, {UserPlugEventBus} from "../components/userPlug/userPlug.js";
 import UserPlugMenu, {UserPlugMenuEventBus} from "../components/userPlugMenu/userPlugMenu.js";
 import {
     CommentaryData,
-    FullArticleData,
-    FullSearchData,
+    FullArticleData, LikeData, LikeResponse,
+    Listener,
     RequestAnswer,
-    SearchData,
+    SearchData, SharingData,
     UserData,
     UserPlugData
 } from "../common/types";
 import BasicComponent from "../components/_basicComponent/basicComponent.js";
-import {CommentaryParent, ResponseErrors} from "../common/consts.js"
+import {CommentaryParent, Url, ResponseErrors} from "../common/consts.js"
 import OtherMenu, {OtherMenuEventBus} from "../components/otherMenu/otherMenu.js";
-import SearchForm from "../components/searchForm/searchForm.js";
 import {URIChanger} from "./uriChanger.js";
 import {PageLoaders} from "./pageLoaders.js";
 import CommentaryForm, {CommentaryFormEventBus} from "../components/commentaryForm/commentaryForm.js";
-import AdvancedSearchSidebar from "../components/advancedSearch/advancedSearchSidebar.js";
 import Commentary, {CommentaryComponentEventBus} from "../components/commentary/commentary.js";
-import UserFeed from "../pages/userFeed/userFeed";
+import {AlertMessageData} from "../components/alertMessage/alertMessageView";
+import AlertMessage, {AlertMessageEventBus} from "../components/alertMessage/alertMessage";
+import {ConfirmMessageData} from "../components/confirmMessage/confirmMessageView";
+import ConfirmMessage, {ConfirmMessageEventBus} from "../components/confirmMessage/confirmMessage";
+import SearchHeader from "../components/searchHeader/searchHeader";
+import SharingBox, {SharingBoxEventBus} from "../components/sharingBox/sharingBox";
+import {NotificationModule} from "./notifications";
+import Page from "../pages/_basic/page";
 
 
 export class Events {
@@ -141,7 +146,8 @@ export class Events {
 
         Requests.login(userData).then((result) => {
             if (result.status === 200) {
-                if (location.hash === '') {
+                NotificationModule.longPollSubs();
+                if (window.location.href === Url + '/') {
                     PageLoaders.feedPage();
                 } else {
                     URIChanger.rootPage();
@@ -197,12 +203,14 @@ export class Events {
 
         Requests.signup(userData).then((result) => {
             if (result.status === 200) {
-                if (location.hash === '') {
+                NotificationModule.longPollSubs();
+                if (window.location.href === Url + '/') {
                     PageLoaders.feedPage();
                 } else {
                     URIChanger.rootPage();
                 }
             } else {
+                const form = document.getElementById("login-form_inputs-wrapper");
                 switch (result.status) {
                     case 409:
                         switch (result.response) {
@@ -220,15 +228,14 @@ export class Events {
                                 Events.#makeInvalid(emailForm, "Неверный формат email");
                                 break;
                             case ResponseErrors.loginInvalid:
-                                Events.#makeInvalid(loginForm, "Неверный формат логина");
+                                Events.#makeInvalid(loginForm, "Логин должен начинаться с латинской буквы, может содержать только латинские буквы и цифры и должен быть не короче 3-х символов");
                                 break;
                             case ResponseErrors.passwordInvalid:
-                                Events.#makeInvalid(passwordForm, "Неверный формат пароля");
+                                Events.#makeInvalid(passwordForm, "Пароль может содержать только латинские буквы, цифры и спецсимволы !@#$%^&*, а также должен быть не короче 4 символов");
                                 break;
                         }
                         break;
                     default:
-                        const form = document.getElementById("login-form_inputs-wrapper");
                         Events.#makeInvalid(form as HTMLFormElement, "Что-то пошло не так");
                 }
             }
@@ -246,7 +253,7 @@ export class Events {
         const siblings = element.parentNode!.childNodes;
 
         const wrongSign = document.createElement('div');
-        wrongSign.innerHTML = `<div class=\"${errorClass}\">${message}</div>`;
+        wrongSign.innerHTML = `<div class="${errorClass}">${message}</div>`;
 
         if (typeof (element as HTMLFormElement).setCustomValidity !== 'undefined') {
             (element as HTMLFormElement).setCustomValidity(message);
@@ -258,7 +265,7 @@ export class Events {
                     element.after(wrongSign);
                     break;
                 }
-                if (!((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class=\"${errorClass}\">`))) {
+                if (!((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class="${errorClass}">`))) {
                     element.after(wrongSign);
                 }
                 break;
@@ -282,7 +289,7 @@ export class Events {
                 if (siblings[i + 1].nodeName === "#text") {
                     break;
                 }
-                if ((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class=\"${errorClass}\">`)) {
+                if ((siblings[i + 1] as HTMLElement).innerHTML.startsWith(`<div class="${errorClass}">`)) {
                     element.parentNode!.removeChild(siblings[i + 1]);
                 }
                 break;
@@ -364,7 +371,7 @@ export class Events {
             return true;
         }
         if (!Validators.validateLogin(login)) {
-            Events.#makeInvalid(loginForm, "Неправильный формат логина");
+            Events.#makeInvalid(loginForm, "Логин должен начинаться с латинской буквы, может содержать только латинские буквы и цифры и должен быть не короче 3-х символов");
             return false;
         }
         Events.#makeValid(loginForm);
@@ -405,7 +412,7 @@ export class Events {
         }
 
         if (!Validators.validatePassword(password)) {
-            Events.#makeInvalid(passwordForm, "Неправильный формат пароля");
+            Events.#makeInvalid(passwordForm, "Пароль может содержать только латинские буквы, цифры и спецсимволы !@#$%^&*, а также должен быть не короче 4 символов");
             return false;
         }
 
@@ -441,10 +448,10 @@ export class Events {
      * @param {string} name
      */
     static #getCookie(name: string): string | null {
-        let cookieArr = document.cookie.split(";");
+        const cookieArr = document.cookie.split(";");
 
         for (let i = 0; i < cookieArr.length; i++) {
-            let cookiePair = cookieArr[i].split("=");
+            const cookiePair = cookieArr[i].split("=");
             if (name === cookiePair[0].trim()) {
                 return decodeURIComponent(cookiePair[1]);
             }
@@ -457,7 +464,7 @@ export class Events {
      * Проверяет наличие куки сессии
      */
     static #hasSession(): boolean {
-        let session = Events.#getCookie("session_id");
+        const session = Events.#getCookie("session_id");
         return !(session === "" || session === null);
     }
 
@@ -472,13 +479,12 @@ export class Events {
 
         const profileButton = document.getElementById("navbar__auth_button")!;
         const userPlug = new UserPlug();
-
         if (Events.#hasSession()) {
-            const response = await Requests.getSessionInfo()
+            const response = await Requests.getSessionInfo();
             if (response.status === 200) {
                 const userData: UserPlugData = {
-                    username: response.response.username,
-                    avatarUrl: "",
+                    username: response.response.username === "" ? response.response.login : response.response.username,
+                    avatarUrl: response.response.avatarUrl,
                 }
                 userPlug.render(userData);
             } else {
@@ -525,6 +531,7 @@ export class Events {
         const eventBus: UserPlugMenuEventBus = {
             goToSettings: URIChanger.settingsPage,
             unauthorize: Events.profileMenuUnauthorizeListener,
+            authorPage: URIChanger.userFeedPage,
         }
         Events.#openNavbarMenu(new UserPlugMenu(), eventBus);
     }
@@ -634,9 +641,9 @@ export class Events {
      * Отрисовка страницы просмотра статьи
      */
     static openArticle(articleId: number, comments?: boolean): void {
-        if(comments === undefined){
+        if (comments === undefined) {
             URIChanger.articlePage(articleId, false);
-        }else{
+        } else {
             URIChanger.articlePage(articleId, comments);
         }
 
@@ -742,6 +749,11 @@ export class Events {
             }
         })
 
+        const image = document.getElementById('avatar_upload')! as HTMLInputElement;
+        if (image.files!.length > 0) {
+            Requests.sendProfilePicture(image.files![0]);
+        }
+
     }
 
     /**
@@ -781,7 +793,7 @@ export class Events {
         Events.#makeValid(descriptionForm);
         Events.#makeValid(contentForm);
 
-        let tags: string[] = [];
+        const tags: string[] = [];
         document.querySelectorAll('.article__tag').forEach((tagDiv) => {
             tags.push(tagDiv.innerHTML);
         });
@@ -795,9 +807,11 @@ export class Events {
             tags: tags,
             comments: 0,
             rating: 0,
+            likeStatus: 0,
             content: contentForm.textContent ? contentForm.textContent : "",
             coverImgPath: "",
             publisher: {login: "", username: ""},
+            avatarImgPath: '',
         };
 
         Events.articleCreate(articleData);
@@ -820,12 +834,32 @@ export class Events {
             tags: [''],
             comments: 0,
             rating: 0,
+            likeStatus: 0,
             content: contentForm.textContent ? contentForm.textContent : "",
             coverImgPath: "",
             publisher: {login: "", username: ""},
+            avatarImgPath: '',
         };
 
         Events.articleUpdate(articleData);
+    }
+
+    /**
+     * Удаление статьи по id
+     */
+    static articleRemoveListener(articleId: number): void {
+        Events.openConfirmMessage("Удалить статью?", () => {
+            Events.articleRemove(articleId).then((result) => {
+                if (result) {
+                    URIChanger.feedPage();
+                } else {
+                    Events.openAlertMessage("Удаление не удалось");
+                }
+            });
+
+        }, () => {
+            return;
+        });
     }
 
     /**
@@ -959,7 +993,7 @@ export class Events {
     static newArticlePageListener() {
         Requests.getSessionInfo().then((result) => {
             if (result.status === 401) {
-                alert("Для создания статьи нужно авторизироваться");
+                Events.openAlertMessage("Для создания статьи нужно авторизироваться");
                 return;
             }
 
@@ -967,33 +1001,12 @@ export class Events {
         });
     }
 
+    static editArticleListener(id: number) {
+        URIChanger.editArticle(id);
+    }
+
     static setLocation(uri: string) {
         location.hash = uri;
-    }
-
-    static showSearchForm() {
-        const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
-        const searchButton = document.getElementById("navbar__search")!;
-        const form = new SearchForm();
-        form.render();
-        wrapper.append(form.root);
-        searchButton.removeEventListener('click', Events.showSearchForm);
-        searchButton.addEventListener('click', Events.closeSearchForm);
-        const area = form.root.querySelector('.navbar__search_form')!;
-        area.addEventListener('keypress', (event) => {
-            if ((event as KeyboardEvent).key === 'Enter' || (event as KeyboardEvent).keyCode === 13) {
-                Events.searchFormListener();
-            }
-        });
-
-    }
-
-    static closeSearchForm() {
-        const wrapper = document.querySelector(".navbar__search_form__wrapper")!;
-        wrapper.innerHTML = '';
-        const searchButton = document.getElementById("navbar__search")!;
-        searchButton.removeEventListener('click', Events.closeSearchForm);
-        searchButton.addEventListener('click', Events.showSearchForm);
     }
 
     static createCommentary(form: CommentaryForm) {
@@ -1013,12 +1026,13 @@ export class Events {
             parentId: form.parent,
             parentType: form.parentType,
             rating: 0,
+            likeStatus: 0,
             content: content
         }
 
         Requests.commentaryCreate(commentaryDate).then((result) => {
             if (!result) {
-                alert("Для отправки комментариев нужно авторизироваться");
+                Events.openAlertMessage("Для отправки комментариев нужно авторизироваться");
             }
             Events.rerenderCommentaries(form.article);
         });
@@ -1040,7 +1054,7 @@ export class Events {
     /**
      * Обработчик добавления тега к списку тегов на странице поиска
      */
-    static addSearchedTagListener(form: AdvancedSearchSidebar): void {
+    static addSearchedTagListener(form: SearchHeader): void {
         const tagsForm = form.root.querySelector('.select_menu')! as HTMLSelectElement;
         const newTagString: string = tagsForm.value;
 
@@ -1096,25 +1110,19 @@ export class Events {
     /**
      * Обработчик подтверждения в панели расширенного поиска
      */
-    static submitAdvSearchListener(form: AdvancedSearchSidebar) {
-        const request = document.querySelector(".feed_page__header__name")!.innerHTML;
+    static submitSearchHeaderListener(form: SearchHeader) {
+        let request: string | undefined | null = document.querySelector(".search_header__title")?.textContent;
+        request = request === '' || request == null ? undefined : request.trim();
 
-        let login: string | undefined = form.root.querySelector(".advanced_search__author_textarea")!.textContent!;
-        login = login !== '' ? login : undefined;
+        let login: string | undefined | null = form.root.querySelector(".search_header__author")?.textContent;
+        login = login === '' || login == null ? undefined : login.trim();
 
         const tags = form.tags.length !== 0 ? form.tags : undefined;
-
-        let data: FullSearchData = {
-            primary: {
-                request: request,
-            },
-            advanced: {
-                author: login,
-                tags: tags,
-            }
+        const data: SearchData = {
+            request: request,
+            author: login,
+            tags: tags,
         }
-
-        console.log(data);
         URIChanger.searchPage(data);
     }
 
@@ -1125,7 +1133,7 @@ export class Events {
         const tagsForm = document.querySelector('.tag_selector')! as HTMLSelectElement;
         const newTagString: string = tagsForm.value;
 
-        let tags: string[] = [];
+        const tags: string[] = [];
         document.querySelectorAll('.article__tag').forEach((tagDiv) => {
             tags.push(tagDiv.innerHTML);
         });
@@ -1143,7 +1151,7 @@ export class Events {
                 tagsRow.appendChild(newTag);
 
                 newTag.addEventListener('click', () => {
-                    let tags: string[] = [];
+                    const tags: string[] = [];
                     document.querySelectorAll('.article__tag').forEach((tagDiv) => {
                         tags.push(tagDiv.innerHTML);
                     });
@@ -1179,6 +1187,7 @@ export class Events {
             parentId: parent.data!.id,
             parentType: CommentaryParent.commentary,
             rating: 0,
+            likeStatus: 0,
             content: ""
         }
         form.render(commentaryData);
@@ -1203,14 +1212,11 @@ export class Events {
                 const eventBus: CommentaryComponentEventBus = {
                     goToAuthorFeed: URIChanger.userFeedPage,
                     showAnswerForm: Events.addCommentaryFormToComment,
+                    likeListener: Events.commentaryLikeListener,
+                    openLogin: Events.makeLoginOverlayListener,
                 }
                 commentary.subscribe(eventBus);
                 renderedCommentaries.push(commentary);
-            }
-
-            const addToComment = (parent: Commentary, child: Commentary) => {
-                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
-                wrapper.appendChild(child.root);
             }
 
             const container = document.querySelector('.commentary__block__wrapper')!;
@@ -1220,6 +1226,21 @@ export class Events {
             container.appendChild(form);
 
 
+            const addToComment = (parent: Commentary, child: Commentary) => {
+                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
+                if (parent.level < 12) {
+                    wrapper.appendChild(child.root);
+                    return;
+                }
+                let nextLevelWrapper = wrapper.querySelector('.commentary__new_level');
+                if (nextLevelWrapper === null) {
+                    nextLevelWrapper = document.createElement('div');
+                    nextLevelWrapper.classList.add('commentary__new_level');
+                    wrapper.appendChild(nextLevelWrapper);
+                }
+                nextLevelWrapper.appendChild(child.root);
+            }
+
             const addedCommentaries: Commentary[] = [];
             const commentariesToCommentaries: Commentary[] = [];
             for (const renderedCommentary of renderedCommentaries) {
@@ -1228,7 +1249,6 @@ export class Events {
                     addedCommentaries.push(renderedCommentary);
                 } else {
                     commentariesToCommentaries.push(renderedCommentary);
-
                 }
             }
 
@@ -1238,6 +1258,10 @@ export class Events {
                     for (const addedCommentary of addedCommentaries) {
                         if (addedCommentary.data!.id === comment.data!.parentId) {
                             addToComment(addedCommentary, comment);
+                            comment.level = addedCommentary.level + 1;
+                            if (comment.level > 12) {
+                                comment.level = 4;
+                            }
                             addedCommentaries.push(comment);
                             const index = commentariesToCommentaries.indexOf(comment);
                             if (index > -1) {
@@ -1255,14 +1279,228 @@ export class Events {
     }
 
     /**
+     * Отматывает наверх страницы
+     */
+    static scrollUp() {
+        const comments = document.querySelector('.commentary__block__wrapper')!;
+        window.scroll({
+            top: 0,
+        });
+    }
+
+    /**
      * Отматывает до комментариев, когда на странице статьи
      */
-    static scrollToComments(){
+    static scrollToComments() {
         const comments = document.querySelector('.commentary__block__wrapper')!;
         const y = comments.getBoundingClientRect().top + window.scrollY;
         window.scroll({
             top: y,
             behavior: 'smooth'
         });
+    }
+
+    /**
+     * Открывает alert сообщение
+     */
+    static openAlertMessage(message: string, buttonValue?: string, alertListener?: Listener) {
+        const body = document.querySelector("body")!;
+
+        const data: AlertMessageData = {
+            message: message,
+            buttonValue: buttonValue,
+        }
+
+        if (alertListener === undefined) alertListener = () => {
+            return;
+        };
+        const eventBus: AlertMessageEventBus = {
+            okEvent: () => {
+                Events.closeAlertMessage();
+                alertListener!();
+            },
+        }
+
+        const alertMessage = new AlertMessage();
+        alertMessage.render(data);
+        alertMessage.subscribe(eventBus);
+
+        body.classList.add("disabled");
+        body.appendChild(alertMessage.root);
+    }
+
+    /**
+     * Закрывает alert сообщение
+     */
+    static closeAlertMessage() {
+        const body = document.querySelector("body")!;
+        body.classList.remove("disabled");
+        const message = body.querySelector(".alert_prompt")!;
+        body.removeChild(message);
+    }
+
+    /**
+     * Открывает alert сообщение
+     */
+    static openConfirmMessage(message: string, okListener: Listener, cancelListener: Listener, values?: {
+        positiveValue?: string, negativeValue?: string,
+    }) {
+        const body = document.querySelector("body")!;
+
+        const data: ConfirmMessageData = {
+            message: message,
+            values: values,
+        }
+
+        const eventBus: ConfirmMessageEventBus = {
+            okEvent: () => {
+                Events.closeConfirmMessage();
+                okListener();
+            },
+            cancelEvent: () => {
+                Events.closeConfirmMessage();
+                cancelListener();
+            }
+        }
+
+        const confirmMessage = new ConfirmMessage();
+        confirmMessage.render(data);
+        confirmMessage.subscribe(eventBus);
+
+        body.classList.add("disabled");
+        body.appendChild(confirmMessage.root);
+    }
+
+    /**
+     * Закрывает confirm сообщение
+     */
+    static closeConfirmMessage() {
+        const body = document.querySelector("body")!;
+        body.classList.remove("disabled");
+        const message = body.querySelector(".alert_prompt")!;
+        body.removeChild(message);
+    }
+
+    /**
+     * Подписка на категорию
+     */
+    static categorySubscribeListener(category: string): Promise<boolean> {
+        return Requests.getSessionInfo().then((result) => {
+            if (result.status === 401) {
+                Events.openAlertMessage("Для подписки нужно авторизироваться");
+                return false;
+            }
+            return true;
+        }).then((result) => {
+            if (result) {
+                return Requests.categorySubscribe(category).then((result) => {
+                    if (!result) {
+                        Events.openAlertMessage("Не удалось подписаться");
+                    }
+                    return result;
+                });
+            }
+            return false;
+        })
+    }
+
+    /**
+     * Подписка на пользователя
+     */
+    static userSubscribeListener(login: string): Promise<boolean> {
+        return Requests.userSubscribe(login).then((result) => {
+            if (!result) {
+                Events.openAlertMessage("Не удалось подписаться");
+            }
+            return result;
+        })
+    }
+
+    /**
+     * Отписка от категории
+     */
+    static categoryUnsubscribeListener(category: string): Promise<boolean> {
+        return Requests.categoryUnsubscribe(category).then((result) => {
+            if (!result) {
+                Events.openAlertMessage("Не удалось отписаться");
+            }
+            return result;
+        })
+    }
+
+    /**
+     * Отписка от пользователя
+     */
+    static userUnsubscribeListener(login: string): Promise<boolean> {
+        return Requests.userUnsubscribe(login).then((result) => {
+            if (!result) {
+                Events.openAlertMessage("Не удалось отписаться");
+            }
+            return result;
+        })
+    }
+
+    /**
+     * Открытие страницы расширенного поиска
+     */
+    static openAdvSearchListener() {
+        const form = document.querySelector(".navbar__search_form")! as HTMLFormElement;
+        const data: SearchData = {
+            request: form.value.trim().length === 0 ? undefined : form.value.trim(),
+        };
+        URIChanger.searchPage(data);
+    }
+
+    /**
+     * Закрывает окно шеринга
+     */
+    static closeShareBox() {
+        const body = document.querySelector("body")!;
+        body.classList.remove("disabled");
+        const shareBox = body.querySelector(".share_alert")!;
+        body.removeChild(shareBox);
+    }
+
+    /**
+     * Открывает окно шеринга
+     */
+    static openShareBox(url: string) {
+        const body = document.querySelector("body")!;
+
+        const eventBus: SharingBoxEventBus = {
+            close: Events.closeShareBox,
+        }
+
+        const data: SharingData = {
+            url: url,
+        }
+
+        const sharingBox = new SharingBox();
+        sharingBox.render(data);
+        sharingBox.subscribe(eventBus);
+
+        body.classList.add("disabled");
+        body.appendChild(sharingBox.root);
+    }
+
+    /**
+     * Сообщает, что аватарка слишком тяжёлая
+     */
+    static tooBigProfilePicture() {
+        Events.openAlertMessage('Размер аватарки не должен превышать 4Мб');
+    }
+
+    /**
+     * Действие лайка/дизлайка/их снятия со статьи
+     */
+    static articleLikeListener(data: LikeData): Promise<LikeResponse> {
+        return Requests.changeArticleLikeStatus(data);
+    }
+
+    /**
+     * Действие лайка/дизлайка/их снятия с комментария
+     */
+    static commentaryLikeListener(data: LikeData): Promise<LikeResponse> {
+        return Requests.changeCommentaryLikeStatus(data);
     }
 }

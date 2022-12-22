@@ -23,21 +23,18 @@ export default class SettingsPage extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render() {
-        const authCheck = await Requests.getSessionInfo();
-        if (authCheck.status === 401) {
-            alert("Вы не авторизованы");
-            URIChanger.feedPage();
-            return;
+        Events.scrollUp();
+        await this.view.render();
+        if (window.sessionStorage.getItem('login') === null){
+            this.view.mainContentElement!.innerHTML = '';
+            Events.openAlertMessage('Вы не авторизованы', 'На главную', URIChanger.rootPage);
+        } else {
+            const userData = await Requests.getProfile();
+            const settingsForm = new Settings();
+            await settingsForm.render(userData);
+            this.view.mainContentElement!.appendChild(settingsForm.root);
+            this.view.children.set('form', settingsForm);
         }
-
-        this.view.render();
-
-        const userData = await Requests.getProfile();
-        const settingsForm = new Settings();
-        await settingsForm.render(userData);
-        this.view.mainContentElement!.appendChild(settingsForm.root);
-        this.view.children.set('form', settingsForm);
-
         Events.updateAuth();
     }
 
@@ -46,12 +43,14 @@ export default class SettingsPage extends Page {
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
+            goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: Events.newArticlePageListener,
-            openSearch: Events.showSearchForm,
+            openAdvSearch: Events.openAdvSearchListener,
+            search: Events.searchFormListener,
         }
 
         this.view.children.get('navbar')!.subscribe(navbarEventBus);
@@ -63,6 +62,7 @@ export default class SettingsPage extends Page {
             repeatPasswordValidation: Events.passwordRepeatValidateListenerSettings,
             usernameValidation: Events.usernameValidateListenerSettings,
             saveProfile: Events.saveProfileListener,
+            tooBigAlert: Events.tooBigProfilePicture,
         }
         this.view.children.get('form')!.subscribe(settingsEventBus);
     }

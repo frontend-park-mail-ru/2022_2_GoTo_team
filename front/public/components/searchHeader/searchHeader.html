@@ -1,4 +1,46 @@
 <div class="box feed_page__header column">
-  <div class="feed_page__header__name">{{request}}</div>
-  <div class="feed_page__header__subscribers">Результатов не найдено</div>
+    <div class="search_header__label">
+        Строка для поиска
+    </div>
+    <div contenteditable="true"
+         class="div_textarea advanced_search_textarea div_width_available search_header__title"
+         role="textbox" id="title"
+         placeholder="Поиск">{{request}}</div>
+    <div class="search_header__label">
+        Контент конкретного автора
+    </div>
+    {{#if author}}
+    <div contenteditable="true"
+         class="div_textarea advanced_search_textarea div_width_available search_header__author"
+         placeholder="Логин автора">{{author}}</div>
+    {{else}}
+    <div contenteditable="true"
+         class="div_textarea advanced_search_textarea div_width_available search_header__author"
+         placeholder="Логин автора"></div>
+    {{/if}}
+    <div class="search_header__label">
+        Посты с тегом
+    </div>
+    <div class="row">
+        <select class="select_menu tag_selector">
+            <option value="">Выбрать тег</option>
+            {{#each allTags}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <div class="button accent_button advanced_search__add_tag">Добавить тег</div>
+    </div>
+    <div class="row advanced_search__sidebar__tags">
+        {{#if tags}}
+        {{#each tags}}
+        <div class="article__tag">{{this}}</div>
+        {{/each}}
+        {{else}}
+        <div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>
+        {{/if}}
+    </div>
+    <div class="row">
+        <div class="search_header__count vertical_center_div"></div>
+        <div class="button accent_button advanced_search__apply">Применить</div>
+    </div>
 </div>

@@ -8,7 +8,7 @@ import {FullArticleData} from "../../common/types";
  * @class ArticleEditPageView
  */
 export default class ArticleEditPageView extends PageView {
-    main_content_element: HTMLElement | undefined;
+    mainContentElement: HTMLElement | undefined;
 
     /**
      * @param {HTMLElement} root
@@ -20,7 +20,7 @@ export default class ArticleEditPageView extends PageView {
     /**
      * Перерисовать главную страницу
      */
-    async render(articleData: FullArticleData) {
+    async render(articleData?: FullArticleData) {
         super.render();
         const navbar = new Navbar();
         await navbar.render();
@@ -37,8 +37,8 @@ export default class ArticleEditPageView extends PageView {
 
         const mainContentElement = document.createElement('div');
         mainContentElement.classList.add('feed');
-        this.main_content_element = mainContentElement;
-        this.root.appendChild(this.main_content_element);
+        this.mainContentElement = mainContentElement;
+        this.root.appendChild(this.mainContentElement);
 
         const editView = new ArticleEdit();
         await editView.render(articleData);

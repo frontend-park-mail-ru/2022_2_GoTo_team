@@ -6,6 +6,8 @@ import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
+import {UserHeaderData} from "../../common/types";
+import NoResults from "../../components/noResults/noResults";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -27,35 +29,47 @@ export default class UserFeed extends Page {
      * Отобразить подконтрольную страницу.
      * Должен быть вызван render() для обновления.
      */
-    async render(login: string) {
+    async render(userData: UserHeaderData) {
+        Events.scrollUp();
         await this.view.render();
 
-        Requests.userHeaderInfo(login).then((userData) => {
-            const eventBus: UserFeedHeaderEventBus = {
-            };
+        const eventBus: UserFeedHeaderEventBus = {
+            subscribe: Events.userSubscribeListener,
+            unsubscribe: Events.userUnsubscribeListener,
+        };
 
-            const header = new UserFeedHeader();
-            header.render(userData);
-            header.subscribe(eventBus);
-            this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
-        });
+        const header = new UserFeedHeader();
+        header.render(userData);
+        header.subscribe(eventBus);
+        this.view.center!.insertBefore(header.root, this.view.center!.children[0]);
 
-        Requests.getUserArticles(login).then((articles) => {
-            const articleEventBus : ArticleComponentEventBus = {
+        Requests.getUserArticles(userData.login).then((articles) => {
+            const articleEventBus: ArticleComponentEventBus = {
                 goToAuthorFeed: Events.goToAuthorFeed,
                 goToCategoryFeed: Events.goToCategoryFeed,
                 openArticle: URIChanger.articlePage,
                 openTagPage: URIChanger.searchByTagPage,
+                editArticle: Events.editArticleListener,
+                shareListener: Events.openShareBox,
+                likeListener: Events.articleLikeListener,
+                openLogin: Events.makeLoginOverlayListener,
             }
 
             if (articles && Array.isArray(articles)) {
-                this.view.mainContentElement!.innerHTML = '';
-                articles.forEach((article) => {
-                    const articleView = new Article();
-                    articleView.render(article)
-                    articleView.subscribe(articleEventBus);
-                    this.view.mainContentElement!.appendChild(articleView.root);
-                })
+                if (articles.length > 0){
+                    this.view.mainContentElement!.innerHTML = '';
+                    articles.forEach((article) => {
+                        const articleView = new Article();
+                        articleView.render(article)
+                        articleView.subscribe(articleEventBus);
+                        this.view.mainContentElement!.appendChild(articleView.root);
+                    })
+                }else{
+                    const noResults = new NoResults();
+                    noResults.render();
+                    this.view.mainContentElement!.innerHTML = '';
+                    this.view.mainContentElement!.appendChild(noResults.root);
+                }
             }
         });
 
@@ -67,12 +81,13 @@ export default class UserFeed extends Page {
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
+            goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
-            //openOtherMenu: Events.showOtherMenuListener,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             goToNewArticle: Events.newArticlePageListener,
-            openSearch: Events.showSearchForm,
+            openAdvSearch: Events.openAdvSearchListener,
+            search: Events.searchFormListener,
         }
 
         this.view.children.get('navbar')!.subscribe(navbarEventBus);

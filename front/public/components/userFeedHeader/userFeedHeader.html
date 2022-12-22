@@ -1,15 +1,15 @@
 <div class="box feed_page__header column">
     <div class="row">
-        <img class="feed_page__header__avatar" src="static/img/user_icon.jpg">
-        <div class="accent_button button feed_page__header__subscribe">Подписаться</div>
+        <img class="feed_page__header__avatar" src="{{avatarUrl}}">
+        <div class="feed_page__header__subscribe_button button"></div>
     </div>
     <div class="row">
         <div class="feed_page__header__name">{{username}}</div>
         <div class="feed_page__header__login">Логин: {{login}}</div>
     </div>
     <div class="row">
-        <div class="feed_page__header__subscribers rating">{{rating}}</div>
-        <div class="feed_page__header__subscribers">{{subscribers}} подписалось</div>
+        <div class="feed_page__header__subscribers rating" hidden="hidden">{{rating}}</div>
+        <div class="feed_page__header__subscribers">{{subscribers}}</div>
     </div>
     <div class="feed_page__header__description">С нами с {{registration_date}}</div>
 </div>

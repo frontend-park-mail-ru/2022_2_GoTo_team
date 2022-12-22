@@ -25,9 +25,8 @@ export default class OtherMenu extends BasicComponent {
     }
 
     subscribe(eventBus: OtherMenuEventBus) {
-        let subscription: Subscription;
         const newArticleButton = document.getElementById('other_menu__new_article_button')!;
-        subscription = {
+        const subscription: Subscription = {
             element: newArticleButton,
             event: 'click',
             listener: () => {

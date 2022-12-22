@@ -25,6 +25,7 @@ export default class LoginPage extends Page {
      * Должен быть вызван render() для обновления.
      */
     async render() {
+        Events.scrollUp();
         this.view.render();
         Events.updateAuth();
     }
@@ -34,13 +35,14 @@ export default class LoginPage extends Page {
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
-            goToHotFeed: PageLoaders.feedPage,
+            goToRoot: URIChanger.rootPage,
+            goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: PageLoaders.feedPage,
-            //goToSubscribeFeed: PageLoaders.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             //goToNewArticle: PageLoaders.editArticle,
-            //openOtherMenu: Events.showOtherMenuListener,
             goToNewArticle: URIChanger.editArticle,
-            openSearch: Events.showSearchForm,
+            openAdvSearch: Events.openAdvSearchListener,
+            search: Events.searchFormListener,
         }
 
         this.view.children.get('navbar')!.subscribe(navbarEventBus);

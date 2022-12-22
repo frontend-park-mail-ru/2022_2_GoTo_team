@@ -5,6 +5,7 @@ import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
+import NoResults from "../../components/noResults/noResults";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -22,22 +23,32 @@ export default class Feed extends Page{
      * Отобразить подконтрольную страницу.
      */
     async render() {
+        Events.scrollUp();
         const articleEventBus : ArticleComponentEventBus = {
             goToAuthorFeed: Events.goToAuthorFeed,
             goToCategoryFeed: Events.goToCategoryFeed,
             openArticle: URIChanger.articlePage,
             openTagPage: URIChanger.searchByTagPage,
+            editArticle: Events.editArticleListener,
+            shareListener: Events.openShareBox,
+            likeListener: Events.articleLikeListener,
+            openLogin: Events.makeLoginOverlayListener,
         }
         await this.view.render();
         Requests.getArticles().then((articles) => {
-            if (articles && Array.isArray(articles)) {
+            if (articles.length > 0){
                 this.view.mainContentElement!.innerHTML = '';
                 articles.forEach((article) => {
                     const articleView = new Article();
                     articleView.render(article)
-                    this.view.mainContentElement!.appendChild(articleView.root);
                     articleView.subscribe(articleEventBus);
+                    this.view.mainContentElement!.appendChild(articleView.root);
                 })
+            }else{
+                const noResults = new NoResults();
+                noResults.render();
+                this.view.mainContentElement!.innerHTML = '';
+                this.view.mainContentElement!.appendChild(noResults.root);
             }
         });
         Events.updateAuth();
@@ -48,12 +59,13 @@ export default class Feed extends Page{
      */
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
+            goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
-            //openOtherMenu: Events.showOtherMenuListener,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             goToNewArticle: Events.newArticlePageListener,
-            openSearch: Events.showSearchForm,
+            openAdvSearch: Events.openAdvSearchListener,
+            search: Events.searchFormListener,
         }
 
         this.view.children.get('navbar')!.subscribe(navbarEventBus);

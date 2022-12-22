@@ -1,8 +1,7 @@
 import BasicComponent from "../_basicComponent/basicComponent.js";
 import OverlayView from "./overlayView.js";
 
-export type OverlayEventBus = {
-}
+export type OverlayEventBus = Record<string, never>
 
 /**
  * ViewModel-компонент соответсвующего View
@@ -23,5 +22,6 @@ export default class Overlay extends BasicComponent {
     }
 
     subscribe(eventBus: OverlayEventBus) {
+        return;
     }
 }

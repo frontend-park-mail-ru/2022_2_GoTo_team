@@ -3,12 +3,13 @@ import BasicComponent from "../_basicComponent/basicComponent.js";
 import {Listener, Subscription} from "../../common/types";
 
 export type NavbarEventBus = {
+    goToRoot: Listener,
     goToHotFeed: Listener,
     //goToNewFeed: Listener,
-    //goToSubscribeFeed: Listener,
+    goToSubscribeFeed: Listener,
     goToNewArticle: Listener,
-    //openOtherMenu: Listener,
-    openSearch: Listener,
+    openAdvSearch: Listener,
+    search: (request: string) => void,
 }
 
 /**
@@ -30,10 +31,16 @@ export default class Navbar extends BasicComponent {
 
     async subscribe(eventBus: NavbarEventBus) {
         let subscription: Subscription;
-        const logo = this.root.querySelector('.navbar__logo')!;
-        logo.addEventListener('click', eventBus.goToHotFeed);
 
-        const popular = this.root.querySelectorAll('.navbar__button')[0];
+        const logo = this.root.querySelector('.navbar__logo')!;
+        subscription = {
+            element: logo,
+            event: 'click',
+            listener: eventBus.goToRoot,
+        }
+        this._subscribeEvent(subscription);
+
+        const popular = this.root.querySelector('#navbar__popular')!;
         subscription = {
             element: popular,
             event: 'click',
@@ -41,31 +48,42 @@ export default class Navbar extends BasicComponent {
         }
         this._subscribeEvent(subscription);
         ///const newFeed = this.root.querySelectorAll('.navbar__button')[1];
-        //const subscribeFeed = this.root.querySelectorAll('.navbar__button')[2];
+        const subscribeFeed = this.root.querySelector('#navbar__subscribes')!;
+        subscription = {
+            element: subscribeFeed,
+            event: 'click',
+            listener: eventBus.goToSubscribeFeed,
+        }
+        this._subscribeEvent(subscription);
         //popular.addEventListener('click', eventBus.goToHotFeed);
         //newFeed.addEventListener('click', eventBus.goToNewFeed);
         //subscribeFeed.addEventListener('click', eventBus.goToSubscribeFeed);
 
-        /*
-        const newArticle = this.root.querySelectorAll('.navbar__button')[3];
+
+        const newArticle = this.root.querySelectorAll('.navbar__button')[2];
         newArticle.addEventListener('click', () => {
             eventBus.goToNewArticle();
         });
-        */
 
-        const otherMenuButton = this.root.querySelectorAll('.navbar__button')[1];
-        subscription = {
-            element: otherMenuButton,
-            event: 'click',
-            listener: eventBus.goToNewArticle,
-        }
-        this._subscribeEvent(subscription);
 
-        const searchButton = this.root.querySelectorAll('.navbar__button')[3];
+        const searchButton = this.root.querySelector('.navbar__search_form__button')!;
         subscription = {
             element: searchButton,
             event: 'click',
-            listener: eventBus.openSearch,
+            listener: eventBus.openAdvSearch,
+        }
+        this._subscribeEvent(subscription);
+
+        const input = this.root.querySelector('.navbar__search_form')! as HTMLFormElement;
+        subscription = {
+            element: input,
+            event: 'keyup',
+            listener: (e: Event) => {
+                const evt = e as KeyboardEvent;
+                if (evt.key === 'Enter' || evt.keyCode === 13) {
+                    eventBus.search(input.value);
+                }
+            },
         }
         this._subscribeEvent(subscription);
     }

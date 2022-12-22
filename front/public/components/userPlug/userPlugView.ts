@@ -15,7 +15,7 @@ export default class UserPlugView extends BasicComponentView {
             // @ts-expect-error TS(2304): Cannot find name 'Handlebars'.
             wrapper.innerHTML = Handlebars.templates["authorizedUser.html"]({
                 nickname: userData.username,
-                picture: userData.avatarUrl !== '' && userData.avatarUrl !== undefined ? userData.avatarUrl : "static/img/user_icon.jpg",
+                picture: userData.avatarUrl !== '' && userData.avatarUrl !== undefined ? userData.avatarUrl : "/static/img/user_icon.webp",
             });
             this.authed = true;
         }else{

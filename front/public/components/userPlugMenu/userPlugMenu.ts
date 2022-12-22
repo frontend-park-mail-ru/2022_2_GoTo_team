@@ -5,6 +5,7 @@ import {Listener, Subscription} from "../../common/types";
 export type UserPlugMenuEventBus = {
     goToSettings: Listener,
     unauthorize: Listener,
+    authorPage: (login: string) => void,
 }
 
 /**
@@ -27,7 +28,7 @@ export default class UserPlugMenu extends BasicComponent {
     subscribe(eventBus: UserPlugMenuEventBus) {
         let subscription: Subscription;
 
-        const profileButton = document.getElementById('profile_menu__profile_button')!;
+        const profileButton = this.root.querySelector('#profile_menu__profile_button')!;
         subscription = {
             element: profileButton,
             event: 'click',
@@ -35,7 +36,17 @@ export default class UserPlugMenu extends BasicComponent {
         }
         this._subscribeEvent(subscription);
 
-        const exitButton = document.getElementById('profile_menu__unauthorize_button')!;
+        const authorPageButton = this.root.querySelector('#profile_menu__author_page')!;
+        subscription = {
+            element: authorPageButton,
+            event: 'click',
+            listener: () => {
+                eventBus.authorPage(window.sessionStorage.getItem('login')!);
+            },
+        }
+        this._subscribeEvent(subscription);
+
+        const exitButton = this.root.querySelector('#profile_menu__unauthorize_button')!;
         subscription = {
             element: exitButton,
             event: 'click',

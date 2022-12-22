@@ -55,6 +55,7 @@ export default class ArticlePageView extends PageView {
         this.commentaryContainer = commentaryWrapper;
         this.mainContentElement!.appendChild(commentaryContainer);
         commentaryContainer.appendChild(this.commentaryContainer);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         this.children.set('commentary container', this.commentaryContainer);
 
@@ -65,6 +66,7 @@ export default class ArticlePageView extends PageView {
             parentId: articleData.id,
             parentType: CommentaryParent.article,
             rating: 0,
+            likeStatus: 0,
             content: ""
         }
         await newCommentary.render(data);

@@ -1,10 +1,12 @@
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {CommentaryData, Subscription} from "../../common/types";
+import {CommentaryData, LikeData, LikeResponse, Subscription} from "../../common/types";
 import CommentaryView from "./commentaryView.js";
 
 export type CommentaryComponentEventBus = {
     goToAuthorFeed: (login: string) => void,
     showAnswerForm: (comment: Commentary) => void,
+    likeListener: (data: LikeData) => Promise<LikeResponse>,
+    openLogin: () => void,
 }
 
 /**
@@ -14,10 +16,12 @@ export type CommentaryComponentEventBus = {
 export default class Commentary extends BasicComponent {
     view: CommentaryView;
     data: CommentaryData | undefined;
+    level: number;
 
     constructor() {
         super();
         this.view = new CommentaryView();
+        this.level = 0;
     }
 
     render(commentary: CommentaryData): HTMLElement {
@@ -58,5 +62,93 @@ export default class Commentary extends BasicComponent {
             },
         }
         this._subscribeEvent(subscription);
+
+        const rating = this.root.querySelector('.rating')!;
+        subscription = {
+            element: rating,
+            event: 'DOMSubtreeModified',
+            listener: () => {
+                const value = parseInt(rating.innerHTML);
+                rating.setAttribute('data-sign', value > 0 ? '1' : (value < 0 ? '-1' : '0'));
+            }
+        }
+        this._subscribeEvent(subscription);
+
+
+        const dislikeButton = this.root.querySelector('.dislike')!;
+        const likeButton = this.root.querySelector('.like')!;
+        subscription = {
+            element: dislikeButton,
+            event: 'click',
+            listener: async () => {
+                const rating = this.root.querySelector('.rating')!;
+                if (dislikeButton.getAttribute('data-pressed') === 'true') {
+                    return;
+                }
+                const likeData: LikeData = {
+                    id: this.data!.id!,
+                    sign: -1,
+                }
+                const preLikeData: LikeData = {
+                    id: this.data!.id!,
+                    sign: 0,
+                }
+                await eventBus.likeListener(preLikeData);
+
+                eventBus.likeListener(likeData).then((response) => {
+                    if (response.status === 200) {
+                        rating.innerHTML = response.rating.toString();
+
+                        if (likeData.sign === -1) {
+                            dislikeButton.setAttribute('data-pressed', 'true');
+                        } else {
+                            dislikeButton.setAttribute('data-pressed', 'false');
+                        }
+
+                        likeButton.setAttribute('data-pressed', 'false');
+                    } else if (response.status === 401) {
+                        eventBus.openLogin();
+                    }
+                })
+            }
+        }
+        this._subscribeEvent(subscription);
+
+        subscription = {
+            element: likeButton,
+            event: 'click',
+            listener: async () => {
+                const rating = this.root.querySelector('.rating')!;
+                if (likeButton.getAttribute('data-pressed') === 'true') {
+                    return;
+                }
+                const likeData: LikeData = {
+                    id: this.data!.id!,
+                    sign: 1,
+                }
+                const preLikeData: LikeData = {
+                    id: this.data!.id!,
+                    sign: 0,
+                }
+                await eventBus.likeListener(preLikeData);
+
+                eventBus.likeListener(likeData).then((response) => {
+                    if (response.status === 200) {
+                        rating.innerHTML = response.rating.toString();
+
+                        if (likeData.sign === 1) {
+                            likeButton.setAttribute('data-pressed', 'true');
+                        } else {
+                            likeButton.setAttribute('data-pressed', 'false');
+                        }
+
+                        dislikeButton.setAttribute('data-pressed', 'false');
+                    } else if (response.status === 401) {
+                        eventBus.openLogin();
+                    }
+                })
+            }
+        }
+        this._subscribeEvent(subscription);
     }
-};
+}

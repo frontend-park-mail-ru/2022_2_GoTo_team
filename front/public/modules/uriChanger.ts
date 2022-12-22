@@ -1,85 +1,81 @@
-import {Events} from "./events.js";
-import {APIStrings} from "../common/consts.js";
-import {FullSearchData, SearchData} from "../common/types";
+import {APIStrings, Url} from "../common/consts.js";
+import {SearchData} from "../common/types";
 
 export class URIChanger {
     /**
      * Перемещает на страницу популярных страниц
      */
     static rootPage() {
-        Events.setLocation(APIStrings.root());
+        window.history.pushState(null, '', Url + APIStrings.root());
     }
 
     /**
      * Перемещает на страницу популярных страниц
      */
     static feedPage() {
-        Events.setLocation(APIStrings.feedPage());
+        window.history.pushState(null, '', Url + APIStrings.feedPage());
+    }
+
+    /**
+     * Перемещает на страницу подписок
+     */
+    static subscriptionFeedPage() {
+        window.history.pushState(null, '', Url + APIStrings.subscriptionsPage());
     }
 
     /**
      * Перемещает на страницу автора
      */
     static userFeedPage(login: string) {
-        Events.setLocation(APIStrings.authorPage(login));
+        window.history.pushState(null, '', Url + APIStrings.authorPage(login));
     }
 
     /**
      * Перемещает на страницу автора
      */
     static categoryFeedPage(category: string) {
-        Events.setLocation(APIStrings.categoryPage(category));
+        window.history.pushState(null, '', Url + APIStrings.categoryPage(category));
     }
 
     /**
      * Перемещает на страницу просмотра статьи
      */
     static articlePage(articleId: number, comments: boolean) {
-        Events.setLocation(APIStrings.articlePage(articleId, comments));
+        window.history.pushState(null, '', Url + APIStrings.articlePage(articleId, comments));
     }
 
     /**
      * Перемещает на страницу профиля
      */
     static settingsPage() {
-        Events.setLocation(APIStrings.settingsPage());
+        window.history.pushState(null, '', Url + APIStrings.settingsPage());
     }
 
     /**
      * Перемещает на редактирования/создания статьи
      */
     static editArticle(articleId?: number) {
-        if (typeof articleId === 'undefined') {
-            Events.setLocation(APIStrings.newArticlePage());
+        if (articleId === undefined) {
+            window.history.pushState(null, '', Url + APIStrings.newArticlePage());
         } else {
-            Events.setLocation(APIStrings.articleEditPage(articleId));
+            window.history.pushState(null, '', Url + APIStrings.articleEditPage(articleId));
         }
     }
 
     /**
      * Перемещает на поиск
      */
-    static searchPage(data: FullSearchData | SearchData) {
-        let searchData: FullSearchData | undefined;
-        // @ts-ignore
-        if (typeof data.primary === 'undefined') {
-            searchData = {
-                primary: data as SearchData,
-                advanced: {}
-            }
-        } else {
-            searchData = data as FullSearchData;
-        }
-        console.log(searchData)
-        Events.setLocation(
-            APIStrings.searchPage(searchData!.primary.request,
-                searchData!.advanced.author, searchData!.advanced.tags));
+    static searchPage(data: SearchData) {
+        window.history.pushState(null, '', Url + APIStrings.searchPage(data));
     }
 
     /**
      * Перемещает на поиск
      */
     static searchByTagPage(tag: string) {
-        Events.setLocation(APIStrings.searchByTagPage(tag));
+        const data: SearchData = {
+            tags: [tag],
+        }
+        window.history.pushState(null, '', Url + APIStrings.searchPage(data));
     }
 }

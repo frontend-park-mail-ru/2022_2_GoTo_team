@@ -8,7 +8,7 @@ export class Helpers{
     static numWord(value: number, words: string[]){
         value = Math.abs(value) % 100;
 
-        var num = value % 10;
+        const num = value % 10;
 
         if(value > 10 && value < 20) return words[2];
 

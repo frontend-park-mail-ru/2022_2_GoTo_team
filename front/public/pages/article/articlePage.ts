@@ -6,8 +6,7 @@ import {OpenedArticleEventBus} from "../../components/openedArticle/openedArticl
 import {NavbarEventBus} from "../../components/navbar/navbar";
 import {URIChanger} from "../../modules/uriChanger.js";
 import {CommentaryFormEventBus} from "../../components/commentaryForm/commentaryForm.js";
-import Commentary, {CommentaryComponentEventBus} from "../../components/commentary/commentary.js";
-import {CommentaryParent} from "../../common/consts.js";
+import {FullArticleData} from "../../common/types";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -21,56 +20,10 @@ export default class ArticlePage extends Page {
         this.view = new ArticlePageView(root);
     }
 
-    async render(data: { articleId: number, toComments: boolean }) {
-        const article = await Requests.getArticle(data.articleId);
-        await this.view.render(article);
-        Requests.getCommentaries(data.articleId).then(async (commentaries) => {
-            const renderedCommentaries: Commentary[] = [];
-            for (const commentaryData of commentaries) {
-                const commentary = new Commentary();
-                await commentary.render(commentaryData);
-                const eventBus: CommentaryComponentEventBus = {
-                    goToAuthorFeed: URIChanger.userFeedPage,
-                    showAnswerForm: Events.addCommentaryFormToComment,
-                }
-                commentary.subscribe(eventBus);
-                renderedCommentaries.push(commentary);
-            }
-
-            const addToComment = (parent: Commentary, child: Commentary) => {
-                const wrapper = parent.root.querySelector('.commentary__reply_box')!;
-                wrapper.appendChild(child.root);
-            }
-
-            const addedCommentaries: Commentary[] = [];
-            const commentariesToCommentaries: Commentary[] = [];
-            for (const renderedCommentary of renderedCommentaries) {
-                if (renderedCommentary.data!.parentType === CommentaryParent.article) {
-                    // @ts-ignore
-                    this.view.children.get('commentary container').appendChild(renderedCommentary.root);
-                    addedCommentaries.push(renderedCommentary);
-                } else {
-                    commentariesToCommentaries.push(renderedCommentary);
-
-                }
-            }
-
-            while (commentariesToCommentaries.length > 0){
-                const buf = commentariesToCommentaries;
-                for (const comment of buf){
-                    for (const addedCommentary of addedCommentaries){
-                        if (addedCommentary.data!.id === comment.data!.parentId){
-                            addToComment(addedCommentary, comment);
-                            addedCommentaries.push(comment);
-                            const index = commentariesToCommentaries.indexOf(comment);
-                            if (index > -1) {
-                                commentariesToCommentaries.splice(index, 1);
-                            }
-                        }
-                    }
-                }
-            }
-        })
+    async render(data: { article: FullArticleData, toComments: boolean }) {
+        Events.scrollUp();
+        await this.view.render(data.article);
+        Events.rerenderCommentaries(data.article.id);
         Events.updateAuth();
         if (data.toComments){
             Events.scrollToComments();
@@ -79,12 +32,13 @@ export default class ArticlePage extends Page {
 
     async subscribe() {
         const navbarEventBus: NavbarEventBus = {
+            goToRoot: URIChanger.rootPage,
             goToHotFeed: URIChanger.feedPage,
             //goToNewFeed: URIChanger.feedPage,
-            //goToSubscribeFeed: URIChanger.feedPage,
+            goToSubscribeFeed: URIChanger.subscriptionFeedPage,
             goToNewArticle: Events.newArticlePageListener,
-            //openOtherMenu: Events.showOtherMenuListener,
-            openSearch: Events.showSearchForm,
+            openAdvSearch: Events.openAdvSearchListener,
+            search: Events.searchFormListener,
         }
 
         const articleEventBus: OpenedArticleEventBus = {
@@ -92,6 +46,10 @@ export default class ArticlePage extends Page {
             goToAuthorFeed: Events.goToAuthorFeed,
             openTagPage: URIChanger.searchByTagPage,
             scrollToComments: Events.scrollToComments,
+            editArticle: Events.editArticleListener,
+            shareListener: Events.openShareBox,
+            likeListener: Events.articleLikeListener,
+            openLogin: Events.makeLoginOverlayListener,
         }
 
         const commentaryFormEventBus: CommentaryFormEventBus = {

@@ -1,11 +1,16 @@
 export default class Router {
     routes: { path: RegExp | string, handler: any }[] = [];
-    root: string = '/';
+    root: string;
     #current: string;
+    mode: 'history' | 'hash';
+    interval: NodeJS.Timer | undefined;
 
     constructor(options: any) {
         if (options.root) this.root = options.root;
+        this.mode = 'history';
+        if (options.mode) this.mode = options.mode;
         this.#current = '/';
+        this.root = '/';
         this.listen();
     }
 
@@ -36,29 +41,34 @@ export default class Router {
 
     getFragment = () => {
         let fragment = '';
-        const match = window.location.href.match(/#(.*)$/);
-        fragment = match ? match[1] : '';
+        if (this.mode === 'history') {
+            fragment = this.clearSlashes(decodeURI(window.location.pathname + window.location.search));
+            //fragment = fragment.replace(/\?(.*)$/, '');
+            fragment = this.root !== '/' ? fragment.replace(this.root, '') : fragment;
+        } else {
+            const match = window.location.href.match(/#(.*)$/);
+            fragment = match ? match[1] : '';
+        }
         return this.clearSlashes(fragment);
     };
 
     listen = () => {
-        // @ts-ignore
         clearInterval(this.interval);
-        // @ts-ignore
-        this.interval = setInterval(this.interval, 50);
-    };
 
-    interval: () => any = () => {
-        if (this.#current === this.getFragment()) return;
-        this.#current = this.getFragment();
-        this.routes.some(route => {
-            const match = this.#current.match(route.path);
-            if (match) {
-                match.shift();
-                route.handler.apply({}, match);
-                return match;
-            }
-            return false;
-        });
+        const interval: () => any = () => {
+            if (this.#current === this.getFragment()) return;
+            this.#current = this.getFragment();
+            this.routes.some(route => {
+                const match = this.#current.match(route.path);
+                if (match) {
+                    match.shift();
+                    route.handler.apply({}, match);
+                    return match;
+                }
+                return false;
+            });
+        };
+
+        this.interval = setInterval(interval, 50);
     };
 }

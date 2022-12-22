@@ -74,4 +74,4 @@ export default class LoginForm extends BasicComponent {
             this.root.removeChild(closeButton);
         }
     }
-};
+}

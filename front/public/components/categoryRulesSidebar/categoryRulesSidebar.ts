@@ -2,8 +2,7 @@ import BasicComponent from "../_basicComponent/basicComponent.js";
 import {RulesData} from "../../common/types";
 import CategoryRulesSidebarView from "./categoryRulesSidebarView.js";
 
-export type CategoryRulesSidebarEventBus = {
-}
+export type CategoryRulesSidebarEventBus = Record<string, never>
 
 /**
  * ViewModel-компонент соответсвующего View
@@ -24,5 +23,6 @@ export default class CategoryRulesSidebar extends BasicComponent {
     }
 
     subscribe(eventBus: CategoryRulesSidebarEventBus): void {
+        return;
     }
-};
+}

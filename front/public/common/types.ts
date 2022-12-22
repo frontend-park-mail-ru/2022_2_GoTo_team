@@ -16,23 +16,27 @@ export type IncompleteArticleData = {
     tags: string[],
     category: string,
     rating: number,
+    likeStatus: 1 | 0 | -1,
     comments: number,
     publisher: publisher,
     coverImgPath: string,
+    avatarImgPath: string,
 };
 
-export type FullArticleData = {
+export type FullArticleData= {
     id: number,
     title: string,
     description: string,
     tags: string[],
     category: string,
     rating: number,
+    likeStatus: 1 | 0 | -1,
     comments: number,
     publisher: publisher,
     coAuthor?: publisher,
     coverImgPath: string,
     content: string,
+    avatarImgPath: string,
 }
 
 export type EditArticleData = {
@@ -45,6 +49,8 @@ export type CategoryData = {
     name: string,
     description: string,
     subscribers: number,
+    subscribed: boolean,
+    avatarImgPath: string,
 }
 
 export type UserData = {
@@ -52,7 +58,7 @@ export type UserData = {
     login?: string,
     username: string,
     password?: string,
-    avatar_link?: string,
+    avatarUrl?: string,
 }
 
 export type UserHeaderData = {
@@ -61,6 +67,8 @@ export type UserHeaderData = {
     rating: number,
     subscribers: number,
     registration_date: string,
+    subscribed: boolean,
+    avatarUrl: string,
 }
 
 export type UserPlugData = {
@@ -89,6 +97,7 @@ export type CommentaryData = {
     parentType: string,
     parentId: number,
     rating: number,
+    likeStatus: 1 | 0 | -1
     content: string,
 }
 
@@ -97,21 +106,43 @@ export type RulesData = {
 }
 
 export type SearchData = {
-    request: string,
-}
-
-export type AdvSearchData = {
+    request?: string,
     author?: string,
     tags?: string[],
 }
 
-export type FullSearchData = {
-    primary: SearchData,
-    advanced: AdvSearchData,
+export type SearchHeaderData = {
+    searchData: SearchData,
+    tagList: string[],
 }
+
 
 export type Subscription = {
     element: Element,
     event: string,
     listener: EventListenerOrEventListenerObject
+}
+
+export type LikeData = {
+    id: number,
+    sign: 1 | 0 | -1,
+}
+
+export type LikeResponse = {
+    status: number,
+    rating: number
+}
+
+export type SharingData = {
+    url: string,
+}
+
+export type ImgPostData = {
+    url: string,
+    body: any,
+}
+
+export type NewSubsResponse = {
+    status: number,
+    ids: number[],
 }

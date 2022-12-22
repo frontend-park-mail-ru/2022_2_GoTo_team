@@ -1,16 +1,13 @@
 <div class="article">
-    <!--svg class="login_form__cross" id="login_form__cross">
-        <use xlink:href="icons.svg#trash_bin"/>
-    </svg-->
     <div class="article__wrapper">
         <div class="article__top_bar">
+            <img class="article__profile_picture" src="{{avatar}}">
             {{#if category}}
-            <img class="article__profile_picture" src="static/img/category_icon.jpg">
             <div class="article__category" id="article__category">{{category}}</div>
-            {{else}}
-            <img class="article__profile_picture" src="static/img/user_icon.jpg">
-            {{/if}}
             <div class="article__author" id="article__author">{{publisher}}</div>
+            {{else}}
+            <div class="article__category" id="article__author">{{publisher}}</div>
+            {{/if}}
             <div class="article__posting_time">{{time}}</div>
         </div>
         <div class="article__title">{{title}}</div>
@@ -27,16 +24,28 @@
             <div class="article__comments_count">
                 <div class="article__comments_count__count">{{comments}}</div>
                 <svg>
-                    <use xlink:href="icons.svg#comments"/>
+                    <use xlink:href="/icons.svg#comments"/>
                 </svg>
             </div>
-            <div class="article__rating vertical_center_div">
+            {{#if author}}
+            <div class="article__edit_button" title="Редактирвоать статью">
                 <svg>
-                    <use xlink:href="icons.svg#arrow_down"/>
+                    <use xlink:href="/icons.svg#edit_article_pen"></use>
                 </svg>
-                <div class="article__rating__count">{{rating}}</div>
+            </div>
+            {{/if}}
+            <div class="article__rating vertical_center_div">
+                <svg class="dislike" data-pressed="false">
+                    <use xlink:href="/icons.svg#arrow_down"/>
+                </svg>
+                <div class="article__rating__count rating" data-sign="{{rating_sign}}">{{rating}}</div>
+                <svg class="like" data-pressed="false">
+                    <use xlink:href="/icons.svg#arrow_up"/>
+                </svg>
+            </div>
+            <div class="article__share_button vertical_center_div">
                 <svg>
-                    <use xlink:href="icons.svg#arrow_up"/>
+                    <use xlink:href="/icons.svg#share"/>
                 </svg>
             </div>
         </div>

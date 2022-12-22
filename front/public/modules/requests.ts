@@ -1,16 +1,16 @@
 import {Ajax} from "./ajax.js";
 import {requestParams} from "./ajax"
 import {
-    CategoryData, CommentaryData, FullArticleData, FullSearchData,
-    IncompleteArticleData,
-    RequestAnswer, UserData,
+    CategoryData, CommentaryData, FullArticleData, ImgPostData,
+    IncompleteArticleData, LikeData, LikeResponse, NewSubsResponse,
+    RequestAnswer, SearchData, UserData,
     UserHeaderData,
     UserLoginData,
     UserPlugData,
     UserRegistrationData
 } from "../common/types";
 
-import {CommentaryParent, ResponseErrors} from "../common/consts.js"
+import {categoryCoverFolder, CommentaryParent, ResponseErrors} from "../common/consts.js"
 
 const config = {
     hrefs: {
@@ -35,24 +35,35 @@ const config = {
         searchPage: '/search',
         searchTagPage: '/search/tag',
         tagList: '/tag/list',
+        articleLike: '/article/like',
+        commentaryLike: '/commentary/like',
+        subscribeUser: '/user/subscribe',
+        subscribeCategory: '/category/subscribe',
+        unsubscribeUser: '/user/unsubscribe',
+        unsubscribeCategory: '/category/unsubscribe',
+        sendProfilePicture: '/file/upload/profile/photo',
+        getAvatar: '/user/avatar',
+        hasNewSubs: '/feed/subscriptions/has-new-articles-from',
+        subscribesFeed: '/subscribes/feed',
     }
 }
 
 const ajax = new Ajax();
 
 export class Requests {
+
     /**
-     * Запрашивает статьи
-     * @return {Promise} Promise с массивом статей
+     * Преобразует статьи из запроса в массив IncompleteArticleData
+     * @param {any[]} rawArticles т.к. вытаскивается из запроса тип "может быть любым"
      */
-    static getArticles(): Promise<IncompleteArticleData[]> {
-        return ajax.get({
-            url: config.hrefs.articles,
-        }).then((response) => {
-            const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+    static #parseIncompleteArticles(rawArticles: any[]): Promise<IncompleteArticleData[]>{
+        const articles: Promise<IncompleteArticleData>[] = [];
+        if (rawArticles) {
+            rawArticles.forEach((rawArticle: {
+                liked: 1 | 0 | -1;
+                id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
+                const avatar: Promise<string> = rawArticle.category === "" ? Requests.getProfilePicture(rawArticle.publisher.login) : Promise.resolve(categoryCoverFolder(rawArticle.category));
+                articles.push(avatar.then((avatar): IncompleteArticleData => {
                     const article: IncompleteArticleData = {
                         id: rawArticle.id,
                         title: rawArticle.title,
@@ -60,24 +71,36 @@ export class Requests {
                         tags: rawArticle.tags,
                         category: rawArticle.category,
                         rating: rawArticle.rating,
+                        likeStatus: rawArticle.liked,
                         comments: rawArticle.comments,
                         publisher: {
                             login: rawArticle.publisher.login,
                             username: rawArticle.publisher.username,
                         },
                         coverImgPath: rawArticle.cover_img_path,
+                        avatarImgPath: avatar,
                     }
-                    articles.push(article);
-                });
-            }
-            return articles;
+                    return article;
+                }));
+            });
+        }
+        return Promise.all(articles);
+    }
+
+    /**
+     * Запрашивает статьи
+     */
+    static getArticles(): Promise<IncompleteArticleData[]> {
+        return ajax.get({
+            url: config.hrefs.articles,
+        }).then((response) => {
+            const result: RequestAnswer = response!;
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
     /**
      * Авторизация
-     * @param {UserLoginData} userData
-     * @return {Promise} Promise со статусом запроса
      */
     static login(userData: UserLoginData): Promise<RequestAnswer> {
         const params: requestParams = {
@@ -91,7 +114,7 @@ export class Requests {
         };
 
         return ajax.post(params).then((response) => {
-            let result: RequestAnswer = response!;
+            const result: RequestAnswer = response!;
 
             if (result.status === 200) {
                 result.response = "";
@@ -116,8 +139,6 @@ export class Requests {
 
     /**
      * Регистрация
-     * @param {UserRegistrationData} userData
-     * @return {Promise} Promise со статусом запроса
      */
     static signup(userData: UserRegistrationData): Promise<RequestAnswer> {
         const params: requestParams = {
@@ -133,7 +154,7 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
-            let result: RequestAnswer = response!;
+            const result: RequestAnswer = response!;
 
             if (result.status === 200) {
                 result.response = "";
@@ -165,16 +186,39 @@ export class Requests {
 
     /**
      * Получение информации пользователя по куке
-     * @return {Promise} Promise со статусом и никнеймом
      */
     static getSessionInfo(): Promise<RequestAnswer> {
+        if (window.sessionStorage.getItem('login') !== null) {
+            const answer: RequestAnswer = {
+                response: {
+                    username: window.sessionStorage.getItem('username') === '' ? window.sessionStorage.getItem('login') : window.sessionStorage.getItem('username'),
+                    avatarUrl: window.sessionStorage.getItem('avatar'),
+                },
+                status: 200,
+            };
+            ajax.get({
+                url: config.hrefs.sessionInfo,
+            }).then((response) => {
+                if (response!.status === 200) {
+                    window.sessionStorage.setItem('username', response!.response.username);
+                    window.sessionStorage.setItem('login', response!.response.login);
+                    window.sessionStorage.setItem('avatar', response!.response.avatar_img_path);
+                }
+            });
+            return Promise.resolve(answer);
+        }
         return ajax.get({
             url: config.hrefs.sessionInfo,
         }).then((response) => {
-            let result = response!;
+            const result = response!;
             const userData: UserPlugData = {
                 username: response!.response.username,
-                avatarUrl: "",
+                avatarUrl: response!.response.avatar_img_path,
+            }
+            if (response!.status === 200) {
+                window.sessionStorage.setItem('username', response!.response.username);
+                window.sessionStorage.setItem('login', response!.response.login);
+                window.sessionStorage.setItem('avatar', response!.response.avatar_img_path);
             }
             result.response = userData;
             return result;
@@ -187,9 +231,21 @@ export class Requests {
     static removeSession(): void {
         ajax.post({
             url: config.hrefs.sessionRemove,
-        });
+        })
+        window.sessionStorage.clear();
     }
 
+    /**
+     * Запрашивает статьи из подписок
+     */
+    static getSubscriptionFeed(): Promise<IncompleteArticleData[]> {
+        return ajax.get({
+            url: config.hrefs.subscribesFeed,
+        }).then((response) => {
+            const result: RequestAnswer = response!;
+            return Requests.#parseIncompleteArticles(result.response.articles);
+        });
+    }
 
     /**
      * Информация в шапку страницы автора
@@ -202,20 +258,26 @@ export class Requests {
             }
         }).then((response) => {
             const result = response!;
-            const userData: UserHeaderData = {
-                username: result.response.username,
-                login: login,
-                rating: result.response.rating,
-                subscribers: result.response.subscribers_count,
-                registration_date: result.response.registration_date,
-            };
-            return userData;
+            if (result.status !== 200) {
+                throw result.status;
+            }
+            return Requests.getProfilePicture(login).then((avatar) => {
+                const userData: UserHeaderData = {
+                    username: result.response.username,
+                    login: login,
+                    rating: result.response.rating,
+                    subscribers: result.response.subscribers_count,
+                    registration_date: result.response.registration_date,
+                    subscribed: result.response.subscribed,
+                    avatarUrl: avatar,
+                };
+                return userData;
+            })
         });
     }
 
     /**
      * Запрашивает статьи автора
-     * @return {Promise} Promise с массивом статей
      */
     static getUserArticles(login: string): Promise<IncompleteArticleData[]> {
         return ajax.get({
@@ -225,27 +287,7 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                    }
-                    articles.push(article);
-                });
-            }
-            return articles;
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
@@ -260,10 +302,15 @@ export class Requests {
             }
         }).then((response) => {
             const result = response!;
+            if (result.status !== 200) {
+                throw result.status;
+            }
             const categoryData: CategoryData = {
                 name: result.response.category_name,
                 description: result.response.description,
                 subscribers: result.response.subscribers_count,
+                subscribed: result.response.subscribed,
+                avatarImgPath: categoryCoverFolder(result.response.category_name),
             };
             return categoryData;
         });
@@ -271,7 +318,6 @@ export class Requests {
 
     /**
      * Запрашивает статьи автора
-     * @return {Promise} Promise с массивом статей
      */
     static getCategoryArticles(category: string): Promise<IncompleteArticleData[]> {
         return ajax.get({
@@ -281,27 +327,7 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                    }
-                    articles.push(article);
-                });
-            }
-            return articles;
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
@@ -316,22 +342,30 @@ export class Requests {
             }
         }).then((response) => {
             const result: RequestAnswer = response!;
-            const article: FullArticleData = {
-                id: result.response.id,
-                title: result.response.title,
-                description: result.response.description,
-                tags: result.response.tags,
-                category: result.response.category,
-                rating: result.response.rating,
-                comments: result.response.comments,
-                publisher: {
-                    login: result.response.publisher.login,
-                    username: result.response.publisher.username,
-                },
-                coverImgPath: result.response.cover_img_path,
-                content: result.response.content,
+            if (result.status !== 200) {
+                throw result.status;
             }
-            return article;
+            const avatar: Promise<string> = result.response.category === "" ? Requests.getProfilePicture(result.response.publisher.login) : Promise.resolve(categoryCoverFolder(result.response.category));
+            return avatar.then((avatar) => {
+                const article: FullArticleData = {
+                    id: result.response.id,
+                    title: result.response.title,
+                    description: result.response.description,
+                    tags: result.response.tags,
+                    category: result.response.category,
+                    rating: result.response.rating,
+                    likeStatus: result.response.liked,
+                    comments: result.response.comments,
+                    publisher: {
+                        login: result.response.publisher.login,
+                        username: result.response.publisher.username,
+                    },
+                    coverImgPath: result.response.cover_img_path,
+                    content: result.response.content,
+                    avatarImgPath: avatar,
+                }
+                return article;
+            })
         });
     }
 
@@ -343,12 +377,13 @@ export class Requests {
             url: config.hrefs.profile,
         }).then((response) => {
             const result = response!;
-            return {
+            const data: UserData = {
                 email: result.response.email,
                 login: result.response.login,
                 username: result.response.username,
-                avatarLink: result.response.avatar_img_path,
-            };
+                avatarUrl: result.response.avatar_img_path,
+            }
+            return data;
         });
     }
 
@@ -363,12 +398,12 @@ export class Requests {
                 login: userData.login,
                 username: userData.username,
                 password: userData.password ? userData.password : "",
-                avatarImgPath: userData.avatar_link ? userData.avatar_link : "",
+                avatar_img_path: userData.avatarUrl ? userData.avatarUrl : "",
             },
         }
 
         return ajax.post(params).then((response) => {
-            let result = response!;
+            const result = response!;
             if (result.status === 200) {
                 result.response = "";
                 return result;
@@ -408,7 +443,7 @@ export class Requests {
         }
 
         return ajax.post(params).then((response) => {
-            return response!.status == 200;
+            return response!.status === 200;
         });
     }
 
@@ -514,84 +549,28 @@ export class Requests {
     /**
      * Запрос поиска
      */
-    static search(searchData: FullSearchData): Promise<IncompleteArticleData[]> {
-        let params = {
+    static search(searchData: SearchData): Promise<IncompleteArticleData[]> {
+        const params = {
             url: config.hrefs.searchPage,
             data: {
-                substringToSearch: searchData.primary.request,
-                author: searchData.advanced.author,
-                tag: searchData.advanced.tags,
+                substringToSearch: searchData.request,
+                author: searchData.author,
+                tag: searchData.tags,
             },
         }
 
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                    }
-                    articles.push(article);
-                });
-            }
-            return articles;
+            return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
 
-    /**
-     * Запрос поиска
-     */
-    static searchByTag(tag: string): Promise<IncompleteArticleData[]> {
-        let params = {
-            url: config.hrefs.searchTagPage,
-            data: {
-                tag: tag,
-            },
-        }
-
-        return ajax.get(params).then((response) => {
-            const result: RequestAnswer = response!;
-            let articles: IncompleteArticleData[] = [];
-            if (result.response.articles){
-                result.response.articles.forEach((rawArticle: { id: any; title: any; description: any; tags: any; category: any; rating: any; comments: any; publisher: { login: any; username: any; }; cover_img_path: any; }) => {
-                    const article: IncompleteArticleData = {
-                        id: rawArticle.id,
-                        title: rawArticle.title,
-                        description: rawArticle.description,
-                        tags: rawArticle.tags,
-                        category: rawArticle.category,
-                        rating: rawArticle.rating,
-                        comments: rawArticle.comments,
-                        publisher: {
-                            login: rawArticle.publisher.login,
-                            username: rawArticle.publisher.username,
-                        },
-                        coverImgPath: rawArticle.cover_img_path,
-                    }
-                    articles.push(article);
-                });
-            }
-            return articles;
-        });
-    }
 
     /**
      * Запрос комментариев статьи
      */
     static getCommentaries(articleId: number): Promise<CommentaryData[]> {
-        let params = {
+        const params = {
             url: config.hrefs.commentaryFeed,
             data: {
                 article: articleId,
@@ -600,7 +579,7 @@ export class Requests {
 
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
-            const commentaries: CommentaryData[] = [];
+            const commentaries: Promise<CommentaryData>[] = [];
             result.response.commentaries.forEach((rawCommentary: {
                 comment_id: number,
                 article_id: number,
@@ -610,23 +589,200 @@ export class Requests {
                     login: string,
                 },
                 rating: number,
+                liked: -1 | 0 | 1,
                 content: string,
-           }) => {
-                const commentary: CommentaryData = {
-                    article: rawCommentary.article_id,
-                    id: rawCommentary.comment_id,
-                    parentId: rawCommentary.comment_for_comment_id === ''? +rawCommentary.article_id : +rawCommentary.comment_for_comment_id,
-                    parentType: rawCommentary.comment_for_comment_id === ''? CommentaryParent.article : CommentaryParent.commentary,
-                    publisher: {
-                        username: rawCommentary.publisher.username,
-                        login: rawCommentary.publisher.login,
-                    },
-                    rating: rawCommentary.rating,
-                    content: rawCommentary.content
-                }
-                commentaries.push(commentary);
+            }) => {
+                const avatar: Promise<string> = Requests.getProfilePicture(rawCommentary.publisher.login);
+                commentaries.push(avatar.then((avatar) => {
+
+                    const commentary: CommentaryData = {
+                        article: rawCommentary.article_id,
+                        id: rawCommentary.comment_id,
+                        parentId: rawCommentary.comment_for_comment_id === '' ? +rawCommentary.article_id : +rawCommentary.comment_for_comment_id,
+                        parentType: rawCommentary.comment_for_comment_id === '' ? CommentaryParent.article : CommentaryParent.commentary,
+                        publisher: {
+                            username: rawCommentary.publisher.username,
+                            login: rawCommentary.publisher.login,
+                            avatar: avatar,
+                        },
+                        rating: rawCommentary.rating,
+                        likeStatus: rawCommentary.liked,
+                        content: rawCommentary.content
+                    }
+                    return commentary;
+                }))
             });
-            return commentaries;
+            return Promise.all(commentaries.reverse());
+        });
+    }
+
+    /**
+     * Подписка на категорию
+     */
+    static categorySubscribe(category: string): Promise<boolean> {
+        const params = {
+            url: config.hrefs.subscribeCategory,
+            data: {
+                category_name: category,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Подписка на пользователя
+     */
+    static userSubscribe(login: string): Promise<boolean> {
+        const params = {
+            url: config.hrefs.subscribeUser,
+            data: {
+                login: login,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Отписка от категории
+     */
+    static categoryUnsubscribe(category: string): Promise<boolean> {
+        const params = {
+            url: config.hrefs.unsubscribeCategory,
+            data: {
+                category_name: category,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Отписка от пользователя
+     */
+    static userUnsubscribe(login: string): Promise<boolean> {
+        const params = {
+            url: config.hrefs.unsubscribeUser,
+            data: {
+                login: login,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Отправляет аватарку пользователя
+     */
+    static sendProfilePicture(image: File): Promise<boolean> {
+        const params: ImgPostData = {
+            url: config.hrefs.sendProfilePicture,
+            body: image,
+        }
+
+        return ajax.postFile(params).then((response) => {
+            return response!.status == 200;
+        });
+    }
+
+    /**
+     * Получение пути к аватару по логину
+     */
+    static getProfilePicture(login: string): Promise<string> {
+        const params = {
+            url: config.hrefs.getAvatar,
+            data: {
+                login: login,
+            },
+        }
+
+        return ajax.get(params).then((response) => {
+            return response!.response.avatar_img_path;
+        });
+    }
+
+    /**
+     * Запрос лайка/дизлайка/их снятия со статьи
+     */
+    static changeArticleLikeStatus(data: LikeData): Promise<LikeResponse> {
+        const params = {
+            url: config.hrefs.articleLike,
+            data: {
+                id: data.id,
+                sign: data.sign,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            if (response!.status == 200){
+                const likeResponse: LikeResponse = {
+                    status: response!.status,
+                    rating: response!.response.rating,
+                }
+                return likeResponse;
+            }
+            const likeResponse: LikeResponse = {
+                status: response!.status,
+                rating: 0,
+            }
+            return likeResponse;
+        });
+    }
+
+    /**
+     * Запрос лайка/дизлайка/их снятия с комментария
+     */
+    static changeCommentaryLikeStatus(data: LikeData): Promise<LikeResponse> {
+        const params = {
+            url: config.hrefs.commentaryLike,
+            data: {
+                id: data.id,
+                sign: data.sign,
+            },
+        }
+
+        return ajax.post(params).then((response) => {
+            if (response!.status == 200){
+                const likeResponse: LikeResponse = {
+                    status: response!.status,
+                    rating: response!.response.rating,
+                }
+                return likeResponse;
+            }
+            const likeResponse: LikeResponse = {
+                status: response!.status,
+                rating: 0,
+            }
+            return likeResponse;
+        });
+    }
+
+    /**
+     * Запрос id статей из подписок, созданных после указанной
+     */
+    static hasNewSubs(lastId: number): Promise<NewSubsResponse>{
+        const params = {
+            url: config.hrefs.hasNewSubs,
+            data: {
+                articleId: lastId,
+            },
+        }
+
+        return ajax.get(params).then((response) => {
+            const result: NewSubsResponse = {
+                status: response!.status,
+                ids: response!.response.ids,
+            }
+            return result
         });
     }
 }

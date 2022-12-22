@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run preProcess && PORT=8081 DEBUG=server node front/server",
-    "preProcess": "npm run build && npm run tmpl",
-    "build": "tsc --build",
+    "start": "sudo PORT=8081 DEBUG=server node front/server",
+    "prestart:local": "npm run build:ts && npm run build:scss && npm run tmpl && npm run webpack-build:local",
+    "prestart:prod": "npm run build:ts && npm run build:scss && npm run tmpl && npm run webpack-build:prod",
+    "build:ts": "tsc --build",
     "tmpl": "front/templating.sh",
-    "demon": "npm run preProcess && forever start front/server/index.js",
-    "lint": "npx eslint . --ext .js",
+    "build:scss": "node-sass --output-style compressed front/public/static/css/index.scss > front/public/static/css/index.css",
+    "webpack-build:local": "cd ./front && NODE_ENV='local' webpack",
+    "webpack-build:prod": "cd ./front && NODE_ENV='prod' webpack",
+    "demon": "sudo forever start front/server/index.js",
+    "lint": "npx eslint ./front/public --ext .ts",
     "stop": "forever stop front/server/index.js ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deleteTemplates": "rm -rd \"front/public/components/tmpl\""
@@ -25,6 +29,7 @@
   },
   "homepage": "https://github.com/frontend-park-mail-ru/2022_2_GoTo_team#readme",
   "dependencies": {
+    "@babel/core": "^7.20.5",
     "@types/node": "^18.11.9",
     "@types/typescript": "^2.0.0",
     "body-parser": "^1.20.0",
@@ -35,6 +40,20 @@
     "forever": "^4.0.3",
     "handlebars": "^4.7.7",
     "morgan": "^1.10.0",
-    "typescript": "^4.9.3"
+    "node-sass": "^8.0.0",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.7.2",
+    "eslint": "^8.30.0",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
   }
 }

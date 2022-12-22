@@ -50,9 +50,9 @@ export default class CommentaryForm extends BasicComponent {
             subscription = {
                 element: form,
                 event: 'keyup',
-                // @ts-ignore
-                listener: (e: KeyboardEvent) => {
-                    if ((e.key === 'Enter' || e.keyCode === 13) && !e.shiftKey) {
+                listener: (e: Event) => {
+                    const evt = e as KeyboardEvent;
+                    if (evt.key === 'Enter' || evt.keyCode === 13 && !evt.shiftKey) {
                         eventBus.commentaryCreate(this);
                     }
                 },
@@ -71,4 +71,4 @@ export default class CommentaryForm extends BasicComponent {
         }
         this._subscribeEvent(subscription);
     }
-};
+}

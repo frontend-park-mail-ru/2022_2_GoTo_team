@@ -6,16 +6,17 @@ import CategoryFeed from "../pages/categoryFeed/categoryFeed.js";
 import ArticlePage from "../pages/article/articlePage.js";
 import SettingsPage from "../pages/settingsPage/settingsPage.js";
 import ArticleEditPage from "../pages/articleEdit/articleEditPage.js";
-import {FullSearchData, SearchData} from "../common/types";
+import {CategoryData, FullArticleData, SearchData, UserHeaderData} from "../common/types";
 import SearchPage from "../pages/search/searchPage.js";
-import SearchTagPage from "../pages/searchTag/searchTagPage.js";
 import Page from "../pages/_basic/page";
+import Page404 from "../pages/page404/page404";
+import SubscriptionsFeed from "../pages/subscriptionsFeed/subscriptionsFeed";
 
 const root = document.getElementsByTagName('body')[0];
 
 export class PageLoaders {
     /**
-     * Отрисовывает страницу популярных страниц
+     * Отрисовывает страницу популярных статей
      */
     static feedPage(): Page {
         const page = new Feed(root);
@@ -48,11 +49,11 @@ export class PageLoaders {
     }
 
     /**
-     * Отрисовывает страницу автора
+     * Отрисовывает страницу подписок
      */
-    static userFeedPage(login: string): Page {
-        const page = new UserFeed(root);
-        page.render(login).then(() => {
+    static subscriptionFeedPage(): Page {
+        const page = new SubscriptionsFeed(root);
+        page.render().then(() => {
             page.subscribe();
         });
         return page;
@@ -61,9 +62,20 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу автора
      */
-    static categoryFeedPage(category: string): Page {
+    static userFeedPage(userHeaderData: UserHeaderData): Page {
+        const page = new UserFeed(root);
+        page.render(userHeaderData).then(() => {
+            page.subscribe();
+        });
+        return page;
+    }
+
+    /**
+     * Отрисовывает страницу автора
+     */
+    static categoryFeedPage(categoryData: CategoryData): Page {
         const page = new CategoryFeed(root);
-        page.render(category).then(() => {
+        page.render(categoryData).then(() => {
             page.subscribe();
         });
         return page;
@@ -72,9 +84,9 @@ export class PageLoaders {
     /**
      * Отрисовывает страницу просмотра статьи
      */
-    static articlePage(articleId: number, comments: boolean): Page {
+    static articlePage(article: FullArticleData, comments: boolean): Page {
         const page = new ArticlePage(root);
-        page.render({articleId: articleId, toComments: comments}).then(() => {
+        page.render({article: article, toComments: comments}).then(() => {
             page.subscribe();
         });
         return page;
@@ -94,9 +106,9 @@ export class PageLoaders {
     /**
      * Отрисовывает редактирования/создания статьи
      */
-    static editArticle(articleId?: number): Page {
+    static editArticle(article?: FullArticleData): Page {
         const page = new ArticleEditPage(root)
-        page.render(articleId).then(() => {
+        page.render(article).then(() => {
             page.subscribe();
         });
         return page;
@@ -105,7 +117,7 @@ export class PageLoaders {
     /**
      * Отрисовывает поиск
      */
-    static searchPage(searchData: FullSearchData): Page {
+    static searchPage(searchData: SearchData): Page {
         const page = new SearchPage(root)
         page.render(searchData).then(() => {
             page.subscribe();
@@ -114,11 +126,11 @@ export class PageLoaders {
     }
 
     /**
-     * Отрисовывает поиск по тегу
+     * Отрисовывает страницу ошибки 404
      */
-    static searchByTagPage(searchData: SearchData): Page {
-        const page = new SearchTagPage(root)
-        page.render(searchData).then(() => {
+    static error404(): Page {
+        const page = new Page404(root);
+        page.render().then(() => {
             page.subscribe();
         });
         return page;
