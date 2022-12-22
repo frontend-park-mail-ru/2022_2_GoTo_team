@@ -9,7 +9,6 @@ import {Url} from "../../common/consts";
 export default class SharingBoxView extends BasicComponentView {
 
     render(data: SharingData): HTMLElement {
-        console.log(data);
         const wrapper = document.createElement('div');
         const url = Url + data.url!.replace(/\?(.*)$/, '');
         let vkurl = url;
