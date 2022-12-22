@@ -19,7 +19,7 @@ export class OpenGraphHelper{
         } else {
             OpenGraphHelper.#updateMetaTag(meta, value);
         }
-
+        /*
         value = data.title;
         meta = document.querySelector('meta[property="og:title"]');
         if (meta === null) {
@@ -27,7 +27,7 @@ export class OpenGraphHelper{
         } else {
             OpenGraphHelper.#updateMetaTag(meta, value);
         }
-
+        */
         value = data.description;
         if (value !== undefined) {
             meta = document.querySelector('meta[property="og:description"]');
