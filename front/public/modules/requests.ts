@@ -563,6 +563,7 @@ export class Requests {
 
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
+            console.log(response);
             return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }
