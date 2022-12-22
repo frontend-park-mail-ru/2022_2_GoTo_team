@@ -13,7 +13,7 @@ export class OpenGraphHelper{
         let value: string | undefined;
 
         value = 've.ru - новостно-развлекательный портал';
-        meta = document.querySelector('meta[name="og:site_name"]');
+        meta = document.querySelector('meta[property="og:site_name"]');
         if (meta === null) {
             OpenGraphHelper.#addMetaTag('og:site_name', value);
         } else {
@@ -21,7 +21,7 @@ export class OpenGraphHelper{
         }
 
         value = data.title;
-        meta = document.querySelector('meta[name="og:title"]');
+        meta = document.querySelector('meta[property="og:title"]');
         if (meta === null) {
             OpenGraphHelper.#addMetaTag('og:title', value);
         } else {
@@ -30,7 +30,7 @@ export class OpenGraphHelper{
 
         value = data.description;
         if (value !== undefined) {
-            meta = document.querySelector('meta[name="og:description"]');
+            meta = document.querySelector('meta[property="og:description"]');
             if (meta === null) {
                 OpenGraphHelper.#addMetaTag('og:description', value);
             } else {
@@ -39,7 +39,7 @@ export class OpenGraphHelper{
         }
 
         value = data.url;
-        meta = document.querySelector('meta[name="og:url"]');
+        meta = document.querySelector('meta[property="og:url"]');
         if (meta === null) {
             OpenGraphHelper.#addMetaTag('og:url', value);
         } else {
@@ -47,7 +47,7 @@ export class OpenGraphHelper{
         }
 
         value = data.image;
-        meta = document.querySelector('meta[name="og:image"]');
+        meta = document.querySelector('meta[property="og:image"]');
         if (value !== undefined) {
             if (meta === null) {
                 OpenGraphHelper.#addMetaTag('og:image', value);
@@ -57,7 +57,7 @@ export class OpenGraphHelper{
         }
 
         value = data.type;
-        meta = document.querySelector('meta[name="og:type"]');
+        meta = document.querySelector('meta[property="og:type"]');
         if (meta === null) {
             OpenGraphHelper.#addMetaTag('og:type', value);
         } else {
@@ -67,12 +67,12 @@ export class OpenGraphHelper{
 
     static #addMetaTag(name: string, content: string) {
         const meta = document.createElement('meta');
-        meta.setAttribute('name', name);
+        meta.setAttribute('property', name);
         meta.setAttribute('content', content);
         document.getElementsByTagName('head')[0].appendChild(meta);
     }
 
     static #updateMetaTag(tag: HTMLMetaElement, content: string) {
-        tag.setAttribute('content', content);
+        tag.setAttribute('property', content);
     }
 }
