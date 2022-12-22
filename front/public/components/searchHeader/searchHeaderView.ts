@@ -16,6 +16,10 @@ export default class SearchHeaderView extends BasicComponentView {
             allTags: searchData.tagList,
             tags: searchData.searchData.tags === undefined ? null : searchData.searchData.tags,
         });
+        const tagSelect = wrapper.querySelector('.select_menu')! as HTMLSelectElement;
+        if (searchData.searchData.tags !== undefined){
+            tagSelect.value = searchData.searchData.tags[0];
+        }
         return wrapper.querySelector('div')!;
     }
 }

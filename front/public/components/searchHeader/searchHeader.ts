@@ -21,7 +21,7 @@ export default class SearchHeader extends BasicComponent {
         this.tags = [];
     }
 
-   render(searchData: SearchHeaderData): HTMLElement {
+    render(searchData: SearchHeaderData): HTMLElement {
         super.render();
         this.root = this.view.render(searchData);
         if (searchData.searchData.tags !== undefined) {
@@ -44,13 +44,29 @@ export default class SearchHeader extends BasicComponent {
             }
             this._subscribeEvent(subscription);
         });
-
+        /*
         const addButton = this.root.querySelector('.advanced_search__add_tag')!;
         subscription = {
             element: addButton,
             event: 'click',
             listener: () => {
                 eventBus.addTag(this);
+            },
+        }
+        this._subscribeEvent(subscription);
+        */
+
+        const tagSelect = this.root.querySelector('.select_menu')! as HTMLSelectElement;
+        subscription = {
+            element: tagSelect,
+            event: 'change',
+            listener: () => {
+                if (tagSelect.value === "") {
+                    this.tags = []
+                } else {
+                    this.tags = [tagSelect.value]
+                }
+                console.log(tagSelect.value)
             },
         }
         this._subscribeEvent(subscription);

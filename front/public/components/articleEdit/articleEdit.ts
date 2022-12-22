@@ -83,12 +83,47 @@ export default class ArticleEdit extends BasicComponent {
             this._subscribeEvent(subscription);
         }
 
+        this.root.querySelectorAll('.article__tag').forEach((tagDiv) => {
+            subscription = {
+                element: tagDiv,
+                event: 'click',
+                listener: () => {
+                    const tags: string[] = [];
+                    document.querySelectorAll('.article__tag').forEach((tagDiv) => {
+                        tags.push(tagDiv.innerHTML);
+                    });
+
+                    const index = tags.indexOf(tagDiv.innerHTML);
+                    if (index > -1) {
+                        tags.splice(index, 1);
+                    }
+
+                    if (tags.length == 0) {
+                        tagDiv.parentElement!.innerHTML = '<div class="advanced_search__sidebar__tags__message">Теги не выбраны</div>';
+                    } else {
+                        tagDiv.parentNode!.removeChild(tagDiv);
+                    }
+                },
+            }
+            this._subscribeEvent(subscription);
+        });
+
+        /*
         const addTagButton = this.root.querySelector('.article_edit__add_tag')!;
         subscription = {
             element: addTagButton,
             event: 'click',
             listener: eventBus.tagAdd,
         }
+        this._subscribeEvent(subscription);
+*/
+        const tagSelect = this.root.querySelector('.tag_selector')! as HTMLSelectElement;
+        subscription = {
+            element: tagSelect,
+            event: 'change',
+            listener: eventBus.tagAdd,
+        }
+
         this._subscribeEvent(subscription);
     }
 }

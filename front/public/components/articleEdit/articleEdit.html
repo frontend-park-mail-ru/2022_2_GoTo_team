@@ -12,7 +12,7 @@
             <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
-        <div class="button accent_button article_edit__add_tag vertical_center_div">Добавить тег</div>
+        <!--div class="button accent_button article_edit__add_tag vertical_center_div">Добавить тег</div-->
         <div class="row article_edit__tags_row">
             {{#if tags}}
             {{#each tags}}
@@ -29,7 +29,7 @@
         <div contenteditable="true" class="div_textarea article_edit__description div_width_available" role="textbox"
              placeholder="Описание">{{description}}</div>
         <div contenteditable="true" class="div_textarea article_edit__content div_width_available" role="textbox" id="description"
-             placeholder="Наполнение">{{content}}</div>
+             placeholder="Текст статьи">{{content}}</div>
     </div>
     <div class="article_edit__footer row">
         {{#if update}}

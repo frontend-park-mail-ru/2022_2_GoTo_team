@@ -826,12 +826,16 @@ export class Events {
         const categoryForm = document.querySelector('.select_menu')!;
         const descriptionForm = document.querySelector('.article_edit__description')!;
         const contentForm = document.querySelector('.article_edit__content')!;
+        const tags: string[] = [];
+        document.querySelectorAll('.article__tag').forEach((tagDiv) => {
+            tags.push(tagDiv.innerHTML);
+        });
         const articleData: FullArticleData = {
             id: articleId,
             title: titleForm.textContent ? titleForm.textContent : "",
             category: categoryForm.textContent ? categoryForm.textContent : "",
             description: descriptionForm.textContent ? descriptionForm.textContent : "",
-            tags: [''],
+            tags: tags,
             comments: 0,
             rating: 0,
             likeStatus: 0,
