@@ -1,12 +1,12 @@
 <div class="box feed_page__header column">
-    <div class="right_side_bar__content">
+    <div class="search_header__label">
         Строка для поиска
     </div>
     <div contenteditable="true"
          class="div_textarea advanced_search_textarea div_width_available search_header__title"
          role="textbox" id="title"
          placeholder="Поиск">{{request}}</div>
-    <div class="right_side_bar__content">
+    <div class="search_header__label">
         Контент конкретного автора
     </div>
     {{#if author}}
@@ -18,8 +18,8 @@
          class="div_textarea advanced_search_textarea div_width_available search_header__author"
          placeholder="Логин автора"></div>
     {{/if}}
-    <div class="right_side_bar__content">
-        Посты с тегами
+    <div class="search_header__label">
+        Посты с тегом
     </div>
     <div class="row">
         <select class="select_menu tag_selector">
@@ -40,7 +40,7 @@
         {{/if}}
     </div>
     <div class="row">
-        <div class="search_header__count vertical_center_div">Результатов не найдено</div>
+        <div class="search_header__count vertical_center_div"></div>
         <div class="button accent_button advanced_search__apply">Применить</div>
     </div>
 </div>

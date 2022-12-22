@@ -15,7 +15,7 @@ $negative: #FF1D89;
 $dark-negative: darken($negative, 5%);
 $text: #000000;
 /*$ligther-text: #363636;*/
-$ligther-text: lighten($text, 10%);
+$ligther-text: lighten($text, 50%);
 /*$focused-background: #eeeeee;*/
 $focused-background: darken($light, 1%);
 /*$textarea-background: #f5f5f5;*/

@@ -335,6 +335,16 @@ body {
 ;
 }
 
+.opened_article__title {
+  font-family: 'Roboto', serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 46px;
+  padding: 5px 20px 5px 20px;
+}
+
+
 .article__description {
   font-family: 'Roboto', serif;
   font-style: normal;
@@ -1075,7 +1085,7 @@ div.log-button-container {
 
 .advanced_search__apply {
   width: fit-content;
-  font-size: 20px;
+  font-size: 18px;
   padding: 5px;
   border-radius: 10px;
   margin: 5px 0 5px auto;
@@ -1338,4 +1348,15 @@ div.log-button-container {
       background: none;
     }
   }
+}
+
+.new_article_button{
+  padding-right: 0;
+  margin-right: -8px;
+}
+
+.search_header__label {
+  font-family: 'Arial', serif;
+  padding: 10px;
+  font-size: 18px;
 }

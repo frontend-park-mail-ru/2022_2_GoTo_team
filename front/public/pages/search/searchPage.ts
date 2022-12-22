@@ -9,6 +9,7 @@ import {Requests} from "../../modules/requests.js";
 import Article, {ArticleComponentEventBus} from "../../components/article/article.js";
 import {Helpers} from "../../modules/helpers.js";
 import NoResults from "../../components/noResults/noResults";
+import {APIStrings, Url} from "../../common/consts";
 
 /**
  * ModalView-контроллер для соответсвующих страниц
@@ -72,14 +73,17 @@ export default class SearchPage extends Page {
                 }
 
                 let foundNumString: string;
-                if (articles.length === 0) {
-                    foundNumString = "Результатов не найдено";
-                } else {
-                    foundNumString = Helpers.numWord(articles.length,
-                        ["Найдена", "Найдено", "Найдено"]) + ' ' + articles.length + ' ' + Helpers.numWord(articles.length,
-                        ["статья", "статьи", "статей"]);
+                if (window.location.href !== Url + APIStrings.searchPage({})){
+                    if (articles.length === 0) {
+                        foundNumString = "Результатов не найдено";
+                    } else {
+                        foundNumString = Helpers.numWord(articles.length,
+                            ["Найдена", "Найдено", "Найдено"]) + ' ' + articles.length + ' ' + Helpers.numWord(articles.length,
+                            ["статья", "статьи", "статей"]);
+                    }
+                    document.querySelector('.search_header__count')!.innerHTML = foundNumString;
                 }
-                document.querySelector('.search_header__count')!.innerHTML = foundNumString;
+
 
                 console.log(articles);
                 if (articles && Array.isArray(articles)) {
@@ -91,11 +95,6 @@ export default class SearchPage extends Page {
                             articleView.subscribe(articleEventBus);
                             this.view.mainContentElement!.appendChild(articleView.root);
                         })
-                    } else {
-                        const noResults = new NoResults();
-                        noResults.render();
-                        this.view.mainContentElement!.innerHTML = '';
-                        this.view.mainContentElement!.appendChild(noResults.root);
                     }
                 }
             });
