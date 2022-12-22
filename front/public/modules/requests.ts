@@ -57,7 +57,6 @@ export class Requests {
      * @param {any[]} rawArticles т.к. вытаскивается из запроса тип "может быть любым"
      */
     static #parseIncompleteArticles(rawArticles: any[]): Promise<IncompleteArticleData[]>{
-        console.log(rawArticles);
         const articles: Promise<IncompleteArticleData>[] = [];
         if (rawArticles) {
             rawArticles.forEach((rawArticle: {
@@ -85,7 +84,6 @@ export class Requests {
                 }));
             });
         }
-        console.log(articles);
         return Promise.all(articles);
     }
 
@@ -563,7 +561,6 @@ export class Requests {
 
         return ajax.get(params).then((response) => {
             const result: RequestAnswer = response!;
-            console.log(response);
             return Requests.#parseIncompleteArticles(result.response.articles);
         });
     }

@@ -28,15 +28,15 @@ export default class SearchPage extends Page {
      */
     async render(data: SearchData): Promise<void> {
         Events.scrollUp();
-        if ( data.request !== undefined){
+        if (data.request !== undefined) {
             data.request = decodeURIComponent(data.request);
         }
 
-        if (data.author !== undefined){
+        if (data.author !== undefined) {
             data.author = decodeURIComponent(data.author);
         }
 
-        if (data.tags !== undefined){
+        if (data.tags !== undefined) {
             const tags: string[] = [];
             data.tags.forEach((tag) => {
                 tags.push(decodeURIComponent(tag))
@@ -57,10 +57,9 @@ export default class SearchPage extends Page {
         }
         await this.view.render(headerData);
 
-        console.log(data);
-
-        if(!(data.request === undefined && data.author === undefined && data.tags === undefined)) {
+        if (!(data.request === undefined && data.author === undefined && data.tags === undefined)) {
             Requests.search(data).then((articles) => {
+                console.log(articles);
                 const articleEventBus: ArticleComponentEventBus = {
                     goToAuthorFeed: Events.goToAuthorFeed,
                     goToCategoryFeed: Events.goToCategoryFeed,
@@ -80,11 +79,11 @@ export default class SearchPage extends Page {
                         ["Найдена", "Найдено", "Найдено"]) + ' ' + articles.length + ' ' + Helpers.numWord(articles.length,
                         ["статья", "статьи", "статей"]);
                 }
-                document.querySelector('.feed_page__header__subscribers')!.innerHTML = foundNumString;
+                document.querySelector('.search_header__count')!.innerHTML = foundNumString;
 
-
+                console.log(articles);
                 if (articles && Array.isArray(articles)) {
-                    if (articles.length > 0){
+                    if (articles.length > 0) {
                         this.view.mainContentElement!.innerHTML = '';
                         articles.forEach((article) => {
                             const articleView = new Article();
@@ -92,7 +91,7 @@ export default class SearchPage extends Page {
                             articleView.subscribe(articleEventBus);
                             this.view.mainContentElement!.appendChild(articleView.root);
                         })
-                    }else{
+                    } else {
                         const noResults = new NoResults();
                         noResults.render();
                         this.view.mainContentElement!.innerHTML = '';
