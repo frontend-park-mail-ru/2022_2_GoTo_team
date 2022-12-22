@@ -27,6 +27,8 @@ self.addEventListener('install', (event) => {
             .then((cache) => {
                 // загружаем в наш cache необходимые файлы
                 console.log('SW on install: ', cacheName);
+                //@ts-ignore
+                self.skipWaiting()
                 return cache.addAll(cacheUrls);
             })
             .catch((err) => {
@@ -34,6 +36,7 @@ self.addEventListener('install', (event) => {
             }),
     );
 });
+
 
 self.addEventListener('fetch', (event) => {
     /** online */
