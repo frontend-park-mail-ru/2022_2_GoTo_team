@@ -65,12 +65,12 @@ export class Ajax {
         };
 
         const response = fetch(url, fetchParams)
-            .then((response) => {
+            .then(async (response) => {
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1){
-                    return {status: response.status, response: response.json()};
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return {status: response.status, response: await response.json()};
                 }
-                return {status: response.status, response: undefined};
+                return {status: response.status, response: response};
             })
             .then((response) => {
                 const result: RequestAnswer = {

@@ -4,7 +4,10 @@ const protocol = {
     http: 'http://',
     https: 'https://'
 }
-export const BaseUrl = '127.0.0.1';
+
+//@ts-ignore
+export const BaseUrl: string = __API__;
+'127.0.0.1';
 //export const BaseUrl = 'gototeam.ru';
 export const Url = protocol.https + BaseUrl;
 

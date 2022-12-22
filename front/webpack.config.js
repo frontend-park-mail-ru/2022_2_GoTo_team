@@ -1,5 +1,6 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const webpack = require("webpack");
 
 module.exports = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -15,6 +16,12 @@ module.exports = {
     optimization: {
         minimize: true,
     },
+
+    plugins: [
+        new webpack.DefinePlugin({
+            __API__: defineUrl(),
+        })
+    ],
 
     module: {
         rules: [
@@ -47,3 +54,14 @@ module.exports = {
         },
     },
 };
+
+function defineUrl() {
+    switch (process.env.NODE_ENV) {
+        case 'prod':
+            return JSON.stringify('gototeam.ru');
+        case 'local':
+            return JSON.stringify('127.0.0.1');
+        default:
+            return JSON.stringify('127.0.0.1');
+    }
+}
