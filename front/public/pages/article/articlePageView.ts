@@ -3,7 +3,8 @@ import Navbar from "../../components/navbar/navbar.js";
 import OpenedArticle from "../../components/openedArticle/openedArticle.js";
 import {CommentaryData, FullArticleData} from "../../common/types";
 import CommentaryForm from "../../components/commentaryForm/commentaryForm.js";
-import {CommentaryParent} from "../../common/consts.js";
+import {APIStrings, CommentaryParent, Url} from "../../common/consts.js";
+import {OpenGraphData, OpenGraphHelper} from "../../modules/sharing";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
@@ -75,5 +76,15 @@ export default class ArticlePageView extends PageView {
 
         this.root.appendChild(document.createElement('div'));
         this.children.set('article', articleView);
+
+        const openGraphData: OpenGraphData = {
+            description: articleData.description,
+            image: Url + articleData.coverImgPath,
+            title: articleData.title,
+            type: 'article',
+            url: Url + APIStrings.articlePage(articleData.id, false),
+        }
+
+        OpenGraphHelper.makeGraph(openGraphData);
     }
 }
