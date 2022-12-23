@@ -13,7 +13,9 @@
         <div class="article__title">{{title}}</div>
         <div class="article__description">{{description}}</div>
     </div>
+    {{#if picture}}
     <img class="article__cover" src="{{picture}}">
+    {{/if}}
     <div class="article__wrapper">
         <div class="article__tagbox">
             {{#each tags}}

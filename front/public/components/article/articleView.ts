@@ -30,7 +30,7 @@ export default class ArticleView extends BasicComponentView {
             rating_sign: article.rating > 0 ? 1 : (article.rating < 0 ? -1 : 0),
             comments: article.comments,
             publisher: article.publisher.username !== '' ? article.publisher.username : article.publisher.login,
-            picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
+            picture: article.coverImgPath !== ''? article.coverImgPath : undefined,
             author: article.publisher.login === window.sessionStorage.getItem('login'),
             avatar: article.avatarImgPath !== '' && article.avatarImgPath !== undefined ? article.avatarImgPath : "/static/img/user_icon.webp",
         });
