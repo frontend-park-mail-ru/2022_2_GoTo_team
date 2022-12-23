@@ -44,7 +44,7 @@ const config = {
         sendProfilePicture: '/file/upload/profile/photo',
         getAvatar: '/user/avatar',
         hasNewSubs: '/feed/subscriptions/has-new-articles-from',
-        subscribesFeed: '/api/v1/feed/subscriptions',
+        subscribesFeed: '/feed/subscriptions',
     }
 }
 
