@@ -135,8 +135,12 @@ export type LikeResponse = {
 
 export type SharingData = {
     url: string,
+    title?: string,
+    description?: string,
+    image?: string,
+    type: 'article' | 'profile',
+    profile_username?: string,
 }
-
 export type ImgPostData = {
     url: string,
     body: any,

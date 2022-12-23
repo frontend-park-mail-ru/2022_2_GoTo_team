@@ -15,6 +15,7 @@ export default class OpenedArticleView extends BasicComponentView {
     category: string | undefined;
     publisher: string | undefined;
     id: number | undefined;
+    data: FullArticleData | undefined;
 
     render(article: FullArticleData): HTMLElement {
         const wrapper = document.createElement('div');

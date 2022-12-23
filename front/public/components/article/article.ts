@@ -1,7 +1,7 @@
 import ArticleView from "./articleView.js";
 import BasicComponent from "../_basicComponent/basicComponent.js";
-import {IncompleteArticleData, LikeData, LikeResponse, Subscription} from "../../common/types";
-import {APIStrings, categoryCoverFolder} from "../../common/consts";
+import {IncompleteArticleData, LikeData, LikeResponse, SharingData, Subscription} from "../../common/types";
+import {APIStrings, categoryCoverFolder, Url} from "../../common/consts";
 import {Requests} from "../../modules/requests";
 import {response} from "express";
 
@@ -11,7 +11,7 @@ export type ArticleComponentEventBus = {
     openArticle: (id: number, comments: boolean) => void,
     openTagPage: (tag: string) => void,
     editArticle: (id: number) => void,
-    shareListener: (url: string) => void,
+    shareListener: (data: SharingData) => void,
     likeListener: (data: LikeData) => Promise<LikeResponse>,
     openLogin: () => void;
 }
@@ -134,7 +134,13 @@ export default class Article extends BasicComponent {
                 element: shareButton,
                 event: 'click',
                 listener: () => {
-                    eventBus.shareListener(APIStrings.articlePage(this.view.id!, false));
+                    const data: SharingData = {
+                        url: APIStrings.articlePage(this.view.id!, false),
+                        type: "article",
+                        title: this.view.data?.title,
+                        image: this.view.data?.avatarImgPath ? Url + this.view.data?.avatarImgPath : this.view.data?.avatarImgPath,
+                    }
+                    eventBus.shareListener(data);
                 },
             }
             this._subscribeEvent(subscription);

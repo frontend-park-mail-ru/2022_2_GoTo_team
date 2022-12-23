@@ -1,5 +1,4 @@
 import ArticlePageView from "./articlePageView.js";
-import {Requests} from "../../modules/requests.js"
 import {Events} from "../../modules/events.js";
 import Page from "../_basic/page.js";
 import {OpenedArticleEventBus} from "../../components/openedArticle/openedArticle.js";

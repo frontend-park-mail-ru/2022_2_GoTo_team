@@ -52,13 +52,22 @@ export default class CommentaryForm extends BasicComponent {
                 event: 'keyup',
                 listener: (e: Event) => {
                     const evt = e as KeyboardEvent;
-                    if (evt.key === 'Enter' || evt.keyCode === 13 && !evt.shiftKey) {
+                    if ((evt.key === 'Enter' || evt.keyCode === 13) && !evt.shiftKey) {
                         eventBus.commentaryCreate(this);
                     }
                 },
             }
             this._subscribeEvent(subscription);
-
+            subscription = {
+                element: form,
+                event: 'paste',
+                listener: (e: Event) => {
+                    e.preventDefault();
+                    const evt = e as ClipboardEvent;
+                    form.innerHTML += evt.clipboardData!.getData('text');
+                },
+            }
+            this._subscribeEvent(subscription);
         });
 
         const submitButton = this.root.querySelector('.commentary_form__save_button')!;

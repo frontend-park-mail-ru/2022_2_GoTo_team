@@ -1,14 +1,14 @@
 server {
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         root ;
         index index.html;
 
-        server_name ;
+        server_name gototeam.ru www.gototeam.ru;
 
-        access_log ;
-        error_log ;
+        access_log /var/log/nginx/ve.ru.access.log;
+        error_log /var/log/nginx/ve.ru.error.log;
 
         ssl_certificate     ;
         ssl_certificate_key ;
@@ -31,4 +31,12 @@ server {
                 proxy_ignore_headers Set-Cookie;
                 proxy_hide_header Set-Cookie;
         }
+}
+
+server {
+        listen 80;
+
+        server_name gototeam.ru www.gototeam.ru;
+
+        return 301 https://gototeam.ru;
 }

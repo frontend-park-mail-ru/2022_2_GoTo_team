@@ -826,16 +826,23 @@ export class Events {
         const categoryForm = document.querySelector('.select_menu')!;
         const descriptionForm = document.querySelector('.article_edit__description')!;
         const contentForm = document.querySelector('.article_edit__content')!;
+        const tags: string[] = [];
+        document.querySelectorAll('.article__tag').forEach((tagDiv) => {
+            tags.push(tagDiv.innerHTML);
+        });
+        console.log(contentForm.innerHTML);
+        const content: string = contentForm.innerHTML.replaceAll('<p>', '').replaceAll('</p>', '\n');
+        console.log(content);
         const articleData: FullArticleData = {
             id: articleId,
             title: titleForm.textContent ? titleForm.textContent : "",
             category: categoryForm.textContent ? categoryForm.textContent : "",
             description: descriptionForm.textContent ? descriptionForm.textContent : "",
-            tags: [''],
+            tags: tags,
             comments: 0,
             rating: 0,
             likeStatus: 0,
-            content: contentForm.textContent ? contentForm.textContent : "",
+            content: content,
             coverImgPath: "",
             publisher: {login: "", username: ""},
             avatarImgPath: '',
@@ -1464,19 +1471,15 @@ export class Events {
     /**
      * Открывает окно шеринга
      */
-    static openShareBox(url: string) {
+    static openShareBox(shareData: SharingData) {
         const body = document.querySelector("body")!;
 
         const eventBus: SharingBoxEventBus = {
             close: Events.closeShareBox,
         }
 
-        const data: SharingData = {
-            url: url,
-        }
-
         const sharingBox = new SharingBox();
-        sharingBox.render(data);
+        sharingBox.render(shareData);
         sharingBox.subscribe(eventBus);
 
         body.classList.add("disabled");

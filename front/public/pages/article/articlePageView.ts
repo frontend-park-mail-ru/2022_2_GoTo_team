@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar/navbar.js";
 import OpenedArticle from "../../components/openedArticle/openedArticle.js";
 import {CommentaryData, FullArticleData} from "../../common/types";
 import CommentaryForm from "../../components/commentaryForm/commentaryForm.js";
-import {CommentaryParent} from "../../common/consts.js";
+import {APIStrings, CommentaryParent, Url} from "../../common/consts.js";
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
