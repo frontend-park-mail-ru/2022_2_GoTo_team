@@ -656,6 +656,7 @@ div.log-button-container {
   &__image {
     width: 125px;
     height: 125px;
+    margin-left: 10px;
   }
 }
 
@@ -665,6 +666,10 @@ div.log-button-container {
 
 .settings__avatar_link {
   font-size: 20px;
+}
+
+.settings__save_button{
+  margin-left: 10px;
 }
 
 .sidebar_title {
@@ -740,7 +745,7 @@ div.log-button-container {
   font-family: 'Arial', serif;
   padding: 3px;
   font-size: 16px;
-  margin: auto 0 3px 0;
+  margin: auto 0 0 0;
   font-weight: normal;
 }
 
@@ -753,9 +758,9 @@ div.log-button-container {
 
 .feed_page__header__subscribers {
   font-family: 'Arial', serif;
-  padding: 10px 3px;
+  padding: 3px;
   font-size: 16px;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .search_header__count {

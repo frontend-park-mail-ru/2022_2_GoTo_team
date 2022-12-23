@@ -1311,7 +1311,7 @@ export class Events {
      * Открывает alert сообщение
      */
     static openAlertMessage(message: string, buttonValue?: string, alertListener?: Listener) {
-        const body = document.querySelector("body")!;
+        const body = document.querySelector(".root")!;
 
         const data: AlertMessageData = {
             message: message,
@@ -1340,7 +1340,7 @@ export class Events {
      * Закрывает alert сообщение
      */
     static closeAlertMessage() {
-        const body = document.querySelector("body")!;
+        const body = document.querySelector(".root")!;
         body.classList.remove("disabled");
         const message = body.querySelector(".alert_prompt")!;
         body.removeChild(message);
