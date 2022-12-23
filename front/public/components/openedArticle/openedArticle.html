@@ -18,11 +18,14 @@
             </p>
             {{/each}}
         </div>
+        {{#if tags}}
         <div class="article__tagbox">
             {{#each tags}}
             <div class="article__tag">{{this}}</div>
             {{/each}}
         </div>
+        {{/if}}
+        {{#if picture}}
         <div class="article__bottom_bar">
             <div class="article__comments_count">
                 <div class="article__comments_count__count">{{comments}}</div>
@@ -52,8 +55,11 @@
                 </svg>
             </div>
         </div>
+        {{/if}}
     </div>
+    {{#if picture}}
     <img class="article__cover" src="{{picture}}">
+    {{/if}}
     <div class="article__wrapper article__content horizontal_center_div">
         {{#each content}}
         <p>

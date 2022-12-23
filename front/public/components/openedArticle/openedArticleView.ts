@@ -23,14 +23,14 @@ export default class OpenedArticleView extends BasicComponentView {
         wrapper.innerHTML = Handlebars.templates['openedArticle.html']({
             title: article.title,
             description: article.description.split('\n'),
-            tags: article.tags,
+            tags: article.tags.length > 0 ? article.tags.length : undefined ,
             category: article.category,
             rating: article.rating,
             rating_sign: article.rating > 0 ? 1 :( article.rating < 0 ? -1 : 0),
             comments: article.comments,
             publisher: article.publisher.username !== "" ? article.publisher.username : article.publisher.login,
             content: article.content.split('\n'),
-            picture: article.coverImgPath !== '' && article.coverImgPath !== undefined ? article.coverImgPath : covers[Math.floor(Math.random() * covers.length)],
+            picture: article.coverImgPath !== ''? article.coverImgPath : undefined,
             author: article.publisher.login === window.sessionStorage.getItem('login'),
             avatar: article.avatarImgPath !== '' && article.avatarImgPath !== undefined ? article.avatarImgPath : "/static/img/user_icon.webp",
         });
