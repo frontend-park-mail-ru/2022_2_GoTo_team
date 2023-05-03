@@ -5,7 +5,8 @@ const protocol = {
     https: 'https://'
 }
 //webpack inline variable
-export const BaseUrl: string = "95.163.213.142";
+
+export const BaseUrl = "95.163.213.142";
 
 export const Url = protocol.https + BaseUrl;
 
