@@ -58,7 +58,7 @@ module.exports = {
 function defineUrl() {
     switch (process.env.NODE_ENV) {
         case 'prod':
-            return JSON.stringify('gototeam.ru');
+            return JSON.stringify('95.163.213.142');
         case 'local':
             return JSON.stringify('127.0.0.1');
         default:
