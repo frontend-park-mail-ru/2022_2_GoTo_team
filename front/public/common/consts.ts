@@ -5,8 +5,7 @@ const protocol = {
     https: 'https://'
 }
 //webpack inline variable
-// @ts-expect-error TS(2304): Cannot find name '__API__'.
-export const BaseUrl: string = __API__;
+export const BaseUrl: string = "95.163.213.142";
 
 export const Url = protocol.https + BaseUrl;
 
